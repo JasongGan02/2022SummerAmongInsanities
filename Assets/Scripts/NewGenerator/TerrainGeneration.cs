@@ -212,6 +212,7 @@ public class TerrainGeneration : MonoBehaviour
         if (hasCollider)
         {
             newTile.AddComponent<BoxCollider2D>();
+            newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
         }
         if (tag != null)
         {
