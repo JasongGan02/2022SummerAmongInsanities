@@ -6,10 +6,9 @@ public class Playermovement : MonoBehaviour
 {
     public float runSpeed, jumpForce;
     private float jumpHeight = .4f;
-    private float moveInput;
 
-    private Rigidbody2D myBody;
-    private Animator anim;
+    private Rigidbody2D playerRigidbody;
+    private Animator animator;
 
     public Transform groundCheck;
     public LayerMask groundLayer;
@@ -22,8 +21,8 @@ public class Playermovement : MonoBehaviour
 
     void Awake()
     {
-        myBody = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        playerRigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         Application.targetFrameRate = 50;
 
     }
@@ -37,20 +36,20 @@ public class Playermovement : MonoBehaviour
         
     }
 
-    void Movement()
+    private void Movement()
     {
-        moveInput = Input.GetAxisRaw("Horizontal") * runSpeed;
+        float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-        anim.SetFloat("speed", Mathf.Abs(moveInput));
+        animator.SetFloat(Constants.Animator.SPEED, Mathf.Abs(moveInput));
 
 
-        myBody.velocity = new Vector2(moveInput, myBody.velocity.y);
+        playerRigidbody.velocity = new Vector2(moveInput, playerRigidbody.velocity.y);
 
         if(Input.GetKeyUp(KeyCode.Space))
         {
-            if(myBody.velocity.y > 0)
+            if(playerRigidbody.velocity.y > 0)
             {
-                myBody.velocity = new Vector2(myBody.velocity.x,myBody.velocity.y * jumpHeight);
+                playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x,playerRigidbody.velocity.y * jumpHeight);
             }
         }
 
@@ -58,27 +57,28 @@ public class Playermovement : MonoBehaviour
             Flip();
     }
 
-    void CheckCollsionForJump()
+    private void CheckCollsionForJump()
     {
         Collider2D hit = Physics2D.OverlapBox(groundCheck.position, range, 0, groundLayer);
 
-        if(hit != null)
+        if(hit != null && hit.gameObject.tag == Constants.Tag.GROUND)
         {
-            if(hit.gameObject.tag == "ground" && Input.GetKeyDown(KeyCode.Space)) 
+            animator.SetBool(Constants.Animator.IN_AIR, false);
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                myBody.velocity = new Vector2(myBody.velocity.x, jumpForce);
-                anim.SetBool("jump", true);
+                playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, jumpForce);
             }
-            else 
-            {
-                anim.SetBool("jump", false);
-            }
+        } 
+        else
+        {
+            animator.SetBool(Constants.Animator.IN_AIR, true);
+
         }
     }
 
 
 
-    void Flip()
+    private void Flip()
     {
         facingRight = !facingRight;
         
