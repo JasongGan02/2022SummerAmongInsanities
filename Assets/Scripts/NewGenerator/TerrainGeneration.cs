@@ -136,12 +136,12 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        PlaceTile(tileSprites, x, y);
+                        PlaceTile(tileSprites, x, y, Constants.Layer.GROUND, true, Constants.Tag.GROUND);
                     }
                 }
                 else
                 {
-                    PlaceTile(tileSprites, x, y);
+                    PlaceTile(tileSprites, x, y, Constants.Layer.GROUND, true, Constants.Tag.GROUND);
                 }
 
                 //tree
@@ -198,7 +198,7 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree.tileSprites, x, y);
 
     }
-    public void PlaceTile(Sprite[] tileSprites, int x, int y)
+    public void PlaceTile(Sprite[] tileSprites, int x, int y, int layer = 0, bool hasCollider = false, string tag = null)
     {
         GameObject newTile = new GameObject();
 
@@ -211,6 +211,16 @@ public class TerrainGeneration : MonoBehaviour
         newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
         newTile.name = tileSprites[0].name;
         newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        newTile.layer = layer;
+        if (hasCollider)
+        {
+            newTile.AddComponent<BoxCollider2D>();
+            newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
+        }
+        if (tag != null)
+        {
+            newTile.tag = tag;
+        }
 
         worldTiles.Add(newTile.transform.position - (Vector3.one*0.5f));
     }

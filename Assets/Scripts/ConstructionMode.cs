@@ -47,13 +47,16 @@ public class ConstructionMode : MonoBehaviour
                     Destroy(shadowObj);
                 }
                 shadowObj = Instantiate(Towers[(int)towerType]);
-                shadowObj.GetComponent<BoxCollider2D>().isTrigger = true;
-                shadowObj.layer = Constants.Layer.DEFAULT;
+                shadowObj.GetComponent<ConstructionShadows>().StartUp(5.0f);
             }
 
             if(shadowObj && downRay){
                 shadowObj.transform.position = downRay.transform.position;
-                shadowObj.transform.position += new Vector3(0, shadowObj.GetComponent<BoxCollider2D>().size.y/2, 0);
+                shadowObj.transform.position += new Vector3(0, shadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2+ downRay.collider.bounds.size.y/2 + 0.03f, 0);
+                ConstructionShadows shadowScript = shadowObj.GetComponent<ConstructionShadows>();
+                if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus()){
+                    shadowScript.PlaceTower();
+                }
             }
         }
     }
