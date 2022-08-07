@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 74f6b627b4443934f90dcc886c552815
+guid: 56125023c87b1e7468ec76250f0fcb0a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,19 +121,19 @@ TextureImporter:
       name: cedar-nature_0
       rect:
         serializedVersion: 2
-        x: 7
+        x: 6
         y: 20
         width: 33
         height: 107
       alignment: 9
-      pivot: {x: 0.5, y: -0.037383176}
+      pivot: {x: 0.5, y: -0.028037382}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c55e42218a3c2da458e0a91eaaed644d
-      internalID: -784142121
+      spriteID: cf10c8d3035bc454c8326f9e6786cbf6
+      internalID: -1284725194
       vertices: []
       indices: 
       edges: []
@@ -143,18 +143,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 40
-        y: 20
+        y: 19
         width: 43
-        height: 184
+        height: 185
       alignment: 9
-      pivot: {x: 0.5, y: -0.02173913}
+      pivot: {x: 0.5, y: -0.016216217}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9bff560b8d52e8344a33aaf359653665
-      internalID: 1872071948
+      spriteID: db4895d2a81a93149ac76e811becbadf
+      internalID: 964633207
       vertices: []
       indices: 
       edges: []
@@ -168,14 +168,14 @@ TextureImporter:
         width: 50
         height: 217
       alignment: 9
-      pivot: {x: 0.5, y: -0.01843318}
+      pivot: {x: 0.5, y: -0.013824885}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af4452bdff1a4d34bb69d4a85a200ea8
-      internalID: -2124796401
+      spriteID: 6b777ee77f375314a878e2c679750d7d
+      internalID: 718707748
       vertices: []
       indices: 
       edges: []
@@ -185,18 +185,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 141
-        y: 21
+        y: 20
         width: 45
-        height: 182
+        height: 183
       alignment: 9
-      pivot: {x: 0.5, y: -0.021978023}
+      pivot: {x: 0.5, y: -0.016393442}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b8caacbbdae00c4ca7ceace08dd31b5
-      internalID: 658861607
+      spriteID: f97a98367ecbe374c97d98776b6de42e
+      internalID: -1078960210
       vertices: []
       indices: 
       edges: []
@@ -206,9 +206,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 195
-        y: 20
+        y: 21
         width: 49
-        height: 219
+        height: 218
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6a991a932deee2499c2e477cd0596a8
-      internalID: -1564812135
+      spriteID: 4d4534d2c36029b42a8053806f7cb922
+      internalID: -1443652604
       vertices: []
       indices: 
       edges: []
@@ -237,8 +237,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c8598b0296fe41438669fd469e03e3d
-      internalID: -193898874
+      spriteID: e472723a1117529419618a7f87e312be
+      internalID: -155378726
       vertices: []
       indices: 
       edges: []
@@ -254,12 +254,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cedar-nature_5: -193898874
-      cedar-nature_2: -2124796401
-      cedar-nature_3: 658861607
-      cedar-nature_1: 1872071948
-      cedar-nature_4: -1564812135
-      cedar-nature_0: -784142121
+      cedar-nature_5: -155378726
+      cedar-nature_2: 718707748
+      cedar-nature_3: -1078960210
+      cedar-nature_1: 964633207
+      cedar-nature_4: -1443652604
+      cedar-nature_0: -1284725194
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

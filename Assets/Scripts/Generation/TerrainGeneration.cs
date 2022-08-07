@@ -27,14 +27,6 @@ public class TerrainGeneration : MonoBehaviour
 
     [Header("Ore Settings")]
     public OreClass[] ores;
-    /*public float coalRarity;
-    public float coalSize;
-    public float ironRarity;
-    public float ironSize;
-    public float goldRarity, goldSize;
-    public Texture2D coalSpread;
-    public Texture2D ironSpread;
-    public Texture2D goldSpread;*/
 
 
     private GameObject[] worldChunks;
