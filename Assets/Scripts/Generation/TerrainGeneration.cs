@@ -5,16 +5,31 @@ public class TerrainGeneration : MonoBehaviour
 {
     [Header("Tile Atlas")]
     public TileAtlas tileAtlas;
+    public float seed;
+
+    public BiomeClass[] biomes;
+
+    public BiomeClass MainArea;
+    public BiomeClass Kingdom1;
+    public BiomeClass Kingdom2;
+    public BiomeClass NetherWorld;
+    public BiomeClass ForbiddenKingdom;
+
+
+    [Header("Biomes")]
+    public float biomeFrequency;
+    public Gradient biomeColors;    
+    public Texture2D biomeMap;
 
     [Header("Nature Addons")]
     public int addonsChance;
+    public int treeChance = 10;
 
     [Header("Generation Settings")]
+    public int worldSize = 100;
     public int chunkSize = 16;
-    public int treeChance = 10;
     public bool generateCave = true;
     public int dirtLayerHeight = 5;
-    public int worldSize = 100;
     public float surfacePortion = 0.25f;
     public float heightMultiplier = 15f;
     public int heightAddition = 25;
@@ -22,7 +37,6 @@ public class TerrainGeneration : MonoBehaviour
     [Header("Noise Settings")]
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
-    public float seed;
     public Texture2D caveNoiseTexture;
 
     [Header("Ore Settings")]
@@ -34,13 +48,29 @@ public class TerrainGeneration : MonoBehaviour
 
     private void OnValidate()
     {
+        DrawTexture();
+        
+    }
 
+
+    private void Start()
+    {
+        seed = Random.Range(-10000, 10000);
+        DrawTexture();
+        CreateChunks();
+        GenerateTerrain();
+        ChangeSize();
+    }
+
+    public void DrawTexture()
+    {
+        biomeMap = new Texture2D(worldSize,worldSize);
+        DrawBiomeTexture();
         caveNoiseTexture = new Texture2D(worldSize, worldSize);
         ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
         ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
         ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
-        
-        
+
         GenerateNoiseTexture(caveFreq, surfacePortion, caveNoiseTexture);
         //ores
         GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
@@ -48,29 +78,18 @@ public class TerrainGeneration : MonoBehaviour
         GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
     }
 
-
-    private void Start()
+    public void DrawBiomeTexture()
     {
-        seed = Random.Range(-10000, 10000);
-
-        caveNoiseTexture = new Texture2D(worldSize, worldSize);
-        ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
-
-
-
-        GenerateNoiseTexture(caveFreq, surfacePortion, caveNoiseTexture);
-        //ores
-        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
-        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
-        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
-
-
-        CreateChunks();
-        GenerateTerrain();
-        ChangeSize();
-        
+        for(int x = 0; x<biomeMap.width; x++)
+        {
+            for (int y=0; y<biomeMap.height; y++)
+            {
+                float v = Mathf.PerlinNoise((x+seed)* biomeFrequency, (y+seed)* biomeFrequency);
+                Color col = biomeColors.Evaluate(v);
+                biomeMap.SetPixel(x,y, col);
+            }
+        }
+        biomeMap.Apply();
     }
     public void ChangeSize()
     {
@@ -92,6 +111,7 @@ public class TerrainGeneration : MonoBehaviour
     
     public void GenerateTerrain()
     {
+        float mid = Mathf.Round(worldSize/2);
         for (int x = 0; x < worldSize; x++)
         {  
             float height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier +heightAddition;
@@ -142,7 +162,7 @@ public class TerrainGeneration : MonoBehaviour
                         //generate a tree
                         if (worldTiles.Contains(new Vector2(x, y)))
                         {
-                            GenerateTree(x, y);
+                            GenerateTree(x, y+1);
                         }
 
                     }
@@ -189,52 +209,58 @@ public class TerrainGeneration : MonoBehaviour
 
     public void PlaceTile(TileClass tile, int x, int y, int layer = 0, bool hasCollider = false, string tag = null)
     {
-        var tileSprites = tile.tileSprites;
-        var prefabs = tile.prefabs;
-
-        float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
-        chunkCoord /= chunkSize;
-
-        if (prefabs.Length == 0)
+        if(!worldTiles.Contains(new Vector2Int(x,y)))
         {
-            GameObject newTile = new GameObject();
+            var tileSprites = tile.tileSprites;
+            var prefabs = tile.prefabs;
 
-            newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
-            newTile.AddComponent<SpriteRenderer>();
+            float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
+            chunkCoord /= chunkSize;
 
-
-            int spriteIndex = Random.Range(0, tileSprites.Length);
-            newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
-
-            newTile.name = tileSprites[0].name;
-            newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-            newTile.layer = layer;
-
-            newTile.AddComponent<BoxCollider2D>();
-            var collider = newTile.GetComponent<BoxCollider2D>();
-            collider.size = Vector2.one;
-
-            if (!hasCollider)
+            if (prefabs.Length == 0)
             {
-                collider.isTrigger = true;
-            }
+                
+            
+                GameObject newTile = new GameObject();
 
-            if (tag != null)
+                newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
+                newTile.AddComponent<SpriteRenderer>();
+
+
+                int spriteIndex = Random.Range(0, tileSprites.Length);
+                newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
+
+                newTile.name = tileSprites[0].name;
+                newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+                newTile.layer = layer;
+
+                newTile.AddComponent<BoxCollider2D>();
+                var collider = newTile.GetComponent<BoxCollider2D>();
+                collider.size = Vector2.one;
+
+                if (!hasCollider)
+                {
+                    collider.isTrigger = true;
+                }
+
+                if (tag != null)
+                {
+                    newTile.tag = tag;
+                }
+
+                worldTiles.Add(newTile.transform.position - (Vector3.one * 0.5f));
+            }
+            else
             {
-                newTile.tag = tag;
+                GameObject prefab = prefabs[(int) Random.Range(0, prefabs.Length)];
+                //Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity);
+                GameObject gameObject = Instantiate(prefab);
+                gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
+                gameObject.name = tileSprites[0].name;
+                gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+
             }
-
-            worldTiles.Add(newTile.transform.position - (Vector3.one * 0.5f));
         }
-        else
-        {
-            GameObject prefab = prefabs[(int) Random.Range(0, prefabs.Length)];
-            //Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity);
-            GameObject gameObject = Instantiate(prefab);
-            gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
-            gameObject.name = tileSprites[0].name;
-            gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-
-        }
+        
     }
 }

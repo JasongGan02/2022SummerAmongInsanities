@@ -121,12 +121,12 @@ TextureImporter:
       name: cedar-nature_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 7
         y: 20
         width: 33
         height: 107
       alignment: 9
-      pivot: {x: 0.5, y: -0.028037382}
+      pivot: {x: 0.54545456, y: 0.037383176}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,7 +147,7 @@ TextureImporter:
         width: 43
         height: 185
       alignment: 9
-      pivot: {x: 0.5, y: -0.016216217}
+      pivot: {x: 0.5116279, y: 0.027027028}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,7 +168,7 @@ TextureImporter:
         width: 50
         height: 217
       alignment: 9
-      pivot: {x: 0.5, y: -0.013824885}
+      pivot: {x: 0.48, y: 0.023041476}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,7 +189,7 @@ TextureImporter:
         width: 45
         height: 183
       alignment: 9
-      pivot: {x: 0.5, y: -0.016393442}
+      pivot: {x: 0.4888889, y: 0.027322404}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
