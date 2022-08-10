@@ -13,6 +13,7 @@ public class ResourceObject : MonoBehaviour
         if (collision.gameObject.tag == Constants.Tag.PLAYER)
         {
             Destroy(this.gameObject);
+            // TODO: Add amount to the resourceType for the player's intentory 
         }
     }
 }
