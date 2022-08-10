@@ -219,8 +219,6 @@ public class TerrainGeneration : MonoBehaviour
 
             if (prefabs.Length == 0)
             {
-                
-            
                 GameObject newTile = new GameObject();
 
                 newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
@@ -237,6 +235,7 @@ public class TerrainGeneration : MonoBehaviour
                 newTile.AddComponent<BoxCollider2D>();
                 var collider = newTile.GetComponent<BoxCollider2D>();
                 collider.size = Vector2.one;
+                collider.offset = Vector2.zero;
 
                 if (!hasCollider)
                 {
@@ -258,6 +257,7 @@ public class TerrainGeneration : MonoBehaviour
                 gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
                 gameObject.name = tileSprites[0].name;
                 gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+                worldTiles.Add(gameObject.transform.position - (Vector3.one * 0.5f));
 
             }
         }

@@ -15,3 +15,4 @@ MonoBehaviour:
   tileName: Gold
   tileSprites:
   - {fileID: 21300000, guid: 919b9ea86c191ed4f8a51ed23b9242c7, type: 3}
+  prefabs: []
