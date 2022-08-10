@@ -13,6 +13,7 @@ public static class Constants
     public static class Tag
     {
         public static string GROUND = "ground";
+        public static string PLAYER = "Player";
     }
 
     public static class Animator

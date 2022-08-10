@@ -10,15 +10,16 @@ public class Playermovement : MonoBehaviour
     private Rigidbody2D playerRigidbody;
     private Animator animator;
 
-    public Transform groundCheck;
+    public Transform groundCheckLeft;
+    public Transform groundCheckRight;
     public LayerMask groundLayer;
+
+    
 
     private bool facingRight = true;
 
-    public Vector3 range;
+    public float range = 0.05f;
                                                             
-
-
     void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
@@ -26,14 +27,11 @@ public class Playermovement : MonoBehaviour
         Application.targetFrameRate = 50;
 
     }
-
     
     void FixedUpdate()
     {
         Movement();
         CheckCollsionForJump();
-        
-        
     }
 
     private void Movement()
@@ -59,24 +57,23 @@ public class Playermovement : MonoBehaviour
 
     private void CheckCollsionForJump()
     {
-        Collider2D hit = Physics2D.OverlapBox(groundCheck.position, range, 0, groundLayer);
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, range, groundLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, range, groundLayer);
 
-        if(hit != null && hit.gameObject.tag == Constants.Tag.GROUND)
+        if ((hitLeft.transform != null)
+            || (hitRight.transform != null))
         {
             animator.SetBool(Constants.Animator.IN_AIR, false);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, jumpForce);
             }
-        } 
+        }
         else
         {
             animator.SetBool(Constants.Animator.IN_AIR, true);
-
         }
     }
-
-
 
     private void Flip()
     {
@@ -86,5 +83,4 @@ public class Playermovement : MonoBehaviour
         transformScale.x *= -1;
         transform.localScale = transformScale;
     }
-
 }

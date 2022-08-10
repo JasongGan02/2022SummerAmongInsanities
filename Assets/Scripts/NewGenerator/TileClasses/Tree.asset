@@ -13,11 +13,7 @@ MonoBehaviour:
   m_Name: Tree
   m_EditorClassIdentifier: 
   tileName: Tree
-  tileSprites:
-  - {fileID: -784142121, guid: 74f6b627b4443934f90dcc886c552815, type: 3}
-  - {fileID: 1872071948, guid: 74f6b627b4443934f90dcc886c552815, type: 3}
-  - {fileID: -2124796401, guid: 74f6b627b4443934f90dcc886c552815, type: 3}
-  - {fileID: 658861607, guid: 74f6b627b4443934f90dcc886c552815, type: 3}
+  tileSprites: []
   prefabs:
   - {fileID: 2655721104761988997, guid: c4285e791d6e4444a9530dcb62363f7e, type: 3}
   - {fileID: 7697918885280410487, guid: 46c321287394b5d408c644d7bd09d754, type: 3}

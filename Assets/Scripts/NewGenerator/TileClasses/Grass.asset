@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   tileName: Grass
-  tileSprites:
-  - {fileID: 21300000, guid: ff3aa348482a46e49ad21c2df156fc34, type: 3}
+  tileSprites: []
+  prefabs:
+  - {fileID: 3719754441418985889, guid: 5acd5196880f5534e8e1c4cc7197ae5b, type: 3}
