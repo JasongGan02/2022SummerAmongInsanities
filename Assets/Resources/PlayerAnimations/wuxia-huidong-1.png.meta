@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -116,7 +116,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: wuxia-huidong-1_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 20
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 219386c532750004c860329bd4fd2990
+      internalID: -554339544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wuxia-huidong-1_1
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 0
+        width: 20
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19db3ec359ecdfb4d84ff02660c895bf
+      internalID: 688628583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wuxia-huidong-1_2
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 0
+        width: 20
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 406ecf2776319eb4d85063732772cd60
+      internalID: 1387632768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wuxia-huidong-1_3
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 0
+        width: 20
+        height: 64
+      alignment: 9
+      pivot: {x: 0.4, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58b0d1a148f859d4f920a27bd69fdeb9
+      internalID: -1929196821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -127,7 +211,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      wuxia-huidong-1_1: 688628583
+      wuxia-huidong-1_2: 1387632768
+      wuxia-huidong-1_0: -554339544
+      wuxia-huidong-1_3: -1929196821
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
