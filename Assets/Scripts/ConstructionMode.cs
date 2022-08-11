@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 玩家按C键进入建筑模式，这个方法负责建筑模式的交互
 public class ConstructionMode : MonoBehaviour
 {
     private bool isInConstructionMode = false;
