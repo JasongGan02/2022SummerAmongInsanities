@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     public int range = 1;
-    // Start is called before the first frame update
-    void Start()
+    private Animator animator;
+    void Awake()
     {
-        
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -19,8 +19,10 @@ public class PlayerInteraction : MonoBehaviour
 
     private void BreakTile()
     {
+        animator.SetBool("MeleeTool", false);
         if (Input.GetMouseButtonDown(0))
         {
+            animator.SetBool("MeleeTool", true);
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
             if (Vector2.Distance(mousePos2D, transform.position) > range) return;
@@ -41,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject closestObject = null;
                     float closestDistance = float.MaxValue;
                     foreach (RaycastHit2D hit in hits)
-                    {
+                {
                         if (hit.transform == null) continue;
 
                         GameObject potentialTarget = hit.transform.gameObject;
@@ -49,21 +51,21 @@ public class PlayerInteraction : MonoBehaviour
 
                         float distance = Vector2.Distance(hit.transform.position, transform.position);
                         if (closestDistance > distance)
-                        {
+                    {
                             closestObject = potentialTarget;
                             closestDistance = distance;
                         }
                     }
                     ClickOnGameObject(closestObject);
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     // if it's not a terrain tile, then break the clicked object
                     ClickOnGameObject(clickHit.transform.gameObject);
                 }
+                    }
+                }
             }
-        }
-    }
 
     private void ClickOnGameObject(GameObject target)
     {

@@ -4,75 +4,91 @@ using UnityEngine;
 
 public class Playermovement : MonoBehaviour
 {
-    public float runSpeed, jumpForce;
-    private float jumpHeight = .4f;
+    public float runSpeed;
+    public float runSpeedmodifier=2f;
+    public float jumpHeight = 7f;
 
-    private Rigidbody2D playerRigidbody;
+
+    private Rigidbody2D rb;
     private Animator animator;
 
     public Transform groundCheckLeft;
     public Transform groundCheckRight;
     public LayerMask groundLayer;
 
-    
-
     private bool facingRight = true;
+    private bool isRunning = false;
+    private bool isGrounded = true;
+                                                            
 
     public float range = 0.05f;
                                                             
     void Awake()
     {
-        playerRigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        Application.targetFrameRate = 50;
+
 
     }
-    
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+            isRunning = true;
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+            isRunning = false;
+
+        if(Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
+
+        animator.SetFloat("yVelocity", rb.velocity.y);
+    }
+
     void FixedUpdate()
     {
+        
         Movement();
         CheckCollsionForJump();
     }
 
+
     private void Movement()
     {
         float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed;
-
+        
+        if(isRunning)
+            moveInput*=runSpeedmodifier;
         animator.SetFloat(Constants.Animator.SPEED, Mathf.Abs(moveInput));
+        //speed: 0 idle, 3.5 walking, 7 running
 
+        rb.velocity = new Vector2(moveInput, rb.velocity.y);
 
-        playerRigidbody.velocity = new Vector2(moveInput, playerRigidbody.velocity.y);
-
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            if(playerRigidbody.velocity.y > 0)
-            {
-                playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x,playerRigidbody.velocity.y * jumpHeight);
-            }
-        }
-
+       
+            
         if(moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
             Flip();
     }
-
+    private void Jump()
+    {
+        if (isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
+        }
+    }
     private void CheckCollsionForJump()
     {
+        isGrounded = false;
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, range, groundLayer);
         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, range, groundLayer);
 
         if ((hitLeft.transform != null)
             || (hitRight.transform != null))
         {
-            animator.SetBool(Constants.Animator.IN_AIR, false);
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, jumpForce);
-            }
+            isGrounded = true;
         }
-        else
-        {
-            animator.SetBool(Constants.Animator.IN_AIR, true);
-        }
+        animator.SetBool("Jump", !isGrounded);
     }
 
     private void Flip()

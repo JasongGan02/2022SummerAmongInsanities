@@ -21,4 +21,13 @@ public static class Constants
         public static string SPEED = "speed";
         public static string IN_AIR = "inAir";
     }
+
+
+    public enum TowerType{
+        typeOne,
+        typeTwo,
+        typeThree,
+        typeFour,
+        noShadow
+    };
 }
