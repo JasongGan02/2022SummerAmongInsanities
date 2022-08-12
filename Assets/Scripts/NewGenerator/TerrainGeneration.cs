@@ -106,29 +106,26 @@ public class TerrainGeneration : MonoBehaviour
             
             for (int y = 0; y < height; y++)
             {
-                Sprite[] tileSprites;
+                TileClass tileSprites;
                 if (y < height - dirtLayerHeight)
                 {
-                    tileSprites = tileAtlas.stone.tileSprites;
+                    tileSprites = tileAtlas.stone;
                     //ore and stone generation
                     if (ores[0].spreadTexture.GetPixel(x,y).r >0.5f && height - y > ores[0].masSpawnHeight)
-                        tileSprites = tileAtlas.coal.tileSprites;
+                        tileSprites = tileAtlas.coal;
                     if(ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[1].masSpawnHeight)
-                        tileSprites = tileAtlas.iron.tileSprites;
+                        tileSprites = tileAtlas.iron;
                     if (ores[2].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[2].masSpawnHeight)
-                        tileSprites = tileAtlas.gold.tileSprites;
-                        
- 
-
+                        tileSprites = tileAtlas.gold;
                 }
-                else if(y< height - 1)
+                else if(y < height - 1)
                 {
-                    tileSprites = tileAtlas.dirt.tileSprites;
+                    tileSprites = tileAtlas.dirt;
                 }
                 else
                 {
                     //top later of the terrain
-                    tileSprites = tileAtlas.grass.tileSprites;
+                    tileSprites = tileAtlas.grass;
 
                 }
 
@@ -164,7 +161,7 @@ public class TerrainGeneration : MonoBehaviour
                       
                         if (worldTiles.Contains(new Vector2(x, y)) && i==1)
                         {
-                            PlaceTile(tileAtlas.natureAddons.tileSprites, x, y+1);
+                            PlaceTile(tileAtlas.natureAddons, x, y+1);
                         }
                     }
                 }
@@ -195,33 +192,57 @@ public class TerrainGeneration : MonoBehaviour
     
     void GenerateTree(int x, int y)
     {
-        PlaceTile(tileAtlas.tree.tileSprites, x, y);
-
+        PlaceTile(tileAtlas.tree, x, y);
     }
-    public void PlaceTile(Sprite[] tileSprites, int x, int y, int layer = 0, bool hasCollider = false, string tag = null)
+
+    public void PlaceTile(TileClass tile, int x, int y, int layer = 0, bool hasCollider = false, string tag = null)
     {
-        GameObject newTile = new GameObject();
+        var tileSprites = tile.tileSprites;
+        var prefabs = tile.prefabs;
 
         float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
         chunkCoord /= chunkSize;
 
-        newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
-        newTile.AddComponent<SpriteRenderer>();
-        int spriteIndex = Random.Range(0, tileSprites.Length);
-        newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
-        newTile.name = tileSprites[0].name;
-        newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-        newTile.layer = layer;
-        if (hasCollider)
+        if (prefabs.Length == 0)
         {
-            newTile.AddComponent<BoxCollider2D>();
-            newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
-        }
-        if (tag != null)
-        {
-            newTile.tag = tag;
-        }
+            GameObject newTile = new GameObject();
 
-        worldTiles.Add(newTile.transform.position - (Vector3.one*0.5f));
+            newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
+            newTile.AddComponent<SpriteRenderer>();
+
+
+            int spriteIndex = Random.Range(0, tileSprites.Length);
+            newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
+
+            newTile.name = tileSprites[0].name;
+            newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+            newTile.layer = layer;
+
+            newTile.AddComponent<BoxCollider2D>();
+            var collider = newTile.GetComponent<BoxCollider2D>();
+            collider.size = Vector2.one;
+
+            if (!hasCollider)
+            {
+                collider.isTrigger = true;
+            }
+
+            if (tag != null)
+            {
+                newTile.tag = tag;
+            }
+
+            worldTiles.Add(newTile.transform.position - (Vector3.one * 0.5f));
+        }
+        else
+        {
+            GameObject prefab = prefabs[(int) Random.Range(0, prefabs.Length)];
+            //Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity);
+            GameObject gameObject = Instantiate(prefab);
+            gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
+            gameObject.name = tileSprites[0].name;
+            gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+
+        }
     }
 }
