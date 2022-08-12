@@ -124,6 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 4
+  healthPoint: 1
   numberOfResources: 4
   resourcePrefab: {fileID: 0}
