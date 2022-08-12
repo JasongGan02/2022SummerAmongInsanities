@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2554548823072871462
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2218702438015594676}
-  m_Layer: 0
-  m_Name: CheckGroundRight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2218702438015594676
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2554548823072871462}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1808, y: -0.4453, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6412063726150959261}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6412063726150959257
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,7 +36,6 @@ Transform:
   m_Children:
   - {fileID: 6412063727631732470}
   - {fileID: 6412063726373129049}
-  - {fileID: 2218702438015594676}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,7 +126,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 6200000, guid: 727010540ed3bf94a8a592f283236b59, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -177,13 +145,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 3.5
-  jumpForce: 4
-  groundCheckLeft: {fileID: 6412063727631732470}
-  groundCheckRight: {fileID: 2218702438015594676}
+  runSpeedmodifier: 2
+  jumpHeight: 10
+  groundCheck: {fileID: 6412063727631732470}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  range: 0.05
+  range: {x: 0.2, y: 0.05, z: 0}
 --- !u!68 &7333249380145702584
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -221,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0164f656bb0f9584e90898f2cbbda03a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 2
+  range: 1
 --- !u!1 &6412063726373129125
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6412063727631732470}
   m_Layer: 0
-  m_Name: CheckGroundLeft
+  m_Name: CheckGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,7 +329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6412063727631732471}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1714, y: -0.4369, z: 0}
+  m_LocalPosition: {x: -0.007, y: -0.454, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
