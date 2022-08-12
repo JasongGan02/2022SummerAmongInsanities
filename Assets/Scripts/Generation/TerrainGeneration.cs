@@ -44,7 +44,7 @@ public class TerrainGeneration : MonoBehaviour
 
 
     private GameObject[] worldChunks;
-    private List<Vector2> worldTiles = new List<Vector2>();
+    private HashSet<Vector2> worldTiles = new HashSet<Vector2>();
 
     private void OnValidate()
     {
@@ -145,12 +145,12 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        PlaceTile(tileSprites, x, y, Constants.Layer.GROUND, true, Constants.Tag.GROUND);
+                        PlaceTile(tileSprites, x, y);
                     }
                 }
                 else
                 {
-                    PlaceTile(tileSprites, x, y, Constants.Layer.GROUND, true, Constants.Tag.GROUND);
+                    PlaceTile(tileSprites, x, y);
                 }
 
                 //tree
@@ -207,60 +207,18 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree, x, y);
     }
 
-    public void PlaceTile(TileClass tile, int x, int y, int layer = 0, bool hasCollider = false, string tag = null)
+    public void PlaceTile(TileClass tile, int x, int y)
     {
-        if(!worldTiles.Contains(new Vector2Int(x,y)))
-        {
-            var tileSprites = tile.tileSprites;
-            var prefabs = tile.prefabs;
+        var prefabs = tile.prefabs;
 
             float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
             chunkCoord /= chunkSize;
 
-            if (prefabs.Length == 0)
-            {
-                GameObject newTile = new GameObject();
-
-                newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
-                newTile.AddComponent<SpriteRenderer>();
-
-
-                int spriteIndex = Random.Range(0, tileSprites.Length);
-                newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
-
-                newTile.name = tileSprites[0].name;
-                newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-                newTile.layer = layer;
-
-                newTile.AddComponent<BoxCollider2D>();
-                var collider = newTile.GetComponent<BoxCollider2D>();
-                collider.size = Vector2.one;
-                collider.offset = Vector2.zero;
-
-                if (!hasCollider)
-                {
-                    collider.isTrigger = true;
-                }
-
-                if (tag != null)
-                {
-                    newTile.tag = tag;
-                }
-
-                worldTiles.Add(newTile.transform.position - (Vector3.one * 0.5f));
-            }
-            else
-            {
-                GameObject prefab = prefabs[(int) Random.Range(0, prefabs.Length)];
-                //Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity);
-                GameObject gameObject = Instantiate(prefab);
-                gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
-                gameObject.name = tileSprites[0].name;
-                gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-                worldTiles.Add(gameObject.transform.position - (Vector3.one * 0.5f));
-
-            }
-        }
-        
+        GameObject prefab = prefabs[(int)Random.Range(0, prefabs.Length)];
+        GameObject gameObject = Instantiate(prefab);
+        gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
+        gameObject.name = tile.tileName;
+        gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        worldTiles.Add(gameObject.transform.position - (Vector3.one * 0.5f));
     }
 }

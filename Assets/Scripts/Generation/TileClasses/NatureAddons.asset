@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: NatureAddons
   m_EditorClassIdentifier: 
   tileName: natureAddons
-  tileSprites:
-  - {fileID: 21300000, guid: 4800ce81bac0e91428944ee75056cd35, type: 3}
-  prefabs: []
+  tileSprites: []
+  prefabs:
+  - {fileID: 7400510951586041090, guid: 97d85591df3b762468794bea93cba057, type: 3}

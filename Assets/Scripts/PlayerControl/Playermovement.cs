@@ -12,16 +12,17 @@ public class Playermovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
 
-    public Transform groundCheck;
+    public Transform groundCheckLeft;
+    public Transform groundCheckRight;
     public LayerMask groundLayer;
 
     private bool facingRight = true;
     private bool isRunning = false;
     private bool isGrounded = true;
-    public Vector3 range;
                                                             
 
-
+    public float range = 0.05f;
+                                                            
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -50,8 +51,6 @@ public class Playermovement : MonoBehaviour
         
         Movement();
         CheckCollsionForJump();
-        
-        
     }
 
 
@@ -81,17 +80,16 @@ public class Playermovement : MonoBehaviour
     private void CheckCollsionForJump()
     {
         isGrounded = false;
-        Collider2D hit = Physics2D.OverlapBox(groundCheck.position, range, 0, groundLayer);
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, range, groundLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, range, groundLayer);
 
-        if(hit != null && hit.gameObject.tag == Constants.Tag.GROUND)
+        if ((hitLeft.transform != null)
+            || (hitRight.transform != null))
         {
             isGrounded = true;
-            
-        } 
+        }
         animator.SetBool("Jump", !isGrounded);
     }
-
-
 
     private void Flip()
     {
@@ -101,5 +99,4 @@ public class Playermovement : MonoBehaviour
         transformScale.x *= -1;
         transform.localScale = transformScale;
     }
-
 }

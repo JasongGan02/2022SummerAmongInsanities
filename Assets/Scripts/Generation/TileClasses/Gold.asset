@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Gold
   m_EditorClassIdentifier: 
   tileName: Gold
-  tileSprites:
-  - {fileID: 21300000, guid: 919b9ea86c191ed4f8a51ed23b9242c7, type: 3}
-  prefabs: []
+  tileSprites: []
+  prefabs:
+  - {fileID: 5481595800395744475, guid: f4aea43a44866dd4ba8565affa9f5946, type: 3}

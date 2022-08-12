@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Dirt
   m_EditorClassIdentifier: 
   tileName: Dirt
-  tileSprites:
-  - {fileID: 21300000, guid: 32e952b2516796842b19d37d833a14df, type: 3}
-  prefabs: []
+  tileSprites: []
+  prefabs:
+  - {fileID: 1529614696198433121, guid: b6b02f02a6b43544ca6c5b2b64a67a0c, type: 3}

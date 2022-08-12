@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9081238371874744415}
   - component: {fileID: 154378751684806344}
   - component: {fileID: 3295944866174097596}
-  - component: {fileID: -1383430964378430315}
+  - component: {fileID: 9214698444813366529}
   m_Layer: 0
   m_Name: cedar-nature_1
   m_TagString: Untagged
@@ -102,7 +102,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5116279, y: 0.027027028}
     oldSize: {x: 5.375, y: 23.125}
     newSize: {x: 5.375, y: 23.125}
     adaptiveTilingThreshold: 0.5
@@ -119,7 +119,7 @@ PolygonCollider2D:
       - {x: -2.4, y: 15.08}
       - {x: -0.3, y: 14.09}
   m_UseDelaunayMesh: 0
---- !u!114 &-1383430964378430315
+--- !u!114 &9214698444813366529
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,7 +128,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7697918885280410487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f60bf5c615eb87f4d899c8bd0396cc60, type: 3}
+  m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 4
+  numberOfResources: 4
+  resourcePrefab: {fileID: 0}
