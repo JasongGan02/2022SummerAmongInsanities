@@ -4,81 +4,94 @@ using UnityEngine;
 
 public class Playermovement : MonoBehaviour
 {
-    public float runSpeed, jumpForce;
-    private float jumpHeight = .4f;
-    private float moveInput;
+    public float runSpeed;
+    public float runSpeedmodifier=2f;
+    public float jumpHeight = 7f;
 
-    private Rigidbody2D myBody;
-    private Animator anim;
 
-    public Transform groundCheck;
+    private Rigidbody2D rb;
+    private Animator animator;
+
+    public Transform groundCheckLeft;
+    public Transform groundCheckRight;
     public LayerMask groundLayer;
 
     private bool facingRight = true;
-
-    public Vector3 range;
+    private bool isRunning = false;
+    private bool isGrounded = true;
                                                             
 
-
+    public float range = 0.05f;
+                                                            
     void Awake()
     {
-        myBody = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        Application.targetFrameRate = 50;
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
 
     }
 
-    
-    void FixedUpdate()
+    void Update()
     {
-        Movement();
-        CheckCollsionForJump();
-        
-        
-    }
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+            isRunning = true;
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+            isRunning = false;
 
-    void Movement()
-    {
-        moveInput = Input.GetAxisRaw("Horizontal") * runSpeed;
-
-        anim.SetFloat("speed", Mathf.Abs(moveInput));
-
-
-        myBody.velocity = new Vector2(moveInput, myBody.velocity.y);
-
-        if(Input.GetKeyUp(KeyCode.Space))
+        if(Input.GetButtonDown("Jump"))
         {
-            if(myBody.velocity.y > 0)
-            {
-                myBody.velocity = new Vector2(myBody.velocity.x,myBody.velocity.y * jumpHeight);
-            }
+            Jump();
         }
 
+        animator.SetFloat("yVelocity", rb.velocity.y);
+    }
+
+    void FixedUpdate()
+    {
+        
+        Movement();
+        CheckCollsionForJump();
+    }
+
+
+    private void Movement()
+    {
+        float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed;
+        
+        if(isRunning)
+            moveInput*=runSpeedmodifier;
+        animator.SetFloat(Constants.Animator.SPEED, Mathf.Abs(moveInput));
+        //speed: 0 idle, 3.5 walking, 7 running
+
+        rb.velocity = new Vector2(moveInput, rb.velocity.y);
+
+       
+            
         if(moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
             Flip();
     }
-
-    void CheckCollsionForJump()
+    private void Jump()
     {
-        Collider2D hit = Physics2D.OverlapBox(groundCheck.position, range, 0, groundLayer);
-
-        if(hit != null)
+        if (isGrounded)
         {
-            if(hit.gameObject.tag == "ground" && Input.GetKeyDown(KeyCode.Space)) 
-            {
-                myBody.velocity = new Vector2(myBody.velocity.x, jumpForce);
-                anim.SetBool("jump", true);
-            }
-            else 
-            {
-                anim.SetBool("jump", false);
-            }
+            rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
         }
     }
+    private void CheckCollsionForJump()
+    {
+        isGrounded = false;
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, range, groundLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, range, groundLayer);
 
+        if ((hitLeft.transform != null)
+            || (hitRight.transform != null))
+        {
+            isGrounded = true;
+        }
+        animator.SetBool("Jump", !isGrounded);
+    }
 
-
-    void Flip()
+    private void Flip()
     {
         facingRight = !facingRight;
         
@@ -86,5 +99,4 @@ public class Playermovement : MonoBehaviour
         transformScale.x *= -1;
         transform.localScale = transformScale;
     }
-
 }

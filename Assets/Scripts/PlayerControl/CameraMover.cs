@@ -14,13 +14,14 @@ public class CameraMover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-            inputX = Input.GetAxis("Horizontal");
-            inputZ = Input.GetAxis("Vertical");
+        inputX = Input.GetAxis("Horizontal");
+        inputZ = Input.GetAxis("Vertical");
 
-            if (inputX != 0)
+        if (inputX != 0)
                 moveX();
-         if (inputZ != 0)
+        if (inputZ != 0)
                 moveZ();
+
         if (Input.GetAxis("Mouse ScrollWheel") > 0 ) // forward
         {
             Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize - 1, 100);
@@ -30,7 +31,7 @@ public class CameraMover : MonoBehaviour {
             Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize + 1, 100);
 
         }
-
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 1f, 7f);
     }
 
 
