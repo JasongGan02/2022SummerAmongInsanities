@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6713691259616947133}
   - component: {fileID: 2090964844284886101}
   - component: {fileID: 1569180229798642531}
-  - component: {fileID: 1068278364347833063}
+  - component: {fileID: 8186572271998441446}
   m_Layer: 6
   m_Name: Gold-0001
   m_TagString: ground
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2090964844284886101
 SpriteRenderer:
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1068278364347833063
+--- !u!114 &8186572271998441446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5481595800395744475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f60bf5c615eb87f4d899c8bd0396cc60, type: 3}
+  m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 1

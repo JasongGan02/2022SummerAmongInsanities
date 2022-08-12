@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7969072782428842098}
   - component: {fileID: 7015062423575289539}
   - component: {fileID: 642749346894563724}
-  - component: {fileID: 8145374860448282978}
+  - component: {fileID: 1306227994987904188}
   m_Layer: 6
   m_Name: Coal-0001
   m_TagString: ground
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8145374860448282978
+--- !u!114 &1306227994987904188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1397927238428654775}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f60bf5c615eb87f4d899c8bd0396cc60, type: 3}
+  m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 1
+  numberOfResources: 4
+  resourcePrefab: {fileID: 0}
