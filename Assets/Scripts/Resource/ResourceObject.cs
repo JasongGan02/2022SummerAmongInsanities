@@ -14,6 +14,8 @@ public class ResourceObject : MonoBehaviour
         {
             Destroy(this.gameObject);
             // TODO: Add amount to the resourceType for the player's intentory 
+            Inventory playerInventory = collision.gameObject.GetComponent<Inventory>();
+            playerInventory.AddItem(this);
         }
     }
 }

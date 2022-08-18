@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 313993137339524769}
   m_Layer: 0
   m_Name: dirt-Resource-0001 1
-  m_TagString: Untagged
+  m_TagString: resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

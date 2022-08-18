@@ -14,6 +14,7 @@ public static class Constants
     {
         public static string GROUND = "ground";
         public static string PLAYER = "Player";
+        public static string RESOURCE = "resource";
     }
 
     public static class Animator
