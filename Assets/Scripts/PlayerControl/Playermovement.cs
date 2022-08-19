@@ -8,6 +8,8 @@ public class Playermovement : MonoBehaviour
     public float runSpeedmodifier=2f;
     public float jumpHeight = 7f;
 
+    public int totalJumps;
+    int availableJumps;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -19,12 +21,14 @@ public class Playermovement : MonoBehaviour
     private bool facingRight = true;
     private bool isRunning = false;
     private bool isGrounded = true;
-                                                            
+    bool multipleJump;                                      
 
     public float range = 0.05f;
                                                             
     void Awake()
     {
+        availableJumps = totalJumps;
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -74,11 +78,26 @@ public class Playermovement : MonoBehaviour
     {
         if (isGrounded)
         {
+            multipleJump = true;
+            availableJumps--;
+
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
+            animator.SetBool("Jump", true);
+        }
+        else
+        {
+            if(multipleJump && availableJumps>0)
+            {
+                availableJumps--;
+
+                rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
+                animator.SetBool("Jump", true);
+            }
         }
     }
     private void CheckCollsionForJump()
     {
+        bool wasGrounded = isGrounded;
         isGrounded = false;
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, range, groundLayer);
         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, range, groundLayer);
@@ -87,6 +106,12 @@ public class Playermovement : MonoBehaviour
             || (hitRight.transform != null))
         {
             isGrounded = true;
+             if (!wasGrounded)
+            {
+                availableJumps = totalJumps;
+                multipleJump = false;
+
+            }        
         }
         animator.SetBool("Jump", !isGrounded);
     }
