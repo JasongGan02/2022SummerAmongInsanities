@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2250142652142939052}
   - component: {fileID: 5542119811885899133}
   - component: {fileID: 313993137339524769}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: dirt-Resource-0001 1
   m_TagString: resource
   m_Icon: {fileID: 0}

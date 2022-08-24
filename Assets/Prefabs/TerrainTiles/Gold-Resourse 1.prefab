@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1569180229798642531}
   - component: {fileID: 4359322566853581852}
   - component: {fileID: -55051109367606910}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Gold-Resourse 1
-  m_TagString: Undefined
+  m_TagString: resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

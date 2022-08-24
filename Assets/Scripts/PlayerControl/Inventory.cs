@@ -10,7 +10,6 @@ public class Inventory : MonoBehaviour
     {
         int value = inventory.GetValueOrDefault(item.name);
         Debug.Log(value);
-        inventory.Remove(item.name);
-        this.inventory.Add(item.name, value + item.amount);
+        inventory[item.name] = value + item.amount;
     }
 }

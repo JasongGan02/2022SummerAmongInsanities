@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 7333249380145702584}
   - component: {fileID: 4373026826047204527}
   - component: {fileID: 3428262623849519033}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -180,6 +180,7 @@ MonoBehaviour:
   runSpeed: 3.5
   runSpeedmodifier: 2
   jumpHeight: 10
+  totalJumps: 0
   groundCheckLeft: {fileID: 6412063727631732470}
   groundCheckRight: {fileID: 9043886093513348560}
   groundLayer:
@@ -223,7 +224,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cb33ec54bbb9f47ad04972f2c940d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 2
+  interactRange: 1
+  pickUpRange: 0.6
+  resourceLayer:
+    serializedVersion: 2
+    m_Bits: 128
   waitTime: 1
 --- !u!114 &3428262623849519033
 MonoBehaviour:

@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public int range = 1;
+    public float interactRange = 1f;
+    public float pickUpRange = 1f;
+    public LayerMask resourceLayer;
+    public LayerMask groundLayer;
     private Animator animator;
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
-
-    private delegate void TimerCompleteHandler();
 
     void Awake()
     {
@@ -22,7 +23,7 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        PickUpResource();
         BreakTile();
     }
 
@@ -43,39 +44,51 @@ public class PlayerInteraction : MonoBehaviour
 
     private void BreakTile()
     {
-        animator.SetBool("MeleeTool", false);
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
-            if (Vector2.Distance(mouseDownPosition, transform.position) > range) return;
+            if (Vector2.Distance(mouseDownPosition, transform.position) > interactRange) return;
 
             RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
             if (clickHit.transform != null)
             {
-                targetObject = GetTargetObject(clickHit, mouseDownPosition);
-                StartTimer();
+                if (clickHit.transform.gameObject.GetComponent<BreakableObject>() != null)
+                {
+                    animator.SetBool(Constants.Animator.MELEE_TOOL, true);
+                    GameObject tempTargetObject = GetTargetObject(clickHit, mouseDownPosition);
+                    if (tempTargetObject != null && tempTargetObject != targetObject)
+                    {
+                        targetObject = tempTargetObject;
+                        StartTimer();
+                    }
+                }  
+                
+                
+            } else
+            {
+                animator.SetBool(Constants.Animator.MELEE_TOOL, false);
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
+            animator.SetBool(Constants.Animator.MELEE_TOOL, false);
             ResetTimer();
         }
 
         if (IsTimerCompleted())
         {
             ClickOnGameObject(targetObject);
+        }
+    }
 
-            Vector2 mouseDownPosition = GetMousePosition2D();
-            if (Vector2.Distance(mouseDownPosition, transform.position) <= range)
-            {
-                RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
-                if (clickHit.transform != null)
-                {
-                    targetObject = GetTargetObject(clickHit, mouseDownPosition);
-                    StartTimer();
-                }
-            }       
+    private void PickUpResource()
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
+        if (hit.transform != null)
+        {
+            ResourceObject resoureObject = hit.transform.gameObject.GetComponent<ResourceObject>();
+            resoureObject.OnBeforePickedUp();
         }
     }
 
@@ -90,11 +103,11 @@ public class PlayerInteraction : MonoBehaviour
         // Check if the clicked object is a terrain tile
         if (clickHit.transform.gameObject.layer == Constants.Layer.GROUND)
         {
-            // if yes, then break the closest terrain tile to the player
+            // if yes, then break the terrain tile if it's the closest one to the player
             Vector2 direction = mouseDownPosition - new Vector2(transform.position.x, transform.position.y);
 
             // TODO: check why using ground layerMask doesn't work here
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, range);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, interactRange, groundLayer);
 
             GameObject closestObject = null;
             float closestDistance = float.MaxValue;
@@ -103,7 +116,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (hit.transform == null) continue;
 
                 GameObject potentialTarget = hit.transform.gameObject;
-                if (potentialTarget.layer != Constants.Layer.GROUND) continue;
 
                 float distance = Vector2.Distance(hit.transform.position, transform.position);
                 if (closestDistance > distance)
@@ -112,7 +124,15 @@ public class PlayerInteraction : MonoBehaviour
                     closestDistance = distance;
                 }
             }
-            return closestObject;
+
+            if (clickHit.transform.gameObject == closestObject)
+            {
+                return closestObject;
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {
@@ -125,7 +145,6 @@ public class PlayerInteraction : MonoBehaviour
     private void ClickOnGameObject(GameObject target)
     {
         if (target == null) return;
-        animator.SetBool("MeleeTool", true);
 
         BreakableObject breakableTile = target.GetComponent<BreakableObject>();
         if (breakableTile != null)
