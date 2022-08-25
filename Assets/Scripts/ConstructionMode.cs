@@ -34,6 +34,21 @@ public class ConstructionMode : MonoBehaviour
             ExitConstruction();
         }
         
+        
+    }
+
+    void EnterConstruction()
+    {
+        // display the construction UI
+        ConstructionUI.SetActive(true);
+        // show current tower image at cursor position
+        ShowConstructionUnderCursor();
+
+        if(shadowObj)
+        {
+            shadowObj.SetActive(true);
+        }
+        
         if(towerType != Constants.TowerType.noShadow){
             Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);
@@ -60,15 +75,6 @@ public class ConstructionMode : MonoBehaviour
                 }
             }
         }
-    }
-
-    void EnterConstruction()
-    {
-        // display the construction UI
-        ConstructionUI.SetActive(true);
-        // show current tower image at cursor position
-        ShowConstructionUnderCursor();
-        // when player hit left mouse button, check and place tower
 
     }
 
@@ -78,6 +84,12 @@ public class ConstructionMode : MonoBehaviour
         ConstructionUI.SetActive(false);
         // hide the image in under the cursor
         towerType = Constants.TowerType.noShadow;
+
+        if(shadowObj)
+        {
+            shadowObj.SetActive(false);
+        }
+        
 
     }
 
