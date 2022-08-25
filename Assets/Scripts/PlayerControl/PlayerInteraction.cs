@@ -106,7 +106,6 @@ public class PlayerInteraction : MonoBehaviour
             // if yes, then break the terrain tile if it's the closest one to the player
             Vector2 direction = mouseDownPosition - new Vector2(transform.position.x, transform.position.y);
 
-            // TODO: check why using ground layerMask doesn't work here
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, interactRange, groundLayer);
 
             GameObject closestObject = null;

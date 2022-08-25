@@ -229,6 +229,9 @@ MonoBehaviour:
   resourceLayer:
     serializedVersion: 2
     m_Bits: 128
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
   waitTime: 1
 --- !u!114 &3428262623849519033
 MonoBehaviour:
