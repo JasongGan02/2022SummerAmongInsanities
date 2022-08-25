@@ -21,7 +21,6 @@ public class ResourceObject : MonoBehaviour
         if (shouldFlyToPlayer)
         {
             transform.position = Vector2.Lerp(transform.position, player.transform.position, 0.1f);
-            Debug.Log(Vector2.Distance(transform.position, player.transform.position));
             if (Vector2.Distance(transform.position, player.transform.position) < 0.05f)
             {
                 OnPickedUp();

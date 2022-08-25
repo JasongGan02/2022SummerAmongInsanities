@@ -12,6 +12,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
+    public GameObject[] raycastStartingPoints;
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
 
@@ -47,39 +48,56 @@ public class PlayerInteraction : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
-            if (Vector2.Distance(mouseDownPosition, transform.position) > interactRange) return;
-
-            RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
-            if (clickHit.transform != null)
+            if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)
             {
-                if (clickHit.transform.gameObject.GetComponent<BreakableObject>() != null)
+                RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
+                if (clickHit.transform != null)
                 {
-                    animator.SetBool(Constants.Animator.MELEE_TOOL, true);
-                    GameObject tempTargetObject = GetTargetObject(clickHit, mouseDownPosition);
-                    if (tempTargetObject != null && tempTargetObject != targetObject)
+                    GameObject tempTargetObject = clickHit.transform.gameObject;
+                    if (tempTargetObject.GetComponent<BreakableObject>() != null && CanInteractWith(tempTargetObject, mouseDownPosition))
                     {
-                        targetObject = tempTargetObject;
-                        StartTimer();
+                        animator.SetBool(Constants.Animator.MELEE_TOOL, true);
+                        if (clickHit.transform.gameObject != targetObject)
+                        {
+                            targetObject = tempTargetObject;
+                            StartTimer();
+                        }
                     }
-                }  
-                
-                
-            } else
+                    else
+                    {
+                        ResetMeleeAnimationAndTimer();
+                    }
+                }
+                else
+                {
+                    ResetMeleeAnimationAndTimer();
+                }
+            } 
+            else
             {
-                animator.SetBool(Constants.Animator.MELEE_TOOL, false);
+                ResetMeleeAnimationAndTimer();
             }
+
+            
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            animator.SetBool(Constants.Animator.MELEE_TOOL, false);
-            ResetTimer();
+            ResetMeleeAnimationAndTimer();
         }
 
         if (IsTimerCompleted())
         {
             ClickOnGameObject(targetObject);
+            StartTimer();
         }
+    }
+
+    private void ResetMeleeAnimationAndTimer()
+    {
+        targetObject = null;
+        animator.SetBool(Constants.Animator.MELEE_TOOL, false);
+        ResetTimer();
     }
 
     private void PickUpResource()
@@ -98,47 +116,28 @@ public class PlayerInteraction : MonoBehaviour
         return new Vector2(mousePos.x, mousePos.y);
     }
 
-    private GameObject GetTargetObject(RaycastHit2D clickHit, Vector2 mouseDownPosition)
+    private bool CanInteractWith(GameObject tempTargetObject, Vector2 mouseDownPosition)
     {
-        // Check if the clicked object is a terrain tile
-        if (clickHit.transform.gameObject.layer == Constants.Layer.GROUND)
+        if (tempTargetObject == null) return false;
+
+        if (tempTargetObject.layer == Constants.Layer.GROUND)
         {
-            // if yes, then break the terrain tile if it's the closest one to the player
-            Vector2 direction = mouseDownPosition - new Vector2(transform.position.x, transform.position.y);
-
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, interactRange, groundLayer);
-
-            GameObject closestObject = null;
-            float closestDistance = float.MaxValue;
-            foreach (RaycastHit2D hit in hits)
+            foreach (GameObject raycastStartingPoint in raycastStartingPoints)
             {
-                if (hit.transform == null) continue;
-
-                GameObject potentialTarget = hit.transform.gameObject;
-
-                float distance = Vector2.Distance(hit.transform.position, transform.position);
-                if (closestDistance > distance)
+                Vector2 direction = mouseDownPosition - new Vector2(raycastStartingPoint.transform.position.x, raycastStartingPoint.transform.position.y);
+                RaycastHit2D hit = Physics2D.Raycast(raycastStartingPoint.transform.position, direction, interactRange, groundLayer);
+                if (hit.transform != null && hit.transform.gameObject == tempTargetObject)
                 {
-                    closestObject = potentialTarget;
-                    closestDistance = distance;
+                    return true;
                 }
             }
-
-            if (clickHit.transform.gameObject == closestObject)
-            {
-                return closestObject;
-            }
-            else
-            {
-                return null;
-            }
+            return false;
         }
         else
         {
-            if (clickHit.transform.gameObject.tag == Constants.Tag.RESOURCE) return null;
-            // if it's not a terrain tile, then break the clicked object
-            return clickHit.transform.gameObject;
+            return !tempTargetObject.CompareTag(Constants.Tag.RESOURCE);
         }
+            
     }
 
     private void ClickOnGameObject(GameObject target)
@@ -154,6 +153,5 @@ public class PlayerInteraction : MonoBehaviour
         {
             Destroy(target);
         }
-
     }
 }
