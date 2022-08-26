@@ -44,10 +44,11 @@ public class ConstructionMode : MonoBehaviour
         // show current tower image at cursor position
         ShowConstructionUnderCursor();
 
-        if(shadowObj)
+        if(!shadowObj)
         {
-            shadowObj.SetActive(true);
+            shadowObj = new GameObject();
         }
+        
         
         if(towerType != Constants.TowerType.noShadow){
             Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -85,10 +86,7 @@ public class ConstructionMode : MonoBehaviour
         // hide the image in under the cursor
         towerType = Constants.TowerType.noShadow;
 
-        if(shadowObj)
-        {
-            shadowObj.SetActive(false);
-        }
+        Destroy(shadowObj);
         
 
     }
