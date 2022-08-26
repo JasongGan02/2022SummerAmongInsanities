@@ -8,6 +8,7 @@ public static class Constants
     {
         public static int DEFAULT = 0;
         public static int GROUND = 6;
+        public static int RESOURCE = 7;
     }
 
     public static class Tag
@@ -21,6 +22,13 @@ public static class Constants
     {
         public static string SPEED = "speed";
         public static string IN_AIR = "inAir";
+        public static string MELEE_TOOL = "MeleeTool";
+    }
+
+    public static class Name
+    {
+        public static string PLAYER = "Player";
+        public static string PICK_UP_DETECTOR = "PickUpDetector";
     }
 
 

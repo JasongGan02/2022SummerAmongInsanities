@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public int range = 1;
+    public float interactRange = 1f;
+    public float pickUpRange = 1f;
+    public LayerMask resourceLayer;
+    public LayerMask groundLayer;
     private Animator animator;
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
+    public GameObject[] raycastStartingPoints;
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
-
-    private delegate void TimerCompleteHandler();
 
     void Awake()
     {
@@ -22,7 +24,7 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        PickUpResource();
         BreakTile();
     }
 
@@ -43,39 +45,68 @@ public class PlayerInteraction : MonoBehaviour
 
     private void BreakTile()
     {
-        animator.SetBool("MeleeTool", false);
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
-            if (Vector2.Distance(mouseDownPosition, transform.position) > range) return;
-
-            RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
-            if (clickHit.transform != null)
+            if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)
             {
-                targetObject = GetTargetObject(clickHit, mouseDownPosition);
-                StartTimer();
+                RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
+                if (clickHit.transform != null)
+                {
+                    GameObject tempTargetObject = clickHit.transform.gameObject;
+                    if (tempTargetObject.GetComponent<BreakableObject>() != null && CanInteractWith(tempTargetObject, mouseDownPosition))
+                    {
+                        animator.SetBool(Constants.Animator.MELEE_TOOL, true);
+                        if (clickHit.transform.gameObject != targetObject)
+                        {
+                            targetObject = tempTargetObject;
+                            StartTimer();
+                        }
+                    }
+                    else
+                    {
+                        ResetMeleeAnimationAndTimer();
+                    }
+                }
+                else
+                {
+                    ResetMeleeAnimationAndTimer();
+                }
+            } 
+            else
+            {
+                ResetMeleeAnimationAndTimer();
             }
+
+            
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            ResetTimer();
+            ResetMeleeAnimationAndTimer();
         }
 
         if (IsTimerCompleted())
         {
             ClickOnGameObject(targetObject);
+            StartTimer();
+        }
+    }
 
-            Vector2 mouseDownPosition = GetMousePosition2D();
-            if (Vector2.Distance(mouseDownPosition, transform.position) <= range)
-            {
-                RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
-                if (clickHit.transform != null)
-                {
-                    targetObject = GetTargetObject(clickHit, mouseDownPosition);
-                    StartTimer();
-                }
-            }       
+    private void ResetMeleeAnimationAndTimer()
+    {
+        targetObject = null;
+        animator.SetBool(Constants.Animator.MELEE_TOOL, false);
+        ResetTimer();
+    }
+
+    private void PickUpResource()
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
+        if (hit.transform != null)
+        {
+            ResourceObject resoureObject = hit.transform.gameObject.GetComponent<ResourceObject>();
+            resoureObject.OnBeforePickedUp();
         }
     }
 
@@ -85,47 +116,33 @@ public class PlayerInteraction : MonoBehaviour
         return new Vector2(mousePos.x, mousePos.y);
     }
 
-    private GameObject GetTargetObject(RaycastHit2D clickHit, Vector2 mouseDownPosition)
+    private bool CanInteractWith(GameObject tempTargetObject, Vector2 mouseDownPosition)
     {
-        // Check if the clicked object is a terrain tile
-        if (clickHit.transform.gameObject.layer == Constants.Layer.GROUND)
+        if (tempTargetObject == null) return false;
+
+        if (tempTargetObject.layer == Constants.Layer.GROUND)
         {
-            // if yes, then break the closest terrain tile to the player
-            Vector2 direction = mouseDownPosition - new Vector2(transform.position.x, transform.position.y);
-
-            // TODO: check why using ground layerMask doesn't work here
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, range);
-
-            GameObject closestObject = null;
-            float closestDistance = float.MaxValue;
-            foreach (RaycastHit2D hit in hits)
+            foreach (GameObject raycastStartingPoint in raycastStartingPoints)
             {
-                if (hit.transform == null) continue;
-
-                GameObject potentialTarget = hit.transform.gameObject;
-                if (potentialTarget.layer != Constants.Layer.GROUND) continue;
-
-                float distance = Vector2.Distance(hit.transform.position, transform.position);
-                if (closestDistance > distance)
+                Vector2 direction = mouseDownPosition - new Vector2(raycastStartingPoint.transform.position.x, raycastStartingPoint.transform.position.y);
+                RaycastHit2D hit = Physics2D.Raycast(raycastStartingPoint.transform.position, direction, interactRange, groundLayer);
+                if (hit.transform != null && hit.transform.gameObject == tempTargetObject)
                 {
-                    closestObject = potentialTarget;
-                    closestDistance = distance;
+                    return true;
                 }
             }
-            return closestObject;
+            return false;
         }
         else
         {
-            if (clickHit.transform.gameObject.tag == Constants.Tag.RESOURCE) return null;
-            // if it's not a terrain tile, then break the clicked object
-            return clickHit.transform.gameObject;
+            return !tempTargetObject.CompareTag(Constants.Tag.RESOURCE);
         }
+            
     }
 
     private void ClickOnGameObject(GameObject target)
     {
         if (target == null) return;
-        animator.SetBool("MeleeTool", true);
 
         BreakableObject breakableTile = target.GetComponent<BreakableObject>();
         if (breakableTile != null)
@@ -136,6 +153,5 @@ public class PlayerInteraction : MonoBehaviour
         {
             Destroy(target);
         }
-
     }
 }

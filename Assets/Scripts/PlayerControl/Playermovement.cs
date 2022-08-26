@@ -15,6 +15,7 @@ public class Playermovement : MonoBehaviour
     private Animator animator;
 
     public Transform groundCheckLeft;
+    public Transform groundCheckCenter;
     public Transform groundCheckRight;
     public LayerMask groundLayer;
 
@@ -31,8 +32,6 @@ public class Playermovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
-
     }
 
     void Update()
@@ -52,7 +51,6 @@ public class Playermovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        
         Movement();
         CheckCollsionForJump();
     }
@@ -100,10 +98,12 @@ public class Playermovement : MonoBehaviour
         bool wasGrounded = isGrounded;
         isGrounded = false;
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, range, groundLayer);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, range, groundLayer);
         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, range, groundLayer);
 
         if ((hitLeft.transform != null)
-            || (hitRight.transform != null))
+            || (hitRight.transform != null)
+            || (hitCenter.transform != null))
         {
             isGrounded = true;
              if (!wasGrounded)
