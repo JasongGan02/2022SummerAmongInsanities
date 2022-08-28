@@ -7,6 +7,7 @@ public class Playermovement : MonoBehaviour
     public float runSpeed;
     public float runSpeedmodifier=2f;
     public float jumpHeight = 7f;
+    public float  excavateCoeff = 1f;
 
     public int totalJumps;
     int availableJumps;
@@ -58,7 +59,7 @@ public class Playermovement : MonoBehaviour
 
     private void Movement()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed;
+        float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed *excavateCoeff;
         
         if(isRunning)
             moveInput*=runSpeedmodifier;

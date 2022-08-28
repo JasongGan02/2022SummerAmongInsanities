@@ -15,10 +15,14 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject[] raycastStartingPoints;
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
+    private Rigidbody2D rb;
+    private Playermovement pm;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        pm = GetComponent<Playermovement>();
     }
 
     // Update is called once per frame
@@ -60,27 +64,31 @@ public class PlayerInteraction : MonoBehaviour
                         if (clickHit.transform.gameObject != targetObject)
                         {
                             targetObject = tempTargetObject;
+                            pm.excavateCoeff = 0.1f;
                             StartTimer();
                         }
                     }
                     else
                     {
+                        
                         ResetMeleeAnimationAndTimer();
                     }
                 }
                 else
                 {
+                    
                     ResetMeleeAnimationAndTimer();
                 }
             } 
             else
             {
+                
                 ResetMeleeAnimationAndTimer();
             }
 
             
         }
-
+        
         if (Input.GetMouseButtonUp(0))
         {
             ResetMeleeAnimationAndTimer();
@@ -97,6 +105,8 @@ public class PlayerInteraction : MonoBehaviour
     {
         targetObject = null;
         animator.SetBool(Constants.Animator.MELEE_TOOL, false);
+        pm.excavateCoeff=1f;
+
         ResetTimer();
     }
 
