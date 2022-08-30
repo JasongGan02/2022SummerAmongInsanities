@@ -7,7 +7,7 @@ public class ArcherTower : MonoBehaviour
     [SerializeField] float AtkRange;        // When enemy enters the atk range, the tower will start fire
     [SerializeField] float AtkSpeed;        // Atk Speed affects the Atk Timer counting. When AtkSpeed = 1, the time elapsed speed = real time elapsed speed
     [SerializeField] float AtkIntervalTime; // During AtkIntervalTime, the tower will automatically attack once
-    [SerializeField] float AtkTimer;        // Timer
+    float AtkTimer;        // Timer
     [SerializeField] float bullet_speed;    // bullet flying speed
     [SerializeField] GameObject bullet;
     
