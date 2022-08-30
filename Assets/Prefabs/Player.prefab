@@ -309,7 +309,8 @@ MonoBehaviour:
   runSpeed: 3.5
   runSpeedmodifier: 2
   jumpHeight: 10
-  totalJumps: 0
+  excavateCoeff: 1
+  totalJumps: 2
   groundCheckLeft: {fileID: 6412063727631732470}
   groundCheckCenter: {fileID: 770395265907355292}
   groundCheckRight: {fileID: 9043886093513348560}

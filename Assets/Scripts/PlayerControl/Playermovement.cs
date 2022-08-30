@@ -7,7 +7,8 @@ public class Playermovement : MonoBehaviour
     public float runSpeed;
     public float runSpeedmodifier=2f;
     public float jumpHeight = 7f;
-    public float  excavateCoeff = 1f;
+    public float excavateCoeff = 1f;
+    public float doubleJumpModifier = 0.8f;
 
     public int totalJumps;
     int availableJumps;
@@ -82,16 +83,23 @@ public class Playermovement : MonoBehaviour
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
             animator.SetBool("Jump", true);
+            
         }
-        else
+        else    
         {
             if(multipleJump && availableJumps>0)
             {
                 availableJumps--;
 
-                rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
-                animator.SetBool("Jump", true);
+                rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight* doubleJumpModifier);   
+                animator.SetBool("MultiJump", true);    
             }
+            else
+            {
+                animator.SetBool("MultiJump", false);
+            }
+            
+            
         }
     }
     private void CheckCollsionForJump()
@@ -111,6 +119,7 @@ public class Playermovement : MonoBehaviour
             {
                 availableJumps = totalJumps;
                 multipleJump = false;
+                animator.SetBool("MultiJump", false);
 
             }        
         }
