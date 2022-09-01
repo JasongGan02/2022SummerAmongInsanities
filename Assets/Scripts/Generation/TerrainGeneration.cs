@@ -209,7 +209,7 @@ public class TerrainGeneration : MonoBehaviour
 
     public void PlaceTile(TileClass tile, int x, int y)
     {
-        var prefabs = tile.prefabs;
+        var prefabs = tile.tilePrefabs;
 
             float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
             chunkCoord /= chunkSize;

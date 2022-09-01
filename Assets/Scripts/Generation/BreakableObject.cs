@@ -5,10 +5,14 @@ using UnityEngine.EventSystems;
 
 public class BreakableObject : MonoBehaviour
 {
+    public TileClass tile;
+    private int healthPoint;
 
-    public int healthPoint = 4;
-    public int numberOfResources = 4;
-    public GameObject resourcePrefab = null;
+    private void Awake()
+    {
+        healthPoint = tile.healthPoint;
+    }
+
     public void OnClicked()
     {
         healthPoint -= 1;
@@ -21,17 +25,22 @@ public class BreakableObject : MonoBehaviour
 
     private void OnObjectDestroyed()
     {
-        if (resourcePrefab != null)
+        if (tile.drops.Length > 0)
         {
-            for (int i = 0; i < numberOfResources; i++)
+            foreach (TileClass.Drop droppedItem in tile.drops)
             {
-                GameObject resourceGameObject = Instantiate(resourcePrefab);
-                resourceGameObject.transform.parent = this.gameObject.transform.parent;
-                resourceGameObject.transform.position = this.gameObject.transform.position;
-                float sizeRatio = resourceGameObject.GetComponent<ResourceObject>().sizeRatio;
-                resourceGameObject.transform.localScale = new Vector2(sizeRatio, sizeRatio);
-                resourceGameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 50);
+                int count = droppedItem.GetDroppedItemCount();
+                for (int i = 0; i < count; i++)
+                {
+                    GameObject droppedGameObject = Instantiate(droppedItem.collectibleObject.droppedItem);
+                    droppedGameObject.transform.parent = this.gameObject.transform.parent;
+                    droppedGameObject.transform.position = this.gameObject.transform.position;
+                    float sizeRatio = droppedItem.collectibleObject.sizeRatio;
+                    droppedGameObject.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+                    droppedGameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 50);
+                }
             }
+            
         }
     }
 }

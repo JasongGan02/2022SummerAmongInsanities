@@ -28,7 +28,7 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PickUpResource();
+        PickUpItem();
         BreakTile();
     }
 
@@ -96,7 +96,11 @@ public class PlayerInteraction : MonoBehaviour
 
         if (IsTimerCompleted())
         {
-            ClickOnGameObject(targetObject);
+            if (targetObject != null)
+            {
+                ClickOnGameObject(targetObject);
+            }
+            
             StartTimer();
         }
     }
@@ -110,13 +114,13 @@ public class PlayerInteraction : MonoBehaviour
         ResetTimer();
     }
 
-    private void PickUpResource()
+    private void PickUpItem()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
         if (hit.transform != null)
         {
-            ResourceObject resoureObject = hit.transform.gameObject.GetComponent<ResourceObject>();
-            resoureObject.OnBeforePickedUp();
+            DroppedObject resoureObject = hit.transform.gameObject.GetComponent<DroppedObject>();
+            resoureObject.PickingUp();
         }
     }
 

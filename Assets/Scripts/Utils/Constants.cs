@@ -29,6 +29,8 @@ public static class Constants
     {
         public static string PLAYER = "Player";
         public static string PICK_UP_DETECTOR = "PickUpDetector";
+        public static string INVENTORY_UI = "InventoryUI";
+        public static string INVENTORY_GRID = "InventoryGrid";
     }
 
 

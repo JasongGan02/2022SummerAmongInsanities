@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: NatureAddons
   m_EditorClassIdentifier: 
   tileName: natureAddons
-  tileSprites: []
-  prefabs:
+  tilePrefabs:
   - {fileID: 7400510951586041090, guid: 97d85591df3b762468794bea93cba057, type: 3}
+  healthPoint: 1
+  drops: []

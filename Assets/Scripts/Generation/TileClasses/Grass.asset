@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   tileName: Grass
-  tileSprites: []
-  prefabs:
+  tilePrefabs:
   - {fileID: 3719754441418985889, guid: 5acd5196880f5534e8e1c4cc7197ae5b, type: 3}
+  healthPoint: 1
+  drops: []
