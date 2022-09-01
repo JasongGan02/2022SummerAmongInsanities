@@ -44,6 +44,10 @@ public class ArcherTower : MonoBehaviour
         Transform[] enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
         foreach(Transform e in enemyTransforms)
         {
+            if(e == enemyTransforms[0])
+            {
+                continue;
+            }
             float dist = CalculateDistanceFromEnemyToArcherTower(e);
             // Find enemy
             if(dist <= AtkRange)
