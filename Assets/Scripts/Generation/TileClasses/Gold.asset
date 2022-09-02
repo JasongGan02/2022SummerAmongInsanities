@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Gold
   m_EditorClassIdentifier: 
   tileName: Gold
-  tileSprites: []
-  prefabs:
+  tilePrefabs:
   - {fileID: 5481595800395744475, guid: f4aea43a44866dd4ba8565affa9f5946, type: 3}
+  healthPoint: 1
+  drops:
+  - droppedItem: {fileID: 11400000, guid: 4629a6034e1cc7443ae88ef840a40a41, type: 2}
+    chance: 1.5

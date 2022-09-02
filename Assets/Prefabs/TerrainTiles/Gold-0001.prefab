@@ -124,6 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 1
-  numberOfResources: 4
-  resourcePrefab: {fileID: 5481595800395744475, guid: 2283951a96a8a54479c2d213c7a4e0fb, type: 3}
+  tile: {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}

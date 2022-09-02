@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Tree
   m_EditorClassIdentifier: 
   tileName: Tree
-  tileSprites: []
-  prefabs:
+  tilePrefabs:
   - {fileID: 2655721104761988997, guid: c4285e791d6e4444a9530dcb62363f7e, type: 3}
   - {fileID: 7697918885280410487, guid: 46c321287394b5d408c644d7bd09d754, type: 3}
   - {fileID: 6501609725464200438, guid: 228d98a49c60e5246b32d717cee724f5, type: 3}
+  healthPoint: 4
+  drops: []

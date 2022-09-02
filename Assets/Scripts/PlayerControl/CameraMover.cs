@@ -7,10 +7,12 @@ public class CameraMover : MonoBehaviour {
     public float speed;
     float inputX;
     float inputZ;
-	// Use this for initialization
-	void Start () {
-		
-	}
+
+    private PlayerStatusRepository playerStatusRepository;
+    // Use this for initialization
+    void Start () {
+        playerStatusRepository = GameObject.Find(Constants.Name.PLAYER).GetComponent<PlayerStatusRepository>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -22,15 +24,19 @@ public class CameraMover : MonoBehaviour {
         if (inputZ != 0)
                 moveZ();
 
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 ) // forward
+        if (!playerStatusRepository.GetIsViewingUi())
         {
-            Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize - 1, 100);
-        }
-        else if ( Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize + 1, 100);
+            if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
+            {
+                Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize - 1, 100);
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize + 1, 100);
 
+            }
         }
+        
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 1f, 7f);
     }
 

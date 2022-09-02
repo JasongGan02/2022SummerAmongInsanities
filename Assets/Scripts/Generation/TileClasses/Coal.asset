@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Coal
   m_EditorClassIdentifier: 
   tileName: Coal
-  tileSprites: []
-  prefabs:
+  tilePrefabs:
   - {fileID: 1397927238428654775, guid: 58d2bf9cf2f710d47b4fbe5ab51f3231, type: 3}
+  healthPoint: 1
+  drops: []
