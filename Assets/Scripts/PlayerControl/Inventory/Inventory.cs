@@ -86,6 +86,7 @@ public class Inventory : MonoBehaviour
         GameObject slotContent = Instantiate(template);
         slot.transform.position = new Vector2(0, 0);
         slotContent.transform.Find("Icon").GetComponent<Image>().sprite = icon;
+        slotContent.GetComponent<ItemClickHandler>().collectibleItem = inventory[index].item;
         slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = count.ToString();
         slotContent.transform.SetParent(slot.transform);
     }

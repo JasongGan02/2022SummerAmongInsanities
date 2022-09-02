@@ -11,7 +11,7 @@ public class TileClass : ScriptableObject
     [System.Serializable]
     public class Drop
     {
-        public CollectibleObject collectibleObject;
+        public CollectibleObject droppedItem;
         public float chance; // 3.4 means you will certianly get 3 items and 40% chance to get 1 more.
 
         public int GetDroppedItemCount()

@@ -17,5 +17,7 @@ MonoBehaviour:
   - {fileID: 1306158573666937238, guid: be13caefde161bd43a09a851be012380, type: 3}
   healthPoint: 1
   drops:
-  - collectibleObject: {fileID: 11400000, guid: e1f2773b73c43064f99716fbbf18480f, type: 2}
+  - droppedItem: {fileID: 11400000, guid: e1f2773b73c43064f99716fbbf18480f, type: 2}
     chance: 1.5
+  - droppedItem: {fileID: 11400000, guid: 10e7577e88eed6b4fb670ec134430dd5, type: 2}
+    chance: 0.5

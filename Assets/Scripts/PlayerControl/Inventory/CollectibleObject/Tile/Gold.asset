@@ -17,3 +17,4 @@ MonoBehaviour:
   itemType: 2
   sizeRatio: 0.5
   droppedItem: {fileID: 5481595800395744475, guid: 2283951a96a8a54479c2d213c7a4e0fb, type: 3}
+  collectedItem: {fileID: 5481595800395744475, guid: 078a9e4df9ee7bf468c122e998345e59, type: 3}

@@ -58,7 +58,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (clickHit.transform != null)
                 {
                     GameObject tempTargetObject = clickHit.transform.gameObject;
-                    if (tempTargetObject.GetComponent<BreakableObject>() != null && CanInteractWith(tempTargetObject, mouseDownPosition))
+                    if (tempTargetObject.GetComponent<BreakableObjectController>() != null && CanInteractWith(tempTargetObject, mouseDownPosition))
                     {
                         animator.SetBool(Constants.Animator.MELEE_TOOL, true);
                         if (clickHit.transform.gameObject != targetObject)
@@ -119,7 +119,7 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
         if (hit.transform != null)
         {
-            DroppedObject resoureObject = hit.transform.gameObject.GetComponent<DroppedObject>();
+            DroppedObjectController resoureObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
             resoureObject.PickingUp();
         }
     }
@@ -158,7 +158,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (target == null) return;
 
-        BreakableObject breakableTile = target.GetComponent<BreakableObject>();
+        BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {
             breakableTile.OnClicked();
