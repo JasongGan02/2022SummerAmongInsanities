@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5122404738386094513}
   - component: {fileID: 5122404738386094512}
   - component: {fileID: 5122404738386094515}
-  - component: {fileID: 5122404738386094514}
+  - component: {fileID: 4840921556256003634}
   - component: {fileID: 4422086284973172294}
   m_Layer: 0
   m_Name: ArcherTower
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5122404738386094512
 SpriteRenderer:
@@ -108,8 +108,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &5122404738386094514
-PolygonCollider2D:
+--- !u!61 &4840921556256003634
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -121,7 +121,7 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0121154785, y: 0.045434475}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -131,15 +131,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.31, y: 0.53125}
-      - {x: -0.54, y: 0.49}
-      - {x: -0.62, y: -0.71875}
-      - {x: 0.625, y: -0.71875}
-      - {x: 0.57, y: 0.5}
-      - {x: -0.09, y: 0.75}
-  m_UseDelaunayMesh: 0
+  serializedVersion: 2
+  m_Size: {x: 1.1651878, y: 1.409131}
+  m_EdgeRadius: 0
 --- !u!114 &4422086284973172294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +149,5 @@ MonoBehaviour:
   AtkRange: 5
   AtkSpeed: 3
   AtkIntervalTime: 2
-  AtkTimer: 0
   bullet_speed: 10
   bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
