@@ -8,6 +8,7 @@ TagManager:
   - tree
   - resource
   - Undefined
+  - enemy
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - ground
   - resource
   - player
-  - 
+  - enemy
   - 
   - 
   - 

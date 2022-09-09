@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Dirt
   m_EditorClassIdentifier: 
   tileName: Dirt
-  tileSprites: []
-  prefabs:
+  tilePrefabs:
   - {fileID: 1529614696198433121, guid: b6b02f02a6b43544ca6c5b2b64a67a0c, type: 3}
+  healthPoint: 1
+  drops:
+  - droppedItem: {fileID: 11400000, guid: 10e7577e88eed6b4fb670ec134430dd5, type: 2}
+    chance: 4
