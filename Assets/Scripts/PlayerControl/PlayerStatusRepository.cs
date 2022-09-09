@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatusRepository : MonoBehaviour
+public static class PlayerStatusRepository
 {
-    private bool isViewingUi = false;
+    private static bool isViewingUi = false;
 
-    public void SetIsViewingUi(bool isViewingUi)
+    public static void SetIsViewingUi(bool isViewingUi)
     {
-        this.isViewingUi = isViewingUi;
+        PlayerStatusRepository.isViewingUi = isViewingUi;
     }
 
-    public bool GetIsViewingUi()
+    public static bool GetIsViewingUi()
     {
         return isViewingUi;
     }

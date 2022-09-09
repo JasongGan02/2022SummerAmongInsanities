@@ -28,9 +28,10 @@ public static class Constants
     public static class Name
     {
         public static string PLAYER = "Player";
+        public static string CANVAS = "Canvas";
+
         public static string PICK_UP_DETECTOR = "PickUpDetector";
-        public static string INVENTORY_UI = "InventoryUI";
-        public static string INVENTORY_GRID = "InventoryGrid";
+        public static string INVENTORY_GRID = "InventoryUI";
     }
 
 

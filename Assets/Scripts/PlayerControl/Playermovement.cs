@@ -20,7 +20,7 @@ public class Playermovement : MonoBehaviour
     public Transform groundCheckRight;
     public LayerMask groundLayer;
 
-    private bool facingRight = true;
+    public bool facingRight = true;
     private bool isRunning = false;
     private bool isGrounded = true;
     bool multipleJump;                                      
@@ -37,14 +37,17 @@ public class Playermovement : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift))
-            isRunning = true;
-        if(Input.GetKeyUp(KeyCode.LeftShift))
-            isRunning = false;
-
-        if(Input.GetButtonDown("Jump"))
+        if (!PlayerStatusRepository.GetIsViewingUi())
         {
-            Jump();
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                isRunning = true;
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                isRunning = false;
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                Jump();
+            }
         }
 
         animator.SetFloat("yVelocity", rb.velocity.y);
@@ -52,10 +55,21 @@ public class Playermovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Movement();
+        if (!PlayerStatusRepository.GetIsViewingUi())
+        {
+            Movement();
+        } else
+        {
+            ClearHorizontalVelocity();
+        }
         CheckCollsionForJump();
     }
 
+    private void ClearHorizontalVelocity()
+    {
+        rb.velocity = new Vector2(0f, rb.velocity.y);
+        animator.SetFloat(Constants.Animator.SPEED, 0);
+    }
 
     private void Movement()
     {

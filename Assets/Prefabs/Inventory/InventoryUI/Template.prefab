@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8016981053991298765}
   - component: {fileID: 7749015552176688245}
+  - component: {fileID: 1631613835277680417}
   m_Layer: 5
   m_Name: Template
   m_TagString: Untagged
@@ -51,7 +52,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 012d79ed675e3ae49adb1eda34396e6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectedItem: {fileID: 0}
+  collectibleItem: {fileID: 0}
+--- !u!225 &1631613835277680417
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169284352082792497}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &174777752918795440
 GameObject:
   m_ObjectHideFlags: 0

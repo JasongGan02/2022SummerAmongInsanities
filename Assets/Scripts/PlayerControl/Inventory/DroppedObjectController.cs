@@ -7,6 +7,7 @@ public class DroppedObjectController : MonoBehaviour
     public CollectibleObject collectibleObject;
     public float speed = 0.2f;
     public float distanceThreshold = 0.1f;
+    public int amount = 1;
 
     private bool shouldFlyToPlayer = false;
     private GameObject player;
@@ -41,7 +42,7 @@ public class DroppedObjectController : MonoBehaviour
     {
         shouldFlyToPlayer = false;
 
-        inventory.AddItem(collectibleObject);
+        inventory.AddItem(collectibleObject, amount);
         Destroy(gameObject);
     }
 }
