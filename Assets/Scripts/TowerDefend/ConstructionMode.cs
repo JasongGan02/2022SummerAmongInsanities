@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 // 玩家按C键进入建筑模式，这个方法负责建筑模式的交互
 public class ConstructionMode : MonoBehaviour
@@ -11,11 +13,17 @@ public class ConstructionMode : MonoBehaviour
     
     [SerializeField] List<GameObject> Towers;
     [SerializeField] GameObject ConstructionUI;
-    [SerializeField] Camera mainCamera;
+    [SerializeField] GameObject EnergyText;
+    
+    int max_energy;
+    int current_energy;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        max_energy = 100;
+        current_energy = 0;
+        SetEnergyText();
     }
 
     // Update is called once per frame
@@ -51,12 +59,14 @@ public class ConstructionMode : MonoBehaviour
         
         
         if(towerType != Constants.TowerType.noShadow){
-            Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);
-            bool regenerate = false;
+            Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // get mouse position
+            RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);     // eject a downside ray
+            bool regenerate = false;    // mark if the shadow object need to be regenerated
             if(shadowObj){
-                char objIdx = shadowObj.name[shadowObj.name.Length-8];
-                regenerate = (int)towerType != ((int)char.GetNumericValue(objIdx)-1);
+                if(shadowObj.name != Towers[(int)towerType].name + "(Clone)")
+                {
+                    regenerate = true;
+                }
             }
             if(!shadowObj || regenerate)
             {
@@ -68,11 +78,19 @@ public class ConstructionMode : MonoBehaviour
             }
 
             if(shadowObj && downRay){
-                shadowObj.transform.position = downRay.transform.position;
-                shadowObj.transform.position += new Vector3(0, shadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2+ downRay.collider.bounds.size.y/2 + 0.03f, 0);
+                shadowObj.transform.position = downRay.point;
+                shadowObj.transform.position += new Vector3(0, shadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2 + 0.03f, downRay.transform.position.z);
                 ConstructionShadows shadowScript = shadowObj.GetComponent<ConstructionShadows>();
                 if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus()){
-                    shadowScript.PlaceTower();
+                    if(CheckEnergyAvailableForConstruction())
+                    {
+                        shadowScript.PlaceTower();
+                        EnergyConsumption();
+                    }
+                    else{
+                        print("You are run out of power");
+                    }
+                    
                 }
             }
         }
@@ -89,6 +107,57 @@ public class ConstructionMode : MonoBehaviour
         Destroy(shadowObj);
         
 
+    }
+    // Update UI energy text
+    void SetEnergyText()
+    {
+        TextMeshProUGUI energyText_text = EnergyText.GetComponent<TextMeshProUGUI>();
+        energyText_text.SetText("Energy: {0}/{1}",current_energy, max_energy);
+    }
+
+    bool CheckEnergyAvailableForConstruction()
+    {
+        int Energy_To_Be_Cost = 0;
+        switch(shadowObj.name)
+        {
+            case "CatapultShadow(Clone)":
+            Energy_To_Be_Cost = 20;
+            break;
+            case "ArcherTowerShadow(Clone)":
+            Energy_To_Be_Cost = 10;
+            break;
+            case "TrapTowerShadow(Clone)":
+            Energy_To_Be_Cost = 5;
+            break;
+            default:
+            Debug.LogError("No such type of construction");
+            break;
+        }
+        if((current_energy+Energy_To_Be_Cost) > max_energy)
+            return false;
+        return true;
+    }
+
+    void EnergyConsumption()
+    {
+        int cost_energy = 0;
+        switch(shadowObj.name)
+        {
+            case "CatapultShadow(Clone)":
+            cost_energy = 20;
+            break;
+            case "ArcherTowerShadow(Clone)":
+            cost_energy = 10;
+            break;
+            case "TrapTowerShadow(Clone)":
+            cost_energy = 5;
+            break;
+            default:
+            Debug.LogError("No such type of construction");
+            break;
+        }
+        current_energy += cost_energy;
+        SetEnergyText();
     }
 
     void ShowConstructionUnderCursor()

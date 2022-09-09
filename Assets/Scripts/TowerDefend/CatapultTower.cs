@@ -41,7 +41,7 @@ public class CatapultTower : MonoBehaviour
     Transform SenseEnemyTransform()
     {
         Transform[] enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
-        print(enemyTransforms[0]);
+        // print(enemyTransforms[0]);
         foreach(Transform e in enemyTransforms)
         {
             if(e==enemyTransforms[0])
@@ -99,6 +99,5 @@ public class CatapultTower : MonoBehaviour
         GameObject bullet_instance = Instantiate(bullet, transform.position, Quaternion.identity);
         bullet_instance.GetComponent<Rigidbody2D>().velocity = bullet_speed;
 
-        Debug.Log("Catapult firing");
     }
 }
