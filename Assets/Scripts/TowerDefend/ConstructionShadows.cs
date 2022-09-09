@@ -38,10 +38,10 @@ public class ConstructionShadows : MonoBehaviour
     private void UpdatePlaceStatus(){
         float distance = Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position);
         if(distance <= m_placeDistance && m_collisionCount == 0){
-            m_shadowSpriteRenderer.color = new Color(m_originalColor.r, 1.0f, m_originalColor.b, m_originalColor.a);
+            m_shadowSpriteRenderer.color = new Color(m_originalColor.r/2, m_originalColor.g, m_originalColor.b/2, m_originalColor.a);
             m_placeable = true;
         }else{
-            m_shadowSpriteRenderer.color = new Color(1.0f, m_originalColor.g, m_originalColor.b, m_originalColor.a);
+            m_shadowSpriteRenderer.color = new Color(m_originalColor.r, m_originalColor.g/2, m_originalColor.b/2, m_originalColor.a);
             m_placeable = false;
         }
     }
