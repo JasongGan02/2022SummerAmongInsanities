@@ -7,12 +7,6 @@ public class CameraMover : MonoBehaviour {
     public float speed;
     float inputX;
     float inputZ;
-
-    private PlayerStatusRepository playerStatusRepository;
-    // Use this for initialization
-    void Start () {
-        playerStatusRepository = GameObject.Find(Constants.Name.PLAYER).GetComponent<PlayerStatusRepository>();
-    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -24,7 +18,7 @@ public class CameraMover : MonoBehaviour {
         if (inputZ != 0)
                 moveZ();
 
-        if (!playerStatusRepository.GetIsViewingUi())
+        if (!PlayerStatusRepository.GetIsViewingUi())
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
             {

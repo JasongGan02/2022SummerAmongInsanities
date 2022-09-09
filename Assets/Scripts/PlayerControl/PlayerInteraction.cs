@@ -17,19 +17,24 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject targetObject;
     private Rigidbody2D rb;
     private Playermovement pm;
+    private Inventory inventory;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         pm = GetComponent<Playermovement>();
+        inventory = GetComponent<Inventory>();
     }
 
     // Update is called once per frame
     void Update()
     {
         PickUpItem();
-        BreakTile();
+        if (!PlayerStatusRepository.GetIsViewingUi())
+        {
+            BreakTile();
+        }
     }
 
     private void StartTimer()
@@ -116,6 +121,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void PickUpItem()
     {
+        if (inventory.IsInventoryFull()) return;
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
         if (hit.transform != null)
         {
