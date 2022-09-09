@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Inventory/DroppedItem.meta
 guid: 09e6f2204c226b04f8dbc6e56fdc756b
 folderAsset: yes
+========
+guid: 559e1f198a648ea4898e2a3af28de343
+>>>>>>>> main:Assets/Scenes/QikunScene.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
