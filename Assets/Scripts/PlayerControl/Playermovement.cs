@@ -77,20 +77,26 @@ public class Playermovement : MonoBehaviour
     {
         if (isGrounded)
         {
+            
             multipleJump = true;
             availableJumps--;
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
             animator.SetBool("Jump", true);
+            animator.SetBool("SecondJump", false);
+
         }
         else
         {
-            if(multipleJump && availableJumps>0)
+           
+
+            if (multipleJump && availableJumps>0)
             {
                 availableJumps--;
-
+                
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
                 animator.SetBool("Jump", true);
+                animator.SetBool("SecondJump", true);
             }
         }
     }
@@ -115,6 +121,9 @@ public class Playermovement : MonoBehaviour
             }        
         }
         animator.SetBool("Jump", !isGrounded);
+        animator.SetBool("SecondJump", false);
+
+
     }
 
     private void Flip()
