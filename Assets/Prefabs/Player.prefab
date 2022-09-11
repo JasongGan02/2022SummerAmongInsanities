@@ -456,7 +456,7 @@ MonoBehaviour:
   runSpeedmodifier: 2
   jumpHeight: 10
   excavateCoeff: 1
-  totalJumps: 0
+  totalJumps: 2
   groundCheckLeft: {fileID: 6647711790814027598}
   groundCheckCenter: {fileID: 1012655923350585124}
   groundCheckRight: {fileID: 8736707469448316008}
@@ -531,6 +531,7 @@ MonoBehaviour:
   defaultRow: {fileID: 961959249126568429, guid: 341f3b0c46cf6254389f043dd58fe5f6, type: 3}
   extraRow: {fileID: 961959249126568429, guid: daf04902d0c29ef4abfc6e1ffe52a43a, type: 3}
   template: {fileID: 169284352082792497, guid: 849c4e2ac3781c14cac1e7979200eaf4, type: 3}
+  background: {fileID: 0}
   defaultNumberOfRow: 2
   maxExtraRow: 4
 --- !u!1 &7716306966358594839
