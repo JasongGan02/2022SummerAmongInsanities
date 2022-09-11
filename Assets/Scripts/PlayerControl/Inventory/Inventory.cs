@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using TMPro;
 
 public class Inventory : MonoBehaviour
 {
-    private class InventorySlot
+    public class InventorySlot
     {
         public CollectibleObject item;
         public int count;
@@ -70,9 +71,46 @@ public class Inventory : MonoBehaviour
         HandleHotbarKeyPress();
     }
 
-    public void OnSlotClicked(int index, bool isShiftDown)
+    public void OnSlotRightClicked(int index, bool isShiftDown)
     {
-        eventBus.OnSlotClicked(index, isShiftDown);
+        eventBus.OnSlotRightClicked(index, isShiftDown);
+    }
+
+    public void OnSlotLeftClicked(int index)
+    {
+        eventBus.OnSlotLeftClicked(index);
+    }
+
+    public void AddSlotRightClickedHandler(EventHandler<InventoryEventBus.OnSlotRightClickedEventArgs> action)
+    {
+        if (eventBus != null)
+        {
+            eventBus.OnSlotRightClickedEvent += action;
+        }
+    }
+
+    public void RemoveSlotRightClickedHandler(EventHandler<InventoryEventBus.OnSlotRightClickedEventArgs> action)
+    {
+        if (eventBus != null)
+        {
+            eventBus.OnSlotRightClickedEvent -= action;
+        }
+    }
+
+    public void AddSlotLeftClickedHandler(EventHandler<InventoryEventBus.OnSlotLeftClickedEventArgs> action)
+    {
+        if (eventBus != null)
+        {
+            eventBus.OnSlotLeftClickedEvent += action;
+        }
+    }
+
+    public void RemoveSlotLeftClickedHandler(EventHandler<InventoryEventBus.OnSlotLeftClickedEventArgs> action)
+    {
+        if (eventBus != null)
+        {
+            eventBus.OnSlotLeftClickedEvent -= action;
+        }
     }
 
     public int GetItemCountAtSlot(int index)
@@ -80,9 +118,9 @@ public class Inventory : MonoBehaviour
         return inventory[index].count;
     }
 
-    public InventoryEventBus GetInventoryEventBus()
+    public InventorySlot GetInventorySlotAtIndex(int index)
     {
-        return eventBus;
+        return inventory[index];
     }
 
     public void AddItem(CollectibleObject item, int amount)
@@ -172,7 +210,6 @@ public class Inventory : MonoBehaviour
             inventory[fromIndex].item = null;
         }
 
-        //UpdateSlotUi(fromIndex);
         UpdateSlotUi(toIndex);
         UpdateNextEmptySlot();
         return true;
@@ -309,7 +346,7 @@ public class Inventory : MonoBehaviour
         GameObject slot = hotbar.transform.GetChild(index).gameObject;
         if (slot.transform.childCount > 0)
         {
-            slot.transform.GetChild(0).GetComponent<ItemInteractionHandler>()?.UseItem();
+            eventBus.OnSlotLeftClicked(index);
         }
     }
 

@@ -15,23 +15,27 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
 
     private bool isInSlot = true;
     private int currentSlotIndex;
-    public bool shouldListenForRightClick = false;
+    private bool shouldListenForRightClick = false;
 
-    private InventoryEventBus eventBus;
     private void Start()
     {
         player = GameObject.Find(Constants.Name.PLAYER);
         inventory = player.GetComponent<Inventory>();
-        eventBus = inventory.GetInventoryEventBus();
 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GameObject.Find(Constants.Name.CANVAS);
 
         currentSlotIndex = GetSlotIndex(gameObject.transform.parent.name);
+        inventory.AddSlotLeftClickedHandler(HandleSlotLeftClickEvent);
     }
 
-    private void HandleSlotClickEvent(object sender, InventoryEventBus.OnSlotClickedEventArgs args)
+    private void OnDestroy()
+    {
+        inventory?.RemoveSlotLeftClickedHandler(HandleSlotLeftClickEvent);
+    }
+
+    private void HandleSlotRightClickEvent(object sender, InventoryEventBus.OnSlotRightClickedEventArgs args)
     {
         if (shouldListenForRightClick)
         {
@@ -46,27 +50,17 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
             {
                 PartiallyMoveToAnotherSlot(args.slotIndex, 1);
             }
-            
         }
     }
 
-    /*public void OnPointerClick(PointerEventData eventData)
+    public void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
-        if (collectibleItem == null) return;
-
-        switch (eventData.button)
+        Debug.Log(args.slotIndex);
+        if (args.slotIndex == currentSlotIndex)
         {
-            case PointerEventData.InputButton.Left:
-                Debug.Log("using " + collectibleItem.name);
-                break;
-            case PointerEventData.InputButton.Right:
-                break;
+            Debug.Log("using " + collectibleItem.name);
         }
-    }*/
-
-    public void UseItem()
-    {
-        Debug.Log("using " + collectibleItem.name);
+        
     }
 
     private int GetSlotIndex(string name)
@@ -86,7 +80,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         shouldListenForRightClick = false;
         PlayerStatusRepository.SetIsViewingUi(false);
         Debug.Log("ON END DRAG");
-        eventBus.OnSlotClickedEvent -= HandleSlotClickEvent;
+        inventory.RemoveSlotRightClickedHandler(HandleSlotRightClickEvent);
         Invoke("RemoveItemFromInventoryIfNotInSlot", 0.01f);
     }
 
@@ -107,7 +101,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         isInSlot = false;
         shouldListenForRightClick = true;
         gameObject.transform.SetParent(canvas.transform);
-        eventBus.OnSlotClickedEvent += HandleSlotClickEvent;
+        inventory.AddSlotRightClickedHandler(HandleSlotRightClickEvent);
     }
 
     public void OnMovedToAnotherSlot(int anotherSlotIndex)

@@ -29,15 +29,18 @@ public class InventoryDropOnSlotHandler : MonoBehaviour, IDropHandler, IPointerC
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        int slotIndex = GetSlotIndex(gameObject.name);
+        if (inventory.GetInventorySlotAtIndex(slotIndex).item == null) return;
+
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                
                 Debug.Log("left click on slot: " + gameObject.name);
+                inventory.OnSlotLeftClicked(slotIndex);
                 break;
             case PointerEventData.InputButton.Right:
                 Debug.Log("right click on slot: " + gameObject.name);
-                inventory.OnSlotClicked(GetSlotIndex(gameObject.name), Input.GetKey(KeyCode.LeftShift));
+                inventory.OnSlotRightClicked(slotIndex, Input.GetKey(KeyCode.LeftShift));
                 break;
         }
     }

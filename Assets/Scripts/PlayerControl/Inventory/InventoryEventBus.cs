@@ -5,15 +5,26 @@ using UnityEngine;
 
 public class InventoryEventBus
 {
-    public event EventHandler<OnSlotClickedEventArgs> OnSlotClickedEvent;
-    public class OnSlotClickedEventArgs : EventArgs
+    public event EventHandler<OnSlotRightClickedEventArgs> OnSlotRightClickedEvent;
+    public class OnSlotRightClickedEventArgs : EventArgs
     {
         public int slotIndex;
         public bool isShiftDown;
     }
 
-    public void OnSlotClicked(int index, bool isShiftDown)
+    public event EventHandler<OnSlotLeftClickedEventArgs> OnSlotLeftClickedEvent;
+    public class OnSlotLeftClickedEventArgs : EventArgs
     {
-        OnSlotClickedEvent?.Invoke(this, new OnSlotClickedEventArgs { slotIndex = index, isShiftDown = isShiftDown }) ;
+        public int slotIndex;
+    }
+
+    public void OnSlotRightClicked(int index, bool isShiftDown)
+    {
+        OnSlotRightClickedEvent?.Invoke(this, new OnSlotRightClickedEventArgs { slotIndex = index, isShiftDown = isShiftDown }) ;
+    }
+
+    public void OnSlotLeftClicked(int index)
+    {
+        OnSlotLeftClickedEvent?.Invoke(this, new OnSlotLeftClickedEventArgs { slotIndex = index });
     }
 }
