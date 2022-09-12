@@ -121,12 +121,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void PickUpItem()
     {
-        if (inventory.IsInventoryFull()) return;
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
         if (hit.transform != null)
         {
             DroppedObjectController resoureObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
-            resoureObject.PickingUp();
+            if (inventory.CanAddItem(resoureObject.collectibleObject))
+            {
+                resoureObject.PickingUp();
+            }
         }
     }
 

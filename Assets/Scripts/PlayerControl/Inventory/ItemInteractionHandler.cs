@@ -6,6 +6,7 @@ using TMPro;
 
 public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
+    [HideInInspector]
     public CollectibleObject collectibleItem;
     private GameObject player;
     private Inventory inventory;
@@ -43,7 +44,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
             Debug.Log("The dragged item = " + collectibleItem.name);
             if (args.isShiftDown)
             {
-                int currentCount = inventory.GetItemCountAtSlot(currentSlotIndex);
+                int currentCount = inventory.GetInventorySlotAtIndex(currentSlotIndex).count;
                 PartiallyMoveToAnotherSlot(args.slotIndex, currentCount == 1 ? 1 : currentCount / 2);
             }
             else
