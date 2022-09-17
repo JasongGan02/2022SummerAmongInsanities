@@ -36,10 +36,11 @@ public static class Constants
 
 
     public enum TowerType{
-        typeOne,
-        typeTwo,
-        typeThree,
-        typeFour,
+        TowerCatapult,
+        TowerArcher,
+        TowerTrap,
+        WoodenWall,
+        StoneWall,
         noShadow
     };
 }
