@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1306158573666937238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,3 +149,4 @@ MonoBehaviour:
   collectibleObject: {fileID: 11400000, guid: e1f2773b73c43064f99716fbbf18480f, type: 2}
   speed: 0.2
   distanceThreshold: 0.1
+  amount: 1

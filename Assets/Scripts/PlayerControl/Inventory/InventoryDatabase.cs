@@ -1,0 +1,260 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class InventoryDatabase
+{
+    private readonly List<InventorySlot> inventory = new();
+
+    private int slotPerRow = 10;
+
+    private int size;
+    private int maxSize;
+    private int nextEmptySlotIndex = 0;
+
+    public InventoryDatabase(int defaultNumberOfRow, int maxExtraRow)
+    {
+        maxSize = (defaultNumberOfRow + maxExtraRow) * slotPerRow;
+        size = defaultNumberOfRow * slotPerRow;
+        for (int i = 0; i < maxSize; i++)
+        {
+            inventory.Add(new InventorySlot(null, 0));
+        }
+    }
+
+    public InventorySlot GetInventorySlotAtIndex(int index)
+    {
+        return inventory[index];
+    }
+
+    public bool IsSlotEmpty(int index)
+    {
+        return inventory[index].IsEmpty;
+    }
+
+    public int GetSize()
+    {
+        return size;
+    }
+
+    // return the slot index that needs to be updated
+    public int AddItem(CollectibleObject item)
+    {
+        int slotIndex = inventory.FindIndex(slot => slot.item != null && slot.item.itemName == item.itemName && slot.count < item.maxStack);
+        int indexToUpdate;
+        if (slotIndex == -1)
+        {
+            // TODO return -1 if no more space in the inventory
+            inventory[nextEmptySlotIndex].item = item;
+            inventory[nextEmptySlotIndex].count++;
+            indexToUpdate = nextEmptySlotIndex;
+        }
+        else
+        {
+            inventory[slotIndex].count++;
+            indexToUpdate = slotIndex;
+        }
+        UpdateNextEmptySlot();
+        return indexToUpdate;
+    }
+
+    // return the removed item
+    public InventorySlot RemoveItem(int index)
+    {
+        if (inventory[index].item == null) return null;
+
+        InventorySlot slot = new InventorySlot(inventory[index].item, inventory[index].count);
+
+        inventory[index].item = null;
+        inventory[index].count = 0;
+
+        UpdateNextEmptySlot();
+        return slot;
+    }
+
+    public void SwapItems(int index1, int index2)
+    {
+        int tempCount = inventory[index2].count;
+        CollectibleObject tempItem = inventory[index2].item;
+
+        inventory[index2].item = inventory[index1].item;
+        inventory[index2].count = inventory[index1].count;
+
+        inventory[index1].item = tempItem;
+        inventory[index1].count = tempCount;
+
+        UpdateNextEmptySlot();
+    }
+
+    // return the amount of not moved items
+    public int MoveItems(int fromIndex, int toIndex, int amount)
+    {
+        if (inventory[fromIndex].item == null) return -1;
+        if (inventory[fromIndex].count < amount) return -1;
+
+        // TODO take care of when the case where dropped amount + existing amount is larger than the max stack
+        if (inventory[toIndex].item == null)
+        {
+            inventory[toIndex].item = inventory[fromIndex].item;
+        }
+        else
+        {
+            if (inventory[toIndex].item.name != inventory[fromIndex].item.name) return amount;
+            //if (amount + inventory[toIndex].count > inventory[toIndex].item.maxStack) return false;
+        }
+
+        int remainingItemCount = inventory[toIndex].count + amount - inventory[toIndex].item.maxStack;
+        int movedItemCount = amount - remainingItemCount;
+        if (remainingItemCount > 0)
+        {
+            inventory[toIndex].count = inventory[toIndex].item.maxStack;
+            inventory[fromIndex].count -= movedItemCount;
+            
+        } 
+        else
+        {
+            inventory[toIndex].count += amount;
+            inventory[fromIndex].count -= amount;
+            if (inventory[fromIndex].count == 0)
+            {
+                inventory[fromIndex].item = null;
+            }
+        }
+
+        UpdateNextEmptySlot();
+        return inventory[fromIndex].count;
+    }
+
+    public bool CanUpgrade()
+    {
+        return maxSize > size;
+    }
+
+    public void Upgrade()
+    {
+        size += 10;
+        UpdateNextEmptySlot();
+    }
+
+    public void Sort()
+    {
+        MergeItems();
+        inventory.Sort();
+        UpdateNextEmptySlot();
+    }
+
+    public bool HasEmptySlot()
+    {
+        return nextEmptySlotIndex >= 0;
+    }
+
+    private void MergeItems()
+    {
+        HashSet<String> visited = new();
+
+        for (int i = size - 1; i >= 0; i--)
+        {
+            if (inventory[i].IsEmpty || visited.Contains(inventory[i].item.name)) continue;
+            String itemName = inventory[i].item.name;
+            visited.Add(itemName);
+
+            // find all indices of the same item type whose slot is not full
+            List<int> mergeList = new();
+            for (int j = 0; j <= i; j++)
+            {
+                InventorySlot slot = inventory[j];
+                if (!slot.IsEmpty && slot.item.name == itemName && slot.count < slot.item.maxStack)
+                {
+                    mergeList.Add(j);
+                }
+            }
+
+            // merge items in the merge list
+            int totalCount = 0;
+            int maxStack = inventory[i].item.maxStack;
+            mergeList.ForEach(index => totalCount += inventory[index].count);
+            foreach (int index in mergeList)
+            {
+                if (totalCount == 0)
+                {
+                    inventory[index].item = null;
+                    inventory[index].count = 0;
+                } 
+                else if (totalCount - maxStack >= 0)
+                {
+                    inventory[index].count = maxStack;
+                    totalCount -= maxStack;
+                } 
+                else
+                {
+                    inventory[index].count = totalCount;
+                    totalCount = 0;
+                }
+            }
+
+        }
+    }
+
+    private void UpdateNextEmptySlot()
+    {
+        nextEmptySlotIndex = FindNextEmptySlot();
+    }
+
+    private int FindNextEmptySlot()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (inventory[i].item == null)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+public class InventorySlot : IComparable
+{
+    public CollectibleObject item;
+    public int count;
+    public bool IsEmpty { get => item == null; }
+
+    public InventorySlot(CollectibleObject item, int count)
+    {
+        this.item = item;
+        this.count = count;
+    }
+
+    public InventorySlot(CollectibleObject item)
+    {
+        this.item = item;
+        this.count = 1;
+    }
+
+    public int CompareTo(object obj)
+    {
+        if (obj == null) return -1;
+
+        InventorySlot otherSlot = obj as InventorySlot;
+        if (otherSlot != null)
+        {
+            if (otherSlot.IsEmpty && this.IsEmpty) return 0;
+            if (otherSlot.IsEmpty) return -1;
+            if (this.IsEmpty) return 1;
+
+            if (otherSlot.item.name == this.item.name)
+            {
+                return otherSlot.count - this.count;
+            }
+            else
+            {
+                return this.item.name.CompareTo(otherSlot.item.name);
+            }
+        } 
+        else
+        {
+            throw new ArgumentException("Object is not a InventorySlot");
+        }
+    }
+}
