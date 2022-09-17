@@ -5,12 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 {
     public GameObject defaultRow;
     public GameObject extraRow;
     public GameObject template;
     public GameObject background;
+    public GameObject axe;
 
     public int defaultNumberOfRow = 2;
     public int maxExtraRow = 4;
@@ -30,11 +31,13 @@ public class Inventory : MonoBehaviour
         uiController = new InventoryUiController(
             defaultNumberOfRow,
             defaultRow,
+            extraRow,
             inventoryGrid,
-            template
+            template,
+            this
             );
 
-        uiController.SetupGrid();
+        uiController.SetupUi();
         hotbar = inventoryGrid.transform.GetChild(0).gameObject;
 
         eventBus = new InventoryEventBus();
@@ -138,31 +141,30 @@ public class Inventory : MonoBehaviour
         UpdateSlotUi(index2);
     }
 
-    public bool MoveItems(int fromIndex, int toIndex, int amount)
+    public int MoveItems(int fromIndex, int toIndex, int amount, bool shouldUpdateFromSlot)
     {
-        if (database.MoveItems(fromIndex, toIndex, amount))
+        int remainingItemCount = database.MoveItems(fromIndex, toIndex, amount);
+        if (remainingItemCount >= 0)
         {
+            if (shouldUpdateFromSlot)
+            {
+                UpdateSlotUi(fromIndex);
+            }
+            
             UpdateSlotUi(toIndex);
-            return true;
         }
-        else
-        {
-            return false;
-        }
+        return remainingItemCount;
     }
 
     // TODO: check if there's an existing slot that is not full
     public bool CanAddItem(CollectibleObject item)
     {
-        return database.hasEmptySlot();
+        return database.HasEmptySlot();
     }
 
     private void UpdateSlotUi(int index)
     {
-        if (!database.IsSlotEmpty(index))
-        {
-            uiController.UpdateSlotUi(index, database.GetInventorySlotAtIndex(index));
-        }
+        uiController.UpdateSlotUi(index, database.GetInventorySlotAtIndex(index));
     }
 
     private void HandleHotbarKeyPress() 
@@ -220,6 +222,36 @@ public class Inventory : MonoBehaviour
             eventBus.OnSlotLeftClicked(index);
         }
     }
+
+    public void Sort()
+    {
+        database.Sort();
+        int size = database.GetSize();
+        for (int i = 0; i < size; i++)
+        {
+            UpdateSlotUi(i);
+        }
+        
+    }
+
+    public void Upgrade()
+    {
+        if (database.CanUpgrade())
+        {
+            database.Upgrade();
+            uiController.Upgrade();
+        }
+    }
+
+    public void DropAxe()
+    {
+        //Instantiate(axe);
+    }
+
+    public interface InventoryButtonClickedCallback
+    {
+        void Sort();
+        void Upgrade();
+        void DropAxe();
+    }
 }
-
-

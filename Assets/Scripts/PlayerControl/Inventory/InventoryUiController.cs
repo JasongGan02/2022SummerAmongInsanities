@@ -6,49 +6,71 @@ using TMPro;
 
 public class InventoryUiController
 {
+    private int slotIndex = 0;
+
     private int defaultNumberOfRow;
     private GameObject defaultRow;
+    private GameObject extraRow;
     private GameObject inventoryGrid;
     private GameObject template;
+    private Inventory.InventoryButtonClickedCallback buttonClickedCallback;
+
+    private GameObject hotbarContainer;
+    private GameObject inventoryContainer;
+    private GameObject actionsContainer;
+
     public InventoryUiController(
         int defaultNumberOfRow, 
         GameObject defaultRow,
+        GameObject extraRow,
         GameObject inventoryGrid,
-        GameObject template
+        GameObject template,
+        Inventory.InventoryButtonClickedCallback buttonClickedCallback
         )
     {
         this.defaultNumberOfRow = defaultNumberOfRow;
         this.defaultRow = defaultRow;
+        this.extraRow = extraRow;
         this.inventoryGrid = inventoryGrid;
         this.template = template;
+        this.buttonClickedCallback = buttonClickedCallback;
+
+        this.hotbarContainer = this.inventoryGrid.transform.Find("Hotbar").gameObject;
+        this.inventoryContainer = this.inventoryGrid.transform.Find("Inventory").gameObject;
+        this.actionsContainer = this.inventoryGrid.transform.Find("Actions").gameObject;
     }
 
-    public void SetupGrid()
+    public void SetupUi()
     {
-        for (int i = 0; i < defaultNumberOfRow; i++)
+        {
+            GameObject hotbar = GameObject.Instantiate(defaultRow);
+            for (int i = 0; i < hotbar.transform.childCount; i++)
+            {
+                hotbar.transform.GetChild(i).gameObject.name = "slot" + slotIndex++;
+            }
+            hotbar.transform.SetParent(hotbarContainer.transform);
+            RectTransform rowRectTransform = hotbar.GetComponent<RectTransform>();
+            rowRectTransform.anchoredPosition = new Vector2(600, -50);
+        }
+
+        for (int i = 0; i < defaultNumberOfRow - 1; i++)
         {
             GameObject row = GameObject.Instantiate(defaultRow);
-            row.transform.SetParent(inventoryGrid.transform);
+            for (int j = 0; j < row.transform.childCount; j++)
+            {
+                row.transform.GetChild(j).gameObject.name = "slot" + slotIndex++;
+            }
+            row.transform.SetParent(inventoryContainer.transform);
             RectTransform rowRectTransform = row.GetComponent<RectTransform>();
             rowRectTransform.anchoredPosition = new Vector2(600, -50 + 120 * i);
         }
 
-        int slotIndex = 0;
-        for (int i = 0; i < inventoryGrid.transform.childCount; i++)
-        {
-            GameObject row = inventoryGrid.transform.GetChild(i).gameObject;
-            for (int j = 0; j < row.transform.childCount; j++)
-            {
-                GameObject slot = row.transform.GetChild(j).gameObject;
-                slot.name = "slot" + slotIndex++;
-            }
-        }
+        Button sortButton = actionsContainer.transform.Find("Sort").GetComponent<Button>();
+        Button upgradeButton = actionsContainer.transform.Find("Upgrade").GetComponent<Button>();
 
-        /*GameObject background = Instantiate(this.background);
-        RectTransform backgroundRectTransform = background.GetComponent<RectTransform>();
-        background.GetComponent<RectTransform>().sizeDelta = new Vector2(backgroundRectTransform.sizeDelta.x, 120 * defaultNumberOfRow);
-        background.transform.SetParent(inventoryGrid.transform);
-        backgroundRectTransform.anchoredPosition = new Vector2(600, -50);*/
+        sortButton.onClick.AddListener(OnSortButtonClicked);
+        upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+
         ToggleUi();
     }
 
@@ -61,27 +83,57 @@ public class InventoryUiController
             GameObject.Destroy(child.gameObject);
         }
 
-        GameObject slotContent = GameObject.Instantiate(template);
-        slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.droppedItem.GetComponent<SpriteRenderer>().sprite;
-        slotContent.GetComponent<ItemInteractionHandler>().collectibleItem = slot.item;
-        slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = slot.count.ToString();
-        slotContent.transform.SetParent(slotUi.transform);
-        slotContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        if (!slot.IsEmpty)
+        {
+            GameObject slotContent = GameObject.Instantiate(template);
+            slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.droppedItem.GetComponent<SpriteRenderer>().sprite;
+            slotContent.GetComponent<ItemInteractionHandler>().collectibleItem = slot.item;
+            slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = slot.count.ToString();
+            slotContent.transform.SetParent(slotUi.transform);
+            slotContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        }
     }
 
     public void ToggleUi()
     {
-        bool isActive = inventoryGrid.transform.GetChild(1).gameObject.activeSelf;
-        for (int i = 1; i < inventoryGrid.transform.childCount; i++)
-        {
-            inventoryGrid.transform.GetChild(i).gameObject.SetActive(!isActive);
-        }
+        bool isActive = inventoryContainer.activeSelf;
+        inventoryContainer.SetActive(!isActive);
+        actionsContainer.SetActive(!isActive);
 
         PlayerStatusRepository.SetIsViewingUi(!isActive);
     }
 
+    public void Upgrade()
+    {
+        GameObject row = GameObject.Instantiate(extraRow);
+        for (int i = 0; i < row.transform.childCount; i++)
+        {
+            row.transform.GetChild(i).gameObject.name = "slot" + slotIndex++;
+        }
+        row.transform.SetParent(inventoryContainer.transform);
+        RectTransform rowRectTransform = row.GetComponent<RectTransform>();
+        rowRectTransform.anchoredPosition = new Vector2(600, -50 - 120 * (inventoryContainer.transform.childCount - 1));
+    }
+
     private GameObject GetInventorySlotUiByIndex(int index)
     {
-        return inventoryGrid.transform.GetChild(index / 10).GetChild(index % 10).gameObject;
+        if (index < 10)
+        {
+            return hotbarContainer.transform.GetChild(index / 10).GetChild(index % 10).gameObject;
+        }
+        else
+        {
+            return inventoryContainer.transform.GetChild(index / 10 - 1).GetChild(index % 10).gameObject;
+        }
+    }
+
+    private void OnSortButtonClicked()
+    {
+        buttonClickedCallback.Sort();
+    }
+
+    private void OnUpgradeButtonClicked()
+    {
+        buttonClickedCallback.Upgrade();
     }
 }

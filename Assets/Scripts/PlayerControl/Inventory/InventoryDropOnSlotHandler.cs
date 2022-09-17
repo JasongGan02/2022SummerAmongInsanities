@@ -16,7 +16,6 @@ public class InventoryDropOnSlotHandler : MonoBehaviour, IDropHandler, IPointerC
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("ON DROP");
         if (eventData.pointerDrag != null)
         {
             eventData.pointerDrag.transform.SetParent(gameObject.transform);

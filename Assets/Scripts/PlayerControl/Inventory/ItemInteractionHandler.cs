@@ -15,6 +15,8 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
     private GameObject canvas;
 
     private bool isInSlot = true;
+    // no need to update currentSlotIndex, because when the item is moved to another slot
+    // the slot template gets recreated. So the index is updated automatically onStart
     private int currentSlotIndex;
     private bool shouldListenForRightClick = false;
 
@@ -40,26 +42,24 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
     {
         if (shouldListenForRightClick)
         {
-            Debug.Log("handling slot click. Slot index = " + args.slotIndex);
-            Debug.Log("The dragged item = " + collectibleItem.name);
             if (args.isShiftDown)
             {
                 int currentCount = inventory.GetInventorySlotAtIndex(currentSlotIndex).count;
-                PartiallyMoveToAnotherSlot(args.slotIndex, currentCount == 1 ? 1 : currentCount / 2);
+                PartiallyMoveToAnotherSlot(args.slotIndex, currentCount == 1 ? 1 : currentCount / 2, false);
             }
             else
             {
-                PartiallyMoveToAnotherSlot(args.slotIndex, 1);
+                PartiallyMoveToAnotherSlot(args.slotIndex, 1, false);
             }
         }
     }
 
     public void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
-        Debug.Log(args.slotIndex);
         if (args.slotIndex == currentSlotIndex)
         {
             Debug.Log("using " + collectibleItem.name);
+            Debug.Log("currentSlotIndex " + currentSlotIndex);
         }
         
     }
@@ -80,7 +80,6 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         canvasGroup.blocksRaycasts = true;
         shouldListenForRightClick = false;
         PlayerStatusRepository.SetIsViewingUi(false);
-        Debug.Log("ON END DRAG");
         inventory.RemoveSlotRightClickedHandler(HandleSlotRightClickEvent);
         Invoke("RemoveItemFromInventoryIfNotInSlot", 0.01f);
     }
@@ -108,21 +107,31 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
     public void OnMovedToAnotherSlot(int anotherSlotIndex)
     {
         isInSlot = true;
-        inventory.SwapItems(currentSlotIndex, anotherSlotIndex);
-        currentSlotIndex = anotherSlotIndex;
+
+        InventorySlot fromSlot = inventory.GetInventorySlotAtIndex(currentSlotIndex);
+        InventorySlot toSlot = inventory.GetInventorySlotAtIndex(anotherSlotIndex);
+        if (toSlot.IsEmpty || fromSlot.item.name == toSlot.item.name)
+        {
+            PartiallyMoveToAnotherSlot(anotherSlotIndex, fromSlot.count, true);
+        }
+        else
+        {
+            inventory.SwapItems(currentSlotIndex, anotherSlotIndex);
+        }
     }
 
-    private void PartiallyMoveToAnotherSlot(int anotherSlotIndex, int amount)
+    private void PartiallyMoveToAnotherSlot(int anotherSlotIndex, int amount, bool shouldUpdateCurrentIndex)
     {
-        if (inventory.MoveItems(currentSlotIndex, anotherSlotIndex, amount))
+        int remainingItemCount = inventory.MoveItems(currentSlotIndex, anotherSlotIndex, amount, shouldUpdateCurrentIndex);
+        if (remainingItemCount >= 0)
         {
             TMP_Text countText = gameObject.transform.Find("Count").GetComponent<TMP_Text>();
-            countText.text = (int.Parse(countText.text) - amount).ToString();
+            countText.text = remainingItemCount.ToString();
 
-            if (countText.text == "0")
+            if (remainingItemCount == 0)
             {
                 OnEndDrag(new PointerEventData(EventSystem.current));
-                Destroy(gameObject);
+                // no need to destroy the game object here since it will be handle is OnEndDrag
             }
         }
     }
