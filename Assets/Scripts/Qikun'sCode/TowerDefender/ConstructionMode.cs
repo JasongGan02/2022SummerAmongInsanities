@@ -200,4 +200,9 @@ public class ConstructionMode : MonoBehaviour
             towerType = Constants.TowerType.StoneWall;
         }
     }
+
+    public void SetConstructionMode(bool status)
+    {
+        isInConstructionMode = status;
+    }
 }
