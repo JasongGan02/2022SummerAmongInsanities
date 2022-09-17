@@ -10,6 +10,7 @@ public class ConstructionMode : MonoBehaviour
     private bool isInConstructionMode = false;
     private Constants.TowerType towerType = Constants.TowerType.noShadow;
     private GameObject ShadowObj;
+    private CoreArchitecture coreArchitecture;
     
     [SerializeField] List<GameObject> Towers;
     [SerializeField] GameObject ConstructionUI;
@@ -21,6 +22,7 @@ public class ConstructionMode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        coreArchitecture = FindObjectOfType<CoreArchitecture>();
         MaxEnergy = 100;
         CurrentEnergy = 0;
         SetEnergyText();
@@ -41,15 +43,12 @@ public class ConstructionMode : MonoBehaviour
         {
             ExitConstruction();
         }
-        
-        
     }
 
     void EnterConstruction()
     {
-        // display the construction UI
-        ConstructionUI.SetActive(true);
-        
+        ConstructionUI.SetActive(true);             // display the construction UI
+        coreArchitecture.OpenConstructionMode();
         UpdateTowerType();
 
         if(!ShadowObj)
@@ -87,7 +86,7 @@ public class ConstructionMode : MonoBehaviour
                 ShadowObj.transform.position = downRay.point;
                 ShadowObj.transform.position += new Vector3(0, ShadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2 + 0.03f, downRay.transform.position.z);
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
-                if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus()){
+                if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange()){
                     if(CheckEnergyAvailableForConstruction())
                     {
                         shadowScript.PlaceTower();
@@ -105,10 +104,10 @@ public class ConstructionMode : MonoBehaviour
 
     void ExitConstruction()
     {
-        // hide the construction UI
-        ConstructionUI.SetActive(false);
-        // hide the image in under the cursor
-        towerType = Constants.TowerType.noShadow;
+        
+        ConstructionUI.SetActive(false);                // hide the construction UI
+        towerType = Constants.TowerType.noShadow;       // hide the image in under the cursor
+        coreArchitecture.CloseConstructionMode();
 
         Destroy(ShadowObj);
         
