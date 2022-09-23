@@ -19,13 +19,16 @@ public class InventoryUiController
     private GameObject inventoryContainer;
     private GameObject actionsContainer;
 
+    private UIViewStateManager uiViewStateManager;
+
     public InventoryUiController(
         int defaultNumberOfRow, 
         GameObject defaultRow,
         GameObject extraRow,
         GameObject inventoryGrid,
         GameObject template,
-        Inventory.InventoryButtonClickedCallback buttonClickedCallback
+        Inventory.InventoryButtonClickedCallback buttonClickedCallback,
+        UIViewStateManager uiViewStateManager
         )
     {
         this.defaultNumberOfRow = defaultNumberOfRow;
@@ -38,6 +41,15 @@ public class InventoryUiController
         this.hotbarContainer = this.inventoryGrid.transform.Find("Hotbar").gameObject;
         this.inventoryContainer = this.inventoryGrid.transform.Find("Inventory").gameObject;
         this.actionsContainer = this.inventoryGrid.transform.Find("Actions").gameObject;
+
+        this.uiViewStateManager = uiViewStateManager;
+
+        this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateInventoryUi;
+    }
+
+    ~InventoryUiController()
+    {
+        this.uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateInventoryUi;
     }
 
     public void SetupUi()
@@ -71,7 +83,7 @@ public class InventoryUiController
         sortButton.onClick.AddListener(OnSortButtonClicked);
         upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
 
-        ToggleUi();
+        SetUiActive(false);
     }
 
     public void UpdateSlotUi(int index, InventorySlot slot)
@@ -94,13 +106,19 @@ public class InventoryUiController
         }
     }
 
-    public void ToggleUi()
+    private void UpdateInventoryUi(object sender, UIBeingViewed ui)
     {
-        bool isActive = inventoryContainer.activeSelf;
-        inventoryContainer.SetActive(!isActive);
-        actionsContainer.SetActive(!isActive);
+        bool isActive = ui == UIBeingViewed.Inventory;
 
-        PlayerStatusRepository.SetIsViewingUi(!isActive);
+        SetUiActive(isActive);
+    }
+
+    public void SetUiActive(bool isActive)
+    {
+        inventoryContainer.SetActive(isActive);
+        actionsContainer.SetActive(isActive);
+
+        PlayerStatusRepository.SetIsViewingUi(isActive);
     }
 
     public void Upgrade()

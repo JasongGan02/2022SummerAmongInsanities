@@ -32,6 +32,10 @@ public static class Constants
 
         public static string PICK_UP_DETECTOR = "PickUpDetector";
         public static string INVENTORY_GRID = "InventoryUI";
+        public static string BG = "BG";
+        public static string SUN = "Sun";
+        public static string NIGHT_BACKGROUND = "NightBackground";
+        public static string TIME_TEXT = "TimeText";
     }
 
 
