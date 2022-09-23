@@ -10,12 +10,14 @@ public class ConstructionShadows : MonoBehaviour
     private uint CollisionCount = 0;
     private float PlaceDistance = 0;
     private SpriteRenderer ShadowSpriteRenderer;
+    private TowerContainer towerContainer;
     private Color OriginalColor;
     private bool isPlaceAble = false;
     void Start()
     {
         ShadowSpriteRenderer = GetComponent<SpriteRenderer>();
         OriginalColor = ShadowSpriteRenderer.color;
+        towerContainer = FindObjectOfType<TowerContainer>();
     }
 
     // Update is called once per frame
@@ -33,7 +35,8 @@ public class ConstructionShadows : MonoBehaviour
     }
 
     public void PlaceTower(){
-        Instantiate(TargetTower, transform.position, transform.rotation);
+        var instance = Instantiate(TargetTower, transform.position, transform.rotation);
+        instance.transform.parent = towerContainer.gameObject.transform;
     }
 
     private void UpdatePlaceStatus(){
