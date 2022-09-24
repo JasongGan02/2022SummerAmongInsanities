@@ -83,8 +83,12 @@ public class ConstructionMode : MonoBehaviour
             }
 
             if(ShadowObj && downRay){
+                // set shadow object's position
                 ShadowObj.transform.position = downRay.point;
                 ShadowObj.transform.position += new Vector3(0, ShadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2 + 0.03f, downRay.transform.position.z);
+                // align object's X position
+                ShadowObj.transform.position = new Vector3(downRay.transform.position.x, ShadowObj.transform.position.y, ShadowObj.transform.position.z);
+                //ShadowObj.transform.position = new Vector3(0,0,0);
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
                 if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange()){
                     if(CheckEnergyAvailableForConstruction())
@@ -111,7 +115,6 @@ public class ConstructionMode : MonoBehaviour
 
         Destroy(ShadowObj);
         
-
     }
     // Update UI energy text
     void SetEnergyText()
