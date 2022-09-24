@@ -532,6 +532,7 @@ MonoBehaviour:
   extraRow: {fileID: 961959249126568429, guid: daf04902d0c29ef4abfc6e1ffe52a43a, type: 3}
   template: {fileID: 169284352082792497, guid: 849c4e2ac3781c14cac1e7979200eaf4, type: 3}
   background: {fileID: 0}
+  axe: {fileID: 0}
   defaultNumberOfRow: 2
   maxExtraRow: 4
 --- !u!1 &7716306966358594839

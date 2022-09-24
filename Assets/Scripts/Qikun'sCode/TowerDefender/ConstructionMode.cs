@@ -11,6 +11,7 @@ public class ConstructionMode : MonoBehaviour
     private Constants.TowerType towerType = Constants.TowerType.noShadow;
     private GameObject ShadowObj;
     private CoreArchitecture coreArchitecture;
+    private UIViewStateManager uiViewStateManager;
     
     [SerializeField] List<GameObject> Towers;
     [SerializeField] GameObject ConstructionUI;
@@ -23,19 +24,22 @@ public class ConstructionMode : MonoBehaviour
     void Start()
     {
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         MaxEnergy = 100;
         CurrentEnergy = 0;
         SetEnergyText();
+
+        uiViewStateManager.UpdateUiBeingViewedEvent += UpdateConstructionUI;
+    }
+
+    private void OnDestroy()
+    {
+        uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateConstructionUI;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.C))
-        {
-            isInConstructionMode = !isInConstructionMode;
-        }
-
         if(isInConstructionMode)
         {
             EnterConstruction();
@@ -43,6 +47,11 @@ public class ConstructionMode : MonoBehaviour
         {
             ExitConstruction();
         }
+    }
+
+    private void UpdateConstructionUI(object sender, UIBeingViewed ui)
+    {
+        isInConstructionMode = ui == UIBeingViewed.Construction;
     }
 
     void EnterConstruction()

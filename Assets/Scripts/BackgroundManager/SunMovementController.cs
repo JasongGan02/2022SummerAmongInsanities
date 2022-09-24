@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SunMovementController : MonoBehaviour
+{
+    [SerializeField] private float heightOffset = 14.1f;
+    [SerializeField] private float height = 7f;
+    [SerializeField] private float radius = 13f;
+    private float speed;
+    private float dayTimeInHour;
+
+    private Camera mainCamera;
+    private TimeSystemManager timeSystemManager;
+
+    private float timeCounter = -Mathf.PI / 2;
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+
+        dayTimeInHour = timeSystemManager.GetDayTimeLengthInHour();
+        speed = Mathf.PI / dayTimeInHour;
+    }
+    private void OnEnable()
+    {
+        timeCounter = -Mathf.PI / 2;
+    }
+
+    private void Update()
+    {
+        timeCounter += Time.deltaTime * speed;
+        var x = Mathf.Sin(timeCounter) * radius;
+        var y = Mathf.Cos(timeCounter) * height;
+        //mainCamera.transform.position.x
+        transform.localPosition = new Vector2(x + mainCamera.transform.position.x, y + heightOffset);
+    }
+}

@@ -26,7 +26,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     void Awake()
     {
         inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
-
         database = new InventoryDatabase(defaultNumberOfRow, maxExtraRow);
         uiController = new InventoryUiController(
             defaultNumberOfRow,
@@ -34,7 +33,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             extraRow,
             inventoryGrid,
             template,
-            this
+            this,
+            FindObjectOfType<UIViewStateManager>()
             );
 
         uiController.SetupUi();
@@ -46,10 +46,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B)) {
-            uiController.ToggleUi();
-        }
-
         HandleHotbarKeyPress();
     }
 
