@@ -313,10 +313,11 @@ GameObject:
   - component: {fileID: 6647711791749533986}
   - component: {fileID: 6647711791749533987}
   - component: {fileID: 6647711791749533988}
-  - component: {fileID: 6647711791749533991}
   - component: {fileID: 7023852002014492416}
+  - component: {fileID: 6647711791749533991}
   - component: {fileID: 4038972269979073815}
   - component: {fileID: 3111690382522566145}
+  - component: {fileID: 3754338421075949332}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -440,31 +441,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &6647711791749533991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647711791749533985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3be6f15fb708d6e44860c1a3ccb633df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  runSpeed: 3.5
-  runSpeedmodifier: 2
-  jumpHeight: 10
-  excavateCoeff: 1
-  totalJumps: 2
-  groundCheckLeft: {fileID: 6647711790814027598}
-  groundCheckCenter: {fileID: 1012655923350585124}
-  groundCheckRight: {fileID: 8736707469448316008}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  facingRight: 1
-  range: 0.05
 --- !u!68 &7023852002014492416
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -490,6 +466,31 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &6647711791749533991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647711791749533985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be6f15fb708d6e44860c1a3ccb633df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 3.5
+  runSpeedmodifier: 2
+  jumpHeight: 10
+  excavateCoeff: 1
+  totalJumps: 2
+  groundCheckLeft: {fileID: 6647711790814027598}
+  groundCheckCenter: {fileID: 1012655923350585124}
+  groundCheckRight: {fileID: 8736707469448316008}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  facingRight: 1
+  range: 0.05
 --- !u!114 &4038972269979073815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,6 +536,21 @@ MonoBehaviour:
   axe: {fileID: 0}
   defaultNumberOfRow: 2
   maxExtraRow: 4
+--- !u!114 &3754338421075949332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647711791749533985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99fef4a4e0413924bb88dd25278a9d20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerHP: 10
+  PlayerStrength: 2
+  PlayerSpeed: 2
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0

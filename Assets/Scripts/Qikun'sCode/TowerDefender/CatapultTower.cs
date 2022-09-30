@@ -13,10 +13,12 @@ public class CatapultTower : MonoBehaviour
     float AtkTimer;        // Timer
     bool isEnemySpotted;
     EnemyContainer enemyContainer;
+    Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         enemyContainer = FindObjectOfType<EnemyContainer>();
+        animator = GetComponent<Animator>();
         isEnemySpotted = false;
         AtkTimer = 0f;
     }
@@ -30,11 +32,14 @@ public class CatapultTower : MonoBehaviour
             AtkTimer += Time.deltaTime * AtkSpeed;
             if(AtkTimer >= AtkIntervalTime)
             {
+                animator.Play("Catapult_Attack",-1,0f);
                 FireToEnemy(enemyTransform);
                 AtkTimer = 0f;
             }
             
         }
+
+        
     }
 
     // 目前是在数组里找到第一个进入玩家范围的敌人

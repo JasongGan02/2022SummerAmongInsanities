@@ -151,4 +151,4 @@ MonoBehaviour:
   bullet_speed: 3
   AtkSpeed: 3
   AtkIntervalTime: 2
-  atkDirection: 0
+  atkDirection: 1
