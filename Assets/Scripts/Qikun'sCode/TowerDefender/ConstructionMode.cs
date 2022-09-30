@@ -69,6 +69,17 @@ public class ConstructionMode : MonoBehaviour
 
     }
 
+    void ExitConstruction()
+    {
+        
+        ConstructionUI.SetActive(false);                // hide the construction UI
+        towerType = Constants.TowerType.noShadow;       // hide the image in under the cursor
+        coreArchitecture.CloseConstructionMode();
+
+        Destroy(ShadowObj);
+        
+    }
+
     // Generating current tower shadow under player's mouse position
     void GeneratingConstructionShadow()
     {
@@ -113,18 +124,6 @@ public class ConstructionMode : MonoBehaviour
         }
     }
 
-
-
-    void ExitConstruction()
-    {
-        
-        ConstructionUI.SetActive(false);                // hide the construction UI
-        towerType = Constants.TowerType.noShadow;       // hide the image in under the cursor
-        coreArchitecture.CloseConstructionMode();
-
-        Destroy(ShadowObj);
-        
-    }
     // Update UI energy text
     void SetEnergyText()
     {
