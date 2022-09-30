@@ -7,6 +7,7 @@ public class Zombie : MonoBehaviour
     private Playermovement player;
     private TowerContainer towerContainer;
     private float movingSpeed = 1;
+    private float DashRange = 5;
     bool isFindTower;
     // Start is called before the first frame update
     void Start()
@@ -31,7 +32,7 @@ public class Zombie : MonoBehaviour
         
         if(isFindTower)
         {
-            if(distance_to_player <= distance_to_nearest_tower)
+            if(distance_to_player <= distance_to_nearest_tower) // consider player part
             {
                 if(distance_to_player > 1)
                 {
@@ -59,6 +60,21 @@ public class Zombie : MonoBehaviour
         {
             // only consider player position
         }
+    }
+
+    IEnumerator DashToTarget(Transform target)
+    {
+        // Move back a littler
+        for(int i=0; i<100; i++)
+        {
+            print("moveing to " + target.position);
+            yield return null;
+        }
+        // Then dash to target
+
+
+        print("Skill over");
+
     }
 
     // Approaching target with moving speed, this will be complicated when the land becomes complex
