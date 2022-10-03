@@ -149,5 +149,5 @@ MonoBehaviour:
   AtkRange: 5
   AtkSpeed: 3
   AtkIntervalTime: 2
-  bullet_speed: 10
+  bullet_speed: 2
   bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}

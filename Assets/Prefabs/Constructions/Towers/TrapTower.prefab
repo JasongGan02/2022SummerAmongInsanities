@@ -132,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.45, y: 0.45}
   m_EdgeRadius: 0
 --- !u!114 &2844561520478345544
 MonoBehaviour:
@@ -151,4 +151,4 @@ MonoBehaviour:
   bullet_speed: 3
   AtkSpeed: 3
   AtkIntervalTime: 2
-  atkDirection: 0
+  atkDirection: 1
