@@ -212,7 +212,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     {
         if (index > 9) return;
 
-        GameObject slot = hotbar.transform.GetChild(index).gameObject;
+        GameObject slot = hotbar.transform.GetChild(0).GetChild(index).gameObject;
         if (slot.transform.childCount > 0)
         {
             eventBus.OnSlotLeftClicked(index);

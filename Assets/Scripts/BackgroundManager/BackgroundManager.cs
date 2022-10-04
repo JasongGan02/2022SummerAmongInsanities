@@ -1,20 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class BackgroundManager : MonoBehaviour
 {
     private GameObject sun;
-    private GameObject dayBackground;
-    private GameObject nightBackground;
+    private GameObject backgroundLight;
 
     private TimeSystemManager timeSystemManager;
     // Start is called before the first frame update
     void Awake()
     {
-        dayBackground = GameObject.Find(Constants.Name.BG);
-        nightBackground = GameObject.Find(Constants.Name.NIGHT_BACKGROUND);
         sun = GameObject.Find(Constants.Name.SUN);
+        backgroundLight = GameObject.Find(Constants.Name.BACKGROUND_LIGHT);
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
 
         timeSystemManager.OnDayStartedHandler += OnDayStarted;
@@ -29,15 +28,13 @@ public class BackgroundManager : MonoBehaviour
 
     private void OnDayStarted()
     {
-        dayBackground.SetActive(true);
+        //backgroundLight.GetComponent<Light2D>().intensity = 1f;
         sun.SetActive(true);
-        nightBackground.SetActive(false);
     }
 
     private void OnNightStarted()
     {
-        dayBackground.SetActive(false);
+        //backgroundLight.GetComponent<Light2D>().intensity = 0.2f;
         sun.SetActive(false);
-        nightBackground.SetActive(true);
     }
 }
