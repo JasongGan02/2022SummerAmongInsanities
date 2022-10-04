@@ -52,4 +52,9 @@ public class CoreArchitecture : MonoBehaviour
         print("Player is out of construction range");
         return false;
     }
+
+    public float GetConstructableDistance()
+    {
+        return Constructable_Distance;
+    }
 }
