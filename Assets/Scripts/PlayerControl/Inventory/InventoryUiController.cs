@@ -110,15 +110,17 @@ public class InventoryUiController
     {
         bool isActive = ui == UIBeingViewed.Inventory;
 
-        SetUiActive(isActive);
+        SetUiActive(isActive, ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Null);
     }
 
-    public void SetUiActive(bool isActive)
+    public void SetUiActive(bool isInventoryActive, bool isHotbarActive = true)
     {
-        inventoryContainer.SetActive(isActive);
-        actionsContainer.SetActive(isActive);
+        inventoryContainer.SetActive(isInventoryActive);
+        actionsContainer.SetActive(isInventoryActive);
 
-        PlayerStatusRepository.SetIsViewingUi(isActive);
+        PlayerStatusRepository.SetIsViewingUi(isInventoryActive);
+
+        hotbarContainer.SetActive(isHotbarActive);
     }
 
     public void Upgrade()

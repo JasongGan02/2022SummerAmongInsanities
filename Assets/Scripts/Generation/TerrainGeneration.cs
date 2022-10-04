@@ -3,6 +3,13 @@ using UnityEngine;
 using System.Collections.Generic;
 public class TerrainGeneration : MonoBehaviour
 {
+    [Header("Lighting")]
+    public Texture2D lightMap;
+    public Material lightShader;
+    //public float lightThreshold;
+    //public float lightRadius = 7f;
+    List<Vector2Int> unlitBlocks = new();
+
     [Header("Tile Atlas")]
     public TileAtlas tileAtlas;
     public float seed;
@@ -27,6 +34,7 @@ public class TerrainGeneration : MonoBehaviour
 
     [Header("Generation Settings")]
     public int worldSize = 100;
+    public float height;
     public int chunkSize = 16;
     public bool generateCave = true;
     public int dirtLayerHeight = 5;
@@ -56,10 +64,126 @@ public class TerrainGeneration : MonoBehaviour
     private void Start()
     {
         seed = Random.Range(-10000, 10000);
+        InitializeLightMapTexture();
         DrawTexture();
         CreateChunks();
         GenerateTerrain();
+        //LightBlocks();
         ChangeSize();
+    }
+
+    private void InitializeLightMapTexture()
+    {
+        Debug.Log(Camera.main.pixelRect.width);
+        lightMap = new Texture2D(10, 10);
+        lightMap.filterMode = FilterMode.Point;
+        lightShader.SetTexture("_ShadowTex", lightMap);
+
+       
+        lightMap.SetPixel(5, 5, Color.red);
+
+        lightMap.Apply();
+    }
+
+    private void LightBlocks()
+    {
+        /*for (int x = 0; x < worldSize; x++)
+        {
+            for (int y = 0; y < worldSize; y++)
+            {
+                if (lightMap.GetPixel(x, y) == Color.white)
+                {
+                    LightBlock(x, y, 1f, 0);
+                }
+            }
+        }*/
+    }
+
+    private void LightBlock(int x, int y, float intensity, int iteration)
+    {
+        /*if (iteration < lightRadius)
+        {
+            lightMap.SetPixel(x, y, Color.white * intensity);
+
+            for (int nx = x - 1; nx < x + 2; nx++)
+            {
+                for (int ny = y - 1; ny < y + 2; ny++)
+                {
+                    if (!(nx == x && ny == y))
+                    {
+                        float dist = Vector2.Distance(new Vector2(x, y), new Vector2(nx, ny));
+                        float targetIntensity = Mathf.Pow(0.7f, dist) * intensity;
+                        Color targetTile = lightMap.GetPixel(nx, ny);
+                        if (targetTile != null && targetTile.r < targetIntensity)
+                        {
+                            LightBlock(nx, ny, targetIntensity, iteration + 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        lightMap.Apply();*/
+    }
+
+    private void RemoveLightSource(int x, int y)
+    {
+        /*unlitBlocks.Clear();
+        UnlightBlock(x, y, x, y);
+
+        List<Vector2Int> toRelight = new();
+        foreach (Vector2Int block in unlitBlocks)
+        {
+            for (int nx = x - 1; nx < x + 2; nx++)
+            {
+                for (int ny = y - 1; ny < y + 2; ny++)
+                {
+                    if (lightMap.GetPixel(nx, ny) != null)
+                    {
+                        if (lightMap.GetPixel(nx, ny).r > lightMap.GetPixel(block.x, block.y).r)
+                        {
+                            if (!toRelight.Contains(new Vector2Int(nx, ny)))
+                            {
+                                toRelight.Add(new Vector2Int(nx, ny));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach (Vector2Int source in toRelight)
+        {
+            LightBlock(source.x, source.y, lightMap.GetPixel(source.x, source.y).r, 0);
+        }
+
+        lightMap.Apply();*/
+    }
+
+    private void UnlightBlock(int x, int y, int initialX, int initialY)
+    {
+        /*if (Mathf.Abs(x - initialX) >= lightRadius || Mathf.Abs(y - initialY) >= lightRadius || unlitBlocks.Contains(new Vector2Int(x, y)))
+        {
+            return;
+        }
+
+        for (int nx = x - 1; nx < x + 2; nx++)
+        {
+            for (int ny = y - 1; ny < y + 2; ny++)
+            {
+                if (!(nx == x && ny == y))
+                {
+                    Color targetTile = lightMap.GetPixel(nx, ny);
+                    if (targetTile != null && targetTile.r < lightMap.GetPixel(x, y).r)
+                    {
+                        UnlightBlock(nx, ny, initialX, initialY);
+                    }
+                }
+            }
+        }
+
+        lightMap.SetPixel(x, y, Color.black);
+        unlitBlocks.Add(new Vector2Int(x, y));*/
     }
 
     public void DrawTexture()
@@ -114,7 +238,7 @@ public class TerrainGeneration : MonoBehaviour
         float mid = Mathf.Round(worldSize/2);
         for (int x = 0; x < worldSize; x++)
         {  
-            float height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier +heightAddition;
+            height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier +heightAddition;
             
             for (int y = 0; y < height; y++)
             {
@@ -179,6 +303,8 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+
+        //lightMap.Apply();
     }
     public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)
     {
@@ -211,8 +337,8 @@ public class TerrainGeneration : MonoBehaviour
     {
         var prefabs = tile.tilePrefabs;
 
-            float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
-            chunkCoord /= chunkSize;
+        float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
+        chunkCoord /= chunkSize;
 
         GameObject prefab = prefabs[(int)Random.Range(0, prefabs.Length)];
         GameObject gameObject = Instantiate(prefab);
@@ -220,5 +346,7 @@ public class TerrainGeneration : MonoBehaviour
         gameObject.name = tile.tileName;
         gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
         worldTiles.Add(gameObject.transform.position - (Vector3.one * 0.5f));
+
+        //lightMap.SetPixel(x, y, Color.black);
     }
 }

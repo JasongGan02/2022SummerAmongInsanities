@@ -45,3 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayToRealTimeInSecond: 24
+  dayStartHour: 5
+  nightStartHour: 18

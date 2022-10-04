@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Dirt
   maxStack: 99
-  itemType: 2
+  itemType: 1
   sizeRatio: 0.5
   droppedItem: {fileID: 1529614696198433121, guid: 0bdbc68a46d312041ad0fe01dcf88cc0, type: 3}
-  collectedItem: {fileID: 1529614696198433121, guid: a16d83dea08c47846bd059bd2a7bf113, type: 3}
+  healthPoint: 0
+  damage: 0

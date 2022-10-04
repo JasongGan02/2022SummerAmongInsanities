@@ -32,7 +32,6 @@ public class SunMovementController : MonoBehaviour
         timeCounter += Time.deltaTime * speed;
         var x = Mathf.Sin(timeCounter) * radius;
         var y = Mathf.Cos(timeCounter) * height;
-        //mainCamera.transform.position.x
         transform.localPosition = new Vector2(x + mainCamera.transform.position.x, y + heightOffset);
     }
 }
