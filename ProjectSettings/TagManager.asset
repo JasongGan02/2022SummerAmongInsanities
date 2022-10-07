@@ -9,6 +9,7 @@ TagManager:
   - resource
   - Undefined
   - enemy
+  - tower
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - resource
   - player
   - enemy
-  - 
+  - tower
   - 
   - 
   - 
