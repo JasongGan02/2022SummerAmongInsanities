@@ -80,6 +80,14 @@ public class CatapultTower : MonoBehaviour
     // Shoot a bullet to enemy transform
     void FireToEnemy(Transform enemyTransform)
     {
+        // rotate transform
+        if(enemyTransform.position.x>transform.position.x)
+        {
+            transform.eulerAngles = new Vector3(0,0,0);
+        }else
+        {
+            transform.eulerAngles = new Vector3(0,180,0);
+        }
         // Consider the direction of shooting bullet
         float deltaX = enemyTransform.position.x - transform.position.x;
         if(Mathf.Abs(deltaX)<= 0.01f)
