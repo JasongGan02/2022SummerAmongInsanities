@@ -19,12 +19,15 @@ public class PlayerInteraction : MonoBehaviour
     private Playermovement pm;
     private Inventory inventory;
 
+    private ShadowGenerator shadowGenerator;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         pm = GetComponent<Playermovement>();
         inventory = GetComponent<Inventory>();
+        shadowGenerator = FindObjectOfType<ShadowGenerator>();
     }
 
     // Update is called once per frame
@@ -69,6 +72,8 @@ public class PlayerInteraction : MonoBehaviour
                         if (clickHit.transform.gameObject != targetObject)
                         {
                             targetObject = tempTargetObject;
+                            Debug.Log("local: " + targetObject.transform.localPosition);
+                            Debug.Log("global: " + targetObject.transform.position);
                             pm.excavateCoeff = 0.1f;
                             StartTimer();
                         }
@@ -166,6 +171,8 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (target == null) return;
 
+        Vector2Int coord = new Vector2Int((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
+        shadowGenerator.OnTileBroke(coord);
         BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {

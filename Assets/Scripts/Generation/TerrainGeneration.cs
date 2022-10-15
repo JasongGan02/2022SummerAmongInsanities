@@ -1,15 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 public class TerrainGeneration : MonoBehaviour
-{
-    [Header("Lighting")]
-    public Texture2D lightMap;
-    public Material lightShader;
-    //public float lightThreshold;
-    //public float lightRadius = 7f;
-    List<Vector2Int> unlitBlocks = new();
-
+{    
     [Header("Tile Atlas")]
     public TileAtlas tileAtlas;
     public float seed;
@@ -52,78 +46,28 @@ public class TerrainGeneration : MonoBehaviour
 
 
     private GameObject[] worldChunks;
+
+    // TODO can be replaced by the below dictionary.
     private HashSet<Vector2> worldTiles = new HashSet<Vector2>();
+    
+    private Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
+    private ShadowGenerator shadowGenerator;
 
     private void OnValidate()
     {
         DrawTexture();
-        
     }
-
 
     private void Start()
     {
         seed = Random.Range(-10000, 10000);
-        InitializeLightMapTexture();
         DrawTexture();
         CreateChunks();
         GenerateTerrain();
-        //LightBlocks();
         ChangeSize();
-    }
 
-    private void InitializeLightMapTexture()
-    {
-        Debug.Log(Camera.main.pixelRect.width);
-        lightMap = new Texture2D(10, 10);
-        lightMap.filterMode = FilterMode.Point;
-        lightShader.SetTexture("_ShadowTex", lightMap);
-
-       
-        lightMap.SetPixel(5, 5, Color.red);
-
-        lightMap.Apply();
-    }
-
-    private void LightBlocks()
-    {
-        /*for (int x = 0; x < worldSize; x++)
-        {
-            for (int y = 0; y < worldSize; y++)
-            {
-                if (lightMap.GetPixel(x, y) == Color.white)
-                {
-                    LightBlock(x, y, 1f, 0);
-                }
-            }
-        }*/
-    }
-
-    private void LightBlock(int x, int y, float intensity, int iteration)
-    {
-        /*if (iteration < lightRadius)
-        {
-            lightMap.SetPixel(x, y, Color.white * intensity);
-
-            for (int nx = x - 1; nx < x + 2; nx++)
-            {
-                for (int ny = y - 1; ny < y + 2; ny++)
-                {
-                    if (!(nx == x && ny == y))
-                    {
-                        float dist = Vector2.Distance(new Vector2(x, y), new Vector2(nx, ny));
-                        float targetIntensity = Mathf.Pow(0.7f, dist) * intensity;
-                        Color targetTile = lightMap.GetPixel(nx, ny);
-                        if (targetTile != null && targetTile.r < targetIntensity)
-                        {
-                            LightBlock(nx, ny, targetIntensity, iteration + 1);
-                        }
-                    }
-                }
-            }
-        }
-
-        lightMap.Apply();*/
+        shadowGenerator = FindObjectOfType<ShadowGenerator>();
+        shadowGenerator.Initialize(worldTilesDictionary, worldSize);
     }
 
     private void RemoveLightSource(int x, int y)
@@ -232,10 +176,10 @@ public class TerrainGeneration : MonoBehaviour
             worldChunks[i] = newChunk;
         }
     }
-    
+
     public void GenerateTerrain()
     {
-        float mid = Mathf.Round(worldSize/2);
+        float mid = Mathf.Round(worldSize / 2);
         for (int x = 0; x < worldSize; x++)
         {  
             height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier +heightAddition;
@@ -262,19 +206,20 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     //top later of the terrain
                     tileSprites = tileAtlas.grass;
-
                 }
 
                 if (generateCave)
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        PlaceTile(tileSprites, x, y);
+                        GameObject tile = PlaceTile(tileSprites, x, y);
+                        worldTilesDictionary.Add(new Vector2Int(x, y), tile);
                     }
                 }
                 else
                 {
-                    PlaceTile(tileSprites, x, y);
+                    GameObject tile = PlaceTile(tileSprites, x, y);
+                    worldTilesDictionary.Add(new Vector2Int(x, y), tile);
                 }
 
                 //tree
@@ -303,8 +248,6 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
-
-        //lightMap.Apply();
     }
     public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)
     {
@@ -333,7 +276,7 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree, x, y);
     }
 
-    public void PlaceTile(TileClass tile, int x, int y)
+    public GameObject PlaceTile(TileClass tile, int x, int y)
     {
         var prefabs = tile.tilePrefabs;
 
@@ -347,6 +290,6 @@ public class TerrainGeneration : MonoBehaviour
         gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
         worldTiles.Add(gameObject.transform.position - (Vector3.one * 0.5f));
 
-        //lightMap.SetPixel(x, y, Color.black);
+        return gameObject;
     }
 }
