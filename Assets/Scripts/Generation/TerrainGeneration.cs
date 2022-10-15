@@ -67,7 +67,7 @@ public class TerrainGeneration : MonoBehaviour
         ChangeSize();
 
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
-        shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+        shadowGenerator?.Initialize(worldTilesDictionary, worldSize);
     }
 
     private void RemoveLightSource(int x, int y)
