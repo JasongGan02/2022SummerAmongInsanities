@@ -17,8 +17,6 @@ public class ShadowGenerator : MonoBehaviour
     public int skyLightHeight = 62;
     public int skyLightRange = 5;
 
-    List<Vector2Int> unlitBlocks = new();
-
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary = null;
     private GameObject player;
     private int worldWidthInBlock;
@@ -156,13 +154,14 @@ public class ShadowGenerator : MonoBehaviour
         this.transform.position = new Vector3(blockX, 0 + this.transform.position.y, 0);
     }
 
-    public void OnTileBroke(Vector2Int coord)
+    public void OnTileBroken(Vector2Int coord)
     {
         if (worldTilesDictionary.ContainsKey(coord))
         {
+            worldTilesDictionary.Remove(coord);
             if (coord.y >= skyLightHeight - skyLightRange)
             {
-                lightMap.SetPixel(coord.x, coord.y, Color.clear);
+                // lightMap.SetPixel(coord.x, coord.y, Color.clear);
 
                 for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
                 {
@@ -177,7 +176,6 @@ public class ShadowGenerator : MonoBehaviour
                 }
             }
             lightMap.Apply();
-            worldTilesDictionary.Remove(coord);
         }
 
         LightBlocks();

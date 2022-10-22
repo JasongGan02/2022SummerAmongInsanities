@@ -13,7 +13,9 @@ public class CollectibleObject : ScriptableObject
     public int maxStack;
     public ItemType itemType;
     public float sizeRatio;
+    // TODO Refactor
     public GameObject droppedItem;
+    public GameObject terrainTile;
 
     [HideInInspector]
     public int healthPoint;

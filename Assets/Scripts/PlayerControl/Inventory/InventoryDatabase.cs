@@ -73,6 +73,18 @@ public class InventoryDatabase
         return slot;
     }
 
+    public void RemoveItemByOne(int index)
+    {
+        if (inventory[index].item == null) return;
+
+        inventory[index].count -= 1;
+        if (inventory[index].count == 0)
+        {
+            inventory[index].item = null;
+            UpdateNextEmptySlot();
+        }
+    }
+
     public void SwapItems(int index1, int index2)
     {
         int tempCount = inventory[index2].count;

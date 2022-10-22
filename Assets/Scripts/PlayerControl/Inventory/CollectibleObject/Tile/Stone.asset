@@ -17,4 +17,6 @@ MonoBehaviour:
   itemType: 2
   sizeRatio: 0.5
   droppedItem: {fileID: 1306158573666937238, guid: c0b5849ae36dee54b9df0bb59e06d8de, type: 3}
-  collectedItem: {fileID: 1306158573666937238, guid: e6e7b0f80b913c44b9367972f739cc8e, type: 3}
+  terrainTile: {fileID: 1306158573666937238, guid: be13caefde161bd43a09a851be012380, type: 3}
+  healthPoint: 0
+  damage: 0
