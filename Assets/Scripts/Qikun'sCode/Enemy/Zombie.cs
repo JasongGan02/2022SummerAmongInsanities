@@ -10,6 +10,8 @@ public class Zombie : MonoBehaviour
     private float DashRange = 5;
     bool isFindTower;
     bool isTouchTower;
+    bool isFindPlayer;
+    bool isTouchPlayer;
     bool canUseAbility;
     bool is_alpha_reduce;
     int flickering_time = 0;
@@ -20,8 +22,12 @@ public class Zombie : MonoBehaviour
     {
         player = FindObjectOfType<Playermovement>();
         towerContainer = FindObjectOfType<TowerContainer>();
+
         isFindTower = false;
         isTouchTower = false;
+        isFindPlayer = false;
+        isTouchPlayer = false;
+
         canUseAbility = false;
         is_alpha_reduce = true;
     }
@@ -41,8 +47,6 @@ public class Zombie : MonoBehaviour
     // Dash only effects to tower
     IEnumerator Dash(Direction direction)
     {
-        
-        
         // flicker 5 times
         if(flickering_time <= 5)
         {
@@ -90,7 +94,12 @@ public class Zombie : MonoBehaviour
     {
         float distance_to_player = CalculateDistanceToPlayer();
         Transform nearest_tower = FindNearestTower();
-        float distance_to_nearest_tower = CalculateDistanceFromEnemyToTower(nearest_tower);
+        float distance_to_nearest_tower = float.MaxValue;
+        if(nearest_tower != transform){
+            distance_to_nearest_tower = CalculateDistanceFromEnemyToTower(nearest_tower);
+        }
+
+        SensePlayer();
 
         // dash to nearest tower
         if(distance_to_nearest_tower>=5 && distance_to_nearest_tower<=8)
@@ -107,7 +116,7 @@ public class Zombie : MonoBehaviour
             }
         }
         
-        if(isFindTower && !isTouchTower)
+        if((isFindTower || isFindPlayer) && !isTouchTower && !isTouchPlayer)
         {
             if(distance_to_player <= distance_to_nearest_tower) // consider player part
             {
@@ -139,6 +148,18 @@ public class Zombie : MonoBehaviour
         }
     }
 
+    // sense player's position, if less than certain distance, approaching player
+    void SensePlayer()
+    {
+        float distance = CalculateDistanceToPlayer();
+
+        if(distance <= 15)
+        {
+            isFindPlayer = true;
+        }else{
+            isFindPlayer = false;
+        }
+    }
 
 
     // Approaching target with moving speed, this will be complicated when the land becomes complex
@@ -189,7 +210,7 @@ public class Zombie : MonoBehaviour
         return distance;
     }
 
-    
+    // Calculate the distance between player and zombie
     float CalculateDistanceToPlayer()
     {
         Vector3 player_position = player.gameObject.transform.position;
@@ -212,6 +233,14 @@ public class Zombie : MonoBehaviour
             canUseAbility = false;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(0,0);
+        }else if(other.gameObject.tag == "Player")
+        {
+            isTouchPlayer = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
         }
     }
 
@@ -220,6 +249,8 @@ public class Zombie : MonoBehaviour
         if(other.gameObject.tag == "tower")
         {
             isTouchTower = false;
+        }else if(other.gameObject.tag == "Player"){
+            isTouchPlayer = false;
         }
     }
 }
