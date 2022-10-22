@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Dirt
   maxStack: 99
-  itemType: 1
+  itemType: 2
   sizeRatio: 0.5
   droppedItem: {fileID: 1529614696198433121, guid: 0bdbc68a46d312041ad0fe01dcf88cc0, type: 3}
+  terrainTile: {fileID: 1529614696198433121, guid: b6b02f02a6b43544ca6c5b2b64a67a0c, type: 3}
   healthPoint: 0
   damage: 0

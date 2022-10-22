@@ -7,7 +7,7 @@ public class UIViewStateManager : MonoBehaviour
 {
     public event EventHandler<UIBeingViewed> UpdateUiBeingViewedEvent;
 
-    private UIBeingViewed currentUI;
+    private static UIBeingViewed currentUI;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +31,11 @@ public class UIViewStateManager : MonoBehaviour
     {
         currentUI = currentUI == ui ? UIBeingViewed.Null : ui;
         UpdateUiBeingViewedEvent?.Invoke(this, currentUI);
+    }
+
+    public static bool isViewingUI()
+    {
+        return currentUI != UIBeingViewed.Null;
     }
 }
 

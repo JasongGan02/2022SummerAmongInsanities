@@ -107,7 +107,13 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
     }
 
-    public void RemoveItem(int index)
+    public void RemoveItemByOne(int index)
+    {
+        database.RemoveItemByOne(index);
+        UpdateSlotUi(index);
+    }
+
+    public void RemoveItemAndDrop(int index)
     {
         InventorySlot removedItem = database.RemoveItem(index);
         if (removedItem != null)

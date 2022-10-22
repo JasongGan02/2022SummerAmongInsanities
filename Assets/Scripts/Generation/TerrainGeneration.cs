@@ -50,7 +50,7 @@ public class TerrainGeneration : MonoBehaviour
     // TODO can be replaced by the below dictionary.
     private HashSet<Vector2> worldTiles = new HashSet<Vector2>();
     
-    private Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
+    [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
     private ShadowGenerator shadowGenerator;
 
     private void OnValidate()
@@ -67,7 +67,10 @@ public class TerrainGeneration : MonoBehaviour
         ChangeSize();
 
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
-        shadowGenerator?.Initialize(worldTilesDictionary, worldSize);
+        if (shadowGenerator != null)
+        {
+            shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+        }
     }
 
     private void RemoveLightSource(int x, int y)

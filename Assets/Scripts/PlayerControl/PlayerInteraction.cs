@@ -21,6 +21,26 @@ public class PlayerInteraction : MonoBehaviour
 
     private ShadowGenerator shadowGenerator;
 
+    [Header("tile placement")]
+    private InventorySlot currentSlotToBeUsed = null;
+    private GameObject currentTileGhost = null;
+    private int currentIndex = -1;
+    public int placeTileRange = 1;
+
+
+    private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
+    private Dictionary<Vector2Int, GameObject> worldTilesDictionary
+    {
+        get
+        {
+            if (_worldTilesDictionary == null)
+            {
+                _worldTilesDictionary = TerrainGeneration.worldTilesDictionary;
+            }
+            return _worldTilesDictionary;
+        }
+    }
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -30,14 +50,52 @@ public class PlayerInteraction : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
     }
 
+    private void OnEnable()
+    {
+        inventory.AddSlotLeftClickedHandler(HandleSlotLeftClickEvent);
+    }
+
+    private void OnDisable()
+    {
+        inventory.RemoveSlotLeftClickedHandler(HandleSlotLeftClickEvent);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        PickUpItem();
+        PickUpItemCheck();
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
-            BreakTile();
+            BreakTileCheck();
         }
+
+        PlaceTileCheck();
+        PlaceTileCancelCheck();
+    }
+
+    private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
+    {
+        InventorySlot slot = inventory.GetInventorySlotAtIndex(args.slotIndex);
+        currentIndex = args.slotIndex;
+        Debug.Log("PlayerInteraction: using " + slot.item.name);
+        switch (slot.item.itemType)
+        {
+            case ItemType.Material:
+                PrepareForPlaceTile(slot);
+                break;
+        }
+    }
+
+    private void PrepareForPlaceTile(InventorySlot slot)
+    {
+        currentSlotToBeUsed = slot;
+
+        if (currentTileGhost != null)
+        {
+            Destroy(currentTileGhost);
+        } 
+        currentTileGhost = Instantiate(currentSlotToBeUsed.item.droppedItem);
+        currentTileGhost.GetComponent<DroppedObjectController>().enabled = false;
     }
 
     private void StartTimer()
@@ -55,7 +113,7 @@ public class PlayerInteraction : MonoBehaviour
         return Time.time >= timeStamp;
     }
 
-    private void BreakTile()
+    private void BreakTileCheck()
     {
         if (Input.GetMouseButton(0))
         {
@@ -124,7 +182,7 @@ public class PlayerInteraction : MonoBehaviour
         ResetTimer();
     }
 
-    private void PickUpItem()
+    private void PickUpItemCheck()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
         if (hit.transform != null)
@@ -134,6 +192,98 @@ public class PlayerInteraction : MonoBehaviour
             {
                 resoureObject.PickingUp();
             }
+        }
+    }
+
+    private void PlaceTileCancelCheck()
+    {
+        if (currentSlotToBeUsed == null ||
+            currentSlotToBeUsed.count == 0 ||
+            Input.GetMouseButtonDown(1) || 
+            Input.GetMouseButtonDown(2) || 
+            UIViewStateManager.isViewingUI())
+        {
+            currentSlotToBeUsed = null;
+            if (currentTileGhost != null)
+            {
+                Destroy(currentTileGhost);
+                currentTileGhost = null;
+            }
+            currentIndex = -1;
+        }
+    }
+
+    private void PlaceTileCheck()
+    {
+        if (currentSlotToBeUsed != null)
+        {
+            TileGhostPlacementResult result = GetTileGhostPlacementResult();
+            currentTileGhost.transform.position = result.position;
+            if (CanPlaceTile(result))
+            {
+                currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    PlaceTile(result.position);
+                }
+            }
+            else
+            {
+                currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            }
+
+            
+        }
+    }
+
+    // TODO: inventory should have a map of CollectibleObject -> list of indices
+    // and pass this entry to this PlayerInteraction class,
+    // so that when the current slot is running out, it can automatically use the next available slot
+    private void PlaceTile(Vector2 position)
+    {
+        GameObject newTile = Instantiate(currentSlotToBeUsed.item.terrainTile);
+        newTile.transform.position = position;
+        newTile.transform.localScale = new Vector2(0.25f, 0.25f);
+        inventory.RemoveItemByOne(currentIndex);
+    }
+
+    private bool CanPlaceTile(TileGhostPlacementResult result)
+    {
+        return result.canPlaceTile && Vector2.Distance(transform.position, result.position) < placeTileRange;
+    }
+
+    private TileGhostPlacementResult GetTileGhostPlacementResult()
+    {
+        Vector2 mousePosition = GetMousePosition2D();
+        float x = GetSnappedCoordinate(mousePosition.x);
+        float y = GetSnappedCoordinate(mousePosition.y);
+
+        if (worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4)))) {
+            return new TileGhostPlacementResult(new Vector2(x, y), false);
+        } 
+        else
+        {
+            return new TileGhostPlacementResult(new Vector2(x, y), true);
+        }
+    }
+
+    private float GetSnappedCoordinate(float number)
+    {
+        switch (number % 1)
+        {
+            case float res when (res >= 0.25 && res < 0.5):
+                return (int)number + 0.375f;
+                
+            case float res when (res >= 0.5 && res < 0.75):
+                return (int)number + 0.625f;
+                
+            case float res when (res >= 0.75 && res < 1.0):
+                return (int)number + 0.875f;
+                
+            case float res when (res >= 0.0 && res < 0.25):
+                return (int)number + 0.125f;
+            default:
+                return -1; // impossible to get here
         }
     }
 
@@ -172,7 +322,7 @@ public class PlayerInteraction : MonoBehaviour
         if (target == null) return;
 
         Vector2Int coord = new Vector2Int((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
-        shadowGenerator.OnTileBroke(coord);
+        shadowGenerator.OnTileBroken(coord);
         BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {
@@ -182,5 +332,17 @@ public class PlayerInteraction : MonoBehaviour
         {
             Destroy(target);
         }
+    }
+}
+
+class TileGhostPlacementResult
+{
+    public Vector2 position;
+    public bool canPlaceTile;
+
+    public TileGhostPlacementResult(Vector2 position, bool canPlaceTile)
+    {
+        this.position = position;
+        this.canPlaceTile = canPlaceTile;
     }
 }

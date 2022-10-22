@@ -30,12 +30,6 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         canvas = GameObject.Find(Constants.Name.CANVAS);
 
         currentSlotIndex = GetSlotIndex(gameObject.transform.parent.name);
-        inventory.AddSlotLeftClickedHandler(HandleSlotLeftClickEvent);
-    }
-
-    private void OnDestroy()
-    {
-        inventory?.RemoveSlotLeftClickedHandler(HandleSlotLeftClickEvent);
     }
 
     private void HandleSlotRightClickEvent(object sender, InventoryEventBus.OnSlotRightClickedEventArgs args)
@@ -52,16 +46,6 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
                 PartiallyMoveToAnotherSlot(args.slotIndex, 1, false);
             }
         }
-    }
-
-    public void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
-    {
-        if (args.slotIndex == currentSlotIndex)
-        {
-            Debug.Log("using " + collectibleItem.name);
-            Debug.Log("currentSlotIndex " + currentSlotIndex);
-        }
-        
     }
 
     private int GetSlotIndex(string name)
@@ -88,7 +72,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
     {
         if (!isInSlot)
         {
-            inventory.RemoveItem(currentSlotIndex);
+            inventory.RemoveItemAndDrop(currentSlotIndex);
             Destroy(gameObject);
         }
     }

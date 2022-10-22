@@ -149,3 +149,4 @@ MonoBehaviour:
   collectibleObject: {fileID: 11400000, guid: 10e7577e88eed6b4fb670ec134430dd5, type: 2}
   speed: 0.2
   distanceThreshold: 0.1
+  amount: 1
