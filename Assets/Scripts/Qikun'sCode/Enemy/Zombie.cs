@@ -9,18 +9,84 @@ public class Zombie : MonoBehaviour
     private float movingSpeed = 1;
     private float DashRange = 5;
     bool isFindTower;
+    bool isTouchTower;
+    bool isFindPlayer;
+    bool isTouchPlayer;
+    bool canUseAbility;
+    bool is_alpha_reduce;
+    int flickering_time = 0;
+    enum Direction {right, left};
+    Direction dash_direction;
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<Playermovement>();
         towerContainer = FindObjectOfType<TowerContainer>();
+
         isFindTower = false;
+        isTouchTower = false;
+        isFindPlayer = false;
+        isTouchPlayer = false;
+
+        canUseAbility = false;
+        is_alpha_reduce = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        SenseNearestTarget();
+        if(canUseAbility)
+        {
+            StartCoroutine("Dash", dash_direction);
+        }else
+        {
+            SenseNearestTarget();
+        }
+    }
+
+    // Dash only effects to tower
+    IEnumerator Dash(Direction direction)
+    {
+        // flicker 5 times
+        if(flickering_time <= 5)
+        {
+            SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            float color_alpha = 0f;
+            float flickering_speed = 2;
+            if(is_alpha_reduce)
+            {
+                color_alpha = spriteRenderer.color.a-0.01f*flickering_speed;
+            }else
+            {
+                color_alpha = spriteRenderer.color.a+0.01f*flickering_speed;
+            }
+
+            if(color_alpha>=1 || color_alpha<=0)
+            {
+                is_alpha_reduce = !is_alpha_reduce;
+                flickering_time++;
+            }
+
+            spriteRenderer.color = new Color(1,1,1,color_alpha);
+            yield return null;
+        }else
+        {
+            if(direction == Direction.right)
+            {
+                Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+                rb.velocity = new Vector2(3,0);
+            }
+            if(direction == Direction.left)
+            {
+                Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+                rb.velocity = new Vector2(-3,0);
+            }
+            // dash to target
+            
+        }
+        
+
+        yield return null;
     }
 
     // Find nearest player or tower. When begin sense nearest target? 1. Under attack; 2. Find tower or player
@@ -28,9 +94,29 @@ public class Zombie : MonoBehaviour
     {
         float distance_to_player = CalculateDistanceToPlayer();
         Transform nearest_tower = FindNearestTower();
-        float distance_to_nearest_tower = CalculateDistanceFromEnemyToTower(nearest_tower);
+        float distance_to_nearest_tower = float.MaxValue;
+        if(nearest_tower != transform){
+            distance_to_nearest_tower = CalculateDistanceFromEnemyToTower(nearest_tower);
+        }
+
+        SensePlayer();
+
+        // dash to nearest tower
+        if(distance_to_nearest_tower>=5 && distance_to_nearest_tower<=8)
+        {
+            canUseAbility = true;
+            flickering_time = 0;
+            // get direction based on tower transform
+            if(nearest_tower.transform.position.x>transform.position.x)
+            {
+                dash_direction = Direction.right;
+            }
+            else{
+                dash_direction = Direction.left;
+            }
+        }
         
-        if(isFindTower)
+        if((isFindTower || isFindPlayer) && !isTouchTower && !isTouchPlayer)
         {
             if(distance_to_player <= distance_to_nearest_tower) // consider player part
             {
@@ -62,20 +148,19 @@ public class Zombie : MonoBehaviour
         }
     }
 
-    IEnumerator DashToTarget(Transform target)
+    // sense player's position, if less than certain distance, approaching player
+    void SensePlayer()
     {
-        // Move back a littler
-        for(int i=0; i<100; i++)
+        float distance = CalculateDistanceToPlayer();
+
+        if(distance <= 15)
         {
-            print("moveing to " + target.position);
-            yield return null;
+            isFindPlayer = true;
+        }else{
+            isFindPlayer = false;
         }
-        // Then dash to target
-
-
-        print("Skill over");
-
     }
+
 
     // Approaching target with moving speed, this will be complicated when the land becomes complex
     void ApproachingTarget(Transform target_transform)
@@ -125,7 +210,7 @@ public class Zombie : MonoBehaviour
         return distance;
     }
 
-    
+    // Calculate the distance between player and zombie
     float CalculateDistanceToPlayer()
     {
         Vector3 player_position = player.gameObject.transform.position;
@@ -136,5 +221,36 @@ public class Zombie : MonoBehaviour
         float distance = Mathf.Sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 
         return distance;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "tower")
+        {
+            isTouchTower = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
+        }else if(other.gameObject.tag == "Player")
+        {
+            isTouchPlayer = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "tower")
+        {
+            isTouchTower = false;
+        }else if(other.gameObject.tag == "Player"){
+            isTouchPlayer = false;
+        }
     }
 }
