@@ -164,7 +164,7 @@ public class TerrainGeneration : MonoBehaviour
     }
     public void ChangeSize()
     {
-        GameObject.Find("TerrainGenerator").transform.localScale = new Vector2(0.25f, 0.25f);
+        //GameObject.Find("TerrainGenerator").transform.localScale = new Vector2(0.25f, 0.25f);
     }
 
     public void CreateChunks()
