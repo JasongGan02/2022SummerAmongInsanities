@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = "newCollectibleObject", menuName = "Collectible Object")]
 public class CollectibleObject : ScriptableObject
 {
     public string itemName;
@@ -53,8 +52,6 @@ public class CollectibleObjectEditor : Editor
             default:
                 break;
         }
-
-
     }
 }
 #endif

@@ -171,13 +171,11 @@ public class ShadowGenerator : MonoBehaviour
                     }
                     else
                     {
-                        lightMap.SetPixel(coord.x, y, Color.clear);
+                        // TODO the intensity should be related to skyLightHeight - y
+                        LightBlock(coord.x, 1, 1f, 0);
                     }
                 }
             }
-            lightMap.Apply();
-        }
-
-        LightBlocks();
+        }        
     }
 }

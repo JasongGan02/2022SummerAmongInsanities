@@ -98,7 +98,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return database.GetInventorySlotAtIndex(index);
     }
 
-    public void AddItem(CollectibleObject item, int amount)
+    public void AddItem(BaseObject item, int amount)
     {
         for(int i = 0; i < amount; i++)
         {
@@ -128,8 +128,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
                 dropPosition = gameObject.transform.position + new Vector3(-1, 0, 0);
             }
             // TODO refactor collectible object to set the amount when getting the dropped item
-            GameObject droppedItem = Instantiate(removedItem.item.droppedItem, dropPosition, Quaternion.identity);
-            droppedItem.GetComponent<DroppedObjectController>().amount = removedItem.count;
+            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
+            droppedItem.transform.position = dropPosition;
         }
 
         UpdateSlotUi(index);
@@ -159,7 +159,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     }
 
     // TODO: check if there's an existing slot that is not full
-    public bool CanAddItem(CollectibleObject item)
+    public bool CanAddItem(BaseObject item)
     {
         return database.HasEmptySlot();
     }

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 6501609725464200435}
   - component: {fileID: 6501609725464200432}
   - component: {fileID: 6501609725464200433}
-  - component: {fileID: 4965979680496897189}
   m_Layer: 0
   m_Name: cedar-nature_2
   m_TagString: Untagged
@@ -193,16 +192,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9389734, y: 2.4708405}
   m_EdgeRadius: 0
---- !u!114 &4965979680496897189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6501609725464200438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 996c4f5b911bb4a4a9bf2e18d15f8d9c, type: 2}
