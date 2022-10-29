@@ -552,6 +552,7 @@ MonoBehaviour:
   PlayerHP: 10
   PlayerStrength: 2
   PlayerSpeed: 2
+  RespwanTimeInterval: 5
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0

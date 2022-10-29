@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5122404738386094515}
   - component: {fileID: 4840921556256003634}
   - component: {fileID: 4422086284973172294}
+  - component: {fileID: -4772314620522356460}
   m_Layer: 10
   m_Name: ArcherTower
   m_TagString: tower
@@ -151,3 +152,16 @@ MonoBehaviour:
   AtkIntervalTime: 2
   bullet_speed: 2
   bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+--- !u!114 &-4772314620522356460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122404738386094519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health_point: 5

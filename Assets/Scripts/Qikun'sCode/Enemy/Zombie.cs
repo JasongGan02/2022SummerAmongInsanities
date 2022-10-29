@@ -8,6 +8,10 @@ public class Zombie : MonoBehaviour
     private TowerContainer towerContainer;
     private float movingSpeed = 1;
     private float DashRange = 5;
+
+    [SerializeField] int atk_damage;
+    [SerializeField] float atk_interval;
+    float timer;
     bool isFindTower;
     bool isTouchTower;
     bool isFindPlayer;
@@ -22,6 +26,8 @@ public class Zombie : MonoBehaviour
     {
         player = FindObjectOfType<Playermovement>();
         towerContainer = FindObjectOfType<TowerContainer>();
+
+        timer = 0;
 
         isFindTower = false;
         isTouchTower = false;
@@ -127,7 +133,7 @@ public class Zombie : MonoBehaviour
                 }else
                 {
                     // Attack player
-                    print("Atking player");
+                    AttackTarget(player.transform);
                 }
                 
             }else
@@ -139,7 +145,7 @@ public class Zombie : MonoBehaviour
                 }else
                 {
                     // Attack tower
-                    print("Atking tower");
+                    AttackTarget(nearest_tower);
                 }
             }
         }else
@@ -147,6 +153,27 @@ public class Zombie : MonoBehaviour
             // only consider player position
         }
     }
+
+    void AttackTarget(Transform target_transform)
+    {
+        timer += Time.deltaTime;
+        if(timer >= atk_interval)
+        {
+            // attack once
+            if(target_transform.gameObject.tag == "Player")
+            {
+                target_transform.GetComponent<PlayerAttributes>().DecreaseHealth(atk_damage);
+            }else if(target_transform.GetComponent<TowerHealth>())
+            {
+                target_transform.GetComponent<TowerHealth>().DecreaseHealth(atk_damage);
+            }
+
+            
+            timer = 0;
+        }
+        
+    }
+
 
     // sense player's position, if less than certain distance, approaching player
     void SensePlayer()

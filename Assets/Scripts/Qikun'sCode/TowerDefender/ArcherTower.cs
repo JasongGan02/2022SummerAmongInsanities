@@ -25,7 +25,7 @@ public class ArcherTower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Transform enemyTransform = SenseEnemyTransform();
+        Transform enemyTransform = SenseNearestEnemyTransform();
         if(isEnemySpotted)
         {
             AtkTimer += Time.deltaTime * AtkSpeed;
@@ -38,9 +38,9 @@ public class ArcherTower : MonoBehaviour
         }
     }
 
-    // 目前是在数组里找到第一个进入玩家范围的敌人
-    // 后续更新：找到距离玩家最近的敌人
-    Transform SenseEnemyTransform()
+    
+    // To be updated
+    Transform SenseNearestEnemyTransform()
     {
         Transform[] enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
         foreach(Transform e in enemyTransforms)
