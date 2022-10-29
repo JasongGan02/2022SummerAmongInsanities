@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class DroppedObjectController : MonoBehaviour
 {
-    public CollectibleObject collectibleObject;
+    public BaseObject item;
     public float speed = 0.2f;
     public float distanceThreshold = 0.1f;
-    public int amount = 1;
+    [HideInInspector] public int amount = 1;
 
     private bool shouldFlyToPlayer = false;
     private GameObject player;
     private Inventory inventory;
+
+    public void Initialize(BaseObject baseObject, int amount)
+    {
+        this.amount = amount;
+        this.item = baseObject;
+    }
 
     private void Start()
     {
@@ -23,6 +29,7 @@ public class DroppedObjectController : MonoBehaviour
     {
         if (shouldFlyToPlayer)
         {
+            // TODO should let player own this logic
             transform.position = Vector2.Lerp(transform.position, player.transform.position, speed);
             if (Vector2.Distance(transform.position, player.transform.position) < distanceThreshold)
             {
@@ -42,7 +49,7 @@ public class DroppedObjectController : MonoBehaviour
     {
         shouldFlyToPlayer = false;
 
-        inventory.AddItem(collectibleObject, amount);
+        inventory.AddItem(item, amount);
         Destroy(gameObject);
     }
 }

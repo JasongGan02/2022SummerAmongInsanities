@@ -39,7 +39,7 @@ public class InventoryDatabase
     }
 
     // return the slot index that needs to be updated
-    public int AddItem(CollectibleObject item)
+    public int AddItem(BaseObject item)
     {
         int slotIndex = inventory.FindIndex(slot => slot.item != null && slot.item.itemName == item.itemName && slot.count < item.maxStack);
         int indexToUpdate;
@@ -88,7 +88,7 @@ public class InventoryDatabase
     public void SwapItems(int index1, int index2)
     {
         int tempCount = inventory[index2].count;
-        CollectibleObject tempItem = inventory[index2].item;
+        BaseObject tempItem = inventory[index2].item;
 
         inventory[index2].item = inventory[index1].item;
         inventory[index2].count = inventory[index1].count;
@@ -228,17 +228,17 @@ public class InventoryDatabase
 
 public class InventorySlot : IComparable
 {
-    public CollectibleObject item;
+    public BaseObject item;
     public int count;
     public bool IsEmpty { get => item == null; }
 
-    public InventorySlot(CollectibleObject item, int count)
+    public InventorySlot(BaseObject item, int count)
     {
         this.item = item;
         this.count = count;
     }
 
-    public InventorySlot(CollectibleObject item)
+    public InventorySlot(BaseObject item)
     {
         this.item = item;
         this.count = 1;

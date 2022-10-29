@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa17fa77a81428c4d95228e473e50361, type: 3}
+  m_Name: Gold
+  m_EditorClassIdentifier: 
+  itemName: Gold
+  maxStack: 99
+  sizeRatio: 0.125
+  prefab: {fileID: 5481595800395744475, guid: f4aea43a44866dd4ba8565affa9f5946, type: 3}
+  healthPoint: 1
+  prefabs: []
+  drops:
+  - droppedItem: {fileID: 11400000}
+    chance: 1.5

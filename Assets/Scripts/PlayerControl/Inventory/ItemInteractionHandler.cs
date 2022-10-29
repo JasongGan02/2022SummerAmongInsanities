@@ -7,7 +7,7 @@ using TMPro;
 public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     [HideInInspector]
-    public CollectibleObject collectibleItem;
+    public BaseObject item;
     private GameObject player;
     private Inventory inventory;
     private RectTransform rectTransform;
