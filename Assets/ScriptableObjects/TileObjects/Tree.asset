@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa17fa77a81428c4d95228e473e50361, type: 3}
+  m_Name: Tree
+  m_EditorClassIdentifier: 
+  itemName: Tree
+  maxStack: 99
+  sizeRatio: 0.125
+  prefab: {fileID: 2655721104761988997, guid: c4285e791d6e4444a9530dcb62363f7e, type: 3}
+  healthPoint: 4
+  prefabs:
+  - {fileID: 2655721104761988997, guid: c4285e791d6e4444a9530dcb62363f7e, type: 3}
+  - {fileID: 7697918885280410487, guid: 46c321287394b5d408c644d7bd09d754, type: 3}
+  - {fileID: 6501609725464200438, guid: 228d98a49c60e5246b32d717cee724f5, type: 3}
+  drops: []

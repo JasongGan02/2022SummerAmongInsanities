@@ -156,7 +156,7 @@ public class TerrainGeneration : MonoBehaviour
             for (int y=0; y<biomeMap.height; y++)
             {
                 float v = Mathf.PerlinNoise((x+seed)* biomeFrequency, (y+seed)* biomeFrequency);
-                Color col = biomeColors.Evaluate(v);
+                Color col = biomeColors?.Evaluate(v) ?? Color.white;
                 biomeMap.SetPixel(x,y, col);
             }
         }
@@ -189,7 +189,7 @@ public class TerrainGeneration : MonoBehaviour
             
             for (int y = 0; y < height; y++)
             {
-                TileClass tileSprites;
+                TileObject tileSprites;
                 if (y < height - dirtLayerHeight)
                 {
                     tileSprites = tileAtlas.stone;
@@ -279,20 +279,17 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree, x, y);
     }
 
-    public GameObject PlaceTile(TileClass tile, int x, int y)
+    private GameObject PlaceTile(TileObject tile, int x, int y)
     {
-        var prefabs = tile.tilePrefabs;
+        var tileGameObject = tile.GetGeneratedWorldGameObject();
 
         float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
         chunkCoord /= chunkSize;
 
-        GameObject prefab = prefabs[(int)Random.Range(0, prefabs.Length)];
-        GameObject gameObject = Instantiate(prefab);
-        gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
-        gameObject.name = tile.tileName;
-        gameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-        worldTiles.Add(gameObject.transform.position - (Vector3.one * 0.5f));
+        tileGameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
+        tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        worldTiles.Add(tileGameObject.transform.position - (Vector3.one * 0.5f));
 
-        return gameObject;
+        return tileGameObject;
     }
 }

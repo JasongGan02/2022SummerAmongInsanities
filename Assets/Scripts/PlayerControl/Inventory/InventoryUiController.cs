@@ -98,8 +98,8 @@ public class InventoryUiController
         if (!slot.IsEmpty)
         {
             GameObject slotContent = GameObject.Instantiate(template);
-            slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.droppedItem.GetComponent<SpriteRenderer>().sprite;
-            slotContent.GetComponent<ItemInteractionHandler>().collectibleItem = slot.item;
+            slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.GetDefaultSprite();
+            slotContent.GetComponent<ItemInteractionHandler>().item = slot.item;
             slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = slot.count.ToString();
             slotContent.transform.SetParent(slotUi.transform);
             slotContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);

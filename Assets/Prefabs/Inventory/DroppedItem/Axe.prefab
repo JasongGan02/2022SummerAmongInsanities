@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3605020804775853098}
   - component: {fileID: 3605020804775853099}
   - component: {fileID: 3605020804775853096}
-  - component: {fileID: 7616368930481637613}
+  - component: {fileID: 7514346030062648294}
   m_Layer: 7
   m_Name: Axe
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3605020804775853097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.922, y: 14.554, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -141,7 +141,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7616368930481637613
+--- !u!114 &7514346030062648294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a839d0ec06a0a8d49a2144dc09f19875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectibleObject: {fileID: 11400000, guid: 4ecb9486f8df82f4883985233605e3fa, type: 2}
+  item: {fileID: 11400000, guid: 9dcfcf45f211cf84f889c913b2e17330, type: 2}
   speed: 0.2
   distanceThreshold: 0.1
+  amount: 1

@@ -6,15 +6,15 @@ using UnityEngine;
 public class TileAtlas : ScriptableObject
 {
     [Header("Enviroment")]
-    public TileClass dirt;
-    public TileClass stone;
-    public TileClass grass;
-    public TileClass natureAddons;
-    public TileClass tree;
+    public TileObject dirt;
+    public TileObject stone;
+    public TileObject grass;
+    public TileObject natureAddons;
+    public TileObject tree;
 
     [Header("Ores")]
-    public TileClass coal;
-    public TileClass iron;
-    public TileClass gold;
+    public TileObject coal;
+    public TileObject iron;
+    public TileObject gold;
    
 }

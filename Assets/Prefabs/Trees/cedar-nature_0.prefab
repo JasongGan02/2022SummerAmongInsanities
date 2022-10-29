@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1415664617004931593}
   - component: {fileID: 3351908576213982749}
   - component: {fileID: 8995697520714515962}
-  - component: {fileID: 521725785301084194}
   m_Layer: 0
   m_Name: cedar-nature_0
   m_TagString: tree
@@ -144,16 +143,3 @@ PolygonCollider2D:
       - {x: 0.63, y: 6.64}
       - {x: -0.33, y: 6.64}
   m_UseDelaunayMesh: 0
---- !u!114 &521725785301084194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2655721104761988997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30f065c6f0f0b3d4e8a117470feb5e34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 996c4f5b911bb4a4a9bf2e18d15f8d9c, type: 2}

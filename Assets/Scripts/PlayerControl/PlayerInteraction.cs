@@ -78,11 +78,9 @@ public class PlayerInteraction : MonoBehaviour
         InventorySlot slot = inventory.GetInventorySlotAtIndex(args.slotIndex);
         currentIndex = args.slotIndex;
         Debug.Log("PlayerInteraction: using " + slot.item.name);
-        switch (slot.item.itemType)
+        if (slot.item is TileObject)
         {
-            case ItemType.Material:
-                PrepareForPlaceTile(slot);
-                break;
+            PrepareForPlaceTile(slot);
         }
     }
 
@@ -93,9 +91,8 @@ public class PlayerInteraction : MonoBehaviour
         if (currentTileGhost != null)
         {
             Destroy(currentTileGhost);
-        } 
-        currentTileGhost = Instantiate(currentSlotToBeUsed.item.droppedItem);
-        currentTileGhost.GetComponent<DroppedObjectController>().enabled = false;
+        }
+        currentTileGhost = (slot.item as TileObject).GetTileGhostBeforePlacement();
     }
 
     private void StartTimer()
@@ -188,7 +185,7 @@ public class PlayerInteraction : MonoBehaviour
         if (hit.transform != null)
         {
             DroppedObjectController resoureObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
-            if (inventory.CanAddItem(resoureObject.collectibleObject))
+            if (inventory.CanAddItem(resoureObject.item))
             {
                 resoureObject.PickingUp();
             }
@@ -224,6 +221,7 @@ public class PlayerInteraction : MonoBehaviour
                 currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
                 if (Input.GetMouseButtonDown(0))
                 {
+                    // TODO: should put the tile under the correct chunk
                     PlaceTile(result.position);
                 }
             }
@@ -241,10 +239,17 @@ public class PlayerInteraction : MonoBehaviour
     // so that when the current slot is running out, it can automatically use the next available slot
     private void PlaceTile(Vector2 position)
     {
-        GameObject newTile = Instantiate(currentSlotToBeUsed.item.terrainTile);
-        newTile.transform.position = position;
-        newTile.transform.localScale = new Vector2(0.25f, 0.25f);
-        inventory.RemoveItemByOne(currentIndex);
+        if (currentSlotToBeUsed.item is TileObject)
+        {
+            GameObject newTile = (currentSlotToBeUsed.item as TileObject).GetPlayerPlacedWorldGameObject();
+            newTile.transform.position = position;
+            newTile.transform.localScale = new Vector2(0.25f, 0.25f);
+            inventory.RemoveItemByOne(currentIndex);
+            worldTilesDictionary.Add(new Vector2Int((int)(position.x * 4), (int)(position.y * 4)), newTile);
+        }
+        
+    
+        
     }
 
     private bool CanPlaceTile(TileGhostPlacementResult result)
