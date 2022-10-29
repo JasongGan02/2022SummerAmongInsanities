@@ -138,3 +138,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   liveTime: 3
   isRotate: 0
+  damage: 2

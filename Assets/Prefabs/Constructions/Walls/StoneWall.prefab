@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2428287790915297845}
   - component: {fileID: 2428287790915297842}
   - component: {fileID: 2428287790915297844}
+  - component: {fileID: -7655628998294086644}
   m_Layer: 6
   m_Name: StoneWall
   m_TagString: ground
@@ -149,3 +150,16 @@ MonoBehaviour:
   wallType: 0
   StoneWallLifePoint: 10
   WoodenWallLifePoint: 3
+--- !u!114 &-7655628998294086644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428287790915297841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health_point: 10

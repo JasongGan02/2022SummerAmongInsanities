@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5669176044944987768}
   - component: {fileID: 4438776993460850766}
   - component: {fileID: 2844561520478345544}
+  - component: {fileID: -5908655589455214081}
   m_Layer: 6
   m_Name: TrapTower
   m_TagString: ground
@@ -152,3 +153,16 @@ MonoBehaviour:
   AtkSpeed: 3
   AtkIntervalTime: 2
   atkDirection: 1
+--- !u!114 &-5908655589455214081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844561520478345549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health_point: 5

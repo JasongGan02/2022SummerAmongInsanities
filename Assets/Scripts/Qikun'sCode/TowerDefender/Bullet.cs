@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] float liveTime;
     [SerializeField] bool isRotate;
+    [SerializeField] int damage;
     
     // Start is called before the first frame update
     void Start()
@@ -33,4 +34,18 @@ public class Bullet : MonoBehaviour
     {
         gameObject.transform.Rotate(Vector3.forward, 150*Time.deltaTime, Space.World);
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "enemy")
+        {
+            // cause damage
+            other.gameObject.GetComponent<EnemyHeath>().DecreaseHealth(damage);
+
+            // delete bullet
+            Destroy(gameObject);
+
+        }
+    }
+
 }
