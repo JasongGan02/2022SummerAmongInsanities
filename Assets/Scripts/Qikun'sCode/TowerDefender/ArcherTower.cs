@@ -39,28 +39,37 @@ public class ArcherTower : MonoBehaviour
     }
 
     
-    // To be updated
+    // Find nearest enmey in the enemy array
     Transform SenseNearestEnemyTransform()
     {
         Transform[] enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
+        
+        float min_distance = float.MaxValue;
+        Transform nearest_Target = transform;
+
+        // find nearsest enemy transform
         foreach(Transform e in enemyTransforms)
         {
             if(e == enemyTransforms[0])
             {
                 continue;
             }
-            float dist = CalculateDistanceFromEnemyToArcherTower(e);
-            // Find enemy
-            if(dist <= AtkRange)
+            float current_distance = CalculateDistanceFromEnemyToArcherTower(e);
+            if(current_distance < min_distance)
             {
-                isEnemySpotted = true;
-                return e;
+                min_distance = current_distance;
+                nearest_Target = e;
             }
         }
 
-        // No enemy detected
-        isEnemySpotted = false;
-        return transform;
+        if(min_distance < AtkRange)
+        {
+            isEnemySpotted = true;
+        }else{
+            isEnemySpotted = false;
+        }
+        
+        return nearest_Target;
     }
 
     // 计算从敌方到当前塔的距离
