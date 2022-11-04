@@ -16,6 +16,7 @@ public static class Constants
         public static string GROUND = "ground";
         public static string PLAYER = "Player";
         public static string RESOURCE = "resource";
+        public static string SPAWN = "Spawn";
     }
 
     public static class Animator
@@ -35,6 +36,8 @@ public static class Constants
         public static string SUN = "Sun";
         public static string BACKGROUND_LIGHT = "BackgroundLight";
         public static string TIME_TEXT = "TimeText";
+
+        public static string CURRENT_WEAPON_UI = "CurrentWeapon";
     }
 
 

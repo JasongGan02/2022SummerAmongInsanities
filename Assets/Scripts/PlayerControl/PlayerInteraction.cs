@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -15,18 +16,24 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject[] raycastStartingPoints;
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
-    private Rigidbody2D rb;
-    private Playermovement pm;
+    private Playermovement playerMovement;
     private Inventory inventory;
 
     private ShadowGenerator shadowGenerator;
 
     [Header("tile placement")]
-    private InventorySlot currentSlotToBeUsed = null;
     private GameObject currentTileGhost = null;
-    private int currentIndex = -1;
     public int placeTileRange = 1;
 
+    [Header("use item")]
+    private WeaponObject currentWeapon;
+    private GameObject currentInUseItemUI;
+    public GameObject equipmentTemplate;
+    private InventorySlot currentSlotInUse = null;
+    private int indexInUse = EMPTY;
+    public float handAttack = 1;
+    public float handFarm = 0.5f;
+    public float handFrequency = 1;
 
     private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary
@@ -44,10 +51,11 @@ public class PlayerInteraction : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        pm = GetComponent<Playermovement>();
+        playerMovement = GetComponent<Playermovement>();
         inventory = GetComponent<Inventory>();
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
+
+        currentInUseItemUI = GameObject.Find(Constants.Name.CURRENT_WEAPON_UI);
     }
 
     private void OnEnable()
@@ -75,24 +83,66 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
-        InventorySlot slot = inventory.GetInventorySlotAtIndex(args.slotIndex);
-        currentIndex = args.slotIndex;
-        Debug.Log("PlayerInteraction: using " + slot.item.name);
-        if (slot.item is TileObject)
+        UseItemInSlot(args.slotIndex); 
+    }
+
+    private void UseItemInSlot(int slotIndex)
+    {
+        if (indexInUse == slotIndex)
         {
-            PrepareForPlaceTile(slot);
+            ClearCurrentItemInUse();
+            return;
+        }
+
+        indexInUse = slotIndex;
+        currentSlotInUse = inventory.GetInventorySlotAtIndex(indexInUse);
+
+        UpdateCurrentInUseItemUI();
+
+        Debug.Log("PlayerInteraction: using " + currentSlotInUse.item.GetItemName());
+        if (currentSlotInUse.item is TileObject)
+        {
+            if (currentTileGhost != null)
+            {
+                Destroy(currentTileGhost);
+            }
+            currentTileGhost = (currentSlotInUse.item as TileObject).GetTileGhostBeforePlacement();
+        }
+        
+        if (currentSlotInUse.item is WeaponObject)
+        {
+            currentWeapon = currentSlotInUse.item as WeaponObject;
+            waitTime = 1 / currentWeapon.frequency;
+        } 
+        else
+        {
+            currentWeapon = null;
+            waitTime = 1 / handFrequency;
         }
     }
 
-    private void PrepareForPlaceTile(InventorySlot slot)
+    private void UpdateCurrentInUseItemUI()
     {
-        currentSlotToBeUsed = slot;
-
-        if (currentTileGhost != null)
+        for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
-            Destroy(currentTileGhost);
+            Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
         }
-        currentTileGhost = (slot.item as TileObject).GetTileGhostBeforePlacement();
+        GameObject template = Instantiate(equipmentTemplate);
+        template.transform.Find("Icon").GetComponent<Image>().sprite = currentSlotInUse.item.GetSpriteForInventory();
+        template.transform.SetParent(currentInUseItemUI.transform);
+        template.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+    }
+
+    private void ClearCurrentItemInUse()
+    {
+        indexInUse = EMPTY;
+        currentSlotInUse = null;
+        currentWeapon = null;
+
+        for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
+        {
+            Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
+        }
     }
 
     private void StartTimer()
@@ -127,9 +177,7 @@ public class PlayerInteraction : MonoBehaviour
                         if (clickHit.transform.gameObject != targetObject)
                         {
                             targetObject = tempTargetObject;
-                            Debug.Log("local: " + targetObject.transform.localPosition);
-                            Debug.Log("global: " + targetObject.transform.position);
-                            pm.excavateCoeff = 0.1f;
+                            playerMovement.excavateCoeff = 0.1f;
                             StartTimer();
                         }
                     }
@@ -174,7 +222,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         targetObject = null;
         animator.SetBool(Constants.Animator.MELEE_TOOL, false);
-        pm.excavateCoeff=1f;
+        playerMovement.excavateCoeff=1f;
 
         ResetTimer();
     }
@@ -194,25 +242,24 @@ public class PlayerInteraction : MonoBehaviour
 
     private void PlaceTileCancelCheck()
     {
-        if (currentSlotToBeUsed == null ||
-            currentSlotToBeUsed.count == 0 ||
+        if (currentSlotInUse == null ||
+            currentSlotInUse.count == 0 ||
             Input.GetMouseButtonDown(1) || 
             Input.GetMouseButtonDown(2) || 
             UIViewStateManager.isViewingUI())
         {
-            currentSlotToBeUsed = null;
+            ClearCurrentItemInUse();
             if (currentTileGhost != null)
             {
                 Destroy(currentTileGhost);
                 currentTileGhost = null;
             }
-            currentIndex = -1;
         }
     }
 
     private void PlaceTileCheck()
     {
-        if (currentSlotToBeUsed != null)
+        if (currentTileGhost != null)
         {
             TileGhostPlacementResult result = GetTileGhostPlacementResult();
             currentTileGhost.transform.position = result.position;
@@ -239,17 +286,14 @@ public class PlayerInteraction : MonoBehaviour
     // so that when the current slot is running out, it can automatically use the next available slot
     private void PlaceTile(Vector2 position)
     {
-        if (currentSlotToBeUsed.item is TileObject)
+        if (currentSlotInUse.item is TileObject)
         {
-            GameObject newTile = (currentSlotToBeUsed.item as TileObject).GetPlayerPlacedWorldGameObject();
+            GameObject newTile = (currentSlotInUse.item as TileObject).GetPlacedGameObject();
             newTile.transform.position = position;
             newTile.transform.localScale = new Vector2(0.25f, 0.25f);
-            inventory.RemoveItemByOne(currentIndex);
+            inventory.RemoveItemByOne(indexInUse);
             worldTilesDictionary.Add(new Vector2Int((int)(position.x * 4), (int)(position.y * 4)), newTile);
-        }
-        
-    
-        
+        }  
     }
 
     private bool CanPlaceTile(TileGhostPlacementResult result)
@@ -326,18 +370,19 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (target == null) return;
 
-        Vector2Int coord = new Vector2Int((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
-        shadowGenerator.OnTileBroken(coord);
         BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {
-            breakableTile.OnClicked();
+            Debug.Log("Dig with " + (currentWeapon?.name ?? "hand"));
+            breakableTile.OnClicked(currentWeapon?.farm ?? handFarm);
+
+            Vector2Int coord = new((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
+            shadowGenerator.OnTileBroken(coord);
         }
-        else
-        {
-            Destroy(target);
-        }
+        
     }
+
+    private const int EMPTY = -1;
 }
 
 class TileGhostPlacementResult

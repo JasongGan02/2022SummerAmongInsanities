@@ -39,9 +39,9 @@ public class InventoryDatabase
     }
 
     // return the slot index that needs to be updated
-    public int AddItem(BaseObject item)
+    public int AddItem(IInventoryObject item)
     {
-        int slotIndex = inventory.FindIndex(slot => slot.item != null && slot.item.itemName == item.itemName && slot.count < item.maxStack);
+        int slotIndex = inventory.FindIndex(slot => slot.item != null && slot.item.GetItemName() == item.GetItemName() && slot.count < item.MaxStack);
         int indexToUpdate;
         if (slotIndex == -1)
         {
@@ -88,7 +88,7 @@ public class InventoryDatabase
     public void SwapItems(int index1, int index2)
     {
         int tempCount = inventory[index2].count;
-        BaseObject tempItem = inventory[index2].item;
+        IInventoryObject tempItem = inventory[index2].item;
 
         inventory[index2].item = inventory[index1].item;
         inventory[index2].count = inventory[index1].count;
@@ -112,15 +112,15 @@ public class InventoryDatabase
         }
         else
         {
-            if (inventory[toIndex].item.name != inventory[fromIndex].item.name) return amount;
+            if (inventory[toIndex].item.GetItemName() != inventory[fromIndex].item.GetItemName()) return amount;
             //if (amount + inventory[toIndex].count > inventory[toIndex].item.maxStack) return false;
         }
 
-        int remainingItemCount = inventory[toIndex].count + amount - inventory[toIndex].item.maxStack;
+        int remainingItemCount = inventory[toIndex].count + amount - inventory[toIndex].item.MaxStack;
         int movedItemCount = amount - remainingItemCount;
         if (remainingItemCount > 0)
         {
-            inventory[toIndex].count = inventory[toIndex].item.maxStack;
+            inventory[toIndex].count = inventory[toIndex].item.MaxStack;
             inventory[fromIndex].count -= movedItemCount;
             
         } 
@@ -167,8 +167,8 @@ public class InventoryDatabase
 
         for (int i = size - 1; i >= 0; i--)
         {
-            if (inventory[i].IsEmpty || visited.Contains(inventory[i].item.name)) continue;
-            String itemName = inventory[i].item.name;
+            if (inventory[i].IsEmpty || visited.Contains(inventory[i].item.GetItemName())) continue;
+            String itemName = inventory[i].item.GetItemName();
             visited.Add(itemName);
 
             // find all indices of the same item type whose slot is not full
@@ -176,7 +176,7 @@ public class InventoryDatabase
             for (int j = 0; j <= i; j++)
             {
                 InventorySlot slot = inventory[j];
-                if (!slot.IsEmpty && slot.item.name == itemName && slot.count < slot.item.maxStack)
+                if (!slot.IsEmpty && slot.item.GetItemName() == itemName && slot.count < slot.item.MaxStack)
                 {
                     mergeList.Add(j);
                 }
@@ -184,7 +184,7 @@ public class InventoryDatabase
 
             // merge items in the merge list
             int totalCount = 0;
-            int maxStack = inventory[i].item.maxStack;
+            int maxStack = inventory[i].item.MaxStack;
             mergeList.ForEach(index => totalCount += inventory[index].count);
             foreach (int index in mergeList)
             {
@@ -228,17 +228,18 @@ public class InventoryDatabase
 
 public class InventorySlot : IComparable
 {
-    public BaseObject item;
+    public IInventoryObject item;
     public int count;
+
     public bool IsEmpty { get => item == null; }
 
-    public InventorySlot(BaseObject item, int count)
+    public InventorySlot(IInventoryObject item, int count)
     {
         this.item = item;
         this.count = count;
     }
 
-    public InventorySlot(BaseObject item)
+    public InventorySlot(IInventoryObject item)
     {
         this.item = item;
         this.count = 1;
@@ -255,13 +256,13 @@ public class InventorySlot : IComparable
             if (otherSlot.IsEmpty) return -1;
             if (this.IsEmpty) return 1;
 
-            if (otherSlot.item.name == this.item.name)
+            if (otherSlot.item.GetItemName() == this.item.GetItemName())
             {
                 return otherSlot.count - this.count;
             }
             else
             {
-                return this.item.name.CompareTo(otherSlot.item.name);
+                return this.item.GetItemName().CompareTo(otherSlot.item.GetItemName());
             }
         } 
         else

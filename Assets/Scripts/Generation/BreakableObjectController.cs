@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 public class BreakableObjectController : MonoBehaviour
 {
-    private TileObject tile;
-    private int healthPoint;
+    private IBreakableObject tile;
+    private float healthPoint;
     [HideInInspector] public bool isPlacedByPlayer;
 
     public void Initialize(TileObject tile, int hp, bool isPlacedByPlayer)
@@ -16,22 +16,19 @@ public class BreakableObjectController : MonoBehaviour
         this.isPlacedByPlayer = isPlacedByPlayer;
     }
 
-    public void OnClicked()
+    public void OnClicked(float damage)
     {
-        healthPoint -= 1;
+        healthPoint -= damage;
         if (healthPoint <= 0)
         {
             Destroy(gameObject);
-            if (!isPlacedByPlayer)
-            {
-                OnObjectDestroyed();
-            }   
+            OnObjectDestroyed();
         }
     }
 
     private void OnObjectDestroyed()
     {
-        var drops = tile.GetDroppedGameObjectsWhenBroken();
+        var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);
         foreach (GameObject droppedItem in drops)
         {
             droppedItem.transform.parent = gameObject.transform.parent;

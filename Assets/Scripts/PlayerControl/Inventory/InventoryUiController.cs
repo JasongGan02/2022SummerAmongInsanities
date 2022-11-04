@@ -88,6 +88,7 @@ public class InventoryUiController
 
     public void UpdateSlotUi(int index, InventorySlot slot)
     {
+        
         GameObject slotUi = GetInventorySlotUiByIndex(index);
 
         foreach (Transform child in slotUi.transform)
@@ -98,7 +99,7 @@ public class InventoryUiController
         if (!slot.IsEmpty)
         {
             GameObject slotContent = GameObject.Instantiate(template);
-            slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.GetDefaultSprite();
+            slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.GetSpriteForInventory();
             slotContent.GetComponent<ItemInteractionHandler>().item = slot.item;
             slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = slot.count.ToString();
             slotContent.transform.SetParent(slotUi.transform);

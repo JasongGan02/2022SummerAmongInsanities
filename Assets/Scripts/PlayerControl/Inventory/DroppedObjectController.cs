@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class DroppedObjectController : MonoBehaviour
 {
-    public BaseObject item;
+    public IInventoryObject item;
     public float speed = 0.2f;
     public float distanceThreshold = 0.1f;
-    [HideInInspector] public int amount = 1;
+    public int amount = 1;
 
     private bool shouldFlyToPlayer = false;
     private GameObject player;
     private Inventory inventory;
 
-    public void Initialize(BaseObject baseObject, int amount)
+    public void Initialize(IInventoryObject item, int amount)
     {
         this.amount = amount;
-        this.item = baseObject;
+        this.item = item;
     }
 
     private void Start()
