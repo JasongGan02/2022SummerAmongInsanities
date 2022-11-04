@@ -168,7 +168,6 @@ public class Zombie : MonoBehaviour
                 target_transform.GetComponent<TowerHealth>().DecreaseHealth(atk_damage);
             }
 
-            
             timer = 0;
         }
         
@@ -193,6 +192,14 @@ public class Zombie : MonoBehaviour
     void ApproachingTarget(Transform target_transform)
     {
         transform.position = Vector2.MoveTowards(transform.position, target_transform.position, movingSpeed*Time.deltaTime);
+
+        // transform directiron change
+        if(target_transform.position.x >= transform.position.x)
+        {
+            transform.eulerAngles = new Vector3(0,180,0);
+        }else{
+            transform.eulerAngles = new Vector3(0,0,0);
+        }
     }
 
     Transform FindNearestTower()
