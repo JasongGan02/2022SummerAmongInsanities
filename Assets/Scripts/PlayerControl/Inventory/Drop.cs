@@ -5,10 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public class Drop
 {
-    public BaseObject droppedItem;
+    public ScriptableObject droppedItem;
     public float chance; // 3.4 means you will certianly get 3 items and 40% chance to get 1 more.
 
-    public int GetDroppedItemCount()
+    private int GetDroppedItemCount()
     {
         int count = (int)chance;
         if (!Mathf.Approximately(chance - count, 0) && Random.value > chance - count)
@@ -16,6 +16,11 @@ public class Drop
             count += 1;
         }
         return count;
+    }
+
+    public GameObject GetDroppedItem()
+    {
+        return (droppedItem as IInventoryObject).GetDroppedGameObject(GetDroppedItemCount());
     }
 }
 

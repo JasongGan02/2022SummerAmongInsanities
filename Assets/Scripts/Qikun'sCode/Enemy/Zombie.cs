@@ -19,6 +19,9 @@ public class Zombie : MonoBehaviour
     bool canUseAbility;
     bool is_alpha_reduce;
     int flickering_time = 0;
+
+    Drop[] drops;
+
     enum Direction {right, left};
     Direction dash_direction;
     // Start is called before the first frame update

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   itemName: Axe
-  maxStack: 1
   sizeRatio: 3
   prefab: {fileID: 3605020804775853097, guid: 2ccaaa46a7164f546bf32e5f2f9df7e3, type: 3}
-  level: 0
-  quality: {r: 0, g: 0, b: 0, a: 0}
-  healthPoint: 0
-  attack: 0
-  isTool: 0
+  level: 1
+  quality: {r: 1, g: 1, b: 1, a: 0}
+  durability: 0
+  attack: 1
+  farm: 1
+  frequency: 1

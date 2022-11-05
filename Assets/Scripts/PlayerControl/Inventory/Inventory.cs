@@ -98,7 +98,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return database.GetInventorySlotAtIndex(index);
     }
 
-    public void AddItem(BaseObject item, int amount)
+    public void AddItem(IInventoryObject item, int amount)
     {
         for(int i = 0; i < amount; i++)
         {
@@ -159,7 +159,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     }
 
     // TODO: check if there's an existing slot that is not full
-    public bool CanAddItem(BaseObject item)
+    public bool CanAddItem(IInventoryObject item)
     {
         return database.HasEmptySlot();
     }

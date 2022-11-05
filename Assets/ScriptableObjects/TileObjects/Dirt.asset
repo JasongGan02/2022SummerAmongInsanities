@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Dirt
   m_EditorClassIdentifier: 
   itemName: Dirt
-  maxStack: 99
   sizeRatio: 0.125
   prefab: {fileID: 1529614696198433121, guid: b6b02f02a6b43544ca6c5b2b64a67a0c, type: 3}
-  healthPoint: 1
-  prefabs: []
-  drops:
+  _maxStack: 99
+  _healthPoint: 1
+  _drops:
   - droppedItem: {fileID: 11400000}
     chance: 4
+  _prefabs: []

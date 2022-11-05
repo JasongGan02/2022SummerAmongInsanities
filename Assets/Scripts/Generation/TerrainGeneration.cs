@@ -189,7 +189,7 @@ public class TerrainGeneration : MonoBehaviour
             
             for (int y = 0; y < height; y++)
             {
-                TileObject tileSprites;
+                IGenerationObject tileSprites;
                 if (y < height - dirtLayerHeight)
                 {
                     tileSprites = tileAtlas.stone;
@@ -279,9 +279,9 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree, x, y);
     }
 
-    private GameObject PlaceTile(TileObject tile, int x, int y)
+    private GameObject PlaceTile(IGenerationObject tile, int x, int y)
     {
-        var tileGameObject = tile.GetGeneratedWorldGameObject();
+        var tileGameObject = tile.GetGeneratedGameObjects();
 
         float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
         chunkCoord /= chunkSize;

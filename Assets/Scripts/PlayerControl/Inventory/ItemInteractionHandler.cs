@@ -7,7 +7,7 @@ using TMPro;
 public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     [HideInInspector]
-    public BaseObject item;
+    public IInventoryObject item;
     private GameObject player;
     private Inventory inventory;
     private RectTransform rectTransform;
@@ -94,7 +94,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
 
         InventorySlot fromSlot = inventory.GetInventorySlotAtIndex(currentSlotIndex);
         InventorySlot toSlot = inventory.GetInventorySlotAtIndex(anotherSlotIndex);
-        if (toSlot.IsEmpty || fromSlot.item.name == toSlot.item.name)
+        if (toSlot.IsEmpty || fromSlot.item.GetItemName() == toSlot.item.GetItemName())
         {
             PartiallyMoveToAnotherSlot(anotherSlotIndex, fromSlot.count, true);
         }
