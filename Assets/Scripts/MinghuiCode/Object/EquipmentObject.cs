@@ -8,6 +8,7 @@ public class EquipmentObject : BaseObject, IInventoryObject
     public Color quality;
     public int durability;
 
+    [SerializeField]
     private int _maxStack;
     public int MaxStack { 
         get => _maxStack; 
