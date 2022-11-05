@@ -47,25 +47,33 @@ public class CatapultTower : MonoBehaviour
     Transform SenseEnemyTransform()
     {
         Transform[] enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
-        // print(enemyTransforms[0]);
+        
+        float min_distance = float.MaxValue;
+        Transform nearest_Target = transform;
+
+        // find nearsest enemy transform
         foreach(Transform e in enemyTransforms)
         {
-            if(e==enemyTransforms[0])
+            if(e == enemyTransforms[0])
             {
                 continue;
             }
-            float dist = CalculateDistanceFromEnemyToArcherTower(e);
-            // Find enemy
-            if(dist <= AtkRange)
+            float current_distance = CalculateDistanceFromEnemyToArcherTower(e);
+            if(current_distance < min_distance)
             {
-                isEnemySpotted = true;
-                return e;
+                min_distance = current_distance;
+                nearest_Target = e;
             }
         }
 
-        // No enemy detected
-        isEnemySpotted = false;
-        return transform;
+        if(min_distance < AtkRange)
+        {
+            isEnemySpotted = true;
+        }else{
+            isEnemySpotted = false;
+        }
+        
+        return nearest_Target;
     }
 
     // Calculate the distance between enemy and current tower
