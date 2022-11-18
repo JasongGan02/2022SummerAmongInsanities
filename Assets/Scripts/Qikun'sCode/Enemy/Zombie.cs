@@ -7,7 +7,6 @@ public class Zombie : MonoBehaviour
     private Playermovement player;
     private TowerContainer towerContainer;
     private float movingSpeed = 1;
-    private float DashRange = 5;
 
     [SerializeField] int atk_damage;
     [SerializeField] float atk_interval;
@@ -44,6 +43,7 @@ public class Zombie : MonoBehaviour
         if(canUseAbility)
         {
             StartCoroutine("Dash", dash_direction);
+            print("dashing");
         }else
         {
             SenseNearestTarget();
@@ -86,11 +86,8 @@ public class Zombie : MonoBehaviour
             {
                 Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
                 rb.velocity = new Vector2(-3,0);
-            }
-            // dash to target
-            
+            }        
         }
-        
 
         yield return null;
     }
@@ -130,27 +127,23 @@ public class Zombie : MonoBehaviour
                 {
                     // Approaching player
                     ApproachingTarget(player.transform);
-                }else
-                {
-                    // Attack player
-                    AttackTarget(player.transform);
                 }
-                
             }else
             {
                 if(distance_to_nearest_tower > 1)
                 {
                     // Approaching tower
                     ApproachingTarget(nearest_tower);
-                }else
-                {
-                    // Attack tower
-                    AttackTarget(nearest_tower);
                 }
             }
-        }else
+        }
+
+        if(distance_to_nearest_tower <= 1)
         {
-            // only consider player position
+            AttackTarget(nearest_tower);
+        }else if(distance_to_player <= 1)
+        {
+            AttackTarget(player.transform);
         }
     }
 
@@ -275,6 +268,37 @@ public class Zombie : MonoBehaviour
             canUseAbility = false;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(0,0);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collisionInfo)
+    {
+        if(collisionInfo.gameObject.tag == "tower")
+        {
+            isTouchTower = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
+        }else if(collisionInfo.gameObject.tag == "Player")
+        {
+            isTouchPlayer = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collisionInfo)
+    {
+        if(collisionInfo.gameObject.tag == "tower")
+        {
+            isTouchTower = false;
+        }else if(collisionInfo.gameObject.tag == "Player"){
+            isTouchPlayer = false;
         }
     }
 
