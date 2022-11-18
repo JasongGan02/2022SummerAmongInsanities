@@ -185,7 +185,7 @@ public class Zombie : MonoBehaviour
     void ApproachingTarget(Transform target_transform)
     {
         transform.position = Vector2.MoveTowards(transform.position, target_transform.position, movingSpeed*Time.deltaTime);
-
+        SenseFrontBlock();
         // transform directiron change
         if(target_transform.position.x >= transform.position.x)
         {
@@ -193,6 +193,27 @@ public class Zombie : MonoBehaviour
         }else{
             transform.eulerAngles = new Vector3(0,0,0);
         }
+    }
+
+    // Shooting a 2D rayline, if sense a ground tag, then jump
+    void SenseFrontBlock()
+    {
+        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position - new Vector3(0,0.3f,0);
+        Debug.DrawRay(origin, shooting_direction, Color.green);
+
+        LayerMask ground_mask = LayerMask.GetMask("ground");
+        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 1f, ground_mask);
+        if(hit.collider != null && hit.collider.gameObject.tag == "ground")
+        {
+            Jump();
+        }
+    }
+
+    void Jump()
+    {
+        Vector2 up_force = new Vector2(0,30);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(up_force);
     }
 
     Transform FindNearestTower()
