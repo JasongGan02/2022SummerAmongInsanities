@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -7645089604449193906}
   m_Layer: 6
   m_Name: WoodenWall
-  m_TagString: ground
+  m_TagString: tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

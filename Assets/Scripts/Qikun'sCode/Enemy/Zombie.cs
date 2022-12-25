@@ -7,7 +7,6 @@ public class Zombie : MonoBehaviour
     private Playermovement player;
     private TowerContainer towerContainer;
     private float movingSpeed = 1;
-    private float DashRange = 5;
 
     [SerializeField] int atk_damage;
     [SerializeField] float atk_interval;
@@ -47,6 +46,7 @@ public class Zombie : MonoBehaviour
         if(canUseAbility)
         {
             StartCoroutine("Dash", dash_direction);
+            print("dashing");
         }else
         {
             SenseNearestTarget();
@@ -89,11 +89,8 @@ public class Zombie : MonoBehaviour
             {
                 Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
                 rb.velocity = new Vector2(-3,0);
-            }
-            // dash to target
-            
+            }        
         }
-        
 
         yield return null;
     }
@@ -133,27 +130,23 @@ public class Zombie : MonoBehaviour
                 {
                     // Approaching player
                     ApproachingTarget(player.transform);
-                }else
-                {
-                    // Attack player
-                    AttackTarget(player.transform);
                 }
-                
             }else
             {
                 if(distance_to_nearest_tower > 1)
                 {
                     // Approaching tower
                     ApproachingTarget(nearest_tower);
-                }else
-                {
-                    // Attack tower
-                    AttackTarget(nearest_tower);
                 }
             }
-        }else
+        }
+
+        if(distance_to_nearest_tower <= 1)
         {
-            // only consider player position
+            AttackTarget(nearest_tower);
+        }else if(distance_to_player <= 1)
+        {
+            AttackTarget(player.transform);
         }
     }
 
@@ -195,7 +188,7 @@ public class Zombie : MonoBehaviour
     void ApproachingTarget(Transform target_transform)
     {
         transform.position = Vector2.MoveTowards(transform.position, target_transform.position, movingSpeed*Time.deltaTime);
-
+        SenseFrontBlock();
         // transform directiron change
         if(target_transform.position.x >= transform.position.x)
         {
@@ -203,6 +196,27 @@ public class Zombie : MonoBehaviour
         }else{
             transform.eulerAngles = new Vector3(0,0,0);
         }
+    }
+
+    // Shooting a 2D rayline, if sense a ground tag, then jump
+    void SenseFrontBlock()
+    {
+        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position - new Vector3(0,0.3f,0);
+        Debug.DrawRay(origin, shooting_direction, Color.green);
+
+        LayerMask ground_mask = LayerMask.GetMask("ground");
+        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 1f, ground_mask);
+        if(hit.collider != null && hit.collider.gameObject.tag == "ground")
+        {
+            Jump();
+        }
+    }
+
+    void Jump()
+    {
+        Vector2 up_force = new Vector2(0,30);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(up_force);
     }
 
     Transform FindNearestTower()
@@ -278,6 +292,37 @@ public class Zombie : MonoBehaviour
             canUseAbility = false;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(0,0);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collisionInfo)
+    {
+        if(collisionInfo.gameObject.tag == "tower")
+        {
+            isTouchTower = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
+        }else if(collisionInfo.gameObject.tag == "Player")
+        {
+            isTouchPlayer = true;
+
+            // dash stop
+            canUseAbility = false;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0,0);
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collisionInfo)
+    {
+        if(collisionInfo.gameObject.tag == "tower")
+        {
+            isTouchTower = false;
+        }else if(collisionInfo.gameObject.tag == "Player"){
+            isTouchPlayer = false;
         }
     }
 
