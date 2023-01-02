@@ -38,7 +38,7 @@ public class FlyEnemy : MonoBehaviour
     {
         GameObject destination = new GameObject("newObject");
         moveTo = destination.transform;
-          // initial moveTo
+        // initial moveTo
         player = GameObject.Find("Player").transform;   // set the player as the target
         waitTime = startWaitTime;
 
@@ -61,37 +61,42 @@ public class FlyEnemy : MonoBehaviour
             DashAttack();
         }
         else
+        {
+            Patrol();
+            // If patrol around, it faces toward the destination. Otherwise, it faces the player
+            if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
             {
-                Patrol();
-                // If patrol around, it faces toward the destination. Otherwise, it faces the player
-                if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
-                {
-                    Flip();
-                }
+                Flip();
             }
-        
+        }
+
     }
 
     // dash to player and cause damage when contact
     void DashAttack()
     {
-        
+
         if (prepare_dash)           // go to the left or right start-dash point of the player
         {
-            if (!planned) {         // set attack route
+            if (!planned)
+            {         // set attack route
                 PlanRoute();
                 planned = true;
-            }                   
+            }
             transform.position = Vector2.MoveTowards(transform.position, dash_start, speed * 2 * Time.deltaTime);
             if (CloseEnough(transform.position, dash_start))
             {
                 Ps.Play();
                 timer += Time.deltaTime;
                 if (timer < 0.1f) { }
+<<<<<<< HEAD
                 else {
+=======
+                
+>>>>>>> main
                     prepare_dash = false;
                     is_dashing = true;
-                }
+                
             }
         }
         else if (is_dashing)        // dash through the player and attack
@@ -99,7 +104,7 @@ public class FlyEnemy : MonoBehaviour
             Ps.Stop();
             transform.position = Vector2.MoveTowards(transform.position, dash_end, sprint * 3 * Time.deltaTime);
             Tr.emitting = true;
-            if(Vector2.Distance(transform.position, player.position) < 0.4f && !attacked)
+            if (Vector2.Distance(transform.position, player.position) < 0.4f && !attacked)
             {
                 player.GetComponent<PlayerAttributes>().DecreaseHealth(atk_damage);
                 attacked = true;
@@ -162,7 +167,7 @@ public class FlyEnemy : MonoBehaviour
     }
 
     // enemy follows player
-    
+
 
     // patrol around
     void Patrol()
@@ -196,11 +201,11 @@ public class FlyEnemy : MonoBehaviour
     // check if two points are close enough
     bool CloseEnough(Vector2 first, Vector2 second)
     {
-        if (Vector2.Distance(first,second) < 0.2f) { return true; }
+        if (Vector2.Distance(first, second) < 0.2f) { return true; }
         return false;
     }
 
-    
+
 
 
 }
