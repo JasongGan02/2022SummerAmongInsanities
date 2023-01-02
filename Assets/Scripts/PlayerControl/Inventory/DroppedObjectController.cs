@@ -5,6 +5,7 @@ using UnityEngine;
 public class DroppedObjectController : MonoBehaviour
 {
     public IInventoryObject item;
+    public string testName;
     public float speed = 0.2f;
     public float distanceThreshold = 0.1f;
     public int amount = 1;
@@ -15,12 +16,16 @@ public class DroppedObjectController : MonoBehaviour
 
     public void Initialize(IInventoryObject item, int amount)
     {
+        Debug.Log("Initialize id: " + this.GetInstanceID());
+        Debug.Log("DroppedObjectController::Initialize - " + item);
         this.amount = amount;
         this.item = item;
+        testName = item.GetItemName();
     }
 
     private void Start()
     {
+        Debug.Log("start id: " + this.GetInstanceID());
         player = GameObject.Find(Constants.Name.PLAYER);
         inventory = player.GetComponent<Inventory>();
     }
@@ -47,8 +52,10 @@ public class DroppedObjectController : MonoBehaviour
 
     private void PickedUp()
     {
+        Debug.Log("pickedUp id: " + this.GetInstanceID());
         shouldFlyToPlayer = false;
 
+        Debug.Log("DroppedObjectController::PickedUp - " + item);
         inventory.AddItem(item, amount);
         Destroy(gameObject);
     }

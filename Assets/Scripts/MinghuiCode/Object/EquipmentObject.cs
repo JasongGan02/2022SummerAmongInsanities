@@ -19,8 +19,11 @@ public class EquipmentObject : BaseObject, IInventoryObject
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
-        drop.AddComponent<Rigidbody2D>();
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        if (drop.GetComponent<Rigidbody2D>() == null)
+        {
+            drop.AddComponent<Rigidbody2D>();
+        }
+        Debug.Log("GetDroppedGameObject");
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);

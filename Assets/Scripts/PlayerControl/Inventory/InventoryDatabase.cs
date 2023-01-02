@@ -41,6 +41,7 @@ public class InventoryDatabase
     // return the slot index that needs to be updated
     public int AddItem(IInventoryObject item)
     {
+        Debug.Log("InventoryDatabase::AddItem - " + item);
         int slotIndex = inventory.FindIndex(slot => slot.item != null && slot.item.GetItemName() == item.GetItemName() && slot.count < item.MaxStack);
         int indexToUpdate;
         if (slotIndex == -1)

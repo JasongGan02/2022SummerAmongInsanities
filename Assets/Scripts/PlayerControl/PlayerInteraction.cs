@@ -71,6 +71,11 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log(GetCurrentInUseItem().GetItemName());
+        }
+
         PickUpItemCheck();
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
@@ -119,6 +124,11 @@ public class PlayerInteraction : MonoBehaviour
             currentWeapon = null;
             waitTime = 1 / handFrequency;
         }
+    }
+
+    public IInventoryObject GetCurrentInUseItem()
+    {
+        return currentSlotInUse.item;
     }
 
     private void UpdateCurrentInUseItemUI()
