@@ -47,3 +47,4 @@ MonoBehaviour:
   dayToRealTimeInSecond: 24
   dayStartHour: 5
   nightStartHour: 18
+  redMoonNightInterval: 2

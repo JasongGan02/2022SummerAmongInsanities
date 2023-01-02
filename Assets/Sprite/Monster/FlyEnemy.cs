@@ -90,10 +90,6 @@ public class FlyEnemy : MonoBehaviour
     // dash to player and cause damage when contact
     void DashAttack()
     {
-<<<<<<< HEAD
-=======
-
->>>>>>> main
         if (prepare_dash)           // go to the left or right start-dash point of the player
         {
             if (!planned)

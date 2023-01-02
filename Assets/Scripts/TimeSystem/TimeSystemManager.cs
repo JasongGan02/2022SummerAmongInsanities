@@ -9,15 +9,18 @@ public class TimeSystemManager : MonoBehaviour
     public float dayToRealTimeInSecond;
     public int dayStartHour = 6;
     public int nightStartHour = 20;
+    public int redMoonNightInterval = 5;
 
     public Action OnDayStartedHandler;
     public Action OnNightStartedHandler;
+    public Action OnRedMoonNightStartedHandler;
+    public Action OnRedMoonNightEndedHandler;
     public Action<int> OnHourUpdatedHandler;
     public Action<int> OnDayUpdatedHandler;
 
     private GameObject timeText; //xÃÏx ±
     private int currentHour = 0;
-    private int currentDay = 0;
+    private int currentDay = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,18 +33,13 @@ public class TimeSystemManager : MonoBehaviour
         {
             OnNightStartedHandler?.Invoke();
         }
+        OnRedMoonNightEndedHandler?.Invoke();
         StartCoroutine(UpdateTime());
     }
 
     private void OnDisable()
     {
         StopAllCoroutines();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public int GetDayTimeLengthInHour()
@@ -72,11 +70,22 @@ public class TimeSystemManager : MonoBehaviour
             if (currentHour == dayStartHour)
             {
                 OnDayStartedHandler?.Invoke();
+                if ((currentDay - 1) % redMoonNightInterval == 0)
+                {
+                    OnRedMoonNightEndedHandler?.Invoke();
+                }
             }
             else if (currentHour == nightStartHour)
             {
                 OnNightStartedHandler?.Invoke();
+
+                if (currentDay % redMoonNightInterval == 0)
+                {
+                    OnRedMoonNightStartedHandler?.Invoke();
+                }
             }
+
+            
         }
         
     }

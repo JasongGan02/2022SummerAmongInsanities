@@ -57,7 +57,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
-        drop.AddComponent<Rigidbody2D>();
+        if (drop.GetComponent<Rigidbody2D>() == null)
+        {
+            drop.AddComponent<Rigidbody2D>();
+        }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);

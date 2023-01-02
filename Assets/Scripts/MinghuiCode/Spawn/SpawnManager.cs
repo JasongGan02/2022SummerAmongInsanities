@@ -5,22 +5,16 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     public EquipmentObject axe;
+    public GameObject spawnPoint;
     private void Start()
     {
         InitializeAxes();
     }
 
     // only a temporary solution
-    public void InitializeAxes()
-    {
-        var spawnObjects = GameObject.FindGameObjectsWithTag(Constants.Tag.SPAWN);
-
-        foreach (var spawn in spawnObjects)
-        {
-            if (spawn.name == "Axe")
-            {
-                spawn.GetComponent<DroppedObjectController>().Initialize(axe, 1);
-            }
-        }
+    public void InitializeAxes() { 
+    
+        GameObject drop = axe.GetDroppedGameObject(1);
+        drop.transform.position = spawnPoint.transform.position;
     }
 }
