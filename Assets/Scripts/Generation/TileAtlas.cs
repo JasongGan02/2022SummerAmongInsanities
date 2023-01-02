@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TileAtlas", menuName = "Tile Atlas")]
+[CreateAssetMenu(fileName = "TileAtlas", menuName = "Atlas/Tile Atlas")]
 public class TileAtlas : ScriptableObject
 {
     [Header("Enviroment")]

@@ -5,16 +5,15 @@ using UnityEngine;
 public class BG : MonoBehaviour
 {
     private float length, startpos;
-    public GameObject cam;
+    private GameObject cam;
     public float parallaxEffect;
 
     void Start()
     {
         startpos = transform.position.x;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
-
+        cam = Camera.main.transform.gameObject;
     }
-
 
     void Update()
     {
