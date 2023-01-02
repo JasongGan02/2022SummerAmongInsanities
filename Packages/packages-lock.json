@@ -129,6 +129,7 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+<<<<<<< Updated upstream
     },
     "com.unity.render-pipelines.core": {
       "version": "13.1.8",
@@ -157,6 +158,8 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+=======
+>>>>>>> Stashed changes
     },
     "com.unity.services.core": {
       "version": "1.4.0",
@@ -168,6 +171,7 @@
         "com.unity.modules.androidjni": "1.0.0"
       },
       "url": "https://packages.unity.com"
+<<<<<<< Updated upstream
     },
     "com.unity.shadergraph": {
       "version": "13.1.8",
@@ -177,6 +181,8 @@
         "com.unity.render-pipelines.core": "13.1.8",
         "com.unity.searcher": "4.9.2"
       }
+=======
+>>>>>>> Stashed changes
     },
     "com.unity.test-framework": {
       "version": "1.1.31",

@@ -132,71 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fede35994220144c69c833b3e8f07b58
-      internalID: 559046759
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bat-Attack_1
-      rect:
-        serializedVersion: 2
-        x: 105
-        y: 19
-        width: 98
-        height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1b5ed324800b84948a8d7c5ca86dee53
-      internalID: 199774735
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bat-Attack_2
-      rect:
-        serializedVersion: 2
-        x: 206
-        y: 18
-        width: 98
-        height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e3bcda69a7e86447e8617fda6f926925
-      internalID: 756733004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bat-Attack_3
-      rect:
-        serializedVersion: 2
-        x: 319
-        y: 18
-        width: 64
-        height: 56
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0537b17e9fb6a49f8865e0e5edbb9572
-      internalID: -1143260569
+      spriteID: 61aa765acb2916390800000000000000
+      internalID: -7826813338466670058
       vertices: []
       indices: 
       edges: []
@@ -204,7 +141,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -212,10 +149,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Bat-Attack_2: 756733004
-      Bat-Attack_0: 559046759
-      Bat-Attack_1: 199774735
-      Bat-Attack_3: -1143260569
+      Bat-Attack_0: -7826813338466670058
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

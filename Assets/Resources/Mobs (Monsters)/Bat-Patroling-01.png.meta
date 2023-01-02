@@ -39,16 +39,36 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+<<<<<<< HEAD
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
+=======
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+<<<<<<< HEAD
+  spriteMode: 2
+=======
+  spriteMode: 1
+>>>>>>> main
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
+<<<<<<< HEAD
   spritePixelsToUnits: 32
+=======
+<<<<<<< HEAD
+  spritePixelsToUnits: 32
+=======
+  spritePixelsToUnits: 8
+>>>>>>> main
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -63,7 +83,11 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
+<<<<<<< HEAD
+  applyGammaDecoding: 1
+=======
   applyGammaDecoding: 0
+>>>>>>> main
   swizzle: 50462976
   platformSettings:
   - serializedVersion: 3
@@ -83,7 +107,11 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
+<<<<<<< HEAD
+    textureCompression: 0
+=======
     textureCompression: 1
+>>>>>>> main
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -95,6 +123,9 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
+<<<<<<< HEAD
+    textureCompression: 0
+=======
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -108,6 +139,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
+>>>>>>> main
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,6 +148,10 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
     sprites:
     - serializedVersion: 2
       name: Bat-Patroling-01_0
@@ -132,8 +168,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
+<<<<<<< HEAD
       spriteID: 1e901709a453f467d9666cfc2db1ad20
       internalID: 2100647420
+=======
+      spriteID: 94a728749bb3fd843bd5183d26f7b3e0
+      internalID: -2043341823
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
       vertices: []
       indices: 
       edges: []
@@ -153,8 +194,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
+<<<<<<< HEAD
       spriteID: 2f51c84e49d624179b0760fc077cc382
       internalID: 1380304643
+=======
+      spriteID: ba066c95e3a56c443966a7cfbc10d52e
+      internalID: 754428861
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
       vertices: []
       indices: 
       edges: []
@@ -174,8 +220,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
+<<<<<<< HEAD
       spriteID: f7da4511bead24e57b3d210644069979
       internalID: 937403527
+=======
+      spriteID: e4c6f1e32d1026d42bf136da1ecf9235
+      internalID: -316074545
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
       vertices: []
       indices: 
       edges: []
@@ -195,8 +246,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
+<<<<<<< HEAD
       spriteID: 391ae623130b64350bb06e39fcb57591
       internalID: -895924887
+=======
+      spriteID: 74029872c28adb644b26c11bea710e88
+      internalID: 1453207517
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
       vertices: []
       indices: 
       edges: []
@@ -216,12 +272,23 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
+<<<<<<< HEAD
       spriteID: 582ebd6acba5b4862848bfb0d1b9c02c
       internalID: 312691330
+=======
+      spriteID: eb1bd5525e536904c9653a6f13e3c389
+      internalID: -1295692914
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
       vertices: []
       indices: 
       edges: []
       weights: []
+<<<<<<< HEAD
+=======
+=======
+    sprites: []
+>>>>>>> main
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
     outline: []
     physicsShape: []
     bones: []
@@ -232,12 +299,25 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+<<<<<<< HEAD
     nameFileIdTable:
       Bat-Patroling-01_3: -895924887
       Bat-Patroling-01_1: 1380304643
       Bat-Patroling-01_2: 937403527
       Bat-Patroling-01_0: 2100647420
       Bat-Patroling-01_4: 312691330
+=======
+<<<<<<< HEAD
+    nameFileIdTable:
+      Bat-Patroling-01_3: 1453207517
+      Bat-Patroling-01_1: 754428861
+      Bat-Patroling-01_2: -316074545
+      Bat-Patroling-01_0: -2043341823
+      Bat-Patroling-01_4: -1295692914
+=======
+    nameFileIdTable: {}
+>>>>>>> main
+>>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
