@@ -24,6 +24,7 @@ public class FlyEnemy : MonoBehaviour
     private Vector2 dash_start;
     private Vector2 dash_end;
     private Vector2 stop_point;
+    private Animator animator;
 
     [SerializeField] int atk_damage;
     [SerializeField] float atk_interval;
@@ -53,12 +54,21 @@ public class FlyEnemy : MonoBehaviour
         Ps.Stop();
     }
 
+
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        animator.SetBool("isAttack", Vector2.Distance(transform.position, player.position) < 5f || planned);
         if (Vector2.Distance(transform.position, player.position) < 5f || planned)
         {
             DashAttack();
+            
         }
         else
         {
@@ -75,7 +85,10 @@ public class FlyEnemy : MonoBehaviour
     // dash to player and cause damage when contact
     void DashAttack()
     {
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
         if (prepare_dash)           // go to the left or right start-dash point of the player
         {
             if (!planned)
@@ -133,6 +146,7 @@ public class FlyEnemy : MonoBehaviour
         {
             Flip();
         }
+        
     }
     // make attack plan (dash_start -> dash_End -> stop_point -> dash_start...)
     void PlanRoute()
