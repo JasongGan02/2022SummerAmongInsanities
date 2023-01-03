@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 6647711791569574428}
   - component: {fileID: 6647711791569574624}
   - component: {fileID: 6647711791569574627}
+  - component: {fileID: 8931287623929103356}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -301,6 +302,39 @@ MonoBehaviour:
   Ahead: 0
   Targetpos: {x: 0, y: 0, z: 0}
   smooth: 1
+--- !u!114 &8931287623929103356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647711791569574429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &6647711791749533985
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,10 +348,10 @@ GameObject:
   - component: {fileID: 6647711791749533987}
   - component: {fileID: 6647711791749533988}
   - component: {fileID: 7023852002014492416}
+  - component: {fileID: 5230326679336918726}
   - component: {fileID: 6647711791749533991}
   - component: {fileID: 4038972269979073815}
   - component: {fileID: 3111690382522566145}
-  - component: {fileID: 3754338421075949332}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -333,7 +367,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6647711791749533985}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.9, y: 14.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -346,7 +380,7 @@ Transform:
   - {fileID: 5902607712887390058}
   - {fileID: 3855199898732275903}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6647711791749533986
 SpriteRenderer:
@@ -466,6 +500,27 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &5230326679336918726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647711791749533985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c21354133204bd459e7e8d06e71f7b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  curHealth: 10
+  speed: 5
+  atk_damage: 0
+  armor: 0
+  magic_resist: 0
+  atk_speed: 0
+  drops: []
+  RespwanTimeInterval: 0
 --- !u!114 &6647711791749533991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +533,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be6f15fb708d6e44860c1a3ccb633df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 3.5
+  maxHealth: 0
+  curHealth: 0
+  speed: 0
+  atk_damage: 0
+  armor: 0
+  magic_resist: 0
+  atk_speed: 0
+  drops: []
+  RespwanTimeInterval: 5
   runSpeedmodifier: 2
   jumpHeight: 10
   excavateCoeff: 1
@@ -519,6 +582,9 @@ MonoBehaviour:
   - {fileID: 3429148027577167092}
   placeTileRange: 1
   equipmentTemplate: {fileID: 5703799991536060000, guid: cc327834c14524b41af052db4d6824cb, type: 3}
+  handAttack: 1
+  handFarm: 0.5
+  handFrequency: 1
 --- !u!114 &3111690382522566145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -538,22 +604,6 @@ MonoBehaviour:
   axe: {fileID: 0}
   defaultNumberOfRow: 2
   maxExtraRow: 4
---- !u!114 &3754338421075949332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647711791749533985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99fef4a4e0413924bb88dd25278a9d20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerHP: 10
-  PlayerStrength: 2
-  PlayerSpeed: 2
-  RespwanTimeInterval: 5
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0

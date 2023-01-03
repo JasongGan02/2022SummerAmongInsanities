@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efbdf730c72a9114ea07ac3b213264ff, type: 3}
+  m_Name: Player1
+  m_EditorClassIdentifier: 
+  itemName: Player1
+  sizeRatio: 1
+  prefab: {fileID: 6647711791749533985, guid: ba181238bb3868c45b9884352a5a47a2, type: 3}
+  maxHealth: 10
+  curHealth: 0
+  movementSpeed: 5
+  atkDamage: 0
+  armor: 0
+  magicResist: 0
+  atkSpeed: 0
+  drops: []
+  RespwanTimeInterval: 0
