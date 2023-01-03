@@ -98,11 +98,14 @@ public class FlyEnemy : MonoBehaviour
                 Ps.Play();
                 timer += Time.deltaTime;
                 if (timer < 0.1f) { }
-                else
-                {
+<<<<<<< HEAD
+                else {
+=======
+                
+>>>>>>> main
                     prepare_dash = false;
                     is_dashing = true;
-                }
+                
             }
         }
         else if (is_dashing)        // dash through the player and attack
