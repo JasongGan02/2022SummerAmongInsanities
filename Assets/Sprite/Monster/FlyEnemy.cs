@@ -34,6 +34,7 @@ public class FlyEnemy : MonoBehaviour
     [SerializeField] TrailRenderer Tr;
     [SerializeField] ParticleSystem Ps;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +55,6 @@ public class FlyEnemy : MonoBehaviour
         Ps.Stop();
     }
 
-
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -64,7 +64,6 @@ public class FlyEnemy : MonoBehaviour
     void Update()
     {
 
-        animator.SetBool("isAttack", Vector2.Distance(transform.position, player.position) < 5f || planned);
         if (Vector2.Distance(transform.position, player.position) < 5f || planned)
         {
             DashAttack();
@@ -98,20 +97,18 @@ public class FlyEnemy : MonoBehaviour
                 Ps.Play();
                 timer += Time.deltaTime;
                 if (timer < 0.1f) { }
-<<<<<<< HEAD
-                else {
-=======
-                
->>>>>>> main
+                else
+                {
                     prepare_dash = false;
                     is_dashing = true;
-                
+                }
             }
         }
         else if (is_dashing)        // dash through the player and attack
         {
             Ps.Stop();
             transform.position = Vector2.MoveTowards(transform.position, dash_end, sprint * 3 * Time.deltaTime);
+            animator.SetBool("is_attacking", true); // being attack animation
             Tr.emitting = true;
             if (Vector2.Distance(transform.position, player.position) < 0.4f && !attacked)
             {
@@ -120,6 +117,7 @@ public class FlyEnemy : MonoBehaviour
             }
             if (CloseEnough(transform.position, dash_end))
             {
+                animator.SetBool("is_attacking", false);    // stop attack animation
                 Tr.emitting = false;
                 is_dashing = false;
             }
