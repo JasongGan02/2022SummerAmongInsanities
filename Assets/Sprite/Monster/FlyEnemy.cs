@@ -34,7 +34,6 @@ public class FlyEnemy : MonoBehaviour
     [SerializeField] TrailRenderer Tr;
     [SerializeField] ParticleSystem Ps;
 
-    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -56,10 +55,6 @@ public class FlyEnemy : MonoBehaviour
         Ps.Stop();
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 371858582b60932bb492d38ab71d1444e3d690a6
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -69,7 +64,6 @@ public class FlyEnemy : MonoBehaviour
     void Update()
     {
 
-        animator.SetBool("isAttack", Vector2.Distance(transform.position, player.position) < 5f || planned);
         if (Vector2.Distance(transform.position, player.position) < 5f || planned)
         {
             DashAttack();

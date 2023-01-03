@@ -138,10 +138,73 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Bat-Attack_1
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 19
+        width: 98
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 062edd2488cef44538a4c61555e65bf4
+      internalID: -1176913510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack_2
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 18
+        width: 98
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ffc4912a0a91447495cc25a3a820678
+      internalID: -254112839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Attack_3
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 18
+        width: 64
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 823d6582f3a884449947466c3c99b0e9
+      internalID: -2116073367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0a43363a41faf499d9388f16230bb348
     internalID: 0
     vertices: []
     indices: 
@@ -149,7 +212,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Bat-Attack_2: -254112839
       Bat-Attack_0: -7826813338466670058
+      Bat-Attack_1: -1176913510
+      Bat-Attack_3: -2116073367
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
