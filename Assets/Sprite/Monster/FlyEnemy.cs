@@ -96,11 +96,12 @@ public class FlyEnemy : MonoBehaviour
             {
                 Ps.Play();
                 timer += Time.deltaTime;
-                if (timer < 0.1f) { }
+                if (timer < 1f) { }
                 else
                 {
                     prepare_dash = false;
                     is_dashing = true;
+                    PlanRoute();
                 }
             }
         }
@@ -212,7 +213,6 @@ public class FlyEnemy : MonoBehaviour
         if (Vector2.Distance(first, second) < 0.2f) { return true; }
         return false;
     }
-
 
 
 
