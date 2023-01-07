@@ -519,6 +519,9 @@ MonoBehaviour:
   - {fileID: 3429148027577167092}
   placeTileRange: 1
   equipmentTemplate: {fileID: 5703799991536060000, guid: cc327834c14524b41af052db4d6824cb, type: 3}
+  handAttack: 1
+  handFarm: 0.5
+  handFrequency: 1
 --- !u!114 &3111690382522566145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,9 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99fef4a4e0413924bb88dd25278a9d20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerHP: 10
+  MaxPlayerHP: 10
   PlayerStrength: 2
   PlayerSpeed: 2
+  HealthBarUI: {fileID: 0}
   RespwanTimeInterval: 5
 --- !u!1 &7716306966358594839
 GameObject:

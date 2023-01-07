@@ -16,8 +16,6 @@ public class DroppedObjectController : MonoBehaviour
 
     public void Initialize(IInventoryObject item, int amount)
     {
-        Debug.Log("Initialize id: " + this.GetInstanceID());
-        Debug.Log("DroppedObjectController::Initialize - " + item);
         this.amount = amount;
         this.item = item;
         testName = item.GetItemName();
@@ -25,7 +23,6 @@ public class DroppedObjectController : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("start id: " + this.GetInstanceID());
         player = GameObject.Find(Constants.Name.PLAYER);
         inventory = player.GetComponent<Inventory>();
     }
@@ -52,10 +49,8 @@ public class DroppedObjectController : MonoBehaviour
 
     private void PickedUp()
     {
-        Debug.Log("pickedUp id: " + this.GetInstanceID());
         shouldFlyToPlayer = false;
 
-        Debug.Log("DroppedObjectController::PickedUp - " + item);
         inventory.AddItem(item, amount);
         Destroy(gameObject);
     }
