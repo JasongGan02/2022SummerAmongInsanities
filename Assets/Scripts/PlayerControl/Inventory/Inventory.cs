@@ -100,7 +100,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
     public void AddItem(IInventoryObject item, int amount)
     {
-        Debug.Log("Inventory::AddItem - " + item);
         for (int i = 0; i < amount; i++)
         {
             int indexToUpdate = database.AddItem(item);
