@@ -96,11 +96,12 @@ public class FlyEnemy : MonoBehaviour
             {
                 Ps.Play();
                 timer += Time.deltaTime;
-                if (timer < 0.1f) { }
+                if (timer < 0.4f) { }
                 else
                 {
                     prepare_dash = false;
                     is_dashing = true;
+                    PlanRoute();
                 }
             }
         }
