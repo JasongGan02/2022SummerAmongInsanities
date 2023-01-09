@@ -147,11 +147,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c95dc24c5f625409506dd6f0be0e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AtkRange: 5
-  AtkSpeed: 3
-  AtkIntervalTime: 2
+  AtkRange: 15
+  AtkIntervalTime: 1
+  AtkTimer: 0
   bullet_speed: 2
   bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+  isEnemySpotted: 0
+  enemyContainer: {fileID: 0}
 --- !u!114 &-4772314620522356460
 MonoBehaviour:
   m_ObjectHideFlags: 0
