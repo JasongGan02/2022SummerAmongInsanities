@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 public class BackgroundManager : MonoBehaviour
 {
     private GameObject sun;
+    private GameObject moon;
     private GameObject redMoon;
     private GameObject backgroundLight;
 
@@ -13,44 +14,43 @@ public class BackgroundManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        sun = GameObject.Find(Constants.Name.SUN);
-        redMoon = GameObject.Find(Constants.Name.RED_MOON);
-        backgroundLight = GameObject.Find(Constants.Name.BACKGROUND_LIGHT);
+        GameObject background = GameObject.Find(Constants.Name.BACKGROUND);
+        sun = background.transform.Find(Constants.Name.SUN).gameObject;
+        moon = background.transform.Find(Constants.Name.MOON).gameObject;
+        redMoon = background.transform.Find(Constants.Name.RED_MOON).gameObject;
+        backgroundLight = background.transform.Find(Constants.Name.BACKGROUND_LIGHT).gameObject;
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
 
         timeSystemManager.OnDayStartedHandler += OnDayStarted;
         timeSystemManager.OnNightStartedHandler += OnNightStarted;
-        timeSystemManager.OnRedMoonNightStartedHandler += OnRedMoonNightStarted;
-        timeSystemManager.OnRedMoonNightEndedHandler += OnRedMoonNightEnded;
     }
 
     private void OnDisable()
     {
         timeSystemManager.OnDayStartedHandler -= OnDayStarted;
         timeSystemManager.OnNightStartedHandler -= OnNightStarted;
-        timeSystemManager.OnRedMoonNightStartedHandler -= OnRedMoonNightStarted;
-        timeSystemManager.OnRedMoonNightEndedHandler -= OnRedMoonNightEnded;
     }
 
     private void OnDayStarted()
     {
-        //backgroundLight.GetComponent<Light2D>().intensity = 1f;
         sun.SetActive(true);
-    }
-
-    private void OnNightStarted()
-    {
-        //backgroundLight.GetComponent<Light2D>().intensity = 0.2f;
-        sun.SetActive(false);
-    }
-
-    private void OnRedMoonNightStarted()
-    {
-        redMoon.SetActive(true);
-    }
-
-    private void OnRedMoonNightEnded()
-    {
         redMoon.SetActive(false);
+        moon.SetActive(false);
+    }
+
+    private void OnNightStarted(bool isRedMoonNight)
+    {
+        sun.SetActive(false);
+
+        if (isRedMoonNight)
+        {
+            redMoon.SetActive(true);
+            moon.SetActive(false);
+        }
+        else
+        {
+            moon.SetActive(true);
+            redMoon.SetActive(false);
+        }
     }
 }

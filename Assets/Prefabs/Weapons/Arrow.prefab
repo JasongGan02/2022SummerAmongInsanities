@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1248398407905336019}
   - component: {fileID: 547367055942381427}
   - component: {fileID: 8895854436292045573}
-  - component: {fileID: 3462005384057009688}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -28,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658926369847174377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34.13, y: 16.607, z: 0}
+  m_LocalPosition: {x: 34.227, y: 16.477, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -142,18 +141,3 @@ PolygonCollider2D:
       - {x: 0.049702644, y: 0.019001484}
       - {x: 0.049999997, y: 0.049999997}
   m_UseDelaunayMesh: 0
---- !u!114 &3462005384057009688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 658926369847174377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a839d0ec06a0a8d49a2144dc09f19875, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0.2
-  distanceThreshold: 0.1
-  amount: 1

@@ -76,5 +76,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88710e32a740f148a969d1d2b274c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axe: {fileID: 11400000, guid: 9dcfcf45f211cf84f889c913b2e17330, type: 2}
+  equipments:
+  - {fileID: 11400000, guid: 8879d58f671d69747a8dcfc53eefe47f, type: 2}
+  - {fileID: 11400000, guid: 9dcfcf45f211cf84f889c913b2e17330, type: 2}
+  - {fileID: 11400000, guid: 93aa2cd2c31b0c54a94d779394a2c6eb, type: 2}
+  - {fileID: 11400000, guid: 6119f51ced59cd446b95b3d24d30e1bb, type: 2}
+  - {fileID: 11400000, guid: 30b4db54f79226b4fb30bcbfbf8ad3dc, type: 2}
+  - {fileID: 11400000, guid: 9db6f9cd76dae8b45bccb696cef80a62, type: 2}
   spawnPoint: {fileID: 814760530}
