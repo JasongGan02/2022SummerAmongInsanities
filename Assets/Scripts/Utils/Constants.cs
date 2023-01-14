@@ -34,7 +34,9 @@ public static class Constants
         public static string PICK_UP_DETECTOR = "PickUpDetector";
         public static string INVENTORY_GRID = "InventoryUI";
         public static string HEALTH_BAR = "HealthBarUI";
+        public static string BACKGROUND = "Background";
         public static string SUN = "Sun";
+        public static string MOON = "Moon";
         public static string RED_MOON = "RedMoon";
         public static string BACKGROUND_LIGHT = "BackgroundLight";
         public static string TIME_TEXT = "TimeText";

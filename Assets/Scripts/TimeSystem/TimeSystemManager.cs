@@ -12,9 +12,8 @@ public class TimeSystemManager : MonoBehaviour
     public int redMoonNightInterval = 5;
 
     public Action OnDayStartedHandler;
-    public Action OnNightStartedHandler;
-    public Action OnRedMoonNightStartedHandler;
-    public Action OnRedMoonNightEndedHandler;
+    public Action<bool> OnNightStartedHandler; // The boolean is used to set moon type
+
     public Action<int> OnHourUpdatedHandler;
     public Action<int> OnDayUpdatedHandler;
 
@@ -31,9 +30,9 @@ public class TimeSystemManager : MonoBehaviour
         }
         else
         {
-            OnNightStartedHandler?.Invoke();
+            // The first night will not be a red moon night
+            OnNightStartedHandler?.Invoke(false);
         }
-        OnRedMoonNightEndedHandler?.Invoke();
         StartCoroutine(UpdateTime());
     }
 
@@ -50,6 +49,29 @@ public class TimeSystemManager : MonoBehaviour
     public int GetMidDayTime()
     {
         return (nightStartHour + dayStartHour) / 2;
+    }
+
+    private int GetNightTimePassedForToday()
+    {
+        if (currentHour >= nightStartHour)
+        {
+            return currentHour - nightStartHour;
+        }
+        else
+        {
+            return 24 - nightStartHour + currentHour;
+        }
+    }
+
+    private bool IsInDaytime()
+    {
+        return currentHour >= dayStartHour && currentHour < nightStartHour;
+    }
+
+    public float GetHowMuchPercentageOfNightTimeHasPassed()
+    {
+        if (IsInDaytime()) return 0;
+        return (float) GetNightTimePassedForToday() / (24 - GetDayTimeLengthInHour());
     }
 
     private IEnumerator UpdateTime()
@@ -70,24 +92,19 @@ public class TimeSystemManager : MonoBehaviour
             if (currentHour == dayStartHour)
             {
                 OnDayStartedHandler?.Invoke();
-                if ((currentDay - 1) % redMoonNightInterval == 0)
-                {
-                    OnRedMoonNightEndedHandler?.Invoke();
-                }
             }
             else if (currentHour == nightStartHour)
             {
-                OnNightStartedHandler?.Invoke();
-
                 if (currentDay % redMoonNightInterval == 0)
                 {
-                    OnRedMoonNightStartedHandler?.Invoke();
+                    OnNightStartedHandler?.Invoke(true);
+                }
+                else
+                {
+                    OnNightStartedHandler?.Invoke(false);
                 }
             }
-
-            
         }
-        
     }
 
     private void UpdateTimeUI()
