@@ -9,7 +9,6 @@ public abstract class TowerBasics : MonoBehaviour
     public float AtkTimer;        // Timer
     public float bullet_speed;    // bullet flying speed
     public GameObject bullet;
-    
     public bool isEnemySpotted;
     public EnemyContainer enemyContainer;
 
