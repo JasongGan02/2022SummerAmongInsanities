@@ -9,7 +9,7 @@ public class BreakableObjectController : MonoBehaviour
     private float healthPoint;
     [HideInInspector] public bool isPlacedByPlayer;
 
-    public void Initialize(TileObject tile, int hp, bool isPlacedByPlayer)
+    public void Initialize(TileObject tile, float hp, bool isPlacedByPlayer)
     {
         healthPoint = hp;
         this.tile = tile;

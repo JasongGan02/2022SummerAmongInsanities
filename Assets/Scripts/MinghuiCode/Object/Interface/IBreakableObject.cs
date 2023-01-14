@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IBreakableObject
 {
-    int HealthPoint { get; set; }
+    float HealthPoint { get; set; }
 
     Drop[] Drops { get; set; }
 

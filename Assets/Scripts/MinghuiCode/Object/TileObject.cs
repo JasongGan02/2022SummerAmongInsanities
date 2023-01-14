@@ -10,7 +10,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
 
     [SerializeField]
-    private int _healthPoint;
+    private float _healthPoint;
 
 
     [SerializeField]
@@ -74,7 +74,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
      * implementation of IBreakableObject
      */
     #region
-    public int HealthPoint
+    public float HealthPoint
     {
         get => _healthPoint;
         set => _healthPoint = value;
