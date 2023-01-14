@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7115298586428798983}
   - component: {fileID: 3722407966096617833}
   - component: {fileID: 7423627973458715195}
-  - component: {fileID: 7115298586428798977}
   - component: {fileID: 2069985172}
+  - component: {fileID: 7115298586428798977}
   - component: {fileID: -4581030759164074406}
   m_Layer: 10
   m_Name: CatapultTower
@@ -136,23 +136,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.5275269, y: 2.4063282}
   m_EdgeRadius: 0
---- !u!114 &7115298586428798977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7115298586428798980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 885efad21c4433d4aa34989b9803f26a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AtkRange: 100
-  AtkSpeed: 2
-  AtkIntervalTime: 3
-  bullet_x_flyingSpeed: 10
-  bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
 --- !u!95 &2069985172
 Animator:
   serializedVersion: 4
@@ -173,6 +156,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7115298586428798977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115298586428798980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 885efad21c4433d4aa34989b9803f26a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AtkRange: 100
+  AtkIntervalTime: 3
+  AtkTimer: 0
+  bullet_speed: 0
+  bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
+  isEnemySpotted: 0
+  enemyContainer: {fileID: 0}
+  bullet_x_flyingSpeed: 10
 --- !u!114 &-4581030759164074406
 MonoBehaviour:
   m_ObjectHideFlags: 0
