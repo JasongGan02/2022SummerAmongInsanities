@@ -67,7 +67,6 @@ public class FlyEnemy : MonoBehaviour
         if (Vector2.Distance(transform.position, player.position) < 5f || planned)
         {
             DashAttack();
-            
         }
         else
         {

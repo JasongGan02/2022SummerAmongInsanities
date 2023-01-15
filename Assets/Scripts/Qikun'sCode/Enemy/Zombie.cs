@@ -166,7 +166,6 @@ public class Zombie : MonoBehaviour
 
             timer = 0;
         }
-        
     }
 
 
