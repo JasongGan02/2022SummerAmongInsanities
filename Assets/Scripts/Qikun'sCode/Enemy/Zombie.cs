@@ -7,7 +7,6 @@ public class Zombie : MonoBehaviour
     private Playermovement player;
     private TowerContainer towerContainer;
     private float movingSpeed = 1;
-
     [SerializeField] int atk_damage;
     [SerializeField] float atk_interval;
     float timer;
@@ -128,15 +127,15 @@ public class Zombie : MonoBehaviour
             {
                 if(distance_to_player > 1)
                 {
-                    // Approaching player
                     ApproachingTarget(player.transform);
+                    return;
                 }
             }else
             {
                 if(distance_to_nearest_tower > 1)
                 {
-                    // Approaching tower
                     ApproachingTarget(nearest_tower);
+                    return;
                 }
             }
         }
