@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d357da3ac61fb2744b16c40f028ea43c, type: 3}
+  m_Name: Rogue Graph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 4162520671784683616}
+  - {fileID: 781714894226987876}
+  - {fileID: 7524178854535071481}
+--- !u!114 &781714894226987876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38783973b80fb99449d998f44f35b3aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 
+    level: 0
+    canRepeat: 0
+--- !u!114 &4162520671784683616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38783973b80fb99449d998f44f35b3aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 
+    level: 0
+    canRepeat: 0
+--- !u!114 &7524178854535071481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38783973b80fb99449d998f44f35b3aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 
+    level: 0
+    canRepeat: 0
