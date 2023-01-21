@@ -43,14 +43,7 @@ public class Zombie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(canUseAbility)
-        {
-            StartCoroutine("Dash", dash_direction);
-            print("dashing");
-        }else
-        {
-            SenseNearestTarget();
-        }
+        SenseNearestTarget();
     }
 
     // Dash only effects to tower

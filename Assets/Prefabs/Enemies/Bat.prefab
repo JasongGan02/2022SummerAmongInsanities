@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6464304540677319460}
   - component: {fileID: 6464304540677319463}
   - component: {fileID: 6410823664700740454}
-  - component: {fileID: 1320664420230356484}
   - component: {fileID: 1320664421811072564}
   m_Layer: 9
   m_Name: Bat
@@ -35,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6464304540677319461
 SpriteRenderer:
@@ -139,18 +138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health_point: 5
---- !u!114 &1320664420230356484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6464304540677319456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4ceab86d817424bae441bad23e33d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1320664421811072564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,9 +154,11 @@ MonoBehaviour:
   sprint: 5
   startWaitTime: 3
   facingRight: 0
-  moveTo: {fileID: 0}
-  player: {fileID: 0}
   min_x: 30
   max_x: 60
   min_y: 16
   max_y: 23
+  atk_damage: 0
+  atk_interval: 0
+  Tr: {fileID: 0}
+  Ps: {fileID: 0}

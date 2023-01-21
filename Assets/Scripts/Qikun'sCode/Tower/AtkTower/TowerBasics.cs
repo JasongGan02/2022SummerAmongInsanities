@@ -13,7 +13,7 @@ public abstract class TowerBasics : MonoBehaviour
     public EnemyContainer enemyContainer;
 
     // Find nearest enmey in the enemy array
-    public Transform SenseNearestEnemyTransform()
+    protected Transform SenseNearestEnemyTransform()
     {
         Transform[] enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
         
@@ -45,7 +45,7 @@ public abstract class TowerBasics : MonoBehaviour
         return nearest_Target;
     }
 
-    public float CalculateDistanceFromEnemyToTower(Transform enemyTransform)
+    protected float CalculateDistanceFromEnemyToTower(Transform enemyTransform)
     {
         Vector3 towerPosition = transform.position;
         Vector3 enemyPosition = enemyTransform.position;
