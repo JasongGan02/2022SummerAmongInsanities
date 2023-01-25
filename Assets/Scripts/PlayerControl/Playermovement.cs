@@ -8,6 +8,7 @@ public class Playermovement : MonoBehaviour
     public float runSpeedmodifier=2f;
     public float jumpHeight = 7f;
     public float  excavateCoeff = 1f;
+   
 
     public int totalJumps;
     int availableJumps;
@@ -96,8 +97,8 @@ public class Playermovement : MonoBehaviour
             availableJumps--;
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
-            animator.SetBool("Jump", true);
-            animator.SetBool("SecondJump", false);
+            
+            
 
         }
         else
@@ -109,8 +110,8 @@ public class Playermovement : MonoBehaviour
                 availableJumps--;
                 
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
-                animator.SetBool("Jump", true);
-                animator.SetBool("SecondJump", true);
+                animator.Play("playerDoubleJump");
+                
             }
         }
     }
@@ -135,7 +136,7 @@ public class Playermovement : MonoBehaviour
             }        
         }
         animator.SetBool("Jump", !isGrounded);
-        animator.SetBool("SecondJump", false);
+        
 
 
     }
