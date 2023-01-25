@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 5469098318322386288}
   - component: {fileID: 5469098318322386289}
   - component: {fileID: 5469098318322386290}
-  - component: {fileID: 5469098318322386291}
   - component: {fileID: 5378462764814122291}
-  - component: {fileID: 1360867409}
+  - component: {fileID: -8011284561811220451}
   m_Layer: 9
   m_Name: Zombie
   m_TagString: enemy
@@ -126,20 +125,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &5469098318322386291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5469098318322386293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b4d28d4bba59e849aebb8a3f75bb0bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  atk_damage: 2
-  atk_interval: 1
 --- !u!114 &5378462764814122291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health_point: 5
---- !u!114 &1360867409
+--- !u!114 &-8011284561811220451
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,6 +147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5469098318322386293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4ceab86d817424bae441bad23e33d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyData: {fileID: 11400000, guid: 6afca69e7745dd2488d2cf19ec23ee9d, type: 2}
