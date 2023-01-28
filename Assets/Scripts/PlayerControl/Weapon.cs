@@ -7,8 +7,8 @@ public class Weapon : MonoBehaviour
 {
     public float speed;
 
-
-    public bool facingRight = true;
+     
+    public bool facingRight = false;
     
     private Transform player;
 
@@ -42,12 +42,9 @@ public class Weapon : MonoBehaviour
     void Update()
     {
 
-        Patrol();
+        
         // If patrol around, it faces toward the destination. Otherwise, it faces the player
-        if (player.position.x < transform.position.x && facingRight || player.position.x > transform.position.x && !facingRight)
-        {
-            Flip();
-        }
+        
 
         if (Input.GetMouseButton(0))
         {
@@ -57,6 +54,7 @@ public class Weapon : MonoBehaviour
         }
         else
         {
+            Patrol();
             Tr.emitting = false;
         }
        
@@ -68,12 +66,17 @@ public class Weapon : MonoBehaviour
     {
         if (facingRight)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position + new Vector3(0, 1, 0), speed * 2 * Time.deltaTime);
+            transform.position += new Vector3(0.1f, 0, 0);
+
+            
+
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position - new Vector3(0, 1, 0), speed * 2 * Time.deltaTime);
-        }
+            transform.position -= new Vector3(0.1f, 0, 0);
+            
+
+        }                       
     }
    
     // make attack plan (dash_start -> dash_End -> stop_point -> dash_start...)
@@ -85,7 +88,7 @@ public class Weapon : MonoBehaviour
         facingRight = !facingRight;
 
         Vector3 transformScale = transform.localScale;
-        transformScale.x *= -1;
+        transformScale.y *= -1;
         transform.localScale = transformScale;
     }
 
@@ -104,6 +107,11 @@ public class Weapon : MonoBehaviour
         if (Vector2.Distance(transform.position, player.position) < 0.2)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y + 2,transform.position.z);
+        }
+
+        if (player.position.x < transform.position.x && facingRight || player.position.x > transform.position.x && !facingRight)
+        {
+            Flip();
         }
     }
 
