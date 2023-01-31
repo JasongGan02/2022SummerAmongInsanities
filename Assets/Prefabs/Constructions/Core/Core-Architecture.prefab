@@ -116,7 +116,7 @@ Transform:
   m_Children:
   - {fileID: 893456879}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2767627944182598562
 SpriteRenderer:
@@ -179,8 +179,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2767627944182598563}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24f284312ba53854d95d34f95616ab7f, type: 3}
+  m_Script: {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Constructable_Distance: 18
+  Constructable_Distance: 15
   Constructable_Circle: {fileID: 893456878}
