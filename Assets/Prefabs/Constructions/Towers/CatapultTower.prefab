@@ -175,7 +175,7 @@ MonoBehaviour:
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   isEnemySpotted: 0
   enemyContainer: {fileID: 0}
-  bullet_x_flyingSpeed: 1
+  bullet_x_flyingSpeed: 5
 --- !u!114 &-4581030759164074406
 MonoBehaviour:
   m_ObjectHideFlags: 0
