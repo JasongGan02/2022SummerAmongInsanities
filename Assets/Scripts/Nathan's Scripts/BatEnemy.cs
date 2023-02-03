@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BatEnemy : EnemyBasics
+public class BatEnemy : EnemyController
 {
     private bool facingRight = false;
     private float waitTime;
@@ -237,6 +237,11 @@ public class BatEnemy : EnemyBasics
     {
         if (Vector2.Distance(first, second) < 0.2f) { return true; }
         return false;
+    }
+
+    public override void death()
+    {
+        throw new System.NotImplementedException();
     }
 }
 
