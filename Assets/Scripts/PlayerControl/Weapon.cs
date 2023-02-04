@@ -1,20 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Weapon : MonoBehaviour
 {
     public float speed;
-    
+
      
     public bool facingRight = false;
-
-    public float magnitude = 1f;
-    public float frequency = 10f;
-    public float offset = 0f;
+    
     private Transform player;
 
  
@@ -32,13 +27,11 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         player = GameObject.Find("Player").transform;
-
-
        
-
-    attacked = false;
+        
+        attacked = false;
       
         
     }
@@ -48,6 +41,11 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        
+        // If patrol around, it faces toward the destination. Otherwise, it faces the player
+        
+
         if (Input.GetMouseButton(0))
         {
             attack();
@@ -66,18 +64,17 @@ public class Weapon : MonoBehaviour
     // dash to player and cause damage when contact
     void attack()
     {
-        
         if (facingRight)
         {
-            
-            transform.position = player.position + new Vector3(1f, 0, 0) + transform.up * Mathf.Sin(Time.time * frequency + offset) * magnitude;
+            transform.position += new Vector3(0.1f, 0, 0);
 
+            
 
         }
         else
         {
-
-            transform.position = player.position - new Vector3(1f, 0, 0) -  transform.up * Mathf.Sin(Time.time * frequency + offset) * magnitude;
+            transform.position -= new Vector3(0.1f, 0, 0);
+            
 
         }                       
     }
@@ -120,7 +117,7 @@ public class Weapon : MonoBehaviour
 
 
     //check for collision with player
-  private void OnTriggerEnter2D(Collider2D collision)   
+  private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
         {
