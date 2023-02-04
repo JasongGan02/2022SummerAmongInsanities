@@ -22,6 +22,7 @@ public class Playermovement : MonoBehaviour
     public LayerMask groundLayer;
 
     public bool facingRight = true;
+
     private bool isRunning = false;
     private bool isGrounded = true;
     bool multipleJump;                                      
