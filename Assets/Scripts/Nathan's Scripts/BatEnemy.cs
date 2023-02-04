@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BatEnemy : EnemyBasics
+public class BatEnemy : EnemyController
 {
     private bool facingRight = false;
     private float waitTime;
@@ -82,7 +82,7 @@ public class BatEnemy : EnemyBasics
     protected new bool IsPlayerSensed()
     {
         float distance = CalculateDistanceToPlayer();
-        if (distance <= EnemyData.SensingRange)
+        if (distance <= SensingRange)
         {
             return true;
         }
@@ -125,7 +125,7 @@ public class BatEnemy : EnemyBasics
 
     new void ApproachingTarget(Transform target_transform)
     {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, EnemyData.MovingSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, MovingSpeed * Time.deltaTime);
         if (target_transform.position.x < transform.position.x && facingRight || target_transform.position.x > transform.position.x && !facingRight)
         {
             Flip();
@@ -156,12 +156,12 @@ public class BatEnemy : EnemyBasics
         else if (is_dashing)        // dash through the player and attack
         {
             Ps.Stop();
-            transform.position = Vector2.MoveTowards(transform.position, dash_end, EnemyData.MovingSpeed * 5 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, dash_end, MovingSpeed * 5 * Time.deltaTime);
             animator.SetBool("is_attacking", true); // being attack animation
             Tr.emitting = true;
             if (Vector2.Distance(transform.position, player.gameObject.transform.position) < 0.4f && !attacked)
             {
-                player.GetComponent<PlayerAttributes>().DecreaseHealth((int)EnemyData.AtkDamage);
+                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
                 attacked = true;
             }
             if (CloseEnough(transform.position, dash_end))
@@ -182,7 +182,7 @@ public class BatEnemy : EnemyBasics
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, stop_point, EnemyData.MovingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, stop_point, MovingSpeed * Time.deltaTime);
             }
             if (player.gameObject.transform.position.x < transform.position.x && facingRight || player.gameObject.transform.position.x > transform.position.x && !facingRight)
             {
@@ -237,6 +237,11 @@ public class BatEnemy : EnemyBasics
     {
         if (Vector2.Distance(first, second) < 0.2f) { return true; }
         return false;
+    }
+
+    public override void death()
+    {
+        throw new System.NotImplementedException();
     }
 }
 

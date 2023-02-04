@@ -144,12 +144,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2428287790915297841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0050bd1f260a449a8c03908323e229, type: 3}
+  m_Script: {fileID: 11500000, guid: d876b81e3542c164680ab690142eb4aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wallType: 0
-  StoneWallLifePoint: 11
-  WoodenWallLifePoint: 11
+  StoneWallLifePoint: 10
+  WoodenWallLifePoint: 3
 --- !u!114 &-7655628998294086644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2428287790915297841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08677e6c40f3f5a44bf44eeae11483cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health_point: 11
+  health_point: 10

@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7115298586428798983
 SpriteRenderer:
@@ -165,17 +165,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
+  m_Script: {fileID: 11500000, guid: 885efad21c4433d4aa34989b9803f26a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AtkRange: 11
-  AtkIntervalTime: 1
-  AtkTimer: 1
-  bullet_speed: 1
+  AtkRange: 100
+  AtkIntervalTime: 3
+  AtkTimer: 0
+  bullet_speed: 0
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   isEnemySpotted: 0
   enemyContainer: {fileID: 0}
-  bullet_x_flyingSpeed: 5
+  bullet_x_flyingSpeed: 10
 --- !u!114 &-4581030759164074406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08677e6c40f3f5a44bf44eeae11483cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health_point: 11
+  health_point: 5
