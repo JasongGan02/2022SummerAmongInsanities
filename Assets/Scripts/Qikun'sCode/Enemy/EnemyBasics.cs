@@ -23,6 +23,8 @@ public abstract class EnemyBasics : MonoBehaviour
 
     protected bool IsTowerSensed()
     {
+        if (towerContainer == null) { return false; }  // Nathan's only change
+            
         UpdateNearestTower();
         if(NearestTowerTransform == transform)
         {
@@ -107,9 +109,9 @@ public abstract class EnemyBasics : MonoBehaviour
         }
     }
 
-    protected void UpdateNearestTower()
+    protected void UpdateNearestTower() // if no tower exists, there is a problem !
     {
-        Transform[] towerTransforms = towerContainer.GetComponentsInChildren<Transform>();
+        Transform[] towerTransforms = towerContainer.GetComponentsInChildren<Transform>(); 
         Transform nearest_Transform = transform;
         float min_distance = 0;
         foreach(Transform e in towerTransforms)
