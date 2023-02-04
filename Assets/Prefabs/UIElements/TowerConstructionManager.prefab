@@ -413,7 +413,7 @@ Transform:
   m_Children:
   - {fileID: 398170159733957944}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &398170159650289095
 MonoBehaviour:
@@ -424,15 +424,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 398170159650289092}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 290c22c35e0105e4b9db8c750bbe8c53, type: 3}
+  m_Script: {fileID: 11500000, guid: 21dd79051bd9a034f961d5c819678af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Towers:
   - {fileID: 7115298586428798980, guid: d0ae76a7c78043f4d83ffa96126caa57, type: 3}
   - {fileID: 5122404738386094519, guid: 39a1f4649fcd54e4abf02bfc63eb8431, type: 3}
   - {fileID: 2844561520478345549, guid: 355ce48ef379c64489a9b3fc4f059ab3, type: 3}
-  - {fileID: 2844561520478345549, guid: e165f421dac4a8e40b6b07b04c9313b2, type: 3}
   - {fileID: 2844561520478345549, guid: e58db6521b99eb04583f76ff0215adc4, type: 3}
+  - {fileID: 2844561520478345549, guid: e165f421dac4a8e40b6b07b04c9313b2, type: 3}
   ConstructionUI: {fileID: 398170159733957945}
   EnergyText: {fileID: 398170160670089140}
 --- !u!1 &398170159733957945
