@@ -144,15 +144,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2844561520478345549}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1d883e9dfa39344e96d7da7ff73f8f3, type: 3}
+  m_Script: {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SenseDistance: 100
   bullet: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
-  bullet_speed: 3
-  AtkSpeed: 3
-  AtkIntervalTime: 2
-  atkDirection: 1
+  bullet_speed: 11
+  AtkSpeed: 11
+  AtkIntervalTime: 11
+  atkDirection: 3
 --- !u!114 &-5908655589455214081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2844561520478345549}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
+  m_Script: {fileID: 11500000, guid: 08677e6c40f3f5a44bf44eeae11483cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health_point: 5
+  health_point: 11
