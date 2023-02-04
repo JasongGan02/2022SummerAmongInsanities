@@ -19,7 +19,7 @@ public class EnemyGenerator : MonoBehaviour
     void Update()
     {
         timer+=Time.deltaTime;
-        if(timer >= 3 && !enemyContainer.is_too_much())   // Nathan's change
+        if(timer >= 3)
         {
             GeneratingEnemy(0);
             timer = 0;
@@ -32,5 +32,4 @@ public class EnemyGenerator : MonoBehaviour
         Transform parent_transform = enemyContainer.transform;
         instance.transform.SetParent(parent_transform);
     }
-
 }

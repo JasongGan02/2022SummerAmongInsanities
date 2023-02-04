@@ -88,7 +88,7 @@ public class ConstructionMode : MonoBehaviour
             RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);     // eject a downside ray
             bool regenerate = false;    // mark if the shadow object need to be regenerated
             if(ShadowObj){
-                if(ShadowObj.name != Towers [(int)towerType].name + "(Clone)")
+                if(ShadowObj.name != Towers[(int)towerType].name + "(Clone)")
                 {
                     regenerate = true;
                 }
