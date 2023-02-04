@@ -144,13 +144,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5122404738386094519}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b889914607fafa4f87fd046a99656b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 04c95dc24c5f625409506dd6f0be0e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AtkRange: 11
+  AtkRange: 15
   AtkIntervalTime: 1
-  AtkTimer: 1
-  bullet_speed: 1
+  AtkTimer: 0
+  bullet_speed: 2
   bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
   isEnemySpotted: 0
   enemyContainer: {fileID: 0}
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5122404738386094519}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08677e6c40f3f5a44bf44eeae11483cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health_point: 11
+  health_point: 5
