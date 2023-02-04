@@ -4,7 +4,11 @@ using UnityEngine;
 
 public abstract class EnemyController : CharacterController
 {
-    protected EnemyObject EnemyData;
+
+    protected float SensingRange;
+
+
+    //run-time variables
     protected TowerContainer towerContainer;
     protected Playermovement player;
     protected float timer;
@@ -14,7 +18,7 @@ public abstract class EnemyController : CharacterController
     protected bool isTouchTower;
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
-    protected float SensingRange;
+    
 
     public float curHP;
 
@@ -22,11 +26,10 @@ public abstract class EnemyController : CharacterController
     {
         base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed);
         this.SensingRange = SensingRange;
-        
-
+    
     }
 
-    protected void Start()
+    protected void Awake()
     {
         player = FindObjectOfType<Playermovement>();
         towerContainer = FindObjectOfType<TowerContainer>();
@@ -94,7 +97,7 @@ public abstract class EnemyController : CharacterController
 
     protected void ApproachingTarget(Transform target_transform)
     {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, EnemyData.MovingSpeed*Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, MovingSpeed*Time.deltaTime);
         SenseFrontBlock();
         // transform directiron change
         if(target_transform.position.x >= transform.position.x)
@@ -169,5 +172,11 @@ public abstract class EnemyController : CharacterController
         float distance = Mathf.Sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 
         return distance;
+    }
+
+    public override void death()
+    {
+        Destroy(gameObject);
+        throw new System.NotImplementedException();
     }
 }

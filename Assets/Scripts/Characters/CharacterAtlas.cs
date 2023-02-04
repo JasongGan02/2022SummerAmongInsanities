@@ -6,5 +6,5 @@ using UnityEngine;
 public class CharacterAtlas : ScriptableObject
 {
     public CharacterObject villager;
-   
+    public CharacterObject player;
 }

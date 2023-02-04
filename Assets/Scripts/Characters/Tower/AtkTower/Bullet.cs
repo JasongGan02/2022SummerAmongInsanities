@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
         if(other.gameObject.tag == "enemy")
         {
             // cause damage
-            other.gameObject.GetComponent<EnemyHeath>().DecreaseHealth(damage);
+            other.gameObject.GetComponent<CharacterController>().takenDamage(damage);
 
             // delete bullet
             Destroy(gameObject);

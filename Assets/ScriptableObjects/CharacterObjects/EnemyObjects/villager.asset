@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae3fd5bccb97aa847968ba988f3d2fdb, type: 3}
-  m_Name: villager
+  m_Name: Villager
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: villager
   sizeRatio: 1
-  prefab: {fileID: 0}
-  HP: 0
+  prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
+  HP: 10
   AtkDamage: 0
   AtkInterval: 0
-  MovingSpeed: 0
+  MovingSpeed: 1
   drops: []
   SensingRange: 0

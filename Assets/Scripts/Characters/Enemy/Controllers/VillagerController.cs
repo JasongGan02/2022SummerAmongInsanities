@@ -31,7 +31,7 @@ public class VillagerController : EnemyController
             }else
             {
                 // approaching tower
-                ApproachingTarget(NearestTowerTransform);
+                // ApproachingTarget(NearestTowerTransform);
             }
         }else
         {
