@@ -21,7 +21,7 @@ public class Lady : MonoBehaviour
 
 
     public float health = 100f;
-    public float speed = 1f;
+    public float speed = 1.5f;
     public LayerMask wallLayer;
     private Rigidbody2D rb;
     private float nextJump;
@@ -50,14 +50,7 @@ public class Lady : MonoBehaviour
         //
 
         // Approaches and escapes from the player
-        if (transform.position.x - player.position.x < 3 && transform.position.x - player.position.x > 0)
-        {
-            canFire = false;
-        }
-        if (transform.position.x - player.position.x < 3 && transform.position.x - player.position.x > 0)
-        {
-            canFire = false;
-        }
+
         Vector2 direction = (player.position - transform.position);
         if (direction.x > 0)
         {
@@ -97,7 +90,7 @@ public class Lady : MonoBehaviour
 
 
 
-        if ((Vector2.Distance(transform.position, player.position) <= range) && (Vector2.Distance(transform.position, player.position) > 3))
+        if (Vector2.Distance(transform.position, player.position) <= range)
         {
             // Check if the archer can fire
             if (canFire)
