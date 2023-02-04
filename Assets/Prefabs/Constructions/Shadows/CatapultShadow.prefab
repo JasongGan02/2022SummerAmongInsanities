@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0da26fe5a28be2c4996e37e1a6008101, type: 3}
+  m_Script: {fileID: 11500000, guid: f624a1359bea72b47abc7112460c81c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTower: {fileID: 7115298586428798980, guid: b4465ae4a0d5620449040e8a25a9a76a, type: 3}
