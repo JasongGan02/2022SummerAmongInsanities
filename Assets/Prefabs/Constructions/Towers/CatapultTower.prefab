@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 3722407966096617833}
   - component: {fileID: 7423627973458715195}
   - component: {fileID: 2069985172}
-  - component: {fileID: 7115298586428798977}
-  - component: {fileID: -4581030759164074406}
+  - component: {fileID: 3164605268787969525}
+  - component: {fileID: 6529597180981525054}
   m_Layer: 10
   m_Name: CatapultTower
   m_TagString: tower
@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7115298586428798983
 SpriteRenderer:
@@ -156,7 +156,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7115298586428798977
+--- !u!114 &3164605268787969525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,18 +165,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 885efad21c4433d4aa34989b9803f26a, type: 3}
+  m_Script: {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AtkRange: 100
-  AtkIntervalTime: 3
-  AtkTimer: 0
-  bullet_speed: 0
+  AtkRange: 11
+  AtkIntervalTime: 1
+  AtkTimer: 1
+  bullet_speed: 1
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   isEnemySpotted: 0
   enemyContainer: {fileID: 0}
-  bullet_x_flyingSpeed: 10
---- !u!114 &-4581030759164074406
+  bullet_x_flyingSpeed: 5
+--- !u!114 &6529597180981525054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3226ba5476d94e54c8388142165a364e, type: 3}
+  m_Script: {fileID: 11500000, guid: 08677e6c40f3f5a44bf44eeae11483cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health_point: 5
+  health_point: 11
