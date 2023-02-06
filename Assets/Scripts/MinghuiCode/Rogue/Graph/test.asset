@@ -91,6 +91,8 @@ MonoBehaviour:
   childNodes:
   - {fileID: -559448945933641247}
   - {fileID: 587801222489916781}
+  - {fileID: 2165223946987216395}
+  - {fileID: 3403298243052216004}
   parentNodes: []
   rect:
     serializedVersion: 2
@@ -116,11 +118,12 @@ MonoBehaviour:
     canRepeat: 0
   isRoot: 0
   childNodes: []
-  parentNodes: []
+  parentNodes:
+  - {fileID: 1213871549809339633}
   rect:
     serializedVersion: 2
-    x: 1110
-    y: 436
+    x: 1057
+    y: 428
     width: 200
     height: 100
 --- !u!114 &3403298243052216004
@@ -141,11 +144,12 @@ MonoBehaviour:
     canRepeat: 0
   isRoot: 0
   childNodes: []
-  parentNodes: []
+  parentNodes:
+  - {fileID: 1213871549809339633}
   rect:
     serializedVersion: 2
-    x: 1431
-    y: 454
+    x: 1398
+    y: 433
     width: 200
     height: 100
 --- !u!114 &8383753535971127198
