@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-559448945933641247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 1
+    level: 0
+    canRepeat: 0
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 1213871549809339633}
+  rect:
+    serializedVersion: 2
+    x: 313
+    y: 432
+    width: 200
+    height: 100
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0497db9006aec0b49ba17e608ea610ba, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1213871549809339633}
+  - {fileID: -559448945933641247}
+  - {fileID: 587801222489916781}
+  - {fileID: 2165223946987216395}
+  - {fileID: 3403298243052216004}
+  rootNode: {fileID: 1213871549809339633}
+--- !u!114 &587801222489916781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 2
+    level: 0
+    canRepeat: 0
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 1213871549809339633}
+  rect:
+    serializedVersion: 2
+    x: 704
+    y: 429
+    width: 200
+    height: 100
+--- !u!114 &1213871549809339633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 
+    level: 0
+    canRepeat: 0
+  isRoot: 1
+  childNodes:
+  - {fileID: -559448945933641247}
+  - {fileID: 587801222489916781}
+  parentNodes: []
+  rect:
+    serializedVersion: 2
+    x: 720
+    y: 199
+    width: 200
+    height: 100
+--- !u!114 &2165223946987216395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 
+    level: 0
+    canRepeat: 0
+  isRoot: 0
+  childNodes: []
+  parentNodes: []
+  rect:
+    serializedVersion: 2
+    x: 1110
+    y: 436
+    width: 200
+    height: 100
+--- !u!114 &3403298243052216004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 
+    level: 0
+    canRepeat: 0
+  isRoot: 0
+  childNodes: []
+  parentNodes: []
+  rect:
+    serializedVersion: 2
+    x: 1431
+    y: 454
+    width: 200
+    height: 100
+--- !u!114 &8383753535971127198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buff:
+    name: 3
+    level: 0
+    canRepeat: 0
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 1213871549809339633}
+  rect:
+    serializedVersion: 2
+    x: 1103
+    y: 423
+    width: 200
+    height: 100
