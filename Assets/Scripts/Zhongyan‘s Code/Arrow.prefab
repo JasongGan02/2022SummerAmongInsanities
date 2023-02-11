@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 884677234366405494}
   - component: {fileID: -5191183399563026118}
-  - component: {fileID: 7757931668224400352}
   - component: {fileID: -4064967226585050133}
   m_Layer: 9
   m_Name: Arrow
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2674270034793632360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 33.57841, y: 17.433123, z: -0.14043103}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,25 +47,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 4495697151584585258, guid: 4abcc5fbe0b9b674b83c368cc9870f36, type: 3}
   target: {fileID: 6647711791749533985, guid: ba181238bb3868c45b9884352a5a47a2, type: 3}
-  speed: 4
+  arrow: {fileID: 0}
+  speed: 2
   fireRate: 3
+  canDetect: 1
+  canChangeMod: 1
+  chnageModInterval: 2
+  nextModChange: 0
   movePosition: {x: 0, y: 0, z: 0}
---- !u!58 &7757931668224400352
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2674270034793632360}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.024702072}
-  serializedVersion: 2
-  m_Radius: 0.040881157
 --- !u!212 &-4064967226585050133
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7115298586428798983}
   - component: {fileID: 3722407966096617833}
   - component: {fileID: 7423627973458715195}
-  - component: {fileID: 4373862381725027558}
+  - component: {fileID: 3779511465806426892}
   m_Layer: 0
   m_Name: CatapultShadow
   m_TagString: Untagged
@@ -134,7 +134,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.558281, y: 2.3867111}
   m_EdgeRadius: 0
---- !u!114 &4373862381725027558
+--- !u!114 &3779511465806426892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0da26fe5a28be2c4996e37e1a6008101, type: 3}
+  m_Script: {fileID: 11500000, guid: f624a1359bea72b47abc7112460c81c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTower: {fileID: 7115298586428798980, guid: b4465ae4a0d5620449040e8a25a9a76a, type: 3}

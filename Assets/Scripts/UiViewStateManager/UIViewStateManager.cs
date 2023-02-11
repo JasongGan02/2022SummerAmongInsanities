@@ -25,6 +25,10 @@ public class UIViewStateManager : MonoBehaviour
         {
             ToggleUI(UIBeingViewed.Construction);
         }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            ToggleUI(UIBeingViewed.Rogue);
+        }
     }
 
     private void ToggleUI(UIBeingViewed ui)
@@ -42,5 +46,6 @@ public class UIViewStateManager : MonoBehaviour
 public enum UIBeingViewed {
     Null,
     Construction,
-    Inventory
+    Inventory,
+    Rogue
 }
