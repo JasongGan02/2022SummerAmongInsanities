@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 8093464373816555334}
   - component: {fileID: 8093464373816555335}
   - component: {fileID: 8093464373816555332}
-  - component: {fileID: 8148069891044183813}
-  - component: {fileID: 4303155385148306007}
   - component: {fileID: 3018555575201582538}
   - component: {fileID: 3018555575201582532}
   - component: {fileID: 3018555575201582539}
@@ -39,7 +37,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8093464373816555334
 SpriteRenderer:
@@ -130,43 +128,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.06561279, y: -0.03148079}
   m_Size: {x: 1.409378, y: 1.5909386}
   m_Direction: 0
---- !u!114 &8148069891044183813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5572140884625632519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a84f9bb2ccc4884f8873b9f18baa007, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health_point: 5
---- !u!114 &4303155385148306007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5572140884625632519}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3b41b41d378f4e5c8d18c1839173baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  sprint: 5
-  startWaitTime: 3
-  facingRight: 0
-  min_x: 30
-  max_x: 60
-  min_y: 16
-  max_y: 23
-  atk_damage: 5
-  atk_interval: 3
-  Tr: {fileID: 3018555575201582532}
-  Ps: {fileID: 3018555575201582538}
 --- !u!198 &3018555575201582538
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -182,7 +143,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -5091,6 +5052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a24ef35342a7584db402b9b6cc2d4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyData: {fileID: 11400000, guid: 2b61e5dbf7b8e034daf6b5282f365639, type: 2}
+  curHP: 5
   Tr: {fileID: 3018555575201582532}
   Ps: {fileID: 3018555575201582538}

@@ -12,6 +12,7 @@ public class CharacterSpawner : MonoBehaviour
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         SpawnVillager();
         SpawnPlayer();
+        SpawnBat();
     }
     void Start()
     {
@@ -28,5 +29,11 @@ public class CharacterSpawner : MonoBehaviour
     {
         GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject();
         playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
+    }
+
+    public void SpawnBat()
+    {
+        GameObject BatGameObject = characterAtlas.bat.GetSpawnedGameObject();
+        BatGameObject.transform.position = GetComponentInChildren<Transform>().position;
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2844561520478345546}
   - component: {fileID: 5669176044944987768}
   - component: {fileID: 4438776993460850766}
-  - component: {fileID: 6954982440214825773}
+  - component: {fileID: 389619194128173478}
   m_Layer: 0
   m_Name: StoneWallShadow
   m_TagString: Untagged
@@ -134,7 +134,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
---- !u!114 &6954982440214825773
+--- !u!114 &389619194128173478
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2844561520478345549}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0da26fe5a28be2c4996e37e1a6008101, type: 3}
+  m_Script: {fileID: 11500000, guid: f624a1359bea72b47abc7112460c81c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTower: {fileID: 2428287790915297841, guid: 292f7e07e0f609143bfec8555f92a6b6, type: 3}

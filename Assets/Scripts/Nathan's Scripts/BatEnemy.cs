@@ -23,10 +23,9 @@ public class BatEnemy : EnemyController
 
 
     // Start is called before the first frame update
-    protected new void Start()
+    protected void Start()
     {
         // these 3 lines from EnemyBasics
-        player = FindObjectOfType<Playermovement>();
         towerContainer = FindObjectOfType<TowerContainer>();
         timer = 0;
 
@@ -44,9 +43,15 @@ public class BatEnemy : EnemyController
         attacked = false;
         stop_point = player.gameObject.transform.position;
         Ps.Stop();
+
+        this.SensingRange = 6;
+        this.HP = 10;
+        this.AtkDamage = 4;
+        this.AtkInterval = 3;
+        this.MovingSpeed = 3;
     }
 
-    void Awake()
+    new void Awake()
     {
         animator = GetComponent<Animator>();
     }

@@ -10,7 +10,7 @@ public abstract class EnemyController : CharacterController
 
     //run-time variables
     protected TowerContainer towerContainer;
-    protected Playermovement player;
+    protected GameObject player;
     protected float timer;
     protected Transform NearestTowerTransform;
 
@@ -18,7 +18,6 @@ public abstract class EnemyController : CharacterController
     protected bool isTouchTower;
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
-    
 
     public float curHP;
 
@@ -26,18 +25,23 @@ public abstract class EnemyController : CharacterController
     {
         base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed);
         this.SensingRange = SensingRange;
-    
     }
 
     protected void Awake()
     {
-        player = FindObjectOfType<Playermovement>();
         towerContainer = FindObjectOfType<TowerContainer>();
         timer = 0;
   
     }
 
-    
+    void FixedUpdate()
+    {
+        if (player == null) 
+        { 
+            player = GameObject.Find("Player"); 
+        }
+    }
+
     protected bool IsTowerSensed()
     {
         if (towerContainer == null) { return false; }  // Nathan's only change
@@ -126,7 +130,7 @@ public abstract class EnemyController : CharacterController
         }
     }
 
-    protected void UpdateNearestTower() // if no tower exists, there is a problem !
+    protected void UpdateNearestTower() 
     {
         Transform[] towerTransforms = towerContainer.GetComponentsInChildren<Transform>(); 
         Transform nearest_Transform = transform;

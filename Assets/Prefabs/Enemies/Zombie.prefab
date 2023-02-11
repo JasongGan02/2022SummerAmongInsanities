@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5469098318322386288}
   - component: {fileID: 5469098318322386289}
   - component: {fileID: 5469098318322386290}
-  - component: {fileID: 5378462764814122291}
   - component: {fileID: -8011284561811220451}
   m_Layer: 9
   m_Name: Zombie
@@ -34,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5469098318322386288
 SpriteRenderer:
@@ -125,19 +124,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &5378462764814122291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5469098318322386293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a84f9bb2ccc4884f8873b9f18baa007, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health_point: 5
 --- !u!114 &-8011284561811220451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,4 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyData: {fileID: 11400000, guid: 6afca69e7745dd2488d2cf19ec23ee9d, type: 2}
+  curHP: 0
