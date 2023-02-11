@@ -73,7 +73,7 @@ public class Playermovement : MonoBehaviour
         animator.SetFloat(Constants.Animator.SPEED, 0);
     }
 
-    private void Movement()
+    public void Movement()
     {
         float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed *excavateCoeff;
         
