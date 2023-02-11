@@ -12,22 +12,25 @@ public class RogueGraphNodeCreator
         currentGraph = graph;
     }
 
-    public void CreateRootNode()
+    public RogueGraphNode CreateRootNode()
     {
-        CreateNode(new Vector2(200f, 200f));
+        return CreateNode(new Vector2(200f, 200f), true);
     }
 
-    public void CreateNode(Vector2 position)
+    public RogueGraphNode CreateNode(Vector2 position, bool isRoot = false)
     {
         RogueGraphNode node = ScriptableObject.CreateInstance<RogueGraphNode>();
         node.Init(
             new Rect(position, new Vector2(nodeWidth, nodeHeight)),
-            currentGraph
+            currentGraph,
+            isRoot
             );
         currentGraph.nodes.Add(node);
 
         AssetDatabase.AddObjectToAsset(node, currentGraph);
         AssetDatabase.SaveAssets();
+
+        return node;
     }
 
     private const float nodeWidth = 200f;
