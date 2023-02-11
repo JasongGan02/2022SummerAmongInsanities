@@ -7,4 +7,5 @@ public class CharacterAtlas : ScriptableObject
 {
     public CharacterObject villager;
     public CharacterObject player;
+    public CharacterObject bat;
 }

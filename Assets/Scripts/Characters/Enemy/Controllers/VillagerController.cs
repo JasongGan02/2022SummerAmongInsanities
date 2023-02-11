@@ -36,7 +36,7 @@ public class VillagerController : EnemyController
         }else
         {
             // Patrol
-            print("patroling");
+            //print("patroling");
         }
     }
 

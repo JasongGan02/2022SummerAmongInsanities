@@ -7,41 +7,28 @@ using UnityEngine.UIElements;
 
 public class Weapon : MonoBehaviour
 {
+
+    Playermovement playermovement;
+
     public float speed;
-    
-     
-    public bool facingRight = false;
+    [SerializeField] public GameObject player;
+
+
 
     public float magnitude = 1f;
     public float frequency = 10f;
     public float offset = 0f;
-    private Transform player;
-
- 
- 
-
-    [SerializeField] int atk_damage;
-    [SerializeField] float atk_interval;
     
-    private bool attacked;
 
-    [SerializeField] TrailRenderer Tr;
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
-        player = GameObject.Find("Player").transform;
-
-
-       
-
-    attacked = false;
-      
+        playermovement = GameObject.Find("Player").GetComponent<Playermovement>();
         
     }
+ 
+
+    // Start is called before the first frame update
+   
 
     
 
@@ -51,13 +38,14 @@ public class Weapon : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             attack();
-            Tr.emitting = true;
+            playermovement.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+
 
         }
         else
         {
             Patrol();
-            Tr.emitting = false;
+            
         }
        
 
@@ -67,17 +55,17 @@ public class Weapon : MonoBehaviour
     void attack()
     {
         
-        if (facingRight)
+        if (playermovement.facingRight)
         {
-            
-            transform.position = player.position + new Vector3(1f, 0, 0) + transform.up * Mathf.Sin(Time.time * frequency + offset) * magnitude;
+
+            transform.position = player.transform.position + new Vector3(1f, 0, 0) + transform.up * Mathf.Sin(Time.time * frequency + offset) * magnitude;
 
 
         }
         else
         {
 
-            transform.position = player.position - new Vector3(1f, 0, 0) -  transform.up * Mathf.Sin(Time.time * frequency + offset) * magnitude;
+            transform.position = player.transform.position - new Vector3(1f, 0, 0) -  transform.up * Mathf.Sin(Time.time * frequency + offset) * magnitude;
 
         }                       
     }
@@ -88,7 +76,7 @@ public class Weapon : MonoBehaviour
     // flip the enemy
     void Flip()
     {
-        facingRight = !facingRight;
+        
 
         Vector3 transformScale = transform.localScale;
         transformScale.y *= -1;
@@ -101,21 +89,22 @@ public class Weapon : MonoBehaviour
     // patrol around
     void Patrol()
     {
-        if (Vector2.Distance(transform.position, player.position) > 0.8)
+        if (Vector2.Distance(transform.position, player.transform.position) > 0.8)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position,player.transform.position, speed * Time.deltaTime);
         }
 
 
-        if (Vector2.Distance(transform.position, player.position) < 0.2)
+        if (Vector2.Distance(transform.position, player.transform.position) < 0.2)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y + 2,transform.position.z);
         }
 
-        if (player.position.x < transform.position.x && facingRight || player.position.x > transform.position.x && !facingRight)
+        if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
         {
             Flip();
         }
+  
     }
 
 
