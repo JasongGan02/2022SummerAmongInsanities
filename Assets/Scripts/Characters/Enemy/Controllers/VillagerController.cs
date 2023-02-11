@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VillagerController : EnemyController
 {
-    void Update()
+    new void Update()
     {
         EnemyLoop();
     }
@@ -15,8 +15,8 @@ public class VillagerController : EnemyController
         {
             if(IsPlayerInAtkRange())
             {
-                // atk player
-                print("atking player");
+                Debug.Log(timer);
+                attack();
             }else
             {
                 // approaching player
@@ -42,6 +42,6 @@ public class VillagerController : EnemyController
 
     public override void death()
     {
-        throw new System.NotImplementedException();
+        Destroy(this.gameObject);
     }
 }

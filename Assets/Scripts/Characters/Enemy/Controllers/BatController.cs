@@ -17,8 +17,8 @@ public class BatController : EnemyController
 
     private bool attacked;
 
-    public TrailRenderer Tr;
-    public ParticleSystem Ps;
+    private TrailRenderer Tr;
+    private ParticleSystem Ps;
 
 
     // Start is called before the first frame update
@@ -41,12 +41,15 @@ public class BatController : EnemyController
         attacked = false;
         stop_point = player.transform.position;
         
+        
 
     }
 
     new void Awake()
     {
         animator = GetComponent<Animator>();
+        Tr = GetComponent<TrailRenderer>();
+        Ps = GetComponent<ParticleSystem>();
     }
     void Update()
     {
@@ -143,7 +146,7 @@ public class BatController : EnemyController
                 planned = true;
             }
 
-            //Ps.Play();
+            Ps.Play();
             timer += Time.deltaTime;
             if (timer < 0.4f) { }
             else
@@ -156,10 +159,10 @@ public class BatController : EnemyController
         }
         else if (is_dashing)        // dash through the player and attack
         {
-            //Ps.Stop();
+            Ps.Stop();
             transform.position = Vector2.MoveTowards(transform.position, dash_end, MovingSpeed * 5 * Time.deltaTime);
-            //animator.SetBool("is_attacking", true); 
-            //Tr.emitting = true;
+            animator.SetBool("is_attacking", true); 
+            Tr.emitting = true;
             if (Vector2.Distance(transform.position, player.transform.position) < 0.4f && !attacked)
             {
                 player.GetComponent<PlayerController>().takenDamage(AtkDamage);
@@ -167,8 +170,8 @@ public class BatController : EnemyController
             }
             if (CloseEnough(transform.position, dash_end))
             {
-                //animator.SetBool("is_attacking", false);    
-                //Tr.emitting = false;
+                animator.SetBool("is_attacking", false);    
+                Tr.emitting = false;
                 is_dashing = false;
             }
         }
@@ -240,9 +243,5 @@ public class BatController : EnemyController
         return false;
     }
 
-    public override void death()
-    {
-        throw new System.NotImplementedException();
-    }
 }
 

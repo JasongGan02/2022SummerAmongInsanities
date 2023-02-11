@@ -19,7 +19,6 @@ public abstract class EnemyController : CharacterController
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
 
-    public float curHP;
 
     public void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float SensingRange)
     {
@@ -40,7 +39,9 @@ public abstract class EnemyController : CharacterController
         { 
             player = GameObject.Find("Player"); 
         }
+        timer += Time.fixedDeltaTime;
     }
+
 
     protected bool IsTowerSensed()
     {
@@ -93,6 +94,7 @@ public abstract class EnemyController : CharacterController
             return true;
         }else
         {
+            timer =0;
             return false;
         }
     }
@@ -179,10 +181,18 @@ public abstract class EnemyController : CharacterController
 
         return distance;
     }
+    
+    protected void attack()
+    {
+        if(timer >= AtkInterval)
+        {
+            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+            timer = 0f;
+        }
+    }
 
     public override void death()
     {
-        Destroy(gameObject);
-        throw new System.NotImplementedException();
+        Destroy(this.gameObject);
     }
 }

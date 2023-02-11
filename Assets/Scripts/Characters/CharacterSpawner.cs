@@ -6,10 +6,12 @@ public class CharacterSpawner : MonoBehaviour
 {
     public CharacterAtlas characterAtlas;
     CoreArchitecture coreArchitecture;
-
+    float RespwanTimeInterval;
+    float timer;
     void Awake()
     {
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnVillager();
         SpawnPlayer();
         SpawnBat();
@@ -18,6 +20,20 @@ public class CharacterSpawner : MonoBehaviour
     {
         
     }
+
+    protected void Update()
+    {
+        if(GameObject.Find("Player")==null)
+        {
+            timer += Time.deltaTime;
+            if(timer >= RespwanTimeInterval)
+            {
+                SpawnPlayer();
+                timer = 0f;
+            }
+        }
+    }
+
 
     public void SpawnVillager()
     {

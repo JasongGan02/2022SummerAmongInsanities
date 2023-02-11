@@ -9,16 +9,17 @@ public class cameraFollow : MonoBehaviour
     public Vector3 Targetpos;//摄像机的最终目标
     public float smooth;//摄像机平滑移动的值
 
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
+        if(player == null)
+        {
+            player = GameObject.Find("Player").transform;
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z-1);
+            
+        }
+            
+            
         Targetpos = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
         if (player.transform.localScale.x > 0)
         {

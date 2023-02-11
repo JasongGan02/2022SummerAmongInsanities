@@ -35,12 +35,14 @@ public class Bullet : MonoBehaviour
         gameObject.transform.Rotate(Vector3.forward, 150*Time.deltaTime, Space.World);
     }
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("111");
         if(other.gameObject.tag == "enemy")
         {
             // cause damage
-            other.gameObject.GetComponent<CharacterController>().takenDamage(damage);
+            (other.GetComponent(typeof(CharacterController)) as CharacterController).takenDamage(damage);
 
             // delete bullet
             Destroy(gameObject);
@@ -48,4 +50,5 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    
 }

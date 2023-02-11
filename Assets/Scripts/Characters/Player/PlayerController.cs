@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : CharacterController
 {
 
-    protected float RespwanTimeInterval;
+  
 
 
     //Player Run-time only variables
@@ -20,7 +20,6 @@ public class PlayerController : CharacterController
     public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float RespwanTimeInterval)
     {
         base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed);
-        this.RespwanTimeInterval = RespwanTimeInterval;
     }
 
     void Start()
@@ -33,34 +32,9 @@ public class PlayerController : CharacterController
     }
 
 
-    void Update()
-    {
-        if(isPlayerDead)
-        {
-            timer += Time.deltaTime;
-            if(timer >= RespwanTimeInterval)
-            {
-                PlayerRespawn();
-                timer = 0f;
-            }
-        }
-    }
-    void PlayerRespawn()
-    {
-        isPlayerDead = false;
-        spriteRenderer_component.enabled = true;
-        playermovement_component.enabled = true;
-
-        HP = characterStats.HP;
-        
-        // reset player position
-        gameObject.transform.position = coreArchitecture.transform.position;
-    }
     public override void death()
     {
-        isPlayerDead = true;
-        spriteRenderer_component.enabled = false;
-        playermovement_component.enabled = false;
+        Destroy(this.gameObject);
     }
 
     public override void takenDamage(float dmg)
