@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class PlayerController : CharacterController
 {
 
-  
-
-
     //Player Run-time only variables
     float timer;
     bool isPlayerDead = false; 
@@ -29,6 +26,10 @@ public class PlayerController : CharacterController
         playermovement_component = GetComponent<Playermovement>();
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float) HP / characterStats.HP;
+        }
     }
 
 
