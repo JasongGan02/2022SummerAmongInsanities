@@ -64,4 +64,5 @@ public class CoreArchitecture : MonoBehaviour
     {
         return Constructable_Distance;
     }
+
 }

@@ -18,6 +18,7 @@ MonoBehaviour:
   HP: 10
   AtkDamage: 1
   AtkInterval: 5
+  AtkRange: 2
   MovingSpeed: 1
   drops: []
   SensingRange: 5
