@@ -10,7 +10,7 @@ public class BatObject : EnemyObject
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
         var controller = worldGameObject.AddComponent<BatController>();
-        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, SensingRange);
+        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange, SensingRange);
         return worldGameObject;
     }
 }

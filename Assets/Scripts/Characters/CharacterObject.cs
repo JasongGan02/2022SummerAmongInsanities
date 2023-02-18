@@ -8,6 +8,7 @@ public class CharacterObject : BaseObject
     public float HP;
     public float AtkDamage;
     public float AtkInterval;
+    public float AtkRange;
     public float MovingSpeed;
     public Drop[] drops;
 
@@ -16,7 +17,7 @@ public class CharacterObject : BaseObject
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
         var controller = worldGameObject.AddComponent<CharacterController>();
-        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed);
+        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange);
         return worldGameObject;
     }
 }

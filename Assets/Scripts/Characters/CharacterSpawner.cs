@@ -8,13 +8,13 @@ public class CharacterSpawner : MonoBehaviour
     CoreArchitecture coreArchitecture;
     float RespwanTimeInterval;
     float timer;
+
     void Awake()
     {
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnVillager();
         SpawnPlayer();
-        SpawnBat();
     }
     void Start()
     {
@@ -39,6 +39,7 @@ public class CharacterSpawner : MonoBehaviour
     {
         GameObject villagerGameObject = characterAtlas.villager.GetSpawnedGameObject();
         villagerGameObject.transform.position  = GetComponentInChildren<Transform>().position;
+        villagerGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }
 
     public void SpawnPlayer()
@@ -51,5 +52,16 @@ public class CharacterSpawner : MonoBehaviour
     {
         GameObject BatGameObject = characterAtlas.bat.GetSpawnedGameObject();
         BatGameObject.transform.position = GetComponentInChildren<Transform>().position;
+        BatGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
+    }
+
+    public bool TooMuch(int max)
+    {
+        if (GameObject.FindGameObjectsWithTag("enemy").Length > max)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -19,15 +19,16 @@ public abstract class CharacterController : MonoBehaviour
     protected float AtkInterval;
     protected float MovingSpeed;
     protected Drop[] drops;
+    protected float AtkRange;
 
-    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed)
+    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange)
     {
         this.characterStats = character;
         this.HP = HP;
         this.AtkDamage = AtkDamage;
         this.AtkInterval = AtkInterval;
         this.MovingSpeed = MovingSpeed;
-
+        this.AtkRange = AtkRange;
     }
 
     public virtual void takenDamage(float dmg)
