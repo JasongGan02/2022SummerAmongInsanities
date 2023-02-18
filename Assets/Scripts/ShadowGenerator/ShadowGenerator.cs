@@ -30,10 +30,11 @@ public class ShadowGenerator : MonoBehaviour
     private void Update()
     {
         if(player == null)
-            GameObject.FindWithTag("Player");
+            player = GameObject.FindWithTag("Player");
         else
         {
             float distanceX = Mathf.Abs(player.transform.position.x - transform.position.x) * 4;
+            Debug.Log(distanceX);
             if (distanceX > thresholdToSnapOverlay)
             {
                 SnapOverlayToPlayer();

@@ -15,6 +15,7 @@ public class CharacterSpawner : MonoBehaviour
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnVillager();
         SpawnPlayer();
+        SpawnBat();
     }
     void Start()
     {

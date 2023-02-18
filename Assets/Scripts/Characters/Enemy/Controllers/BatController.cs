@@ -19,7 +19,7 @@ public class BatController : EnemyController
 
     private TrailRenderer Tr;
     private ParticleSystem Ps;
-    private new float timer;
+    private float BatTimer;
 
     // Start is called before the first frame update
     protected void Start()
@@ -32,7 +32,7 @@ public class BatController : EnemyController
         // initial moveTo
 
         waitTime = 3;
-        timer = 0;
+        BatTimer = 0;
         moveTo.position = new Vector2(Random.Range(30, 60), Random.Range(16, 23));
 
         planned = false;
@@ -40,7 +40,7 @@ public class BatController : EnemyController
         is_dashing = false;
         attacked = false;
 
-        stop_point = player.transform.position;
+        stop_point = new Vector3(0,0,0); //place holder
 
 
     }
@@ -148,7 +148,7 @@ public class BatController : EnemyController
                 planned = true;
             }
             
-            if (timer > 0.8f) 
+            if (BatTimer > 0.8f) 
             {
                 prepare_dash = false;
                 is_dashing = true;
@@ -156,13 +156,13 @@ public class BatController : EnemyController
             }
             else
             {
-                timer += Time.deltaTime;
+                BatTimer += Time.deltaTime;
             }
 
         }
         else if (is_dashing)        // dash through the player and attack
         {
-            timer = 0;
+            BatTimer = 0;
             if (Ps.isPlaying) Ps.Stop();
             transform.position = Vector2.MoveTowards(transform.position, dash_end, MovingSpeed * 5 * Time.deltaTime);
             animator.SetBool("is_attacking", true); 
@@ -183,7 +183,7 @@ public class BatController : EnemyController
         {
             if (CloseEnough(transform.position, stop_point))
             {
-                //timer = 0;
+                //BatTimer = 0;
                 prepare_dash = true;
                 attacked = false;
                 planned = false;

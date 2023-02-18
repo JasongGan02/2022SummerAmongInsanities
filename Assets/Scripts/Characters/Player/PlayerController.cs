@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : CharacterController
 {
 
+    private float RespwanTimeInterval;
     //Player Run-time only variables
     float timer;
     bool isPlayerDead = false; 
@@ -14,9 +15,10 @@ public class PlayerController : CharacterController
     CoreArchitecture coreArchitecture;
     Image healthBar;
     
-    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float RespwanTimeInterval)
+    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange, float RespwanTimeInterval)
     {
-        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed);
+        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange);
+        this.RespwanTimeInterval = RespwanTimeInterval;
     }
 
     void Start()
