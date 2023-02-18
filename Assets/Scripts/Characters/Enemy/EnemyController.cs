@@ -35,13 +35,17 @@ public abstract class EnemyController : CharacterController
 
     void FixedUpdate()
     {
+        timer += Time.fixedDeltaTime;
+    }
+
+    protected void Update()
+    {
         if (player == null) 
         { 
             player = GameObject.Find("Player"); 
         }
-        timer += Time.fixedDeltaTime;
+        EnemyLoop();
     }
-
 
     protected bool IsTowerSensed()
     {
@@ -76,14 +80,20 @@ public abstract class EnemyController : CharacterController
 
     protected bool IsPlayerSensed()
     {
+        if (player == null) 
+        { 
+            return false;
+        }
+
         float distance = CalculateDistanceToPlayer();
-        if(distance <= 15)
+        if(distance <= SensingRange)
         {
             return true;
         }else
         {
             return false;
         }
+        
     }
 
     protected bool IsPlayerInAtkRange()

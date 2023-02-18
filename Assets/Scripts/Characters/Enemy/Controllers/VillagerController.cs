@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class VillagerController : EnemyController
 { 
-    new void Update()
-    {
-        EnemyLoop();
-    }
-    
     protected override void EnemyLoop()
     {
         if(IsPlayerSensed())
         {
             if(IsPlayerInAtkRange())
             {
-                Debug.Log(timer);
+                //Debug.Log(timer);
                 attack();
             }else
             {

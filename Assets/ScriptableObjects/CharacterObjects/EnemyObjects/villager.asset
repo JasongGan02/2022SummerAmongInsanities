@@ -21,4 +21,4 @@ MonoBehaviour:
   AtkRange: 2
   MovingSpeed: 1
   drops: []
-  SensingRange: 0
+  SensingRange: 5

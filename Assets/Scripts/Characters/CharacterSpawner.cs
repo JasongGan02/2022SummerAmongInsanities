@@ -15,6 +15,7 @@ public class CharacterSpawner : MonoBehaviour
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnVillager();
         SpawnPlayer();
+        SpawnBat();
     }
     void Start()
     {
@@ -46,6 +47,7 @@ public class CharacterSpawner : MonoBehaviour
     {
         GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject();
         playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
     }
 
     public void SpawnBat()
