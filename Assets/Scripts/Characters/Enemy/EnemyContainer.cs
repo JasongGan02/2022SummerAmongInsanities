@@ -18,13 +18,4 @@ public class EnemyContainer : MonoBehaviour
         
     }
 
-    // Nathan's addition
-    public bool is_too_much()
-    {
-        if (GameObject.FindGameObjectsWithTag("enemy").Length > maxEnemy) 
-        {
-            return true; 
-        }
-        return false;
-    }
 }
