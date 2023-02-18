@@ -39,7 +39,7 @@ public class BatController : EnemyController
         prepare_dash = true;
         is_dashing = false;
         attacked = false;
-        stop_point = player.transform.position;
+        //stop_point = player.transform.position;
         
         
 
@@ -51,10 +51,7 @@ public class BatController : EnemyController
         Tr = GetComponent<TrailRenderer>();
         Ps = GetComponent<ParticleSystem>();
     }
-    void Update()
-    {
-        EnemyLoop();
-    }
+    
 
     protected override void EnemyLoop()
     {
@@ -82,18 +79,6 @@ public class BatController : EnemyController
         }
     }
 
-    protected new bool IsPlayerSensed()
-    {
-        float distance = CalculateDistanceToPlayer();
-        if (distance <= SensingRange)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     protected new bool IsPlayerInAtkRange()
     {
@@ -232,7 +217,7 @@ public class BatController : EnemyController
     {
         if (collision.gameObject.name == "Player")
         {
-            Debug.Log("contacted");
+            //Debug.Log("contacted");
         }
     }
 

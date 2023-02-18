@@ -45,6 +45,7 @@ public class CharacterSpawner : MonoBehaviour
     {
         GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject();
         playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
     }
 
     public void SpawnBat()

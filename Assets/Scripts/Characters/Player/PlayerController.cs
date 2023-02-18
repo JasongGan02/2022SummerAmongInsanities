@@ -32,9 +32,16 @@ public class PlayerController : CharacterController
         }
     }
 
-
+    void FixedUpdate()
+    {
+        if(GetComponent<Transform>().position.y < -100)
+            death();
+    }
     public override void death()
     {
+        healthBar.fillAmount = 0;
+        GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
         Destroy(this.gameObject);
     }
 

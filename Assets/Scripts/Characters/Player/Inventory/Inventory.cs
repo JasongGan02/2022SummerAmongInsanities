@@ -11,7 +11,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     public GameObject extraRow;
     public GameObject template;
     public GameObject background;
-    public GameObject axe;
 
     public int defaultNumberOfRow = 2;
     public int maxExtraRow = 4;

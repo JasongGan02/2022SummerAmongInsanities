@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae3fd5bccb97aa847968ba988f3d2fdb, type: 3}
-  m_Name: Villager
+  m_Name: villager
   m_EditorClassIdentifier: 
   itemName: villager
   sizeRatio: 1
@@ -20,4 +20,4 @@ MonoBehaviour:
   AtkInterval: 5
   MovingSpeed: 1
   drops: []
-  SensingRange: 0
+  SensingRange: 5

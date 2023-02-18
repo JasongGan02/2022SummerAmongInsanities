@@ -41,6 +41,11 @@ public class UIViewStateManager : MonoBehaviour
     {
         return currentUI != UIBeingViewed.Null;
     }
+
+    public void collaspeAllUI()
+    {
+        ToggleUI(UIBeingViewed.Null);
+    }
 }
 
 public enum UIBeingViewed {

@@ -24,20 +24,27 @@ public class DroppedObjectController : MonoBehaviour
     private void Start()
     {
         player = GameObject.Find(Constants.Name.PLAYER);
-        inventory = player.GetComponent<Inventory>();
+        inventory = FindObjectOfType<Inventory>();
     }
 
     private void Update()
     {
-        if (shouldFlyToPlayer)
+        if(player==null)
         {
-            // TODO should let player own this logic
-            transform.position = Vector2.Lerp(transform.position, player.transform.position, speed);
-            if (Vector2.Distance(transform.position, player.transform.position) < distanceThreshold)
+            player = GameObject.FindWithTag("Player");
+        }
+        else{
+            if (shouldFlyToPlayer)
             {
-                PickedUp();
+                // TODO should let player own this logic
+                transform.position = Vector2.Lerp(transform.position, player.transform.position, speed);
+                if (Vector2.Distance(transform.position, player.transform.position) < distanceThreshold)
+                {
+                    PickedUp();
+                }
             }
         }
+        
     }
 
     public void PickingUp()

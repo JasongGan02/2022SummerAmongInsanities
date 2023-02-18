@@ -201,7 +201,6 @@ GameObject:
   - component: {fileID: 7023852002014492416}
   - component: {fileID: 6647711791749533991}
   - component: {fileID: 4038972269979073815}
-  - component: {fileID: 3111690382522566145}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -406,25 +405,6 @@ MonoBehaviour:
   handAttack: 1
   handFarm: 0.5
   handFrequency: 1
---- !u!114 &3111690382522566145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647711791749533985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeac1273d0733bb4ba43dbdb70532919, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultRow: {fileID: 961959249126568429, guid: 341f3b0c46cf6254389f043dd58fe5f6, type: 3}
-  extraRow: {fileID: 961959249126568429, guid: daf04902d0c29ef4abfc6e1ffe52a43a, type: 3}
-  template: {fileID: 169284352082792497, guid: 849c4e2ac3781c14cac1e7979200eaf4, type: 3}
-  background: {fileID: 0}
-  axe: {fileID: 0}
-  defaultNumberOfRow: 2
-  maxExtraRow: 4
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0
