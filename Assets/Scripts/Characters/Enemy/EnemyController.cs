@@ -20,12 +20,6 @@ public abstract class EnemyController : CharacterController
     protected bool isTouchPlayer;
 
 
-    public void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange, float SensingRange)
-    {
-        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange);
-        this.SensingRange = SensingRange;
-    }
-
     protected void Awake()
     {
         towerContainer = FindObjectOfType<TowerContainer>();

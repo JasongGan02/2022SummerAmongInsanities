@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Reflection;
 
 public abstract class CharacterController : MonoBehaviour
 {
@@ -21,14 +23,41 @@ public abstract class CharacterController : MonoBehaviour
     protected Drop[] drops;
     protected float AtkRange;
 
-    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange)
+    public virtual void Initialize(CharacterObject characterObject)
     {
-        this.characterStats = character;
-        this.HP = HP;
-        this.AtkDamage = AtkDamage;
-        this.AtkInterval = AtkInterval;
-        this.MovingSpeed = MovingSpeed;
-        this.AtkRange = AtkRange;
+        this.characterStats = characterObject;
+        Type controllerType = GetType();
+        Type objectType = characterObject.GetType();
+
+        // Get all the fields of the controller type
+        FieldInfo[] controllerFields = controllerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+        // Iterate over the fields and set their values from the object
+        foreach (FieldInfo controllerField in controllerFields)
+        {
+            // Try to find a matching field in the object
+            FieldInfo objectField = objectType.GetField(controllerField.Name);
+            // If there's a matching field, set the value
+            if (objectField != null && objectField.FieldType == controllerField.FieldType)
+            {
+                controllerField.SetValue(this, objectField.GetValue(characterObject));
+            }
+        }
+
+        // Get all the properties of the controller type
+        PropertyInfo[] controllerProperties = controllerType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance);
+
+        // Iterate over the properties and set their values from the object
+        foreach (PropertyInfo controllerProperty in controllerProperties)
+        {
+            // Try to find a matching property in the object
+            PropertyInfo objectProperty = objectType.GetProperty(controllerProperty.Name);
+
+            // If there's a matching property, set the value
+            if (objectProperty != null && objectProperty.PropertyType == controllerProperty.PropertyType && objectProperty.CanRead)
+            {
+                controllerProperty.SetValue(this, objectProperty.GetValue(characterObject));
+            }
+        }
     }
 
     public virtual void takenDamage(float dmg)
@@ -42,3 +71,4 @@ public abstract class CharacterController : MonoBehaviour
 
     public abstract void death();
 }
+

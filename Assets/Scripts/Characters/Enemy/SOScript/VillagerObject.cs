@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Villager Object")]
 public class VillagerObject : EnemyObject
 {
-
+    /*
     public override GameObject GetSpawnedGameObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -13,4 +13,5 @@ public class VillagerObject : EnemyObject
         controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange, SensingRange);
         return worldGameObject;
     }
+    */
 }

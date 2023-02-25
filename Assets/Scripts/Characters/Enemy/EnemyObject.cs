@@ -7,6 +7,7 @@ public class EnemyObject : CharacterObject
 {
     public float SensingRange;
 
+    /*
     public override GameObject GetSpawnedGameObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -15,4 +16,5 @@ public class EnemyObject : CharacterObject
         controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange, SensingRange);
         return worldGameObject;
     }
+    */
 }
