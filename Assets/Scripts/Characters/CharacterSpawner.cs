@@ -56,6 +56,12 @@ public class CharacterSpawner : MonoBehaviour
         BatGameObject.transform.position = GetComponentInChildren<Transform>().position;
         BatGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }
+    public void SpawnLady()
+    {
+        GameObject LadyGameObject = characterAtlas.lady.GetSpawnedGameObject();
+        LadyGameObject.transform.position = GetComponentInChildren<Transform>().position;
+        LadyGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
+    }
 
     public bool TooMuch(int max)
     {

@@ -81,10 +81,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4495697151584585258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b5ee718381a8dd4ea5dc6ef1c16e592, type: 3}
+  m_Script: {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowPrefab: {fileID: 2674270034793632360, guid: e4cc8f0f4ae03a94bbd7ccae64f8522a, type: 3}
+  arrowPrefab: {fileID: 2674270034793632360, guid: 155a51388b89c304ea0688b86461d282, type: 3}
   arrowSpawnPoint: {fileID: 0}
   Player: {fileID: 0}
   fireRate: 5
