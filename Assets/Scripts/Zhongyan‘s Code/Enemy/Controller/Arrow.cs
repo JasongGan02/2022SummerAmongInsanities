@@ -39,7 +39,12 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Vector2.Distance(transform.position,player.transform.position) < 0.05){
+        if(player == null)
+            player = GameObject.Find("Lady");
+        else
+            return;
+            
+        if(Vector2.Distance(transform.position, player.transform.position) < 0.05){
             player.GetComponent<PlayerController>().takenDamage(AtkDamage);
 
         }
