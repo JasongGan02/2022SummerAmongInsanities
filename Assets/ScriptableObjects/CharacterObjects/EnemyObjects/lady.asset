@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5c77fc65ce11a47bd8974f9f0f4e97, type: 3}
+  m_Name: lady
+  m_EditorClassIdentifier: 
+  itemName: lady
+  sizeRatio: 1
+  prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
+  HP: 10
+  AtkDamage: 1
+  AtkInterval: 5
+  AtkRange: 10
+  MovingSpeed: 1
+  drops: []
+  SensingRange: 10
