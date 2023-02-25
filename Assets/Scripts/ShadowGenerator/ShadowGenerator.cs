@@ -34,7 +34,7 @@ public class ShadowGenerator : MonoBehaviour
         else
         {
             float distanceX = Mathf.Abs(player.transform.position.x - transform.position.x) * 4;
-            Debug.Log(distanceX);
+            //Debug.Log(distanceX);
             if (distanceX > thresholdToSnapOverlay)
             {
                 SnapOverlayToPlayer();

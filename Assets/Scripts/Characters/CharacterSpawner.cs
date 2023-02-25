@@ -35,24 +35,25 @@ public class CharacterSpawner : MonoBehaviour
         }
     }
 
+   
 
     public void SpawnVillager()
     {
-        GameObject villagerGameObject = characterAtlas.villager.GetSpawnedGameObject();
+        GameObject villagerGameObject = characterAtlas.villager.GetSpawnedGameObject<VillagerController>();
         villagerGameObject.transform.position  = GetComponentInChildren<Transform>().position;
         villagerGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }
 
     public void SpawnPlayer()
     {
-        GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject();
+        GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject<PlayerController>();
         playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
     }
 
     public void SpawnBat()
     {
-        GameObject BatGameObject = characterAtlas.bat.GetSpawnedGameObject();
+        GameObject BatGameObject = characterAtlas.bat.GetSpawnedGameObject<BatController>();
         BatGameObject.transform.position = GetComponentInChildren<Transform>().position;
         BatGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }

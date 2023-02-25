@@ -14,13 +14,7 @@ public class PlayerController : CharacterController
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
     Image healthBar;
-    
-    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange, float RespwanTimeInterval)
-    {
-        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange);
-        this.RespwanTimeInterval = RespwanTimeInterval;
-    }
-
+ 
     void Start()
     {
         timer = 0f;

@@ -7,12 +7,14 @@ public class PlayerObject : CharacterObject
 {
     public float RespwanTimeInterval;
 
+    /*
     public override GameObject GetSpawnedGameObject() //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
         var controller = worldGameObject.AddComponent<PlayerController>();
-        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange, RespwanTimeInterval);
+        controller.Initialize(this);
         return worldGameObject;
     }
+    */
 }
