@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-5191183399563026118
 MonoBehaviour:
@@ -42,14 +42,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2674270034793632360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b439171233892240b4b356ac69c0e0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 258cb3e4136a78942becb70968f5573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 4495697151584585258, guid: 4abcc5fbe0b9b674b83c368cc9870f36, type: 3}
-  target: {fileID: 6647711791749533985, guid: ba181238bb3868c45b9884352a5a47a2, type: 3}
-  arrow: {fileID: 0}
-  speed: 2
-  fireRate: 3
+  player: {fileID: 0}
+  target: {fileID: 0}
+  speed: 5
+  AtkDamage: 5
+  fireRate: 5
   canDetect: 1
   canChangeMod: 1
   chnageModInterval: 2
