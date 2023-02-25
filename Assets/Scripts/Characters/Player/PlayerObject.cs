@@ -12,7 +12,7 @@ public class PlayerObject : CharacterObject
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
         var controller = worldGameObject.AddComponent<PlayerController>();
-        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, RespwanTimeInterval);
+        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange, RespwanTimeInterval);
         return worldGameObject;
     }
 }

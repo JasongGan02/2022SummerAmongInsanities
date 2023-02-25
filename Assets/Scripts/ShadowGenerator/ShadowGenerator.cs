@@ -29,12 +29,19 @@ public class ShadowGenerator : MonoBehaviour
 
     private void Update()
     {
-        // distance is in global space, so needs to time 4 for global -> object conversion
-        float distanceX = Mathf.Abs(player.transform.position.x - transform.position.x) * 4;
-        if (distanceX > thresholdToSnapOverlay)
+        if(player == null)
+            player = GameObject.FindWithTag("Player");
+        else
         {
-            SnapOverlayToPlayer();
+            float distanceX = Mathf.Abs(player.transform.position.x - transform.position.x) * 4;
+            Debug.Log(distanceX);
+            if (distanceX > thresholdToSnapOverlay)
+            {
+                SnapOverlayToPlayer();
+            }
         }
+        // distance is in global space, so needs to time 4 for global -> object conversion
+        
     }
 
     public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)

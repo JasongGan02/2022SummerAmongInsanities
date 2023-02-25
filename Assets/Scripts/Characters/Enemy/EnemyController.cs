@@ -19,11 +19,10 @@ public abstract class EnemyController : CharacterController
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
 
-    public float curHP;
 
-    public void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float SensingRange)
+    public void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange, float SensingRange)
     {
-        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed);
+        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange);
         this.SensingRange = SensingRange;
     }
 
@@ -36,10 +35,16 @@ public abstract class EnemyController : CharacterController
 
     void FixedUpdate()
     {
+        timer += Time.fixedDeltaTime;
+    }
+
+    protected void Update()
+    {
         if (player == null) 
         { 
             player = GameObject.Find("Player"); 
         }
+        EnemyLoop();
     }
 
     protected bool IsTowerSensed()
@@ -75,14 +80,20 @@ public abstract class EnemyController : CharacterController
 
     protected bool IsPlayerSensed()
     {
+        if (player == null) 
+        { 
+            return false;
+        }
+
         float distance = CalculateDistanceToPlayer();
-        if(distance <= 15)
+        if(distance <= SensingRange)
         {
             return true;
         }else
         {
             return false;
         }
+        
     }
 
     protected bool IsPlayerInAtkRange()
@@ -93,6 +104,7 @@ public abstract class EnemyController : CharacterController
             return true;
         }else
         {
+            timer =0;
             return false;
         }
     }
@@ -179,10 +191,18 @@ public abstract class EnemyController : CharacterController
 
         return distance;
     }
+    
+    protected void attack()
+    {
+        if(timer >= AtkInterval)
+        {
+            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+            timer = 0f;
+        }
+    }
 
     public override void death()
     {
-        Destroy(gameObject);
-        throw new System.NotImplementedException();
+        Destroy(this.gameObject);
     }
 }

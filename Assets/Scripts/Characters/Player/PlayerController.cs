@@ -6,9 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : CharacterController
 {
 
-    protected float RespwanTimeInterval;
-
-
+    private float RespwanTimeInterval;
     //Player Run-time only variables
     float timer;
     bool isPlayerDead = false; 
@@ -17,9 +15,9 @@ public class PlayerController : CharacterController
     CoreArchitecture coreArchitecture;
     Image healthBar;
     
-    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float RespwanTimeInterval)
+    public virtual void Initialize(CharacterObject character, float HP, float AtkDamage, float AtkInterval, float MovingSpeed, float AtkRange, float RespwanTimeInterval)
     {
-        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed);
+        base.Initialize(character, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange);
         this.RespwanTimeInterval = RespwanTimeInterval;
     }
 
@@ -30,37 +28,23 @@ public class PlayerController : CharacterController
         playermovement_component = GetComponent<Playermovement>();
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
-    }
-
-
-    void Update()
-    {
-        if(isPlayerDead)
+        if (healthBar != null)
         {
-            timer += Time.deltaTime;
-            if(timer >= RespwanTimeInterval)
-            {
-                PlayerRespawn();
-                timer = 0f;
-            }
+            healthBar.fillAmount = (float) HP / characterStats.HP;
         }
     }
-    void PlayerRespawn()
-    {
-        isPlayerDead = false;
-        spriteRenderer_component.enabled = true;
-        playermovement_component.enabled = true;
 
-        HP = characterStats.HP;
-        
-        // reset player position
-        gameObject.transform.position = coreArchitecture.transform.position;
+    void FixedUpdate()
+    {
+        if(GetComponent<Transform>().position.y < -100)
+            death();
     }
     public override void death()
     {
-        isPlayerDead = true;
-        spriteRenderer_component.enabled = false;
-        playermovement_component.enabled = false;
+        healthBar.fillAmount = 0;
+        GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
+        Destroy(this.gameObject);
     }
 
     public override void takenDamage(float dmg)

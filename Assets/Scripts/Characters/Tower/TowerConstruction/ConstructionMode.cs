@@ -110,7 +110,10 @@ public class ConstructionMode : MonoBehaviour
                 ShadowObj.transform.position = new Vector3(downRay.transform.position.x, ShadowObj.transform.position.y, ShadowObj.transform.position.z);
                 //ShadowObj.transform.position = new Vector3(0,0,0);
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
+                //Debug.Log("Place Status"+ shadowScript.GetPlaceStatus());
+                Debug.Log("In range"+ coreArchitecture.IsPlayerInControlRange());
                 if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange()){
+                    Debug.Log("MOSS");
                     if(CheckEnergyAvailableForConstruction())
                     {
                         shadowScript.PlaceTower();

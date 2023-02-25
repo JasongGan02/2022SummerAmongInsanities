@@ -21,6 +21,7 @@ public class PlanetMovementController : MonoBehaviour
 
         speed = Mathf.PI / duration;
     }
+
     private void OnEnable()
     {
         timeCounter = -Mathf.PI / 2 + Mathf.PI * timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();

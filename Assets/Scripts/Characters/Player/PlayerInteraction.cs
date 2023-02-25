@@ -10,7 +10,6 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask resourceLayer;
     public LayerMask groundLayer;
     private Animator animator;
-    public Rigidbody playerRb;
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
@@ -53,9 +52,8 @@ public class PlayerInteraction : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<Playermovement>();
-        inventory = GetComponent<Inventory>();
+        inventory = FindObjectOfType<Inventory>();
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
-
         currentInUseItemUI = GameObject.Find(Constants.Name.CURRENT_WEAPON_UI);
     }
 

@@ -6,19 +6,20 @@ public class CoreArchitecture : MonoBehaviour
 {
     [SerializeField] float Constructable_Distance;
     [SerializeField] GameObject Constructable_Circle;
-    Playermovement player;
+    GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<Playermovement>();
+        player = GameObject.FindWithTag("Player");
         InitConstructableCircle();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(player == null)
+            player = GameObject.FindWithTag("Player");
     }
 
     void InitConstructableCircle()
@@ -39,9 +40,15 @@ public class CoreArchitecture : MonoBehaviour
 
     public bool IsPlayerInControlRange()
     {
-        Vector3 playerPosition = player.gameObject.transform.position;
+        if(player == null)
+        {
+            return false;
+        }
+            
+        Vector3 playerPosition = player.transform.position;
         Vector3 corePosition = gameObject.transform.position;
-
+        
+        
         float current_Distance = Mathf.Sqrt(Mathf.Pow((playerPosition.x-corePosition.x), 2) + Mathf.Pow((playerPosition.y-corePosition.y), 2));   
         if(current_Distance <= Constructable_Distance)
         {
@@ -57,4 +64,5 @@ public class CoreArchitecture : MonoBehaviour
     {
         return Constructable_Distance;
     }
+
 }

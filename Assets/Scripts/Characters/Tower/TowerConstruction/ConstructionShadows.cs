@@ -44,14 +44,23 @@ public class ConstructionShadows : MonoBehaviour
 
     // Check whether construction shadow is placeable
     private void UpdatePlaceStatus(){
-        float distance = Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position);
-        if(distance <= PlaceDistance && CollisionCount == 0 && IsConstructionShadowInRange()){
-            ShadowSpriteRenderer.color = new Color(OriginalColor.r/2, OriginalColor.g, OriginalColor.b/2, OriginalColor.a);
-            isPlaceAble = true;
-        }else{
-            ShadowSpriteRenderer.color = new Color(OriginalColor.r, OriginalColor.g/2, OriginalColor.b/2, OriginalColor.a);
+
+        if(GameObject.FindWithTag("Player") == null)
+        {
             isPlaceAble = false;
         }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position);
+            if(distance <= PlaceDistance && CollisionCount == 0 && IsConstructionShadowInRange()){
+                ShadowSpriteRenderer.color = new Color(OriginalColor.r/2, OriginalColor.g, OriginalColor.b/2, OriginalColor.a);
+                isPlaceAble = true;
+            }else{
+                ShadowSpriteRenderer.color = new Color(OriginalColor.r, OriginalColor.g/2, OriginalColor.b/2, OriginalColor.a);
+                isPlaceAble = false;
+        }
+        }
+        
     }
 
     // Check whether player mouse is in constructable range

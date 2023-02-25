@@ -17,9 +17,9 @@ public class BatController : EnemyController
 
     private bool attacked;
 
-    public TrailRenderer Tr;
-    public ParticleSystem Ps;
-
+    private TrailRenderer Tr;
+    private ParticleSystem Ps;
+    private float BatTimer;
 
     // Start is called before the first frame update
     protected void Start()
@@ -32,65 +32,68 @@ public class BatController : EnemyController
         // initial moveTo
 
         waitTime = 3;
-        timer = 0;
+        BatTimer = 0;
         moveTo.position = new Vector2(Random.Range(30, 60), Random.Range(16, 23));
 
         planned = false;
         prepare_dash = true;
         is_dashing = false;
         attacked = false;
-        stop_point = player.transform.position;
-        
+
+        stop_point = new Vector3(0,0,0); //place holder
+
 
     }
 
     new void Awake()
     {
         animator = GetComponent<Animator>();
+        Tr = GetComponent<TrailRenderer>();
+        Ps = GetComponent<ParticleSystem>();
+        //if (Ps.isPlaying) Ps.Stop();
     }
-    void Update()
-    {
-        EnemyLoop();
-    }
+    
 
     protected override void EnemyLoop()
     {
-        if (IsPlayerSensed())
-        {
-            if (IsPlayerInAtkRange() || planned)
-            {
-                // atk player
-                DashAttack();
-            }
-            else
-            {
-                // approaching player
-                ApproachingTarget(player.transform);
-            }
-        }
-        else
+        if (player == null)
         {
             // Patrol
+            if(animator.GetBool("is_attacking") == true) { animator.SetBool("is_attacking", false); }
+            if(Tr.emitting == true) { Tr.emitting = false; }
             Patrol();
             if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
             {
                 Flip();
             }
         }
+        else 
+        {
+            if (IsPlayerSensed() || planned)
+            {
+                if (IsPlayerInAtkRange() || planned)
+                {
+                    // atk player
+                    DashAttack();
+                }
+                else
+                {
+                    // approaching player
+                    ApproachingTarget(player.transform);
+                }
+            }
+            else
+            {
+                // Patrol
+                Patrol();
+                if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
+                {
+                    Flip();
+                }
+            }
+        }
     }
 
-    protected new bool IsPlayerSensed()
-    {
-        float distance = CalculateDistanceToPlayer();
-        if (distance <= SensingRange)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     protected new bool IsPlayerInAtkRange()
     {
@@ -137,29 +140,33 @@ public class BatController : EnemyController
 
         if (prepare_dash)           
         {
+            if (!Ps.isPlaying) Ps.Play();
+
             if (!planned)
             {         // set attack route
                 PlanRoute();
                 planned = true;
             }
-
-            //Ps.Play();
-            timer += Time.deltaTime;
-            if (timer < 0.4f) { }
-            else
+            
+            if (BatTimer > 0.8f) 
             {
                 prepare_dash = false;
                 is_dashing = true;
                 PlanRoute();
             }
+            else
+            {
+                BatTimer += Time.deltaTime;
+            }
 
         }
         else if (is_dashing)        // dash through the player and attack
         {
-            //Ps.Stop();
+            BatTimer = 0;
+            if (Ps.isPlaying) Ps.Stop();
             transform.position = Vector2.MoveTowards(transform.position, dash_end, MovingSpeed * 5 * Time.deltaTime);
-            //animator.SetBool("is_attacking", true); 
-            //Tr.emitting = true;
+            animator.SetBool("is_attacking", true); 
+            Tr.emitting = true;
             if (Vector2.Distance(transform.position, player.transform.position) < 0.4f && !attacked)
             {
                 player.GetComponent<PlayerController>().takenDamage(AtkDamage);
@@ -167,8 +174,8 @@ public class BatController : EnemyController
             }
             if (CloseEnough(transform.position, dash_end))
             {
-                //animator.SetBool("is_attacking", false);    
-                //Tr.emitting = false;
+                animator.SetBool("is_attacking", false);    
+                Tr.emitting = false;
                 is_dashing = false;
             }
         }
@@ -176,7 +183,7 @@ public class BatController : EnemyController
         {
             if (CloseEnough(transform.position, stop_point))
             {
-                timer = 0;
+                //BatTimer = 0;
                 prepare_dash = true;
                 attacked = false;
                 planned = false;
@@ -229,7 +236,7 @@ public class BatController : EnemyController
     {
         if (collision.gameObject.name == "Player")
         {
-            Debug.Log("contacted");
+            //Debug.Log("contacted");
         }
     }
 
@@ -240,9 +247,5 @@ public class BatController : EnemyController
         return false;
     }
 
-    public override void death()
-    {
-        throw new System.NotImplementedException();
-    }
 }
 

@@ -18,6 +18,7 @@ MonoBehaviour:
   HP: 10
   AtkDamage: 1
   AtkInterval: 1
+  AtkRange: 1
   MovingSpeed: 1
   drops: []
-  RespwanTimeInterval: 5
+  RespwanTimeInterval: 4.99

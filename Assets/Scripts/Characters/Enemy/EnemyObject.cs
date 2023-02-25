@@ -12,7 +12,7 @@ public class EnemyObject : CharacterObject
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
         var controller = worldGameObject.AddComponent<EnemyController>();
-        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, SensingRange);
+        controller.Initialize(this, HP, AtkDamage, AtkInterval, MovingSpeed, AtkRange, SensingRange);
         return worldGameObject;
     }
 }
