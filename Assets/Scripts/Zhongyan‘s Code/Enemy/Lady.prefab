@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1666849091738791722}
   - component: {fileID: 5107910439136604571}
   - component: {fileID: 6680014521161000403}
-  - component: {fileID: 1493588160128639280}
   - component: {fileID: -1323644387312248681}
   m_Layer: 9
   m_Name: Lady
@@ -72,28 +71,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1493588160128639280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4495697151584585258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrowPrefab: {fileID: 2674270034793632360, guid: 155a51388b89c304ea0688b86461d282, type: 3}
-  arrowSpawnPoint: {fileID: 0}
-  Player: {fileID: 0}
-  fireRate: 5
-  range: 10
-  health: 100
-  speed: 1.5
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!212 &-1323644387312248681
 SpriteRenderer:
   m_ObjectHideFlags: 0

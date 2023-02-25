@@ -16,6 +16,7 @@ public class CharacterSpawner : MonoBehaviour
         SpawnVillager();
         SpawnPlayer();
         SpawnBat();
+        SpawnLady();
     }
     void Start()
     {
@@ -59,7 +60,7 @@ public class CharacterSpawner : MonoBehaviour
     }
     public void SpawnLady()
     {
-        GameObject LadyGameObject = characterAtlas.lady.GetSpawnedGameObject();
+        GameObject LadyGameObject = characterAtlas.lady.GetSpawnedGameObject<LadyController>();
         LadyGameObject.transform.position = GetComponentInChildren<Transform>().position;
         LadyGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }

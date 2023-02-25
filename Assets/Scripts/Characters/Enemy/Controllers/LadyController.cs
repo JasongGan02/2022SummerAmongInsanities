@@ -5,17 +5,15 @@ using UnityEngine.AI;
 
 public class LadyController : EnemyController
 {
-    public GameObject arrowPrefab; // reference to the arrow prefab
+    
     public Transform arrowSpawnPoint; // reference to the point where the arrow will be instantiated
-    public Transform Player; // reference to the player
     public float fireRate; // rate at which the archer fires arrows
     public float range = 10f; // the range at which the archer will fire arrows
     private float nextFire; // the time at which the archer can fire again
     private float nextMove; // the time at which the archer can fire again
     private bool canFire = true; // flag to check if the archer can fire
     private bool canMove = true;
-
-
+    private GameObject arrowPrefab; // reference to the arrow prefab
 
 
     public float speed = 1.5f;
@@ -25,41 +23,23 @@ public class LadyController : EnemyController
     private bool canJump = true;
 
 
-    
-
-
-
 
     void Start()
     {
         arrowSpawnPoint = transform;
         rb = gameObject.GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        Player = player.transform;
         wallLayer = LayerMask.GetMask("ground");
         towerContainer = FindObjectOfType<TowerContainer>();
-
     }
-
-    void Update()
-    {
-        EnemyLoop();
-    }
-
 
 
 
     void FireArrow(){
     // Instantiate the arrow
         GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
-
+        arrow.transform.parent = transform;
     }
 
-
-    public override void death()
-    {
-        Destroy(this.gameObject);
-    }
 
 
 
@@ -70,7 +50,7 @@ public class LadyController : EnemyController
 
         // Approaches and escapes from the player
 
-        Vector2 direction = (Player.position - transform.position);
+        Vector2 direction = (player.transform.position - transform.position);
         if (direction.x > 0)
         {
             transform.right = Vector2.left;
@@ -92,15 +72,15 @@ public class LadyController : EnemyController
         
         if (canMove)
         {
-            if (Vector2.Distance(transform.position, Player.position) < 3f)
+            if (Vector2.Distance(transform.position, player.transform.position) < 3f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, -speed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -speed * Time.deltaTime);
             }
-            if (Vector2.Distance(transform.position, Player.position) > 3f && Vector2.Distance(transform.position, Player.position) < 10f)
+            if (Vector2.Distance(transform.position, player.transform.position) > 3f && Vector2.Distance(transform.position, player.transform.position) < 10f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, speed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
             }
-            if (Vector2.Distance(transform.position, Player.position) >= 10f)
+            if (Vector2.Distance(transform.position, player.transform.position) >= 10f)
             {
                 // idle state
             }
@@ -109,7 +89,7 @@ public class LadyController : EnemyController
 
 
 
-        if (Vector2.Distance(transform.position, Player.position) <= range)
+        if (Vector2.Distance(transform.position, player.transform.position) <= range)
         {
             // Check if the archer can fire
             if (canFire)
