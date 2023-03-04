@@ -22,3 +22,4 @@ MonoBehaviour:
   MovingSpeed: 1
   drops: []
   SensingRange: 10
+  arrowPrefab: {fileID: 2674270034793632360, guid: 155a51388b89c304ea0688b86461d282, type: 3}
