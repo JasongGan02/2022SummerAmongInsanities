@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class LadyController : EnemyController
 {
+
+    private GameObject arrow;
     
-    public Transform arrowSpawnPoint; // reference to the point where the arrow will be instantiated
-    public float fireRate; // rate at which the archer fires arrows
-    public float range = 10f; // the range at which the archer will fire arrows
+    private Transform arrowSpawnPoint; // reference to the point where the arrow will be instantiated
     private float nextFire; // the time at which the archer can fire again
     private float nextMove; // the time at which the archer can fire again
     private bool canFire = true; // flag to check if the archer can fire
@@ -16,8 +16,7 @@ public class LadyController : EnemyController
     private GameObject arrowPrefab; // reference to the arrow prefab
 
 
-    public float speed = 1.5f;
-    public LayerMask wallLayer;
+    private LayerMask wallLayer;
     private Rigidbody2D rb;
     private float nextJump;
     private bool canJump = true;
@@ -36,10 +35,8 @@ public class LadyController : EnemyController
 
     void FireArrow(){
     // Instantiate the arrow
-        GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
-        arrow.transform.parent = transform;
+        arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
     }
-
 
 
 
@@ -74,22 +71,32 @@ public class LadyController : EnemyController
         {
             if (Vector2.Distance(transform.position, player.transform.position) < 3f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -speed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -MovingSpeed * Time.deltaTime);
             }
             if (Vector2.Distance(transform.position, player.transform.position) > 3f && Vector2.Distance(transform.position, player.transform.position) < 10f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, MovingSpeed * Time.deltaTime);
             }
             if (Vector2.Distance(transform.position, player.transform.position) >= 10f)
             {
                 // idle state
             }
         }
+
+
+        // Player Taken Damage
+        if (arrow != null){
+            if (Vector2.Distance(arrow.transform.position, player.transform.position)< 0.3){
+                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+                Destroy(arrow);
+            }
+        }
+        
         
 
 
 
-        if (Vector2.Distance(transform.position, player.transform.position) <= range)
+        if (Vector2.Distance(transform.position, player.transform.position) <= AtkRange)
         {
             // Check if the archer can fire
             if (canFire)
@@ -100,7 +107,7 @@ public class LadyController : EnemyController
                 canMove = false;
 
                 // Set the next fire time
-                nextFire = Time.time + fireRate;
+                nextFire = Time.time + AtkInterval;
                 nextMove = Time.time + 1f;
 
                 // Set the canFire flag to false
@@ -119,8 +126,8 @@ public class LadyController : EnemyController
             }
         }
 
-        if (this.IsTowerSensed()){
-            transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.transform.position, -speed * Time.deltaTime);
+        if (IsTowerSensed()){
+            transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.transform.position, -MovingSpeed * Time.deltaTime);
 
         }
     }

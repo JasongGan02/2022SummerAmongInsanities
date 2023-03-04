@@ -15,3 +15,4 @@ MonoBehaviour:
   villager: {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
   player: {fileID: 11400000, guid: c4c1a86a209c6a14d89731a37a92f48d, type: 2}
   bat: {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
+  lady: {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
