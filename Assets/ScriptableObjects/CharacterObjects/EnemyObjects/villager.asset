@@ -17,8 +17,8 @@ MonoBehaviour:
   prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
   HP: 10
   AtkDamage: 1
-  AtkInterval: 5
-  AtkRange: 2
-  MovingSpeed: 1
+  AtkInterval: 1
+  AtkRange: 3
+  MovingSpeed: 2
   drops: []
   SensingRange: 5

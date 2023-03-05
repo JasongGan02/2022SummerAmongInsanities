@@ -97,6 +97,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d13ef217c7f4d4c80b221805871419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_prefabs:
-  - {fileID: 5572140884625632519, guid: f156aa64df805a745ae4ff46bd0c4534, type: 3}
-  Max_enemy_number: 10
+  characterAtlas: {fileID: 11400000, guid: ae8ba59eab07a6e408f778f4841d15df, type: 2}
+  EnemyMax: 0

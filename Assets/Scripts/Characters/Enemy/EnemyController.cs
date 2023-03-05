@@ -93,7 +93,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsPlayerInAtkRange()
     {
         float distance = CalculateDistanceToPlayer();
-        if(distance <= 1)
+        if(distance <= AtkRange)
         {
             return true;
         }else
@@ -199,4 +199,5 @@ public abstract class EnemyController : CharacterController
     {
         Destroy(this.gameObject);
     }
+
 }
