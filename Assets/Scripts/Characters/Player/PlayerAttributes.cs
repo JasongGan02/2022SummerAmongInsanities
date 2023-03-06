@@ -8,6 +8,9 @@ public class PlayerAttributes : MonoBehaviour
     [SerializeField] int MaxPlayerHP;
     [SerializeField] int PlayerStrength;
     [SerializeField] int PlayerSpeed;
+    private int level;
+    private float EPX;
+    private float EPXtoNextLevel;
     
     float timer;
 

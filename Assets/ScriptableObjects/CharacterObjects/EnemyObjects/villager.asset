@@ -19,6 +19,6 @@ MonoBehaviour:
   AtkDamage: 1
   AtkInterval: 1
   AtkRange: 3
-  MovingSpeed: 2
+  MovingSpeed: 1
   drops: []
   SensingRange: 5
