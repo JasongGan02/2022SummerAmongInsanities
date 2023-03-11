@@ -14,7 +14,10 @@ public class PlayerController : CharacterController
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
     Image healthBar;
- 
+
+    private int playerLevel = 0;
+    private float playerExperience = 0f;
+
     void Start()
     {
         timer = 0f;
@@ -50,4 +53,8 @@ public class PlayerController : CharacterController
         }
     }
 
+    public int GetLevel() { return playerLevel; }
+    public float GetEXP() { return playerExperience; }
+    public void SetLevel(int newLevel) { playerLevel = newLevel; }
+    public void SetEXP(float newEXP) { playerExperience = newEXP; }
 }

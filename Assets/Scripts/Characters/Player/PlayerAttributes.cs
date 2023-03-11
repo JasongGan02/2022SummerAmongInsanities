@@ -91,4 +91,5 @@ public class PlayerAttributes : MonoBehaviour
         gameObject.transform.position = coreArchitecture.transform.position;
     }
 
+
 }

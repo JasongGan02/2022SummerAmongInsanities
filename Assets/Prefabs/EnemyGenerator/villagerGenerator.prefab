@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1213867760197019587}
   - component: {fileID: 1213867760197019586}
-  - component: {fileID: 1213867760197019585}
+  - component: {fileID: -860063891277818321}
   m_Layer: 0
   m_Name: villagerGenerator
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1213867760197019586
 SpriteRenderer:
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1213867760197019585
+--- !u!114 &-860063891277818321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,10 +94,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1213867760197019584}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d13ef217c7f4d4c80b221805871419, type: 3}
+  m_Script: {fileID: 11500000, guid: d6a9292bfbaebf84c9bea6e94c96296e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_prefabs:
-  - {fileID: 5469098318322386293, guid: 1ccac0fac2f43594e9d670e107fea177, type: 3}
-  - {fileID: 5572140884625632519, guid: f156aa64df805a745ae4ff46bd0c4534, type: 3}
-  Max_enemy_number: 10
+  characterAtlas: {fileID: 11400000, guid: ae8ba59eab07a6e408f778f4841d15df, type: 2}
+  EnemyMax: 5

@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("111");
+        //Debug.Log("111");
         if(other.gameObject.tag == "enemy")
         {
             // cause damage

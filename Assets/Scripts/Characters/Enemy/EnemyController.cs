@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class EnemyController : CharacterController
@@ -19,12 +20,13 @@ public abstract class EnemyController : CharacterController
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
 
+    
 
     protected void Awake()
     {
         towerContainer = FindObjectOfType<TowerContainer>();
         timer = 0;
-  
+ 
     }
 
     void FixedUpdate()
@@ -93,7 +95,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsPlayerInAtkRange()
     {
         float distance = CalculateDistanceToPlayer();
-        if(distance <= 1)
+        if(distance <= AtkRange)
         {
             return true;
         }else
@@ -199,4 +201,5 @@ public abstract class EnemyController : CharacterController
     {
         Destroy(this.gameObject);
     }
+
 }
