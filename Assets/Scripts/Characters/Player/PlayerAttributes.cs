@@ -8,9 +8,6 @@ public class PlayerAttributes : MonoBehaviour
     [SerializeField] int MaxPlayerHP;
     [SerializeField] int PlayerStrength;
     [SerializeField] int PlayerSpeed;
-    private int level;
-    private float EPX;
-    private float EPXtoNextLevel;
     
     float timer;
 
@@ -93,5 +90,6 @@ public class PlayerAttributes : MonoBehaviour
         // reset player position
         gameObject.transform.position = coreArchitecture.transform.position;
     }
+
 
 }

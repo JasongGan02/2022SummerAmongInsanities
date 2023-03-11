@@ -13,6 +13,7 @@ public class VillagerController : EnemyController
     private Rigidbody2D rb;
     float patroltime = 0;
 
+
     protected override void EnemyLoop()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -30,17 +31,17 @@ public class VillagerController : EnemyController
                 // approaching player
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, MovingSpeed * Time.deltaTime);
                 flip(player.transform);
-                Debug.Log("approach");
+                //Debug.Log("approach");
             }
         }
         else if(IsTowerSensed())
         {
             rb.velocity = new Vector2(0, rb.velocity.y);    // stop patrol
-            Debug.Log("attack tower");
+            //Debug.Log("attack tower");
             if (IsTowerInAtkRange( (int) AtkRange))
             {
                 // atk tower
-                print("atking tower");
+                //print("atking tower");
                 attackTower(NearestTowerTransform);
             }else
             {
@@ -51,17 +52,14 @@ public class VillagerController : EnemyController
         }
         else
         {
-            Debug.Log("patrol");
+            //Debug.Log("patrol");
             patrol();
             // Patrol
             //print("patroling");
         }
     }
 
-    public override void death()
-    {
-        Destroy(this.gameObject);
-    }
+    
 
     bool IsTowerInAtkRange(int AtkRange)
     {
@@ -169,5 +167,18 @@ public class VillagerController : EnemyController
             facingright = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
+    }
+
+    public override void death()
+    {
+        Destroy(this.gameObject);
+        DropItems();
+    }
+
+    
+
+    void DropItems()
+    {
+        
     }
 }

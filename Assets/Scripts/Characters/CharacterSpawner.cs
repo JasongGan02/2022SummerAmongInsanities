@@ -8,23 +8,21 @@ public class CharacterSpawner : MonoBehaviour
     CoreArchitecture coreArchitecture;
     float RespwanTimeInterval;
     float timer;
-    bool start = true;
 
-    void Awake()
+    private void Awake()
+    {
+        
+    }
+    private void Start()
     {
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
-
-    }
-    void Start()
-    {
-        
+        SpawnPlayer();
     }
 
     protected void Update()
     {
-        if (start) { SpawnPlayer(); start = false; }
-        else if (GameObject.Find("Player") == null)
+        if (GameObject.Find("Player") == null)
         {
             timer += Time.deltaTime;
             if (timer >= RespwanTimeInterval)
