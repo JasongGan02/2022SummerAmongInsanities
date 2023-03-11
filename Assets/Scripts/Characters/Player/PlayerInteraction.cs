@@ -10,6 +10,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask resourceLayer;
     public LayerMask groundLayer;
     private Animator animator;
+    public bool weaponAnim = true;
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
@@ -79,15 +80,24 @@ public class PlayerInteraction : MonoBehaviour
         PlaceTileCheck();
         PlaceTileCancelCheck();
 
+        if (weaponAnim)
+        {
+            playWeaponAnim();
+        }
+    }
+
+
+    void playWeaponAnim()
+    {
         if (Input.GetMouseButton(0))
         {
             animator.SetBool("Hand", true);
-          
+
         }
         else
         {
             animator.SetBool("Hand", false);
-         
+
         }
 
         if (GetCurrentInUseItem() != null)
@@ -95,16 +105,16 @@ public class PlayerInteraction : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 animator.SetBool(GetCurrentInUseItem().GetItemName(), true);
-         
+
             }
             else
             {
                 animator.SetBool(GetCurrentInUseItem().GetItemName(), false);
-              
+
             }
         }
-        
     }
+
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
