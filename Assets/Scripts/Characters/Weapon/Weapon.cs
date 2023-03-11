@@ -7,43 +7,56 @@ using UnityEngine.UIElements;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] public GameObject player; 
 
-    Playermovement playermovement;
-    public float speed;
-    [SerializeField] public GameObject player;
+    public Playermovement playermovement;
+    public PlayerInteraction playerinteraction;
+    public Animator animator;
 
-    public float magnitude = 1f;
+    private float speed;
+
+    public float magnitude = 0.1f;
     public float frequency = 10f;
     public float maxSpeed = 10f; // Set the maximum speed of the object
-    public float slowDownDistance = 2f; // Set the distance from the player where the object should start slowing down
+    public float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
 
-    void Awake()
+    public virtual void Start()
     {
-        playermovement = GameObject.Find("Player").GetComponent<Playermovement>();
+        player = GameObject.Find("Player");
+        playermovement = player.GetComponent<Playermovement>();
+        animator = player.GetComponent<Animator>();
+        playerinteraction = player.GetComponent<PlayerInteraction>();
         
     }
- 
 
-    void Update()
+
+    public virtual void Update()
     {
+        
+        Flip();
+
+
         if (Input.GetMouseButton(0))
         {
             attack();
-            playermovement.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+           
 
 
         }
         else
         {
             Patrol();
-            
-        }
-       
 
-    } 
+        }
+
+
+
+    }
 
     public virtual void attack()
     {
+        playerinteraction.weaponAnim = false;
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
 
@@ -62,45 +75,36 @@ public class Weapon : MonoBehaviour
         {
             transform.position = player.transform.position - new Vector3(1f, 0, 0) - transform.up * Mathf.Sin(Time.time * frequency) * magnitude * speed;
         }
+
     }
 
 
-    // flip the enemy
-    void Flip()
-    {
-        
 
-        Vector3 transformScale = transform.localScale;
-        transformScale.y *= -1;
-        transform.localScale = transformScale;
+
+
+    // flip the enemy
+    public virtual void Flip()
+    {
+        if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
+        {
+            Vector3 transformScale = transform.localScale;
+            transformScale.y *= -1;
+            transform.localScale = transformScale;
+        }
     }
 
 
 
     // patrol around
-    void Patrol()
+    public virtual void Patrol()
     {
-        if (Vector2.Distance(transform.position, player.transform.position) > 0.8)
-        {
-            transform.position = Vector2.MoveTowards(transform.position,player.transform.position, speed * Time.deltaTime);
-        }
 
-
-        if (Vector2.Distance(transform.position, player.transform.position) < 0.2)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y + 2,transform.position.z);
-        }
-
-        if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
-        {
-            Flip();
-        }
-  
+        transform.position = player.transform.position;
+        
+       
     }
 
-   
-
-
+    
 
 
 }
