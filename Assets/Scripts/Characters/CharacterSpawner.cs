@@ -18,6 +18,15 @@ public class CharacterSpawner : MonoBehaviour
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnPlayer();
+<<<<<<< Updated upstream
+=======
+        SpawnBat();
+        //SpawnLady();
+    }
+    void Start()
+    {
+        
+>>>>>>> Stashed changes
     }
 
     protected void Update()

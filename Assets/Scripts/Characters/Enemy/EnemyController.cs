@@ -7,7 +7,7 @@ public abstract class EnemyController : CharacterController
 {
 
     protected float SensingRange;
-
+    
 
     //run-time variables
     protected TowerContainer towerContainer;

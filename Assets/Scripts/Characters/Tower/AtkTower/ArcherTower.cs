@@ -1,38 +1,40 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-// This is archer tower part
-public class ArcherTower : TowerBasics
+// This class represents an archer tower
+public class ArcherTower : TowerController
 {
     // Start is called before the first frame update
     void Start()
     {
         enemyContainer = FindObjectOfType<EnemyContainer>();
         isEnemySpotted = false;
-        AtkTimer = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
         Transform enemyTransform = SenseNearestEnemyTransform();
-        if(isEnemySpotted)
+        if (isEnemySpotted)
         {
-            AtkTimer += Time.deltaTime;
-            if(AtkTimer >= AtkIntervalTime)
+            if (Time.time >= AtkTimer)
             {
-                FireToEnemy(enemyTransform);
-                AtkTimer = 0f;
+                Shoot(enemyTransform);
+                AtkTimer = Time.time + AtkInterval;
             }
-            
         }
     }
 
-    void FireToEnemy(Transform enemyTransform)
+    // Shoot a bullet at the nearest enemy
+    void Shoot(Transform enemyTransform)
     {
-        Vector3 direction = enemyTransform.position - transform.position;
-        GameObject bullet_instance = Instantiate(bullet, transform.position, Quaternion.identity);
-        bullet_instance.GetComponent<Rigidbody2D>().velocity = direction * bullet_speed;
+        if (enemyTransform == null) return;
+
+        if (bullet != null)
+        {
+            Vector3 direction = enemyTransform.position - transform.position;
+            GameObject bulletInstance = Instantiate(bullet, transform.position, Quaternion.identity);
+            bulletInstance.GetComponent<Rigidbody2D>().velocity = direction * bullet_speed;
+        }
     }
 }

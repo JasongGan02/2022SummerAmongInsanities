@@ -13,6 +13,8 @@ public class ConstructionMode : MonoBehaviour
     private CoreArchitecture coreArchitecture;
     private UIViewStateManager uiViewStateManager;
     
+
+    [SerializeField] private CharacterAtlas characterAtlas;
     [SerializeField] List<GameObject> Towers;
     [SerializeField] GameObject ConstructionUI;
     [SerializeField] GameObject EnergyText;
@@ -110,17 +112,14 @@ public class ConstructionMode : MonoBehaviour
                 ShadowObj.transform.position = new Vector3(downRay.transform.position.x, ShadowObj.transform.position.y, ShadowObj.transform.position.z);
                 //ShadowObj.transform.position = new Vector3(0,0,0);
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
-                //Debug.Log("Place Status"+ shadowScript.GetPlaceStatus());
-                Debug.Log("In range"+ coreArchitecture.IsPlayerInControlRange());
                 if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange()){
-                    Debug.Log("MOSS");
                     if(CheckEnergyAvailableForConstruction())
                     {
-                        shadowScript.PlaceTower();
+                        shadowScript.PlaceTower((int) towerType);
                         EnergyConsumption();
                     }
                     else{
-                        print("You are run out of power");
+                        //print("You are run out of power");
                     }
                 }
             }

@@ -7,6 +7,8 @@ public class ConstructionShadows : MonoBehaviour
 {
     [SerializeField]
     private GameObject TargetTower;      
+
+    
     private uint CollisionCount = 0;
     private float PlaceDistance = 0;
     private SpriteRenderer ShadowSpriteRenderer;
@@ -37,7 +39,8 @@ public class ConstructionShadows : MonoBehaviour
         return isPlaceAble;
     }
 
-    public void PlaceTower(){
+    public void PlaceTower(int towerType){
+
         var instance = Instantiate(TargetTower, transform.position, transform.rotation);
         instance.transform.parent = towerContainer.gameObject.transform;
     }
