@@ -11,7 +11,7 @@ public class CharacterObject : BaseObject
     public float AtkInterval;
     public float AtkRange;
     public float MovingSpeed;
-    public Drop[] drops;
+    public Drop[] Drops;
 
     public virtual GameObject GetSpawnedGameObject<T>()  where T : CharacterController //Spawn the actual game object through calling this function. 
     {
@@ -21,4 +21,20 @@ public class CharacterObject : BaseObject
         controller.Initialize(this);
         return worldGameObject;
     }
+
+    public virtual List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
+    {
+        List<GameObject> droppedItems = new();
+        
+        foreach (Drop drop in Drops)
+        {
+            GameObject droppedGameObject = drop.GetDroppedItem();
+            droppedItems.Add(droppedGameObject);
+        }   
+        
+        return droppedItems;
+
+    }
+
+   
 }

@@ -5,13 +5,12 @@ using UnityEngine.EventSystems;
 
 public class InventoryDropOnSlotHandler : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
-    private GameObject player;
+    
     private Inventory inventory;
 
     private void Start()
     {
-        player = GameObject.Find(Constants.Name.PLAYER);
-        inventory = player.GetComponent<Inventory>();
+        inventory =  FindObjectOfType<Inventory>();
     }
 
     public void OnDrop(PointerEventData eventData)

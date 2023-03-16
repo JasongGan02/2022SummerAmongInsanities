@@ -57,6 +57,7 @@ public class VillagerController : EnemyController
             // Patrol
             //print("patroling");
         }
+        death();
     }
 
     
@@ -169,16 +170,5 @@ public class VillagerController : EnemyController
         }
     }
 
-    public override void death()
-    {
-        Destroy(this.gameObject);
-        DropItems();
-    }
-
-    
-
-    void DropItems()
-    {
-        
-    }
+   
 }
