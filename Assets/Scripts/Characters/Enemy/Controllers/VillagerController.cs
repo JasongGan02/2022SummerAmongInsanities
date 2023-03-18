@@ -12,7 +12,14 @@ public class VillagerController : EnemyController
     bool facingright = false;
     private Rigidbody2D rb;
     float patroltime = 0;
+    private Animator animator;
 
+
+    new void Awake()
+    {
+        animator = GetComponent<Animator>();
+        towerContainer = FindObjectOfType<TowerContainer>();
+    }
 
     protected override void EnemyLoop()
     {
@@ -20,6 +27,7 @@ public class VillagerController : EnemyController
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
         if (IsPlayerSensed())
         {
+            animator.SetBool("IsStanding", true);           // villager stand
             rb.velocity = new Vector2(0, rb.velocity.y);    //  stop patrol
             if (IsPlayerInAtkRange())
             {
@@ -36,12 +44,14 @@ public class VillagerController : EnemyController
         }
         else if(IsTowerSensed())
         {
+            animator.SetBool("IsStanding", true);           // villager stand
             rb.velocity = new Vector2(0, rb.velocity.y);    // stop patrol
             //Debug.Log("attack tower");
             if (IsTowerInAtkRange( (int) AtkRange))
             {
                 // atk tower
                 //print("atking tower");
+                flip(NearestTowerTransform);
                 attackTower(NearestTowerTransform);
             }else
             {
@@ -52,11 +62,11 @@ public class VillagerController : EnemyController
         }
         else
         {
-            //Debug.Log("patrol");
+            animator.SetBool("IsStanding", false);           // villager sit
             patrol();
-            // Patrol
-            //print("patroling");
         }
+
+        SenseFrontBlock();
     }
 
     
@@ -76,11 +86,31 @@ public class VillagerController : EnemyController
 
     void attackTower(Transform target)
     {
-        transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * 2);
-        if (CalculateDistanceFromEnemyToTower(NearestTowerTransform) < 0.2f)
+        if (rest)
         {
-            NearestTowerTransform.gameObject.GetComponent<TowerHealth>().DecreaseHealth((int)AtkDamage);
+            if (cooldown > AtkInterval)
+            {
+                cooldown = 0;
+                rest = false;
+            }
+            else { cooldown += Time.deltaTime; }
+            //Debug.Log("rest");
         }
+
+        if (Vector2.Distance(transform.position, NearestTowerTransform.position) > 0.7f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * 2 * Time.deltaTime);
+        }
+
+        if (Vector2.Distance(transform.position, NearestTowerTransform.position) < 1f && !rest)
+        {
+            StartCoroutine(rotateZombie());
+            //Debug.Log("hit");
+            NearestTowerTransform.GetComponent<TowerHealth>().DecreaseHealth((int) AtkDamage);
+            rest = true;
+        }
+
+        flip(NearestTowerTransform.transform);
     }
 
     // rotate when attack
@@ -101,7 +131,7 @@ public class VillagerController : EnemyController
                 rest = false;
             }
             else { cooldown += Time.deltaTime; }
-            Debug.Log("rest");
+           //Debug.Log("rest");
         }
 
         if (Vector2.Distance(transform.position, player.transform.position) > 0.7f)
@@ -112,7 +142,7 @@ public class VillagerController : EnemyController
         if (Vector2.Distance(transform.position, player.transform.position) < 1f && !rest)
         {
             StartCoroutine(rotateZombie());
-            Debug.Log("hit");
+            //Debug.Log("hit");
             player.GetComponent<PlayerController>().takenDamage(AtkDamage);
             rest = true;
         }
@@ -125,15 +155,17 @@ public class VillagerController : EnemyController
         if (patroltime <= 0f)
         {
             patroltime = Random.Range(1, 5);
-            if (Random.Range(0, 1) > 0.5) // go left
+            if (Random.Range(0f, 1f) > 0.5) // go left
             {
-                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                //Debug.Log("going to left");
                 if (facingright) { flip(); }
             }
             else                          // go right
             {
-                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
                 if (!facingright) { flip(); }
+                //Debug.Log("going to right");
             }
         }
         else
