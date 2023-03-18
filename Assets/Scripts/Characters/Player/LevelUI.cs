@@ -16,7 +16,7 @@ public class LevelUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        leveltext.text = "Level: ";
+        leveltext.text = "";
         EXPtext.text = "EXP: ";
     }
 
@@ -30,7 +30,7 @@ public class LevelUI : MonoBehaviour
             level = player.GetComponent<PlayerController>().GetLevel();
             EXP = player.GetComponent<PlayerController>().GetEXP();
 
-            leveltext.text = "Level: " + level.ToString();
+            
             EXPtext.text = "EXP: " + EXP.ToString();
         }
         else
