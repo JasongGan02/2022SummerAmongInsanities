@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
   m_Name: CatapultTower
   m_EditorClassIdentifier: 
-  itemName: 
-  sizeRatio: 1
-  prefab: {fileID: 0}
+  itemName: CatapultTower
+  sizeRatio: 0.25
+  prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
   HP: 0
   AtkDamage: 0
   AtkInterval: 0
   AtkRange: 0
   MovingSpeed: 0
-  drops: []
+  Drops: []
   bullet_speed: 0
   bullet: {fileID: 0}
+  _maxStack: 0

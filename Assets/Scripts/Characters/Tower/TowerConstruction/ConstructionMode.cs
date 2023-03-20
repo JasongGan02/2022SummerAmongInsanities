@@ -9,12 +9,13 @@ public class ConstructionMode : MonoBehaviour
 {
     private bool isInConstructionMode = false;
     private Constants.TowerType towerType = Constants.TowerType.noShadow;
+    private TowerObject _curTower;
     private GameObject ShadowObj;
     private CoreArchitecture coreArchitecture;
     private UIViewStateManager uiViewStateManager;
+    private PlayerInteraction playerInteraction;
     
-
-    [SerializeField] private CharacterAtlas characterAtlas;
+    
     [SerializeField] List<GameObject> Towers;
     [SerializeField] GameObject ConstructionUI;
     [SerializeField] GameObject EnergyText;
@@ -51,6 +52,13 @@ public class ConstructionMode : MonoBehaviour
         }
     }
 
+    public TowerObject CurTower
+    {
+        get => _curTower;
+        set => _curTower = value;
+    }
+
+
     private void UpdateConstructionUI(object sender, UIBeingViewed ui)
     {
         isInConstructionMode = ui == UIBeingViewed.Construction;
@@ -60,7 +68,6 @@ public class ConstructionMode : MonoBehaviour
     {
         ConstructionUI.SetActive(true);             // display the construction UI
         coreArchitecture.OpenConstructionMode();
-        UpdateTowerType();
 
         if(!ShadowObj)
         {
@@ -85,7 +92,7 @@ public class ConstructionMode : MonoBehaviour
     // Generating current tower shadow under player's mouse position
     void GeneratingConstructionShadow()
     {
-        if(towerType != Constants.TowerType.noShadow){
+        if(towerType != Constants.TowerType.noShadow || _curTower != null){
             Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // get mouse position
             RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);     // eject a downside ray
             bool regenerate = false;    // mark if the shadow object need to be regenerated
@@ -190,29 +197,6 @@ public class ConstructionMode : MonoBehaviour
         SetEnergyText();
     }
 
-    void UpdateTowerType()
-    {
-        if(Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            towerType = Constants.TowerType.TowerCatapult;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha2))
-        {
-            towerType = Constants.TowerType.TowerArcher;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha3))
-        {
-            towerType = Constants.TowerType.TowerTrap;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha4))
-        {
-            towerType = Constants.TowerType.WoodenWall;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha5))
-        {
-            towerType = Constants.TowerType.StoneWall;
-        }
-    }
 
     public void SetConstructionMode(bool status)
     {

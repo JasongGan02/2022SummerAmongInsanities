@@ -85,6 +85,20 @@ public class InventoryDatabase
         }
     }
 
+    public void RemoveItemByOne(int index, int num)
+    {
+        if (inventory[index].item == null) return;
+
+        if(inventory[index].count <num) return;
+        
+        inventory[index].count -= num;
+        if (inventory[index].count <= 0)
+        {
+            inventory[index].item = null;
+            UpdateNextEmptySlot();
+        }
+    }
+
     public void SwapItems(int index1, int index2)
     {
         int tempCount = inventory[index2].count;

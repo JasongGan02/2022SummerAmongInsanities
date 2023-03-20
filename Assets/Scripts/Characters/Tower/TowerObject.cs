@@ -3,13 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
-public class TowerObject : CharacterObject
+public class TowerObject : CharacterObject, IInventoryObject
 {
+    [Header("Bullet Specification")]
     public float bullet_speed;
-    public GameObject shadowPrefab;
     public GameObject bullet;
+    
+    [SerializeField]
+    private int _maxStack;
 
-    public virtual GameObject GetShadowTowerObject()
+    /**
+     * implementation of IInventoryObject
+     */
+    #region
+    public int MaxStack
+    {
+        get => _maxStack;
+        set => _maxStack = value;
+    }
+
+    public Sprite GetSpriteForInventory()
+    {
+        return prefab.GetComponent<SpriteRenderer>().sprite;
+    }
+
+    public GameObject GetDroppedGameObject(int amount)
+    {
+        GameObject drop = Instantiate(prefab);
+        drop.layer = Constants.Layer.RESOURCE;
+        if (drop.GetComponent<Rigidbody2D>() == null)
+        {
+            drop.AddComponent<Rigidbody2D>();
+        }
+        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        var controller = drop.AddComponent<DroppedObjectController>();
+        controller.Initialize(this, amount);
+        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+
+        return drop;
+    }
+    #endregion
+
+    public virtual GameObject GetShadowObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
@@ -19,5 +54,24 @@ public class TowerObject : CharacterObject
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
         var controller = worldGameObject.AddComponent<ConstructionShadows>();
         return worldGameObject;
+    }
+
+    public override List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
+    {
+        List<GameObject> droppedItems = new();
+        if (isUserPlaced)
+        {
+            droppedItems.Add(GetDroppedGameObject(1)); //drop itself
+        }
+        else
+        {
+            foreach (Drop drop in Drops)
+            {
+                GameObject droppedGameObject = drop.GetDroppedItem(); //drop some of original materials
+                droppedItems.Add(droppedGameObject);
+            }   
+        }
+        return droppedItems;
+
     }
 }

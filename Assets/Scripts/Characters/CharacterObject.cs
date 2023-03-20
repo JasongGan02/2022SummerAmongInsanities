@@ -25,7 +25,6 @@ public class CharacterObject : BaseObject
     public virtual List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
     {
         List<GameObject> droppedItems = new();
-        
         foreach (Drop drop in Drops)
         {
             GameObject droppedGameObject = drop.GetDroppedItem();

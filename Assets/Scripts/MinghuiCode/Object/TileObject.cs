@@ -34,6 +34,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         var ghost = Instantiate(prefab);
         ghost.layer = Constants.Layer.DEFAULT;
         ghost.transform.localScale = new Vector2(0.25f, 0.25f);
+        SpriteRenderer spriteRenderer = ghost.GetComponent<SpriteRenderer>(); // Get the sprite renderer component
+        Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
+        spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
+        spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
         ghost.GetComponent<Collider2D>().enabled = false;
         return ghost;
     }

@@ -6,6 +6,7 @@ using UnityEditor;
 public class SpawnManager : MonoBehaviour
 {
     public EquipmentObject[] equipments;
+    public TowerObject testCase; //to-do just a test. do a list
     
     [SerializeField]
     private GameObject spawnPoint;
@@ -18,6 +19,9 @@ public class SpawnManager : MonoBehaviour
         int index = Random.Range(0, equipments.Length);
         GameObject drop = equipments[index].GetDroppedGameObject(1);
         drop.transform.position = spawnPoint.transform.position;
+
+        GameObject dropTower = testCase.GetDroppedGameObject(1);
+        dropTower.transform.position = spawnPoint.transform.position;
     }
 }
 

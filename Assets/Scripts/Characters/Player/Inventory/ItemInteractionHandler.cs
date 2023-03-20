@@ -8,7 +8,6 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
 {
     [HideInInspector]
     public IInventoryObject item;
-    private GameObject player;
     private Inventory inventory;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -22,8 +21,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
 
     private void Start()
     {
-        player = GameObject.Find(Constants.Name.PLAYER);
-        inventory = player.GetComponent<Inventory>();
+        inventory = FindObjectOfType<Inventory>();
 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
@@ -32,6 +30,10 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         currentSlotIndex = GetSlotIndex(gameObject.transform.parent.name);
     }
 
+    private void Update()
+    {
+
+    }
     private void HandleSlotRightClickEvent(object sender, InventoryEventBus.OnSlotRightClickedEventArgs args)
     {
         if (shouldListenForRightClick)
