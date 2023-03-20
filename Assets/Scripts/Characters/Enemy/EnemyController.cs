@@ -10,7 +10,7 @@ public abstract class EnemyController : CharacterController
     
 
     //run-time variables
-    protected TowerContainer towerContainer;
+    public TowerContainer towerContainer;   // Changed from protected to public
     protected GameObject player;
     protected float timer;
     protected Transform NearestTowerTransform;
@@ -24,7 +24,7 @@ public abstract class EnemyController : CharacterController
 
     protected void Awake()
     {
-        towerContainer = FindObjectOfType<TowerContainer>();
+        //towerContainer = FindObjectOfType<TowerContainer>();
         timer = 0;
  
     }
@@ -45,19 +45,23 @@ public abstract class EnemyController : CharacterController
 
     protected bool IsTowerSensed()
     {
-        if (towerContainer == null) { return false; }  // Nathan's only change
-            
+        if (towerContainer == null) { Debug.Log("0"); return false; }  // Nathan's only change
+        
         UpdateNearestTower();
         if(NearestTowerTransform == transform)
         {
-            return false;
+            Debug.Log("1");
+            return false; 
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
-        if(distance <= 15)
+        Debug.Log("distance: " + distance.ToString()); // distance check
+        if(distance <= SensingRange)
         {
+            Debug.Log("2");
             return true;
         }else
         {
+            Debug.Log("3");
             return false;
         }
     }
@@ -65,7 +69,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsTowerInAtkRange()
     {
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
-        if(distance <= 15)
+        if(distance <= AtkRange)
         {
             return true;
         }else
@@ -123,7 +127,7 @@ public abstract class EnemyController : CharacterController
     }
 
     // Shooting a 2D rayline, if sense a ground tag, then jump
-    protected void SenseFrontBlock()
+    protected void SenseFrontBlock()    
     {
         Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
         Vector3 origin = transform.position - new Vector3(0,0.3f,0);
@@ -133,7 +137,7 @@ public abstract class EnemyController : CharacterController
         RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 1f, ground_mask);
         if(hit.collider != null && hit.collider.gameObject.tag == "ground")
         {
-            Vector2 up_force = new Vector2(0,30);
+            Vector2 up_force = new Vector2(0,3);
             gameObject.GetComponent<Rigidbody2D>().AddForce(up_force);
         }
     }

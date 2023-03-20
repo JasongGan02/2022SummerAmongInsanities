@@ -37,6 +37,12 @@ public class PlayerInteraction : MonoBehaviour
     public float handFarm = 0.5f;
     public float handFrequency = 1;
 
+    public GameObject Spear;
+    public GameObject Axe;
+    public GameObject Dagger;
+
+  
+
     private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary
     {
@@ -111,7 +117,8 @@ public class PlayerInteraction : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 animator.SetBool(GetCurrentInUseItem().GetItemName(), true);
-
+         
+                
             }
             else
             {
@@ -119,8 +126,12 @@ public class PlayerInteraction : MonoBehaviour
 
             }
         }
+
     }
 
+
+
+        
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
@@ -162,6 +173,8 @@ public class PlayerInteraction : MonoBehaviour
         if (currentSlotInUse.item is WeaponObject)
         {
             currentWeapon = currentSlotInUse.item as WeaponObject;
+            currentWeapon.GetSpawnedGameObject<Weapon>();
+
             waitTime = 1 / currentWeapon.frequency;
         } 
         else
@@ -177,6 +190,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     
+
 
 
     private void UpdateCurrentInUseItemUI()

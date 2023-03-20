@@ -16,7 +16,7 @@ public class VillagerGenerator : CharacterSpawner
     protected new void Update()
     {
         timerr += Time.deltaTime;
-        if (!TooMuch(EnemyMax) && timerr > 3f)
+        if (!TooMuch(EnemyMax) && timerr > 1f)
         {
             SpawnVillager();
             timerr = 0f;
