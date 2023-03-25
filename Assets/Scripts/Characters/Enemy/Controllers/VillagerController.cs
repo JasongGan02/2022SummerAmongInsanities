@@ -23,6 +23,7 @@ public class VillagerController : EnemyController
 
     protected override void EnemyLoop()
     {
+        death();
         rb = GetComponent<Rigidbody2D>();
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
         if (IsPlayerSensed())
@@ -201,16 +202,5 @@ public class VillagerController : EnemyController
         }
     }
 
-    public override void death()
-    {
-        Destroy(this.gameObject);
-        DropItems();
-    }
-
-    
-
-    void DropItems()
-    {
-        
-    }
+   
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // This is Catapult tower
-public class CatapultTower : TowerController
+public class CatapultTowerController : TowerController
 {
     [SerializeField] float bullet_x_flyingSpeed;   // Bullet flying speed in x axis, absolute value without direction
     Animator animator;

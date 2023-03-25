@@ -50,18 +50,18 @@ public abstract class EnemyController : CharacterController
         UpdateNearestTower();
         if(NearestTowerTransform == transform)
         {
-            Debug.Log("1");
+            //Debug.Log("1");
             return false; 
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
         Debug.Log("distance: " + distance.ToString()); // distance check
         if(distance <= SensingRange)
         {
-            Debug.Log("2");
+            //Debug.Log("2");
             return true;
         }else
         {
-            Debug.Log("3");
+            //Debug.Log("3");
             return false;
         }
     }

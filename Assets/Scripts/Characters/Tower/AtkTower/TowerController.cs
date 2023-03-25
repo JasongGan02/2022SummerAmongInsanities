@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class TowerController : CharacterController
 {
     //SO variables
+    protected int energyCost;
     protected float bullet_speed;    // bullet flying speed
     [SerializeField] protected GameObject bullet;
     protected GameObject shadowPrefab;

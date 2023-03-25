@@ -5,10 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
 public class TowerObject : CharacterObject, IInventoryObject
 {
+    public int energyCost;
+
     [Header("Bullet Specification")]
     public float bullet_speed;
     public GameObject bullet;
-    
+
     [SerializeField]
     private int _maxStack;
 
@@ -44,19 +46,7 @@ public class TowerObject : CharacterObject, IInventoryObject
     }
     #endregion
 
-    public virtual GameObject GetShadowObject()
-    {
-        GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.name = itemName;
-        SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>(); // Get the sprite renderer component
-        Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
-        spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
-        spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
-        var controller = worldGameObject.AddComponent<ConstructionShadows>();
-        return worldGameObject;
-    }
-
-    public override List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
+    public override List<GameObject> GetDroppedGameObjects(bool isUserPlaced) //need to consider the case if it is placed by User.
     {
         List<GameObject> droppedItems = new();
         if (isUserPlaced)
@@ -74,4 +64,21 @@ public class TowerObject : CharacterObject, IInventoryObject
         return droppedItems;
 
     }
+    /**
+     * implementation of ConstructionMode
+     */
+    public virtual GameObject GetShadowObject()
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.name = itemName;
+        SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>(); // Get the sprite renderer component
+        Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
+        spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
+        spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
+        var controller = worldGameObject.AddComponent<ConstructionShadows>();
+        return worldGameObject;
+    }
+
+  
+    
 }
