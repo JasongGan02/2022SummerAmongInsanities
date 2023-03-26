@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(fileName = "weapon", menuName = "Objects/Weapon Object")]
 public class WeaponObject : EquipmentObject
@@ -9,11 +10,24 @@ public class WeaponObject : EquipmentObject
     public float farm;
     public float frequency;
 
-    public virtual GameObject GetSpawnedGameObject<T>() where T : Weapon //Spawn the actual game object through calling this function. 
+    public GameObject Bullet;
+
+    public virtual GameObject GetSpawnedGameObject<T>() where T : SpearController //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
         var controller = worldGameObject.AddComponent<T>();
+        return worldGameObject;
+    }
+
+    public virtual GameObject GetSpawnedGameObject() //Spawn the actual game object through calling this function. 
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.layer = LayerMask.NameToLayer("resource");
+        worldGameObject.name = itemName;
+        worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+        Type type = Type.GetType(itemName+"Controller");
+        var controller = worldGameObject.AddComponent(type);
         return worldGameObject;
     }
 }

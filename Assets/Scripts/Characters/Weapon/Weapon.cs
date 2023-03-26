@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
 
     public Playermovement playermovement;
     public PlayerInteraction playerinteraction;
-    public Animator animator;
+
 
     private float speed;
 
@@ -24,7 +24,6 @@ public class Weapon : MonoBehaviour
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
-        animator = player.GetComponent<Animator>();
         playerinteraction = player.GetComponent<PlayerInteraction>();
         
     }
@@ -55,7 +54,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void attack()
     {
-        playerinteraction.weaponAnim = false;
+        
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
@@ -69,17 +68,14 @@ public class Weapon : MonoBehaviour
                 speed = maxSpeed * (1 - percentSlowDown);
             }
 
-            transform.position = player.transform.position + new Vector3(1f, 0, 0) + transform.up * Mathf.Sin(Time.time * frequency) * magnitude * speed;
+            transform.position = player.transform.position + new Vector3(1f, 0, 0) + Vector3.right * Mathf.Sin(Time.time * frequency) * magnitude * speed;
         }
         else
         {
-            transform.position = player.transform.position - new Vector3(1f, 0, 0) - transform.up * Mathf.Sin(Time.time * frequency) * magnitude * speed;
+            transform.position = player.transform.position - new Vector3(1f, 0, 0) - Vector3.right * Mathf.Sin(Time.time * frequency) * magnitude * speed;
         }
 
     }
-
-
-
 
 
     // flip the enemy
@@ -92,8 +88,6 @@ public class Weapon : MonoBehaviour
             transform.localScale = transformScale;
         }
     }
-
-
 
     // patrol around
     public virtual void Patrol()

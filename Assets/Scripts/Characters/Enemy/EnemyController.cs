@@ -50,7 +50,7 @@ public abstract class EnemyController : CharacterController
         UpdateNearestTower();
         if(NearestTowerTransform == transform)
         {
-            return false;
+            return false;   
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
         if(distance <= 15)

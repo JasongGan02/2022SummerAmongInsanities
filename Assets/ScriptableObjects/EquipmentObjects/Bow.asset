@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   itemName: Bow
-  sizeRatio: 4
+  sizeRatio: 1
   prefab: {fileID: 2776729951293410429, guid: 93fd2fb1f8adffc4db8cbad0c43dbbc8, type: 3}
   level: 4
   quality: {r: 0, g: 0, b: 0, a: 0}
