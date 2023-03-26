@@ -6,15 +6,17 @@ using UnityEditor;
 public class SpawnManager : MonoBehaviour
 {
     public EquipmentObject[] equipments;
-    public TowerObject testCase; //to-do just a test. do a list
+    public TowerObject[] testCase; //to-do just a test. do a list
     
     [SerializeField]
     private GameObject spawnPoint;
 
     void Start()
     {
-        GameObject dropTower = testCase.GetDroppedGameObject(1);
+        GameObject dropTower = testCase[0].GetDroppedGameObject(1);
         dropTower.transform.position = spawnPoint.transform.position;
+        GameObject dropTower1 = testCase[1].GetDroppedGameObject(1);
+        dropTower1.transform.position = spawnPoint.transform.position;
     }
     // only a temporary solution
     public void SpwanRamdonWeapon() 
@@ -25,7 +27,7 @@ public class SpawnManager : MonoBehaviour
         GameObject drop = equipments[index].GetDroppedGameObject(1);
         drop.transform.position = spawnPoint.transform.position;
 
-        GameObject dropTower = testCase.GetDroppedGameObject(1);
+        GameObject dropTower = testCase[0].GetDroppedGameObject(1);
         dropTower.transform.position = spawnPoint.transform.position;
     }
 }
