@@ -15,10 +15,11 @@ MonoBehaviour:
   itemName: Player
   sizeRatio: 1
   prefab: {fileID: 6647711791749533985, guid: 4a76d7ca108e6bb4dab533130174dc7e, type: 3}
-  HP: 10
+  HP: 100
   AtkDamage: 1
   AtkInterval: 1
   AtkRange: 1
   MovingSpeed: 1
   drops: []
+  JumpForce: 0
   RespwanTimeInterval: 4.99

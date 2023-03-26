@@ -12,6 +12,7 @@ public class CharacterObject : BaseObject
     public float AtkRange;
     public float MovingSpeed;
     public Drop[] drops;
+    public float JumpForce;
 
     public virtual GameObject GetSpawnedGameObject<T>()  where T : CharacterController //Spawn the actual game object through calling this function. 
     {
