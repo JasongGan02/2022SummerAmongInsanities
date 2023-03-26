@@ -15,10 +15,11 @@ MonoBehaviour:
   itemName: villager
   sizeRatio: 1
   prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
-  HP: 55
+  HP: 10
   AtkDamage: 1
   AtkInterval: 1
   AtkRange: 3
   MovingSpeed: 1
   drops: []
+  JumpForce: 0.5
   SensingRange: 5

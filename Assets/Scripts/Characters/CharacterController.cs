@@ -22,6 +22,7 @@ public abstract class CharacterController : MonoBehaviour
     protected float MovingSpeed;
     protected Drop[] drops;
     protected float AtkRange;
+    protected float JumpForce;
 
     public virtual void Initialize(CharacterObject characterObject)
     {
