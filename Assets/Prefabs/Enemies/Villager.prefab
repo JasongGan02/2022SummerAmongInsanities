@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5469098318322386288}
   - component: {fileID: 5469098318322386289}
   - component: {fileID: 5469098318322386290}
+  - component: {fileID: -5242118426533788009}
   m_Layer: 9
   m_Name: Villager
   m_TagString: enemy
@@ -75,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -685523752, guid: 292bf2209b77b904db543e853e175d85, type: 3}
+  m_Sprite: {fileID: -2008651037, guid: de1edffe5a24d0242bcdcd1b526d4778, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.53125, y: 0.875}
+  m_Size: {x: 0.53125, y: 0.84375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -123,3 +124,23 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0063056946, y: 0.088991165}
   m_Size: {x: 0.73096466, y: 1.1849022}
   m_Direction: 0
+--- !u!95 &-5242118426533788009
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469098318322386293}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 093297aaf575be64f9d22301dfff044d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

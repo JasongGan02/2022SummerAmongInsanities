@@ -8,6 +8,7 @@ public class ArcherTower : TowerBasics
     // Start is called before the first frame update
     void Start()
     {
+        transform.parent = GameObject.Find("TowerContainer").transform; // Nathan's change
         enemyContainer = FindObjectOfType<EnemyContainer>();
         isEnemySpotted = false;
         AtkTimer = 0f;
