@@ -50,8 +50,9 @@ public abstract class EnemyController : CharacterController
         UpdateNearestTower();
         if(NearestTowerTransform == transform)
         {
-            //Debug.Log("1");
-            return false; 
+
+            return false;   
+
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
         //Debug.Log("distance: " + distance.ToString()); 

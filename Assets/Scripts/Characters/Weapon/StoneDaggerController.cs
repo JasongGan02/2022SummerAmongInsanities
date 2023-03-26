@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dagger : Weapon
+public class StoneDaggerController : Weapon
 
 {
   
     public override void attack()
     {
-        playerinteraction.weaponAnim = false;
+     
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
         transform.Rotate(Vector3.forward * 2000f * Time.deltaTime);
