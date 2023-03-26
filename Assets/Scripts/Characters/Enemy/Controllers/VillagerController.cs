@@ -13,6 +13,8 @@ public class VillagerController : EnemyController
     private Rigidbody2D rb;
     float patroltime = 0;
     private Animator animator;
+    bool patrolToRight = true;
+    float patrolRest = 2f;
 
 
     new void Awake()
@@ -26,6 +28,7 @@ public class VillagerController : EnemyController
         death();
         rb = GetComponent<Rigidbody2D>();
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
+
         if (IsPlayerSensed())
         {
             animator.SetBool("IsStanding", true);           // villager stand
@@ -38,7 +41,8 @@ public class VillagerController : EnemyController
             }else
             {
                 // approaching player
-                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, MovingSpeed * Time.deltaTime);
+                SenseFrontBlock();
+                approachPlayer(MovingSpeed);
                 flip(player.transform);
                 //Debug.Log("approach");
             }
@@ -59,15 +63,16 @@ public class VillagerController : EnemyController
                 // approaching tower
                 transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * Time.deltaTime);
                 flip(NearestTowerTransform);
+                SenseFrontBlock();
             }
         }
         else
         {
-            animator.SetBool("IsStanding", false);           // villager sit
+            SenseFrontBlock();
             patrol();
         }
 
-        SenseFrontBlock();
+        
     }
 
     
@@ -100,6 +105,7 @@ public class VillagerController : EnemyController
 
         if (Vector2.Distance(transform.position, NearestTowerTransform.position) > 0.7f)
         {
+            SenseFrontBlock();
             transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * 2 * Time.deltaTime);
         }
 
@@ -137,7 +143,7 @@ public class VillagerController : EnemyController
 
         if (Vector2.Distance(transform.position, player.transform.position) > 0.7f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, MovingSpeed * 2 * Time.deltaTime);
+            approachPlayer(MovingSpeed * 2f);
         }
         
         if (Vector2.Distance(transform.position, player.transform.position) < 1f && !rest)
@@ -151,27 +157,46 @@ public class VillagerController : EnemyController
         flip(player.transform);
     }
 
+    void approachPlayer(float speed)
+    {
+        Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
+        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+    }
+
     void patrol()
     {
         if (patroltime <= 0f)
         {
-            patroltime = Random.Range(1, 5);
-            if (Random.Range(0f, 1f) > 0.5) // go left
+            patrolRest = 5f;
+            animator.SetBool("IsStanding", false);
+            patroltime = Random.Range(1f, 3f);
+            if (Random.Range(0f, 1f) < 0.5) // go left
             {
-                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
-                //Debug.Log("going to left");
-                if (facingright) { flip(); }
+                patrolToRight = false;
             }
             else                          // go right
             {
-                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
-                if (!facingright) { flip(); }
-                //Debug.Log("going to right");
+                patrolToRight = true;
             }
+        }
+        else if (patrolRest > 0)
+        {
+            patrolRest -= Time.deltaTime;
         }
         else
         {
+            animator.SetBool("IsStanding", true);
             patroltime -= Time.deltaTime;
+            if (patrolToRight) 
+            { 
+                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
+                if (!facingright) { flip(); }
+            }
+            else
+            {
+                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                if (facingright) { flip(); }
+            }
         }
     }
 
@@ -202,5 +227,45 @@ public class VillagerController : EnemyController
         }
     }
 
-   
+
+    new void SenseFrontBlock()
+    {
+        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position - new Vector3(0, 0.5f, 0);
+
+        LayerMask ground_mask = LayerMask.GetMask("ground");
+
+        float bottomline = 0.3f;
+        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 0.5f, ground_mask);
+        Debug.DrawRay(origin, shooting_direction * 0.5f, Color.green); // infront
+        Vector3 left = transform.position - new Vector3(0.25f, 0.35f, 0);
+        RaycastHit2D bottomLeft = Physics2D.Raycast(left, Vector3.down, bottomline, ground_mask);
+        Debug.DrawRay(left, Vector3.down * bottomline, Color.blue);        // bottom left
+        Vector3 right = transform.position - new Vector3(-0.25f, 0.35f, 0);
+        RaycastHit2D bottomRight = Physics2D.Raycast(right, Vector3.down, bottomline, ground_mask);
+        Debug.DrawRay(right, Vector3.down * bottomline, Color.blue);        // bottom right
+
+        if ((hit.collider != null && hit.collider.gameObject.tag == "ground") &&
+            ((bottomLeft.collider != null && bottomLeft.collider.gameObject.tag == "ground")||
+            (bottomRight.collider != null && bottomRight.collider.gameObject.tag == "ground")))
+        {
+            //Vector2 up_force = new Vector2(0, JumpForce);
+            //gameObject.GetComponent<Rigidbody2D>().AddForce(up_force); 
+            //Debug.Log("up_force: " + up_force);
+
+            Vector2 up_force = new Vector2(0, JumpForce);
+            Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+            rb.AddForce(up_force, ForceMode2D.Impulse);
+            Debug.Log("up_force: " + up_force);
+            StartCoroutine(StopJump(rb, 0.7f)); //stop the jump after 0.7 seconds
+        }
+
+    }
+    IEnumerator StopJump(Rigidbody2D rb, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+    }
+
+    
 }

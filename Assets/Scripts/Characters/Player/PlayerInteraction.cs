@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class PlayerInteraction : MonoBehaviour
 {
     public float interactRange = 1f;
@@ -91,38 +91,23 @@ public class PlayerInteraction : MonoBehaviour
 
         PlaceTileCheck();
         PlaceTileCancelCheck();
-
-        if (weaponAnim)
-        {
-            playWeaponAnim();
-        }
+        playAnim();
+        
     }
 
 
-    void playWeaponAnim()
+    void playAnim()
     {
-        if (Input.GetMouseButton(0))
-        {
-            animator.SetBool("Hand", true);
-
-        }
-        else
-        {
-            animator.SetBool("Hand", false);
-
-        }
-
-        if (GetCurrentInUseItem() != null)
+        if (GetCurrentInUseItem() == null)
         {
             if (Input.GetMouseButton(0))
             {
-                animator.SetBool(GetCurrentInUseItem().GetItemName(), true);
-         
-                
+                animator.SetBool("Hand", true);
+
             }
             else
             {
-                animator.SetBool(GetCurrentInUseItem().GetItemName(), false);
+                animator.SetBool("Hand", false);
 
             }
         }
@@ -174,8 +159,7 @@ public class PlayerInteraction : MonoBehaviour
         if (currentSlotInUse.item is WeaponObject)
         {
             currentWeapon = currentSlotInUse.item as WeaponObject;
-            currentWeapon.GetSpawnedGameObject<Weapon>();
-
+            currentWeapon.GetSpawnedGameObject();
             waitTime = 1 / currentWeapon.frequency;
         } 
         else
