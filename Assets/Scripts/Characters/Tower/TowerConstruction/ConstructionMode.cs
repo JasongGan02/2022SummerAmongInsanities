@@ -8,7 +8,6 @@ using TMPro;
 public class ConstructionMode : MonoBehaviour
 {
     private bool isInConstructionMode = false;
-    private Constants.TowerType towerType = Constants.TowerType.noShadow;
     private TowerObject _curTower;
     private GameObject ShadowObj;
     private CoreArchitecture coreArchitecture;
@@ -17,7 +16,6 @@ public class ConstructionMode : MonoBehaviour
     private TowerContainer towerContainer;
     
     
-    [SerializeField] List<GameObject> Towers;
     [SerializeField] GameObject ConstructionUI;
     [SerializeField] GameObject EnergyText;
     
@@ -84,7 +82,7 @@ public class ConstructionMode : MonoBehaviour
     {
         
         ConstructionUI.SetActive(false);                // hide the construction UI
-        towerType = Constants.TowerType.noShadow;       // hide the image in under the cursor
+        //_curTower = null;       // hide the image in under the cursor
         coreArchitecture.CloseConstructionMode();
 
         Destroy(ShadowObj);
@@ -94,47 +92,63 @@ public class ConstructionMode : MonoBehaviour
     // Generating current tower shadow under player's mouse position
     void GeneratingConstructionShadow()
     {
-        if(towerType != Constants.TowerType.noShadow || _curTower != null){
-            Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // get mouse position
-            RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);     // eject a downside ray
-            bool regenerate = false;    // mark if the shadow object need to be regenerated
-            if(ShadowObj){
-                if(ShadowObj.name != _curTower.itemName)
+        //Debug.Log(_curTower);
+        if (_curTower != null)
+        {
+            
+            Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
+            bool regenerate = false;
+            if (ShadowObj)
+            {
+                if (ShadowObj.name != _curTower.itemName)
                 {
+                    
                     regenerate = true;
                 }
             }
 
-            if(!ShadowObj || regenerate)
+            if (!ShadowObj || regenerate)
             {
-                if(ShadowObj){
+                if (ShadowObj)
+                {
                     Destroy(ShadowObj);
                 }
-                //ShadowObj = Instantiate(Towers[(int)towerType]);
+                Debug.Log("213");
                 ShadowObj = _curTower.GetShadowObject();
-                ShadowObj.GetComponent<ConstructionShadows>().StartUp(5.0f);
+                ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
+                shadowScript.StartUp(5.0f);
+                shadowScript.Start();
             }
-
-            if(ShadowObj && downRay){
-                // set shadow object's position
+            
+            if (ShadowObj && downRay)
+            {
                 ShadowObj.transform.position = downRay.point;
                 ShadowObj.transform.position += new Vector3(0, ShadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2 + 0.03f, downRay.transform.position.z);
                 // align object's X position
                 ShadowObj.transform.position = new Vector3(downRay.transform.position.x, ShadowObj.transform.position.y, ShadowObj.transform.position.z);
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
-                if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange()){
-                    if(CheckEnergyAvailableForConstruction())
+                //Debug.Log("1"+shadowScript.GetPlaceStatus());
+                //Debug.Log("2"+coreArchitecture.IsPlayerInControlRange());
+                //Debug.Log("3"+Input.GetMouseButtonDown(0));
+                if (Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange())
+                {
+                    //Debug.Log("1");
+                    if (CheckEnergyAvailableForConstruction())
                     {
-                        SpawnTower(shadowScript.transform.position);
+                        //Debug.Log("2");
+                        SpawnTower(ShadowObj.transform.position);
                         EnergyConsumption();
                     }
-                    else{
+                    else
+                    {
                         print("You are run out of power");
                     }
                 }
             }
         }
     }
+
     
     void SpawnTower(Vector3 placePosition)
     {

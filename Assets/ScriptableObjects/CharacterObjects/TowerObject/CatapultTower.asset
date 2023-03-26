@@ -21,6 +21,7 @@ MonoBehaviour:
   AtkRange: 0
   MovingSpeed: 0
   Drops: []
+  energyCost: 30
   bullet_speed: 0
-  bullet: {fileID: 0}
+  bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   _maxStack: 0

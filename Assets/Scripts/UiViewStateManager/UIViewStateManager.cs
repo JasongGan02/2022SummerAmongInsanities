@@ -42,6 +42,11 @@ public class UIViewStateManager : MonoBehaviour
         return currentUI != UIBeingViewed.Null;
     }
 
+    public static bool GetCurUI()
+    {
+        return currentUI==UIBeingViewed.Construction;
+    }
+
     public void collaspeAllUI()
     {
         ToggleUI(UIBeingViewed.Null);

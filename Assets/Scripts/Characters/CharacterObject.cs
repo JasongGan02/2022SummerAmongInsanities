@@ -16,7 +16,7 @@ public class CharacterObject : BaseObject
     public float MovingSpeed;
     public Drop[] Drops;
 
-    private string controllerName;
+    protected string controllerName;
     
     public virtual GameObject GetSpawnedGameObject<T>()  where T : CharacterController //Spawn the actual game object through calling this function. 
     {

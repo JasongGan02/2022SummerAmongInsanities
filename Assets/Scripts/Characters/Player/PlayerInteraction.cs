@@ -135,6 +135,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
+        Debug.Log(args.slotIndex);
         UseItemInSlot(args.slotIndex); 
     }
 
@@ -210,7 +211,8 @@ public class PlayerInteraction : MonoBehaviour
         indexInUse = EMPTY;
         currentSlotInUse = null;
         currentWeapon = null;
-        constructionMode.CurTower = null;
+        if(!UIViewStateManager.GetCurUI())
+            constructionMode.CurTower = null;
 
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
@@ -318,8 +320,7 @@ public class PlayerInteraction : MonoBehaviour
         if (currentSlotInUse == null ||
             currentSlotInUse.count == 0 ||
             Input.GetMouseButtonDown(1) || 
-            Input.GetMouseButtonDown(2) || 
-            UIViewStateManager.isViewingUI())
+            Input.GetMouseButtonDown(2) || (!UIViewStateManager.GetCurUI() && UIViewStateManager.isViewingUI()))
         {
             ClearCurrentItemInUse();
             if (currentTileGhost != null)
