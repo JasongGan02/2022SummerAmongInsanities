@@ -13,10 +13,10 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        GameObject dropTower = testCase[0].GetDroppedGameObject(1);
-        dropTower.transform.position = spawnPoint.transform.position;
-        GameObject dropTower1 = testCase[1].GetDroppedGameObject(1);
-        dropTower1.transform.position = spawnPoint.transform.position;
+        //GameObject dropTower = testCase[0].GetDroppedGameObject(0);
+        //dropTower.transform.position = spawnPoint.transform.position;
+        //GameObject dropTower1 = testCase[1].GetDroppedGameObject(0);
+        //dropTower1.transform.position = spawnPoint.transform.position;
     }
     // only a temporary solution
     public void SpwanRamdonWeapon() 
