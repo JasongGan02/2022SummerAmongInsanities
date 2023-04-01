@@ -25,7 +25,6 @@ public class VillagerController : EnemyController
 
     protected override void EnemyLoop()
     {
-        death();
         rb = GetComponent<Rigidbody2D>();
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
 
