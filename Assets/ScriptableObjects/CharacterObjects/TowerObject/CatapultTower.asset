@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
+  m_Name: CatapultTower
+  m_EditorClassIdentifier: 
+  itemName: CatapultTower
+  sizeRatio: 0.25
+  prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
+  HP: 0
+  AtkDamage: 0
+  AtkInterval: 0
+  AtkRange: 0
+  MovingSpeed: 0
+  Drops: []
+  energyCost: 30
+  bullet_speed: 0
+  bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
+  _maxStack: 0

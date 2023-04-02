@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
     private Playermovement playerMovement;
+    private ConstructionMode constructionMode;
     private Inventory inventory;
 
     private ShadowGenerator shadowGenerator;
@@ -36,9 +37,6 @@ public class PlayerInteraction : MonoBehaviour
     public float handFarm = 0.5f;
     public float handFrequency = 1;
 
-    public GameObject Spear;
-    public GameObject Axe;
-    public GameObject Dagger;
 
   
 
@@ -62,6 +60,11 @@ public class PlayerInteraction : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         currentInUseItemUI = GameObject.Find(Constants.Name.CURRENT_WEAPON_UI);
+    }
+    
+    void Start()
+    {
+        constructionMode = FindObjectOfType<ConstructionMode>();
     }
 
     private void OnEnable()
@@ -114,6 +117,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
+        Debug.Log(args.slotIndex);
         UseItemInSlot(args.slotIndex); 
     }
 
@@ -139,6 +143,15 @@ public class PlayerInteraction : MonoBehaviour
             }
             currentTileGhost = (currentSlotInUse.item as TileObject).GetTileGhostBeforePlacement();
         }
+
+        if (currentSlotInUse.item is TowerObject)
+        {
+            constructionMode.CurTower = currentSlotInUse.item as TowerObject;
+        }
+        else
+        {
+            constructionMode.CurTower = null;
+        } 
         
         if (currentSlotInUse.item is WeaponObject)
         {
@@ -164,8 +177,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void UpdateCurrentInUseItemUI()
     {
+        if (currentSlotInUse.item != null)
+        {
+            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+        }
+
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
+            
             Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
         }
         GameObject template = Instantiate(equipmentTemplate);
@@ -176,14 +195,25 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ClearCurrentItemInUse()
     {
+        if (currentSlotInUse.item != null)
+        {
+            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+        }
+
         indexInUse = EMPTY;
         currentSlotInUse = null;
         currentWeapon = null;
 
+        if (!UIViewStateManager.GetCurUI())
+            constructionMode.CurTower = null;
+
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
+            
             Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
         }
+
+        
     }
 
     private void StartTimer()
@@ -271,7 +301,7 @@ public class PlayerInteraction : MonoBehaviour
     private void PickUpItemCheck()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
-        if (hit.transform != null)
+        if (hit.transform != null && hit.transform.gameObject.GetComponent<DroppedObjectController>())
         {
             DroppedObjectController resoureObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
             if (inventory.CanAddItem(resoureObject.item))
@@ -286,8 +316,7 @@ public class PlayerInteraction : MonoBehaviour
         if (currentSlotInUse == null ||
             currentSlotInUse.count == 0 ||
             Input.GetMouseButtonDown(1) || 
-            Input.GetMouseButtonDown(2) || 
-            UIViewStateManager.isViewingUI())
+            Input.GetMouseButtonDown(2) || (!UIViewStateManager.GetCurUI() && UIViewStateManager.isViewingUI()))
         {
             ClearCurrentItemInUse();
             if (currentTileGhost != null)

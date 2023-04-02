@@ -20,8 +20,11 @@ public class CharacterSpawner : MonoBehaviour
         SpawnPlayer();
         //SpawnBat();
         //SpawnVillager();
+
         SpawnLady();
+
     }
+
 
     protected void Update()
     {

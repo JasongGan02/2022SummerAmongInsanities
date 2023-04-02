@@ -17,16 +17,21 @@ public class RogueManager : MonoBehaviour
     private Button levelUpButton;
     private TMP_Text selectedBuffText;
     private GameObject buffContainer;
+    private Inventory inventory;
 
     public List<RogueGraphNode> selectedNodes = new();
 
     public List<RogueGraphNode> DebugList = new();
+
+    //PlayerExp Control
+    [SerializeField] private int levelUpCost;
     
     // Start is called before the first frame update
     void Start()
     {
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleRogueUI;
+        inventory = FindObjectOfType<Inventory>();
 
         selectedNodes.Add(graph.rootNode);
         SetupUI();
@@ -51,10 +56,16 @@ public class RogueManager : MonoBehaviour
 
     private void OnLevelUpButtonClicked()
     {
+        
         if (buffContainer.transform.childCount == 0)
         {
-            AddBuffs();
+            if(inventory.spendEXP(levelUpCost))
+            {
+                AddBuffs();
+            }
+            
         }
+        
     }
 
     private void AddBuffs()

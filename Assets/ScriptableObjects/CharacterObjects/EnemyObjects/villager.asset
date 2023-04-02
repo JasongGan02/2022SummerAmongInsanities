@@ -20,6 +20,6 @@ MonoBehaviour:
   AtkInterval: 1
   AtkRange: 3
   MovingSpeed: 1
-  drops: []
-  JumpForce: 0.5
+  Drops: []
+  JumpForce: 5
   SensingRange: 5

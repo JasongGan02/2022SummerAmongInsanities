@@ -5052,6 +5052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a24ef35342a7584db402b9b6cc2d4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curHP: 5
+  towerContainer: {fileID: 0}
   Tr: {fileID: 3018555575201582532}
   Ps: {fileID: 3018555575201582538}

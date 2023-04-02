@@ -5,8 +5,6 @@ using UnityEngine;
 // Every tower will have a tower shadow, which will be displayed on Canvas UI
 public class ConstructionShadows : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject TargetTower;      
     private uint CollisionCount = 0;
     private float PlaceDistance = 0;
     private SpriteRenderer ShadowSpriteRenderer;
@@ -15,12 +13,14 @@ public class ConstructionShadows : MonoBehaviour
     private TowerContainer towerContainer;
     private Color OriginalColor;
     private bool isPlaceAble = false;
-    void Start()
+
+    public void Start()
     {
         ShadowSpriteRenderer = GetComponent<SpriteRenderer>();
         OriginalColor = ShadowSpriteRenderer.color;
         towerContainer = FindObjectOfType<TowerContainer>();
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
+
     }
 
     // Update is called once per frame
@@ -37,15 +37,10 @@ public class ConstructionShadows : MonoBehaviour
         return isPlaceAble;
     }
 
-    public void PlaceTower(){
-        var instance = Instantiate(TargetTower, transform.position, transform.rotation);
-        instance.transform.parent = towerContainer.gameObject.transform;
-    }
-
     // Check whether construction shadow is placeable
     private void UpdatePlaceStatus(){
 
-        if(GameObject.FindWithTag("Player") == null)
+        if(GameObject.FindWithTag("Player") == null || FindObjectOfType<CoreArchitecture>() == null)
         {
             isPlaceAble = false;
         }
@@ -58,7 +53,8 @@ public class ConstructionShadows : MonoBehaviour
             }else{
                 ShadowSpriteRenderer.color = new Color(OriginalColor.r, OriginalColor.g/2, OriginalColor.b/2, OriginalColor.a);
                 isPlaceAble = false;
-        }
+            
+            }
         }
         
     }
@@ -84,12 +80,13 @@ public class ConstructionShadows : MonoBehaviour
         return distance;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.gameObject);
         ++CollisionCount;
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    public void OnTriggerExit2D(Collider2D other)
     {
         --CollisionCount;
     }

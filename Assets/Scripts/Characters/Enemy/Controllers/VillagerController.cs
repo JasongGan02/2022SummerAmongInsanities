@@ -16,11 +16,22 @@ public class VillagerController : EnemyController
     bool patrolToRight = true;
     float patrolRest = 2f;
 
+    public Transform groundCheckLeft;
+    public Transform groundCheckCenter;
+    public Transform groundCheckRight;
+    public Transform frontCheck;
+    LayerMask ground_mask;
+    private bool isGrounded;
 
     new void Awake()
     {
         animator = GetComponent<Animator>();
         towerContainer = FindObjectOfType<TowerContainer>();
+        ground_mask = LayerMask.GetMask("ground");
+        groundCheckLeft = transform.Find("groundCheckLeft");
+        groundCheckCenter = transform.Find("groundCheckCenter");
+        groundCheckRight = transform.Find("groundCheckRight");
+        frontCheck = transform.Find("frontCheck");
     }
 
     protected override void EnemyLoop()
@@ -28,6 +39,7 @@ public class VillagerController : EnemyController
         rb = GetComponent<Rigidbody2D>();
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
 
+        if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); }
         if (IsPlayerSensed())
         {
             animator.SetBool("IsStanding", true);           // villager stand
@@ -40,7 +52,6 @@ public class VillagerController : EnemyController
             }else
             {
                 // approaching player
-                SenseFrontBlock();
                 approachPlayer(MovingSpeed);
                 flip(player.transform);
                 //Debug.Log("approach");
@@ -62,15 +73,13 @@ public class VillagerController : EnemyController
                 // approaching tower
                 transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * Time.deltaTime);
                 flip(NearestTowerTransform);
-                SenseFrontBlock();
+                
             }
         }
         else
         {
-            SenseFrontBlock();
             patrol();
         }
-
         
     }
 
@@ -226,55 +235,34 @@ public class VillagerController : EnemyController
         }
     }
 
+
     new void SenseFrontBlock()
     {
-        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position - new Vector3(0, 0.5f, 0);
+        isGrounded = false;
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.05f, ground_mask);
 
-        LayerMask ground_mask = LayerMask.GetMask("ground");
-
-        float bottomline = 0.3f;
-        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 0.5f, ground_mask);
-        Debug.DrawRay(origin, shooting_direction * 0.5f, Color.green); // infront
-        Vector3 left = transform.position - new Vector3(0.25f, 0.35f, 0);
-        RaycastHit2D bottomLeft = Physics2D.Raycast(left, Vector3.down, bottomline, ground_mask);
-        Debug.DrawRay(left, Vector3.down * bottomline, Color.blue);        // bottom left
-        Vector3 right = transform.position - new Vector3(-0.25f, 0.35f, 0);
-        RaycastHit2D bottomRight = Physics2D.Raycast(right, Vector3.down, bottomline, ground_mask);
-        Debug.DrawRay(right, Vector3.down * bottomline, Color.blue);        // bottom right
-
-        if ((hit.collider != null && hit.collider.gameObject.tag == "ground") &&
-            ((bottomLeft.collider != null && bottomLeft.collider.gameObject.tag == "ground")||
-            (bottomRight.collider != null && bottomRight.collider.gameObject.tag == "ground")))
+        if (((hitLeft.transform != null)
+            || (hitRight.transform != null)
+            || (hitCenter.transform != null))
+            && (hitFront.transform != null))
         {
+            isGrounded = true;
             //Vector2 up_force = new Vector2(0, JumpForce);
             //gameObject.GetComponent<Rigidbody2D>().AddForce(up_force); 
             //Debug.Log("up_force: " + up_force);
-
-            Vector2 up_force = new Vector2(0, JumpForce);
-            Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
-            rb.AddForce(up_force, ForceMode2D.Impulse);
-            Debug.Log("up_force: " + up_force);
-            StartCoroutine(StopJump(rb, 0.7f)); //stop the jump after 0.7 seconds
+            Jump();
         }
 
     }
-    IEnumerator StopJump(Rigidbody2D rb, float duration)
+    private void Jump()
     {
-        yield return new WaitForSeconds(duration);
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-    }
-
-    public override void death()
-    {
-        Destroy(this.gameObject);
-        DropItems();
-    }
-
-    
-
-    void DropItems()
-    {
-        
+        if (isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 1 * JumpForce);
+            Debug.Log("up_force: " + JumpForce);
+        }
     }
 }

@@ -8,7 +8,7 @@ public abstract class EnemyController : CharacterController
 {
 
     protected float SensingRange;
-
+    
 
     //run-time variables
     public TowerContainer towerContainer;   // Changed from protected to public
@@ -51,7 +51,8 @@ public abstract class EnemyController : CharacterController
         if(NearestTowerTransform == transform)
         {
 
-            return false;   
+            //Debug.Log("1");
+            return false; 
 
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
@@ -232,6 +233,7 @@ public abstract class EnemyController : CharacterController
     public override void death()
     {
         Destroy(this.gameObject);
+        OnObjectDestroyed();
     }
 
 }

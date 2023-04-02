@@ -7,14 +7,17 @@ using UnityEngine.UIElements;
 
 public class Weapon : MonoBehaviour
 {
+
+
+    protected WeaponObject weaponStats;
+
     [SerializeField] public GameObject player; 
 
     public Playermovement playermovement;
     public PlayerInteraction playerinteraction;
-
+   
 
     private float speed;
-
     public float magnitude = 0.1f;
     public float frequency = 10f;
     public float maxSpeed = 10f; // Set the maximum speed of the object
@@ -38,7 +41,6 @@ public class Weapon : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             attack();
-           
 
 
         }
@@ -51,6 +53,17 @@ public class Weapon : MonoBehaviour
 
 
     }
+
+
+
+
+
+    public virtual void Initialize(WeaponObject weaponObject)
+    {
+        
+    }
+
+
 
     public virtual void attack()
     {

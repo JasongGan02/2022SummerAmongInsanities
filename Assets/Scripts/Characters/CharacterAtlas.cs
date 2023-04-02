@@ -9,4 +9,6 @@ public class CharacterAtlas : ScriptableObject
     public CharacterObject player;
     public CharacterObject bat;
     public CharacterObject lady;
+
+    public List<CharacterObject> towerList;
 }

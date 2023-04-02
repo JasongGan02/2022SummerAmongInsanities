@@ -110,7 +110,7 @@ public class InventoryUiController
     private void UpdateInventoryUi(object sender, UIBeingViewed ui)
     {
         bool isActive = ui == UIBeingViewed.Inventory;
-
+        
         SetUiActive(isActive, ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Null);
     }
 
@@ -121,7 +121,7 @@ public class InventoryUiController
 
         PlayerStatusRepository.SetIsViewingUi(isInventoryActive);
 
-        hotbarContainer.SetActive(isHotbarActive);
+        hotbarContainer.SetActive(true);
     }
 
     public void Upgrade()

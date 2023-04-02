@@ -8,12 +8,14 @@ using TMPro;
 public class ConstructionMode : MonoBehaviour
 {
     private bool isInConstructionMode = false;
-    private Constants.TowerType towerType = Constants.TowerType.noShadow;
+    private TowerObject _curTower;
     private GameObject ShadowObj;
     private CoreArchitecture coreArchitecture;
     private UIViewStateManager uiViewStateManager;
+    private PlayerInteraction playerInteraction;
+    private TowerContainer towerContainer;
     
-    [SerializeField] List<GameObject> Towers;
+    
     [SerializeField] GameObject ConstructionUI;
     [SerializeField] GameObject EnergyText;
     
@@ -25,6 +27,7 @@ public class ConstructionMode : MonoBehaviour
     {
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
+        towerContainer = FindObjectOfType<TowerContainer>();
         MaxEnergy = 100;
         CurrentEnergy = 0;
         SetEnergyText();
@@ -49,6 +52,13 @@ public class ConstructionMode : MonoBehaviour
         }
     }
 
+    public TowerObject CurTower
+    {
+        get => _curTower;
+        set => _curTower = value;
+    }
+
+
     private void UpdateConstructionUI(object sender, UIBeingViewed ui)
     {
         isInConstructionMode = ui == UIBeingViewed.Construction;
@@ -58,7 +68,6 @@ public class ConstructionMode : MonoBehaviour
     {
         ConstructionUI.SetActive(true);             // display the construction UI
         coreArchitecture.OpenConstructionMode();
-        UpdateTowerType();
 
         if(!ShadowObj)
         {
@@ -73,7 +82,7 @@ public class ConstructionMode : MonoBehaviour
     {
         
         ConstructionUI.SetActive(false);                // hide the construction UI
-        towerType = Constants.TowerType.noShadow;       // hide the image in under the cursor
+        //_curTower = null;       // hide the image in under the cursor
         coreArchitecture.CloseConstructionMode();
 
         Destroy(ShadowObj);
@@ -83,48 +92,69 @@ public class ConstructionMode : MonoBehaviour
     // Generating current tower shadow under player's mouse position
     void GeneratingConstructionShadow()
     {
-        if(towerType != Constants.TowerType.noShadow){
-            Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // get mouse position
-            RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector2.down, 100.0f, 1 << Constants.Layer.GROUND);     // eject a downside ray
-            bool regenerate = false;    // mark if the shadow object need to be regenerated
-            if(ShadowObj){
-                if(ShadowObj.name != Towers [(int)towerType].name + "(Clone)")
+        //Debug.Log(_curTower);
+        if (_curTower != null)
+        {
+            
+            Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
+            bool regenerate = false;
+            if (ShadowObj)
+            {
+                if (ShadowObj.name != _curTower.itemName)
                 {
+                    
                     regenerate = true;
                 }
             }
-            if(!ShadowObj || regenerate)
+
+            if (!ShadowObj || regenerate)
             {
-                if(ShadowObj){
+                if (ShadowObj)
+                {
                     Destroy(ShadowObj);
                 }
-                ShadowObj = Instantiate(Towers[(int)towerType]);
-                ShadowObj.GetComponent<ConstructionShadows>().StartUp(5.0f);
+                Debug.Log("213");
+                ShadowObj = _curTower.GetShadowObject();
+                ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
+                shadowScript.StartUp(5.0f);
+                shadowScript.Start();
             }
-
-            if(ShadowObj && downRay){
-                // set shadow object's position
+            
+            if (ShadowObj && downRay)
+            {
                 ShadowObj.transform.position = downRay.point;
                 ShadowObj.transform.position += new Vector3(0, ShadowObj.GetComponent<BoxCollider2D>().bounds.size.y/2 + 0.03f, downRay.transform.position.z);
                 // align object's X position
                 ShadowObj.transform.position = new Vector3(downRay.transform.position.x, ShadowObj.transform.position.y, ShadowObj.transform.position.z);
-                //ShadowObj.transform.position = new Vector3(0,0,0);
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
-                //Debug.Log("Place Status"+ shadowScript.GetPlaceStatus());
-                Debug.Log("In range"+ coreArchitecture.IsPlayerInControlRange());
-                if(Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange()){
-                    Debug.Log("MOSS");
-                    if(CheckEnergyAvailableForConstruction())
+                //Debug.Log("1"+shadowScript.GetPlaceStatus());
+                //Debug.Log("2"+coreArchitecture.IsPlayerInControlRange());
+                //Debug.Log("3"+Input.GetMouseButtonDown(0));
+                if (Input.GetMouseButtonDown(0) && shadowScript.GetPlaceStatus() && coreArchitecture.IsPlayerInControlRange())
+                {
+                    //Debug.Log("1");
+                    if (CheckEnergyAvailableForConstruction())
                     {
-                        shadowScript.PlaceTower();
+                        //Debug.Log("2");
+                        SpawnTower(ShadowObj.transform.position);
                         EnergyConsumption();
                     }
-                    else{
+                    else
+                    {
                         print("You are run out of power");
                     }
                 }
             }
         }
+    }
+
+    
+    void SpawnTower(Vector3 placePosition)
+    {
+        var curTowerObject = _curTower.GetSpawnedGameObject();
+        curTowerObject.transform.parent = towerContainer.gameObject.transform;
+        curTowerObject.transform.position = placePosition;
     }
 
     // Update UI energy text
@@ -136,84 +166,17 @@ public class ConstructionMode : MonoBehaviour
 
     bool CheckEnergyAvailableForConstruction()
     {
-        int Energy_To_Be_Cost = 0;
-        switch(ShadowObj.name)
-        {
-            case "CatapultShadow(Clone)":
-            Energy_To_Be_Cost = 20;
-            break;
-            case "ArcherTowerShadow(Clone)":
-            Energy_To_Be_Cost = 10;
-            break;
-            case "TrapTowerShadow(Clone)":
-            Energy_To_Be_Cost = 5;
-            break;
-            case "StoneWallShadow(Clone)":
-            Energy_To_Be_Cost = 0;
-            break;
-            case "WoodenWallShadow(Clone)":
-            Energy_To_Be_Cost = 0;
-            break;
-            default:
-            Debug.LogError("No such type of construction");
-            break;
-        }
-        if((CurrentEnergy+Energy_To_Be_Cost) > MaxEnergy)
+        if((CurrentEnergy+_curTower.energyCost) > MaxEnergy)
             return false;
         return true;
     }
 
     void EnergyConsumption()
     {
-        int cost_energy = 0;
-        switch(ShadowObj.name)
-        {
-            case "CatapultShadow(Clone)":
-            cost_energy = 20;
-            break;
-            case "ArcherTowerShadow(Clone)":
-            cost_energy = 10;
-            break;
-            case "TrapTowerShadow(Clone)":
-            cost_energy = 5;
-            break;
-            case "StoneWallShadow(Clone)":
-            cost_energy = 0;
-            break;
-            case "WoodenWallShadow(Clone)":
-            cost_energy = 0;
-            break;
-            default:
-            Debug.LogError("No such type of construction");
-            break;
-        }
-        CurrentEnergy += cost_energy;
+        CurrentEnergy += _curTower.energyCost;
         SetEnergyText();
     }
 
-    void UpdateTowerType()
-    {
-        if(Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            towerType = Constants.TowerType.TowerCatapult;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha2))
-        {
-            towerType = Constants.TowerType.TowerArcher;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha3))
-        {
-            towerType = Constants.TowerType.TowerTrap;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha4))
-        {
-            towerType = Constants.TowerType.WoodenWall;
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha5))
-        {
-            towerType = Constants.TowerType.StoneWall;
-        }
-    }
 
     public void SetConstructionMode(bool status)
     {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: de1edffe5a24d0242bcdcd1b526d4778
+guid: 13a484436a4e6a746a1fd381937f7e5e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -132,8 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6a58169445756764fbf7009ea82e7205
-      internalID: -2008651037
+      spriteID: 99a7614847ebf8e4484cd62c254ab50d
+      internalID: 1179476983
       vertices: []
       indices: 
       edges: []
@@ -149,7 +149,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Villager-0001_0: -2008651037
+      Villager-0001_0: 1179476983
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

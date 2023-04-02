@@ -10,12 +10,12 @@ public class WeaponObject : EquipmentObject
     public float farm;
     public float frequency;
 
-    public GameObject Bullet;
+    
 
-    public virtual GameObject GetSpawnedGameObject<T>() where T : SpearController //Spawn the actual game object through calling this function. 
+    public virtual GameObject GetSpawnedGameObject<T>() where T : MonoBehaviour //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.name = itemName;
+        worldGameObject.name = itemName; 
         var controller = worldGameObject.AddComponent<T>();
         return worldGameObject;
     }
@@ -28,6 +28,7 @@ public class WeaponObject : EquipmentObject
         worldGameObject.GetComponent<Collider2D>().isTrigger = true;
         Type type = Type.GetType(itemName+"Controller");
         var controller = worldGameObject.AddComponent(type);
+        (controller as Weapon).Initialize(this);
         return worldGameObject;
     }
 }

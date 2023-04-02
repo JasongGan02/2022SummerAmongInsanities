@@ -244,10 +244,53 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
     }
 
+    //Find number of exp in inventory and return it for Inventory Upgrade and Rogue Level Up
+    public int checkEXP()
+    {
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+            if (slot != null && slot.item is DivinityFragObject)
+            {
+                return slot.count;
+            }
+        }
+        return 0;
+    }
+
+    public bool spendEXP(int cost)
+    {   
+        
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+   
+            if (slot != null && slot.item is DivinityFragObject)
+            {
+                
+                if (cost > slot.count)
+                {
+                    Debug.Log("Not Enough Divinity Fragments");
+                    return false;
+                }
+                else 
+                {
+                    database.RemoveItemByOne(i, cost);
+                    UpdateSlotUi(i);
+                    return true;
+                }
+                    
+            }
+        }
+        
+        return false;
+    }
+
     public void DropAxe()
     {
         //Instantiate(axe);
     }
+
 
     public interface InventoryButtonClickedCallback
     {

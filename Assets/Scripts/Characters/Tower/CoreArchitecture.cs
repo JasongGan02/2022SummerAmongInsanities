@@ -52,11 +52,11 @@ public class CoreArchitecture : MonoBehaviour
         float current_Distance = Mathf.Sqrt(Mathf.Pow((playerPosition.x-corePosition.x), 2) + Mathf.Pow((playerPosition.y-corePosition.y), 2));   
         if(current_Distance <= Constructable_Distance)
         {
-            print("Player is in construction range");
+            //print("Player is in construction range");
             return true;
         }
 
-        print("Player is out of construction range");
+        //print("Player is out of construction range");
         return false;
     }
 
