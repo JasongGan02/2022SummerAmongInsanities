@@ -7,29 +7,23 @@ public class ArcherTowerController : TowerController
     // Start is called before the first frame update
     void Start()
     {
-        transform.parent = GameObject.Find("TowerContainer").transform; // Nathan's change
+        //transform.parent = GameObject.Find("TowerContainer").transform; // Nathan's change
         enemyContainer = FindObjectOfType<EnemyContainer>();
         isEnemySpotted = false;
+        InvokeRepeating("Attack", 0f, AtkInterval);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Transform enemyTransform = SenseNearestEnemyTransform();
-        if (isEnemySpotted)
-        {
-            if (Time.time >= AtkTimer)
-            {
-                Shoot(enemyTransform);
-                AtkTimer = Time.time + AtkInterval;
-            }
-        }
+
     }
 
     // Shoot a bullet at the nearest enemy
-    void Shoot(Transform enemyTransform)
+    public void Attack()
     {
-        if (enemyTransform == null) return;
+        Transform enemyTransform = SenseNearestEnemyTransform();
+        if (enemyTransform == null || !isEnemySpotted) return;
 
         if (bullet != null)
         {

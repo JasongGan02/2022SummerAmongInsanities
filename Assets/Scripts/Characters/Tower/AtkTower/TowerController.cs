@@ -47,14 +47,15 @@ public abstract class TowerController : CharacterController
         return nearestTarget;
     }
 
-    protected void CheckIfEnemyInRange()
+    protected bool CheckIfEnemyInRange()
     {
-        isEnemySpotted = Vector3.Distance(transform.position, SenseNearestEnemyTransform().position) < AtkRange;
+        return Vector3.Distance(transform.position, SenseNearestEnemyTransform().position) < AtkRange;
     }
 
     public override void death()
     {
         Destroy(gameObject);
+        OnObjectDestroyed();
     }
 
 }
