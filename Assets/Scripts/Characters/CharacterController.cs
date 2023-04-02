@@ -77,7 +77,7 @@ public abstract class CharacterController : MonoBehaviour
         var drops = characterStats.GetDroppedGameObjects(false);
         foreach (GameObject droppedItem in drops)
         {
-            droppedItem.transform.parent = gameObject.transform.parent;
+            //droppedItem.transform.parent = gameObject.transform.parent;
             droppedItem.transform.position = gameObject.transform.position;
             droppedItem.GetComponent<Rigidbody2D>().AddTorque(10f);
         }

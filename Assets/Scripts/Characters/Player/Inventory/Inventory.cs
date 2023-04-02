@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     public int defaultNumberOfRow = 2;
     public int maxExtraRow = 4;
     
+    private GameObject player;
     private GameObject inventoryGrid;
     private GameObject hotbar;
 
@@ -45,6 +46,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
     void Update()
     {
+        if(player==null) GameObject.FindGameObjectsWithTag("Player");
         HandleHotbarKeyPress();
     }
 

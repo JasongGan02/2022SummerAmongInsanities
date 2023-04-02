@@ -49,11 +49,49 @@ public class CatapultTowerController : TowerController
             transform.rotation = Quaternion.Euler(0, 0, 0); // Do not flip
         }
     }
+    // Shoot a bullet to enemy transform
+    /*
+    void Shoot(Transform enemyTransform)
+    {
+        // rotate transform
+        if(enemyTransform.position.x>transform.position.x)
+        {
+            transform.eulerAngles = new Vector3(0,0,0);
+        }else
+        {
+            transform.eulerAngles = new Vector3(0,180,0);
+        }
+        // Consider the direction of shooting bullet
+        float deltaX = enemyTransform.position.x - transform.position.x;
+        if(Mathf.Abs(deltaX)<= 0.01f)
+        {
+            Debug.Log("Catapult cannot firing in this direction");
+            return;
+        }
+        float bullet_xSpeed = 0.0f;
+        if(deltaX < 0)
+        {
+            bullet_xSpeed  = -bullet_x_flyingSpeed;
+        }else{
+            bullet_xSpeed = bullet_x_flyingSpeed;
+        }
+        
+        float deltaY = enemyTransform.position.y - transform.position.y;
+        float flying_time = deltaX / bullet_xSpeed;
+        float gravity = Physics2D.gravity.y;
+        float bullet_ySpeed = (deltaY - 0.5f*gravity*flying_time*flying_time)/flying_time;
 
+        Vector2 bullet_speed = new Vector2(bullet_xSpeed, bullet_ySpeed);
+        
+        // Shooting the bullet in calculated direction
+        GameObject bullet_instance = Instantiate(bullet, transform.position, Quaternion.identity);
+        bullet_instance.GetComponent<Rigidbody2D>().velocity = bullet_speed;
+    }
+*/
     Vector2 CalculateBulletSpeed(Transform enemyTransform)
     {
         float deltaX = enemyTransform.position.x - transform.position.x;
-        if(Mathf.Abs(deltaX) <= 2f)
+        if(Mathf.Abs(deltaX) <= 3f)
         {
             Debug.Log("Catapult cannot firing in this direction");
             return Vector2.zero;
@@ -64,25 +102,11 @@ public class CatapultTowerController : TowerController
         float deltaY = enemyTransform.position.y - transform.position.y;
         float flying_time = deltaX / bullet_xSpeed;
         float gravity = Physics2D.gravity.y;
-        //float bullet_ySpeed =  (deltaY - 0.5f * gravity * flying_time * flying_time) / flying_time;
+        float bullet_ySpeed = (deltaY - 0.5f*gravity*flying_time*flying_time)/flying_time;
 
-        // Use a piecewise function to adjust the y speed based on distance
-        float bullet_ySpeed = 0f;
-        if (Mathf.Abs(deltaX) <= 5f)
-        {
-            bullet_ySpeed = 5f;
-        }
-        else if (Mathf.Abs(deltaX) <= 10f)
-        {
-            bullet_ySpeed = 10f;
-        }
-        else
-        {
-            bullet_ySpeed = (deltaY - 0.5f * gravity * Mathf.Pow(Mathf.Abs(deltaX) / bullet_xSpeed, 2f)) / (Mathf.Abs(deltaX) / bullet_xSpeed);
-        }
-        Debug.Log(bullet_ySpeed);
-        //bullet_ySpeed = Mathf.Clamp(bullet_ySpeed, minBulletYSpeed, maxBulletYSpeed);
         return new Vector2(bullet_xSpeed, bullet_ySpeed);
+
+      
     }
 
     void Shoot(Transform enemyTransform)
