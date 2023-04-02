@@ -195,7 +195,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ClearCurrentItemInUse()
     {
-        if (currentSlotInUse.item != null)
+        if (currentSlotInUse!= null && currentSlotInUse.item != null)
         {
             Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
         }
