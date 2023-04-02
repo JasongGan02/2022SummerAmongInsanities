@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
   m_Name: ArcherTower
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: ArcherTower
   sizeRatio: 1
-  prefab: {fileID: 0}
+  prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
   HP: 0
   AtkDamage: 0
   AtkInterval: 0
   AtkRange: 0
   MovingSpeed: 0
   Drops: []
-  energyCost: 0
+  JumpForce: 0
+  energyCost: 10
   bullet_speed: 0
   bullet: {fileID: 0}
   _maxStack: 0
