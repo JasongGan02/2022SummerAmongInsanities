@@ -20,6 +20,8 @@ MonoBehaviour:
   AtkInterval: 1
   AtkRange: 3
   MovingSpeed: 1
-  Drops: []
+  Drops:
+  - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
+    chance: 4
   JumpForce: 5
   SensingRange: 5

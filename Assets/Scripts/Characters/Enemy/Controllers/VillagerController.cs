@@ -250,9 +250,6 @@ public class VillagerController : EnemyController
             && (hitFront.transform != null))
         {
             isGrounded = true;
-            //Vector2 up_force = new Vector2(0, JumpForce);
-            //gameObject.GetComponent<Rigidbody2D>().AddForce(up_force); 
-            //Debug.Log("up_force: " + up_force);
             Jump();
         }
 

@@ -15,14 +15,14 @@ MonoBehaviour:
   itemName: ArcherTower
   sizeRatio: 1
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
-  HP: 0
-  AtkDamage: 0
-  AtkInterval: 0
-  AtkRange: 0
+  HP: 1
+  AtkDamage: 1
+  AtkInterval: 1
+  AtkRange: 5
   MovingSpeed: 0
   Drops: []
   JumpForce: 0
   energyCost: 10
-  bullet_speed: 0
-  bullet: {fileID: 0}
-  _maxStack: 0
+  bullet_speed: 4
+  bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+  _maxStack: 5

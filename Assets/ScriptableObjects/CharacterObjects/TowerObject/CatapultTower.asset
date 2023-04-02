@@ -15,13 +15,14 @@ MonoBehaviour:
   itemName: CatapultTower
   sizeRatio: 0.25
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
-  HP: 0
-  AtkDamage: 0
-  AtkInterval: 0
-  AtkRange: 0
+  HP: 10
+  AtkDamage: 1
+  AtkInterval: 3
+  AtkRange: 10
   MovingSpeed: 0
   Drops: []
+  JumpForce: 0
   energyCost: 30
-  bullet_speed: 0
+  bullet_speed: 3
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
-  _maxStack: 0
+  _maxStack: 4

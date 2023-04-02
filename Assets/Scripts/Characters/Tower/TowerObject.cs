@@ -1,6 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using UnityEditor;
+using System;
+using System.Reflection;
+using System.Collections.Generic;
+
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
 public class TowerObject : CharacterObject, IInventoryObject
@@ -76,6 +80,18 @@ public class TowerObject : CharacterObject, IInventoryObject
         spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
         var controller = worldGameObject.AddComponent<ConstructionShadows>();
+        return worldGameObject;
+    }
+    
+    public override GameObject GetSpawnedGameObject() //Use this when you are unsure about what type of controller will be using.
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.name = itemName;
+        controllerName = itemName+"Controller";
+        Type type = Type.GetType(controllerName);
+        var controller = worldGameObject.AddComponent(type);
+        (controller as CharacterController).Initialize(this);
+        controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
         return worldGameObject;
     }
 
