@@ -7,6 +7,7 @@ public class LadyController : EnemyController
 {
 
     private GameObject arrow;
+    public Animator animator;
     
     private Transform arrowSpawnPoint; // reference to the point where the arrow will be instantiated
     private float nextFire; // the time at which the archer can fire again
@@ -26,6 +27,7 @@ public class LadyController : EnemyController
     void Start()
     {
         arrowSpawnPoint = transform;
+        animator = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         wallLayer = LayerMask.GetMask("ground");
         towerContainer = FindObjectOfType<TowerContainer>();
@@ -34,7 +36,7 @@ public class LadyController : EnemyController
 
 
     void FireArrow(){
-    // Instantiate the arrow
+     //Instantiate the arrow
         arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
     }
 
@@ -112,6 +114,7 @@ public class LadyController : EnemyController
 
                 // Set the canFire flag to false
                 canFire = false;
+                animator.SetBool("canFire", false);
             }
 
             // Check if the fire rate has passed
@@ -119,6 +122,8 @@ public class LadyController : EnemyController
             {
                 // Set the canFire flag to true
                 canFire = true;
+                animator.SetBool("canFire", true);
+
             }
             if (Time.time > nextMove)
             {
