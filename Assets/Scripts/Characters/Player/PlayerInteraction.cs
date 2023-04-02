@@ -37,9 +37,6 @@ public class PlayerInteraction : MonoBehaviour
     public float handFarm = 0.5f;
     public float handFrequency = 1;
 
-    public GameObject Spear;
-    public GameObject Axe;
-    public GameObject Dagger;
 
   
 
@@ -180,8 +177,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void UpdateCurrentInUseItemUI()
     {
+        if (currentSlotInUse.item != null)
+        {
+            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+        }
+
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
+            
             Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
         }
         GameObject template = Instantiate(equipmentTemplate);
@@ -192,16 +195,25 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ClearCurrentItemInUse()
     {
+        if (currentSlotInUse.item != null)
+        {
+            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+        }
+
         indexInUse = EMPTY;
         currentSlotInUse = null;
         currentWeapon = null;
-        if(!UIViewStateManager.GetCurUI())
+
+        if (!UIViewStateManager.GetCurUI())
             constructionMode.CurTower = null;
 
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
+            
             Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
         }
+
+        
     }
 
     private void StartTimer()
