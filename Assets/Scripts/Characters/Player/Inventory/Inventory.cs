@@ -46,7 +46,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
     void Update()
     {
-        if(player==null) GameObject.FindGameObjectsWithTag("Player");
+        if(player==null) player = GameObject.FindGameObjectWithTag("Player");
         HandleHotbarKeyPress();
     }
 
@@ -120,13 +120,13 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         if (removedItem != null)
         {
             Vector3 dropPosition;
-            if (gameObject.GetComponent<Playermovement>().facingRight)
+            if (player.GetComponent<Playermovement>().facingRight)
             {
-                dropPosition = gameObject.transform.position + new Vector3(1, 0, 0);
+                dropPosition = player.transform.position + new Vector3(1, 0, 0);
             }
             else
             {
-                dropPosition = gameObject.transform.position + new Vector3(-1, 0, 0);
+                dropPosition = player.transform.position + new Vector3(-1, 0, 0);
             }
             // TODO refactor collectible object to set the amount when getting the dropped item
             GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
@@ -287,7 +287,25 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         
         return false;
     }
-
+    
+    public int findObject(IInventoryObject inventoryObject)
+    {   
+        
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+   
+            if (slot != null && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
+            {
+                
+                return slot.count;
+                    
+            }
+        }
+        
+        return 0;
+    }
+    
     public void DropAxe()
     {
         //Instantiate(axe);
