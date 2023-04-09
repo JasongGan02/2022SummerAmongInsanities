@@ -21,9 +21,6 @@ public class CharacterSpawner : MonoBehaviour
         //SpawnBat();
         //SpawnLady();
         //SpawnVillager();
-
-        SpawnLady();
-
     }
 
 
