@@ -12,6 +12,7 @@ public class LadyController : EnemyController
     private Transform arrowSpawnPoint; // reference to the point where the arrow will be instantiated
     private float nextFire; // the time at which the archer can fire again
     private float nextMove; // the time at which the archer can fire again
+    private float speed;
     private bool canFire = true; // flag to check if the archer can fire
     private bool canMove = true;
     private GameObject arrowPrefab; // reference to the arrow prefab
@@ -49,6 +50,7 @@ public class LadyController : EnemyController
 
         // Approaches and escapes from the player
 
+
         Vector2 direction = (player.transform.position - transform.position);
         if (direction.x > 0)
         {
@@ -71,18 +73,27 @@ public class LadyController : EnemyController
         
         if (canMove)
         {
+            
             if (Vector2.Distance(transform.position, player.transform.position) < 3f)
             {
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -MovingSpeed * Time.deltaTime);
+                animator.SetFloat("movingSpeed", 1f);
             }
             if (Vector2.Distance(transform.position, player.transform.position) > 3f && Vector2.Distance(transform.position, player.transform.position) < 10f)
             {
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, MovingSpeed * Time.deltaTime);
+                animator.SetFloat("movingSpeed", 1f);
             }
             if (Vector2.Distance(transform.position, player.transform.position) >= 10f)
             {
+                animator.SetFloat("movingSpeed", 0f);
                 // idle state
             }
+        }
+
+        if (Vector2.Distance(transform.position, player.transform.position) >= 2.9f && Vector2.Distance(transform.position, player.transform.position) <= 3.1){
+            animator.SetFloat("movingSpeed", 0f);
+
         }
 
 

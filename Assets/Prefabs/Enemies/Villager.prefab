@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87689405548760325}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: -0.55, z: -0.115000635}
+  m_LocalPosition: {x: 0.1, y: -0.55, z: -0.115000635}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428031453004414669}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.25, y: -0.55, z: -0.115000635}
+  m_LocalPosition: {x: 0.2, y: -0.55, z: -0.115000635}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,7 +86,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818888632293387494}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.35, y: -0.45, z: -0.115000635}
+  m_LocalPosition: {x: -0.25, y: -0.5, z: -0.115000635}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,7 +117,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2712795839550776984}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1, y: -0.55, z: -0.115000635}
+  m_LocalPosition: {x: -0.03, y: -0.55, z: -0.115000635}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -135,8 +135,9 @@ GameObject:
   - component: {fileID: 5469098318322386292}
   - component: {fileID: 5469098318322386288}
   - component: {fileID: 5469098318322386289}
-  - component: {fileID: 3800168131784009044}
   - component: {fileID: -5242118426533788009}
+  - component: {fileID: 3319936864845795275}
+  - component: {fileID: 8465054638815958460}
   m_Layer: 9
   m_Name: Villager
   m_TagString: enemy
@@ -236,33 +237,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!68 &3800168131784009044
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5469098318322386293}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -0.0851078, y: -0.058401108}
-  - {x: -0.07813263, y: 0.53614616}
-  - {x: 0.2438736, y: 0.52534294}
-  - {x: 0.24556732, y: -0.54787445}
-  - {x: -0.07591629, y: -0.5466089}
-  - {x: -0.07767868, y: -0.5433178}
-  - {x: -0.0838356, y: -0.040124893}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!95 &-5242118426533788009
 Animator:
   serializedVersion: 4
@@ -283,3 +257,57 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &3319936864845795275
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469098318322386293}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.08279991, y: 0.013360977}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.53125, y: 0.84375}
+    newSize: {x: 0.59375, y: 1.09375}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.35121536, y: 0.87257767}
+  m_EdgeRadius: 0
+--- !u!68 &8465054638815958460
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469098318322386293}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.09703827, y: -0.5136337}
+  - {x: -0.11300659, y: -0.51187897}
+  - {x: -0.14957237, y: -0.5145426}
+  - {x: -0.15617752, y: 0.46842003}
+  - {x: 0.26695633, y: 0.4688015}
+  - {x: 0.26504135, y: -0.5136547}
+  - {x: -0.09795189, y: -0.5150814}
+  - {x: 0.2621479, y: -0.51510143}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
