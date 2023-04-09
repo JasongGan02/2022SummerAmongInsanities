@@ -8,13 +8,12 @@ using TMPro;
 public class ConstructionMode : MonoBehaviour
 {
     private bool isInConstructionMode = false;
-    private TowerObject _curTower;
-    private GameObject ShadowObj;
+
     private CoreArchitecture coreArchitecture;
     private UIViewStateManager uiViewStateManager;
     private PlayerInteraction playerInteraction;
     private TowerContainer towerContainer;
-    
+
     
     [SerializeField] GameObject ConstructionUI;
     [SerializeField] GameObject EnergyText;
@@ -52,11 +51,6 @@ public class ConstructionMode : MonoBehaviour
         }
     }
 
-    public TowerObject CurTower
-    {
-        get => _curTower;
-        set => _curTower = value;
-    }
 
 
     private void UpdateConstructionUI(object sender, UIBeingViewed ui)
@@ -68,13 +62,14 @@ public class ConstructionMode : MonoBehaviour
     {
         ConstructionUI.SetActive(true);             // display the construction UI
         coreArchitecture.OpenConstructionMode();
-
+        
+        /*
         if(!ShadowObj)
         {
             ShadowObj = new GameObject();
         }
-        
-        GeneratingConstructionShadow();
+        */
+        //GeneratingConstructionShadow();
 
     }
 
@@ -85,10 +80,10 @@ public class ConstructionMode : MonoBehaviour
         //_curTower = null;       // hide the image in under the cursor
         coreArchitecture.CloseConstructionMode();
 
-        Destroy(ShadowObj);
+        //Destroy(ShadowObj);
         
     }
-
+    /*
     // Generating current tower shadow under player's mouse position
     void GeneratingConstructionShadow()
     {
@@ -115,7 +110,7 @@ public class ConstructionMode : MonoBehaviour
                     Destroy(ShadowObj);
                 }
                 Debug.Log("213");
-                ShadowObj = _curTower.GetShadowObject();
+                ShadowObj = _curTower.GetShadowGameObject();
                 ConstructionShadows shadowScript = ShadowObj.GetComponent<ConstructionShadows>();
                 shadowScript.StartUp(5.0f);
                 shadowScript.Start();
@@ -148,7 +143,7 @@ public class ConstructionMode : MonoBehaviour
             }
         }
     }
-
+    
     
     void SpawnTower(Vector3 placePosition)
     {
@@ -156,7 +151,7 @@ public class ConstructionMode : MonoBehaviour
         curTowerObject.transform.parent = towerContainer.gameObject.transform;
         curTowerObject.transform.position = placePosition;
     }
-
+    */
     // Update UI energy text
     void SetEnergyText()
     {
@@ -164,16 +159,16 @@ public class ConstructionMode : MonoBehaviour
         energyText_text.SetText("Energy: {0}/{1}",CurrentEnergy, MaxEnergy);
     }
 
-    bool CheckEnergyAvailableForConstruction()
+    public bool CheckEnergyAvailableForConstruction(int cost)
     {
-        if((CurrentEnergy+_curTower.energyCost) > MaxEnergy)
+        if((CurrentEnergy+cost) > MaxEnergy)
             return false;
         return true;
     }
 
-    void EnergyConsumption()
+    public void EnergyConsumption(int cost)
     {
-        CurrentEnergy += _curTower.energyCost;
+        CurrentEnergy += cost;
         SetEnergyText();
     }
 

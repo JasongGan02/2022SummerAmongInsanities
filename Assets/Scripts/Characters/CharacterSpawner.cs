@@ -20,9 +20,9 @@ public class CharacterSpawner : MonoBehaviour
         SpawnPlayer();
         //SpawnBat();
         //SpawnLady();
-        //SpawnVillager();
+        SpawnVillager();
 
-        SpawnLady();
+        //SpawnLady();
 
     }
 

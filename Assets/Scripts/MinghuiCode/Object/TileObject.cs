@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
-public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject
+public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject
 {
     [SerializeField]
     private int _maxStack;
@@ -38,7 +38,28 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
         spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
-        ghost.GetComponent<Collider2D>().enabled = false;
+        ghost.GetComponent<Collider2D>().isTrigger = true;
+        return ghost;
+    }
+
+    public GameObject GetShadowGameObject()
+    {
+        var ghost = Instantiate(prefab);
+        ghost.layer = Constants.Layer.DEFAULT;
+        ghost.transform.localScale = new Vector2(0.25f, 0.25f);
+        SpriteRenderer spriteRenderer = ghost.GetComponent<SpriteRenderer>(); // Get the sprite renderer component
+        Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
+        spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
+        spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
+        var collider = ghost.GetComponent<BoxCollider2D>();
+        collider.isTrigger = true;
+        
+        collider.size = new Vector2(collider.size.x*0.5f, collider.size.y*0.5f);
+        ghost.AddComponent<ShadowObjectController>();
+        var controller = ghost.AddComponent<Rigidbody2D>();
+        controller.simulated = true;
+        controller.isKinematic = true; //so that it does not fall and collide with everything
+
         return ghost;
     }
 

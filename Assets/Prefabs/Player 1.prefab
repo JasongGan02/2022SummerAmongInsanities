@@ -401,14 +401,11 @@ MonoBehaviour:
   - {fileID: 5294649413928347017}
   - {fileID: 4345295238556224730}
   - {fileID: 3429148027577167092}
-  placeTileRange: 1
+  placeTileRange: 5
   equipmentTemplate: {fileID: 5703799991536060000, guid: cc327834c14524b41af052db4d6824cb, type: 3}
   handAttack: 1
   handFarm: 0.5
   handFrequency: 1
-  Spear: {fileID: 0}
-  Axe: {fileID: 0}
-  Dagger: {fileID: 0}
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0

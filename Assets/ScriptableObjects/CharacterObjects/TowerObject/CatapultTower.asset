@@ -23,6 +23,7 @@ MonoBehaviour:
   Drops: []
   JumpForce: 0
   energyCost: 30
+  rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   bullet_speed: 3
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   _maxStack: 4

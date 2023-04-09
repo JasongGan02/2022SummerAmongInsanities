@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
+  m_Name: TrapTower
+  m_EditorClassIdentifier: 
+  itemName: TrapTower
+  sizeRatio: 1
+  prefab: {fileID: 2844561520478345549, guid: 4f96f8a328f0b924d8869dba2e24555d, type: 3}
+  HP: 10
+  AtkDamage: 2
+  AtkInterval: 5
+  AtkRange: 4
+  MovingSpeed: 0
+  Drops: []
+  JumpForce: 0
+  energyCost: 10
+  rotateAngle: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  bullet_speed: 3
+  bullet: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
+  _maxStack: 0
