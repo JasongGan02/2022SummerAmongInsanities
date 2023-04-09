@@ -82,7 +82,7 @@ public class ConstructionShadows : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject);
+        //Debug.Log(other.gameObject);
         ++CollisionCount;
     }
 

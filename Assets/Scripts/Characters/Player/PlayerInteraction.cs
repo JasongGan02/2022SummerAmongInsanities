@@ -25,7 +25,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("tile placement")]
     private GameObject currentTileGhost = null;
-    public int placeTileRange = 1;
+    public int placeTileRange = 15;
 
     [Header("use item")]
     private WeaponObject currentWeapon;
@@ -117,7 +117,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
-        Debug.Log(args.slotIndex);
+        //Debug.Log(args.slotIndex);
         UseItemInSlot(args.slotIndex); 
     }
 
@@ -135,24 +135,15 @@ public class PlayerInteraction : MonoBehaviour
         UpdateCurrentInUseItemUI();
 
         Debug.Log("PlayerInteraction: using " + currentSlotInUse.item.GetItemName());
-        if (currentSlotInUse.item is TileObject)
+        if (currentSlotInUse.item is IShadowObject)
         {
             if (currentTileGhost != null)
             {
                 Destroy(currentTileGhost);
             }
-            currentTileGhost = (currentSlotInUse.item as TileObject).GetTileGhostBeforePlacement();
+            currentTileGhost = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
         }
 
-        if (currentSlotInUse.item is TowerObject)
-        {
-            constructionMode.CurTower = currentSlotInUse.item as TowerObject;
-        }
-        else
-        {
-            constructionMode.CurTower = null;
-        } 
-        
         if (currentSlotInUse.item is WeaponObject)
         {
             currentWeapon = currentSlotInUse.item as WeaponObject;
@@ -204,8 +195,7 @@ public class PlayerInteraction : MonoBehaviour
         currentSlotInUse = null;
         currentWeapon = null;
 
-        if (!UIViewStateManager.GetCurUI())
-            constructionMode.CurTower = null;
+
 
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
@@ -311,6 +301,10 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    /***
+    Place Tile Implementations
+
+    ***/
     private void PlaceTileCancelCheck()
     {
         if (currentSlotInUse == null ||
@@ -329,14 +323,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void PlaceTileCheck()
     {
-        if (currentTileGhost != null)
+        if (currentTileGhost != null && currentSlotInUse != null)
         {
-            TileGhostPlacementResult result = GetTileGhostPlacementResult();
+            TileGhostPlacementResult result = currentTileGhost.GetComponent<ShadowObjectController>().GetTileGhostPlacementResult(currentSlotInUse.item as BaseObject);
             currentTileGhost.transform.position = result.position;
             if (CanPlaceTile(result))
             {
                 currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) )
                 {
                     // TODO: should put the tile under the correct chunk
                     PlaceTile(result.position);
@@ -344,12 +338,14 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+                currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.6f, 0.6f, 0.5f);
             }
 
             
         }
     }
+
+
 
     // TODO: inventory should have a map of CollectibleObject -> list of indices
     // and pass this entry to this PlayerInteraction class,
@@ -363,7 +359,15 @@ public class PlayerInteraction : MonoBehaviour
             newTile.transform.localScale = new Vector2(0.25f, 0.25f);
             inventory.RemoveItemByOne(indexInUse);
             worldTilesDictionary.Add(new Vector2Int((int)(position.x * 4), (int)(position.y * 4)), newTile);
-        }  
+        } 
+        else if(currentSlotInUse.item is TowerObject)
+        {
+            GameObject newTower = (currentSlotInUse.item as TowerObject).GetSpawnedGameObject();
+            newTower.transform.position = position;
+            constructionMode.EnergyConsumption((currentSlotInUse.item as TowerObject).energyCost);
+            inventory.RemoveItemByOne(indexInUse);
+           
+        } 
     }
 
     private bool CanPlaceTile(TileGhostPlacementResult result)
@@ -371,40 +375,6 @@ public class PlayerInteraction : MonoBehaviour
         return result.canPlaceTile && Vector2.Distance(transform.position, result.position) < placeTileRange;
     }
 
-    private TileGhostPlacementResult GetTileGhostPlacementResult()
-    {
-        Vector2 mousePosition = GetMousePosition2D();
-        float x = GetSnappedCoordinate(mousePosition.x);
-        float y = GetSnappedCoordinate(mousePosition.y);
-
-        if (worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4)))) {
-            return new TileGhostPlacementResult(new Vector2(x, y), false);
-        } 
-        else
-        {
-            return new TileGhostPlacementResult(new Vector2(x, y), true);
-        }
-    }
-
-    private float GetSnappedCoordinate(float number)
-    {
-        switch (number % 1)
-        {
-            case float res when (res >= 0.25 && res < 0.5):
-                return (int)number + 0.375f;
-                
-            case float res when (res >= 0.5 && res < 0.75):
-                return (int)number + 0.625f;
-                
-            case float res when (res >= 0.75 && res < 1.0):
-                return (int)number + 0.875f;
-                
-            case float res when (res >= 0.0 && res < 0.25):
-                return (int)number + 0.125f;
-            default:
-                return -1; // impossible to get here
-        }
-    }
 
     private Vector2 GetMousePosition2D()
     {
@@ -455,7 +425,8 @@ public class PlayerInteraction : MonoBehaviour
     private const int EMPTY = -1;
 }
 
-class TileGhostPlacementResult
+
+public class TileGhostPlacementResult
 {
     public Vector2 position;
     public bool canPlaceTile;

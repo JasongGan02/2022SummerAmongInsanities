@@ -251,6 +251,8 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+
+        
     }
     public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)
     {
@@ -288,6 +290,7 @@ public class TerrainGeneration : MonoBehaviour
 
         tileGameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        //worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
         worldTiles.Add(tileGameObject.transform.position - (Vector3.one * 0.5f));
 
         return tileGameObject;
