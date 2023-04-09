@@ -21,7 +21,6 @@ public class VillagerController : EnemyController
     public Transform groundCheckRight;
     public Transform frontCheck;
     LayerMask ground_mask;
-    private bool isGrounded;
 
     new void Awake()
     {
@@ -43,24 +42,24 @@ public class VillagerController : EnemyController
         if (IsPlayerSensed())
         {
             animator.SetBool("IsStanding", true);           // villager stand
-            rb.velocity = new Vector2(0, rb.velocity.y);    //  stop patrol
+            
             if (IsPlayerInAtkRange())
             {
                 //Debug.Log(timer);
                 attack();
                 //Debug.Log("attack");
-            }else
+            }
+            else
             {
                 // approaching player
-                approachPlayer(MovingSpeed);
+                approachPlayer(2*MovingSpeed);
                 flip(player.transform);
                 //Debug.Log("approach");
             }
         }
         else if(IsTowerSensed())
         {
-            animator.SetBool("IsStanding", true);           // villager stand
-            rb.velocity = new Vector2(0, rb.velocity.y);    // stop patrol
+            
             //Debug.Log("attack tower");
             if (IsTowerInAtkRange( (int) AtkRange))
             {
@@ -169,13 +168,15 @@ public class VillagerController : EnemyController
     {
         Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        //if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
+        //else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
 
     void patrol()
     {
         if (patroltime <= 0f)
         {
-            patrolRest = 5f;
+            patrolRest = 2f;
             animator.SetBool("IsStanding", false);
             patroltime = Random.Range(1f, 3f);
             if (Random.Range(0f, 1f) < 0.5) // go left
@@ -238,28 +239,44 @@ public class VillagerController : EnemyController
 
     new void SenseFrontBlock()
     {
-        isGrounded = false;
+        headCheck();
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.05f, ground_mask);
+        
 
-        if (((hitLeft.transform != null)
-            || (hitRight.transform != null)
-            || (hitCenter.transform != null))
-            && (hitFront.transform != null))
+        if (hitLeft.transform != null
+            || hitRight.transform != null
+            || hitCenter.transform != null)
         {
-            isGrounded = true;
-            Jump();
+            if (hitFront.transform != null)
+            {
+                if (headCheck()) { Jump(); }
+                else { Debug.Log("front obstacle too high!"); }
+            }
+            else { Debug.Log("no obstacle in front"); }
+        }
+        else { Debug.Log("foot in the air"); }
+
+    }
+    bool headCheck()
+    {
+        Vector3 direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
+        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
+        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
+        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
+        {
+            return false;
         }
 
+        return true;
     }
     private void Jump()
     {
-        if (isGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, 1 * JumpForce);
-            Debug.Log("up_force: " + JumpForce);
-        }
+        //rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+        rb.AddForce(Vector2.up * JumpForce, (ForceMode2D)ForceMode.Impulse);
+        Debug.Log("up_force: " + JumpForce + " jump");
     }
 }
