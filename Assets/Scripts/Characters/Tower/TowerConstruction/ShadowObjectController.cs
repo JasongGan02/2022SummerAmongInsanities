@@ -62,8 +62,7 @@ public class ShadowObjectController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 // Rotate the object
-                Debug.Log("1");
-                //transform.rotation = Quaternion.Euler(0, transform.rotation.y-(objectType as TowerObject).SetDirection(),0);
+                
                 transform.rotation *= (objectType as TowerObject).SetDirection();
             }
             return TowerObjectCheck(objectType);

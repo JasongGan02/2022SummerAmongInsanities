@@ -22,11 +22,7 @@ public class CatapultTowerController : TowerController
 
     
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
+    
     public void Attack()
     {
         Transform enemyTransform = SenseNearestEnemyTransform();

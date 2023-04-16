@@ -253,11 +253,15 @@ public class VillagerController : EnemyController
             if (hitFront.transform != null)
             {
                 if (headCheck()) { Jump(); }
-                else { Debug.Log("front obstacle too high!"); }
+                else { //Debug.Log("front obstacle too high!"); 
+                }
+
             }
-            else { Debug.Log("no obstacle in front"); }
+            else { //Debug.Log("no obstacle in front"); 
+            }
         }
-        else { Debug.Log("foot in the air"); }
+        else { //Debug.Log("foot in the air"); 
+        }
 
     }
     bool headCheck()
@@ -277,6 +281,6 @@ public class VillagerController : EnemyController
     {
         //rb.velocity = new Vector2(rb.velocity.x, JumpForce);
         rb.AddForce(Vector2.up * JumpForce, (ForceMode2D)ForceMode.Impulse);
-        Debug.Log("up_force: " + JumpForce + " jump");
+        //Debug.Log("up_force: " + JumpForce + " jump");
     }
 }
