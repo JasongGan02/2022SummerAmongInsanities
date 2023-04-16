@@ -160,7 +160,7 @@ public abstract class EnemyController : CharacterController
                 Vector2 up_force = new Vector2(0, JumpForce);
                 Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
                 rb.AddForce(up_force, ForceMode2D.Impulse);
-                Debug.Log("up_force: " + up_force);
+                //Debug.Log("up_force: " + up_force);
                 StartCoroutine(StopJump(rb, 0.5f)); //stop the jump after 0.5 seconds
             }
         }

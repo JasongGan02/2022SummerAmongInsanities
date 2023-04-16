@@ -1,34 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
 
 public class Weapon : MonoBehaviour
 {
 
 
-    protected WeaponObject weaponStats;
+    
 
     [SerializeField] public GameObject player; 
 
     public Playermovement playermovement;
     public PlayerInteraction playerinteraction;
-   
+    public Inventory inventory;
+    
 
-    private float speed;
+    protected WeaponObject weaponStats;
+    protected float AtkInterval = 1f;
+    protected float farm;
+    
+
+    public float speed;
     public float magnitude = 0.1f;
-    public float frequency = 10f;
     public float maxSpeed = 10f; // Set the maximum speed of the object
     public float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
+    public float frequency = 10f;
 
     public virtual void Start()
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
         playerinteraction = player.GetComponent<PlayerInteraction>();
-        
+        inventory = FindObjectOfType<Inventory>();
+  
     }
 
 
@@ -40,9 +49,8 @@ public class Weapon : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            //InvokeRepeating("attack", 0.5f, AtkInterval);
             attack();
-
-
         }
         else
         {
@@ -60,7 +68,39 @@ public class Weapon : MonoBehaviour
 
     public virtual void Initialize(WeaponObject weaponObject)
     {
-        
+        this.weaponStats = weaponObject;
+        Type controllerType = GetType();
+        Type objectType = weaponObject.GetType();
+
+        // Get all the fields of the controller type
+        FieldInfo[] controllerFields = controllerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+        // Iterate over the fields and set their values from the object
+        foreach (FieldInfo controllerField in controllerFields)
+        {
+            // Try to find a matching field in the object
+            FieldInfo objectField = objectType.GetField(controllerField.Name);
+            // If there's a matching field, set the value
+            if (objectField != null && objectField.FieldType == controllerField.FieldType)
+            {
+                controllerField.SetValue(this, objectField.GetValue(weaponObject));
+            }
+        }
+
+        // Get all the properties of the controller type
+        PropertyInfo[] controllerProperties = controllerType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance);
+
+        // Iterate over the properties and set their values from the object
+        foreach (PropertyInfo controllerProperty in controllerProperties)
+        {
+            // Try to find a matching property in the object
+            PropertyInfo objectProperty = objectType.GetProperty(controllerProperty.Name);
+
+            // If there's a matching property, set the value
+            if (objectProperty != null && objectProperty.PropertyType == controllerProperty.PropertyType && objectProperty.CanRead)
+            {
+                controllerProperty.SetValue(this, objectProperty.GetValue(weaponObject));
+            }
+        }
     }
 
 
@@ -107,7 +147,6 @@ public class Weapon : MonoBehaviour
     {
 
         transform.position = player.transform.position;
-        
        
     }
 

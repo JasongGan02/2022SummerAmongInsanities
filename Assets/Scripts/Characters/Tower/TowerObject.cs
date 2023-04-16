@@ -12,7 +12,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
     [Header("Construction Parameter")]
     public int energyCost;
     public Quaternion rotateAngle;//a fixed amount that determines the rotation type of a tower
-    private Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
+    public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
 
     [Header("Bullet Specification")]
     public float bullet_speed;
@@ -43,6 +43,13 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
         if (drop.GetComponent<Rigidbody2D>() == null)
         {
             drop.AddComponent<Rigidbody2D>();
+        }
+        else
+        {
+            Rigidbody2D rigidbody = drop.GetComponent<Rigidbody2D>();
+            rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            drop.GetComponent<Collider2D>().isTrigger = false;
+        
         }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         var controller = drop.AddComponent<DroppedObjectController>();
@@ -102,9 +109,11 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
         controllerName = itemName+"Controller";
         Type type = Type.GetType(controllerName);
         worldGameObject.transform.rotation = curAngle;
+        //Debug.Log("curAngle: "+curAngle.eulerAngles);
         var controller = worldGameObject.AddComponent(type);
         (controller as CharacterController).Initialize(this);
         controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
+        curAngle =  Quaternion.Euler(0,0,0);
         return worldGameObject;
     }
 
