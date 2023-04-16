@@ -26,6 +26,7 @@ public class WeaponObject : EquipmentObject
         worldGameObject.layer = LayerMask.NameToLayer("resource");
         worldGameObject.name = itemName;
         worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+        worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Type type = Type.GetType(itemName+"Controller");
         var controller = worldGameObject.AddComponent(type);
         (controller as Weapon).Initialize(this);
