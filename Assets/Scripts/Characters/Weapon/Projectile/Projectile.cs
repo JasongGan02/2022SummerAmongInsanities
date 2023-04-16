@@ -9,21 +9,22 @@ public class Projectile : MonoBehaviour
     public Playermovement playermovement;
     
 
-    public float speed = 10f;
-    public int damage = 10;
+    private float speed = 18f;
+    private int damage = 1;
 
     public virtual void Start()
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
-        
+        Launch();
 
     }
 
     public virtual void Update()
     {
+        Flip();
 
-        Launch();
+
     }
      
 
@@ -54,6 +55,7 @@ public class Projectile : MonoBehaviour
         }
         else
         {
+            
             rb.AddForce(Vector3.left * speed, ForceMode2D.Impulse);
         }
             

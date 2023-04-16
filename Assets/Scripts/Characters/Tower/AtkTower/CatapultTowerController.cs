@@ -17,7 +17,7 @@ public class CatapultTowerController : TowerController
         animator = GetComponent<Animator>();
         isEnemySpotted = false;
         bullet_x_flyingSpeed = bullet_speed;
-        InvokeRepeating("Attack", 0.5f, AtkInterval);
+        InvokeRepeating("Attack", 0.5f, AtkInterval);   
     }   
 
     

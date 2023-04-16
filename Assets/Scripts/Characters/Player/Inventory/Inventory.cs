@@ -305,7 +305,49 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         
         return 0;
     }
-    
+
+
+    public int findItemCount(string inventoryObject)
+    {
+
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+            if (slot != null && (slot.item as BaseObject).itemName == inventoryObject)
+            {
+
+                return slot.count;
+
+            }
+        }
+
+        return 0;
+    }
+
+
+    public IInventoryObject findItem(string inventoryObject)
+    {
+
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+            if (slot != null && (slot.item as BaseObject).itemName == inventoryObject )
+            {
+
+                return slot.item;
+
+            }
+        }
+
+        return null;
+    }
+
+
+
+
+
     public void DropAxe()
     {
         //Instantiate(axe);
