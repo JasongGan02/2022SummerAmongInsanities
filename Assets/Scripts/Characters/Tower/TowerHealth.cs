@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TowerHealth : MonoBehaviour
 {
-    [SerializeField] int health_point;
+    [SerializeField] double health_point;
     
-    public void DecreaseHealth(int damage)
+    public void DecreaseHealth(float damage)
     {
         health_point -= damage;
 
