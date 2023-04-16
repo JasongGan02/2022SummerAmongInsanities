@@ -13,11 +13,8 @@ public class ArcherTowerController : TowerController
         InvokeRepeating("Attack", 0f, AtkInterval);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
+
 
     // Shoot a bullet at the nearest enemy
     public void Attack()
