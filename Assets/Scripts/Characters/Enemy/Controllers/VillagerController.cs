@@ -35,6 +35,7 @@ public class VillagerController : EnemyController
 
     protected override void EnemyLoop()
     {
+        UpdateNearestTower();
         rb = GetComponent<Rigidbody2D>();
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
 
@@ -110,7 +111,7 @@ public class VillagerController : EnemyController
             //Debug.Log("rest");
         }
 
-        if (Vector2.Distance(transform.position, NearestTowerTransform.position) > 0.7f)
+        if (Vector2.Distance(transform.position, NearestTowerTransform.position) > 1f)
         {
             SenseFrontBlock();
             transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * 2 * Time.deltaTime);
@@ -119,8 +120,12 @@ public class VillagerController : EnemyController
         if (Vector2.Distance(transform.position, NearestTowerTransform.position) < 1f && !rest)
         {
             StartCoroutine(rotateZombie());
-            //Debug.Log("hit");
-            NearestTowerTransform.GetComponent<TowerHealth>().DecreaseHealth((int) AtkDamage);
+            
+            UpdateNearestTower();
+
+            Debug.Log(NearestTowerTransform.gameObject);
+            NearestTowerTransform.gameObject.GetComponent<TowerController>().takenDamage(AtkDamage);
+
             rest = true;
         }
 
@@ -253,11 +258,14 @@ public class VillagerController : EnemyController
             if (hitFront.transform != null)
             {
                 if (headCheck()) { Jump(); }
-                else { Debug.Log("front obstacle too high!"); }
+                else { //Debug.Log("front obstacle too high!"); 
+                }
             }
-            else { Debug.Log("no obstacle in front"); }
+            else { //Debug.Log("no obstacle in front"); 
+            }
         }
-        else { Debug.Log("foot in the air"); }
+        else { //Debug.Log("foot in the air"); 
+        }
 
     }
     bool headCheck()
@@ -277,6 +285,6 @@ public class VillagerController : EnemyController
     {
         //rb.velocity = new Vector2(rb.velocity.x, JumpForce);
         rb.AddForce(Vector2.up * JumpForce, (ForceMode2D)ForceMode.Impulse);
-        Debug.Log("up_force: " + JumpForce + " jump");
+        //Debug.Log("up_force: " + JumpForce + " jump");
     }
 }
