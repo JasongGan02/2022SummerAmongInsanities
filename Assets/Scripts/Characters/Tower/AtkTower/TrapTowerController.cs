@@ -19,12 +19,12 @@ public class TrapTowerController : TowerController
     protected void SenseEnemyAndShoot()
     {
         Vector2 facingDirection = GetFacingDirection();
-        Debug.Log("Facing direction: " + facingDirection);
+        //Debug.Log("Facing direction: " + facingDirection);
         // Check if there is an enemy in the facing direction
         RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, AtkRange, enemyLayer);
         if (hit)
         {
-            Debug.Log("Enemy spotted in direction " + facingDirection + " at distance " + hit.distance);
+            //Debug.Log("Enemy spotted in direction " + facingDirection + " at distance " + hit.distance);
             // Shoot a bullet in the facing direction
             Shoot(facingDirection);
         }
@@ -40,7 +40,7 @@ public class TrapTowerController : TowerController
 
         // Transform the direction to face using the quaternion representing the rotation
         Vector3 facingDirection = rotation * directionToFace;
-        Debug.Log("Facing direction: " + facingDirection + "direction to face: " + directionToFace + "rotation: " + rotation);
+        //Debug.Log("Facing direction: " + facingDirection + "direction to face: " + directionToFace + "rotation: " + rotation);
         // Create a new Vector2 from the Vector3, discarding the z component
         return new Vector2(facingDirection.x, facingDirection.y);
     }
