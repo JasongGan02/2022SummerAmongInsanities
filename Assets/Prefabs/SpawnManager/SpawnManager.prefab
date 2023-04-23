@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 814760531}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4582701435173347104
 MonoBehaviour:
@@ -83,4 +83,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6119f51ced59cd446b95b3d24d30e1bb, type: 2}
   - {fileID: 11400000, guid: 30b4db54f79226b4fb30bcbfbf8ad3dc, type: 2}
   - {fileID: 11400000, guid: 9db6f9cd76dae8b45bccb696cef80a62, type: 2}
+  testCase:
+  - {fileID: 11400000, guid: dd23f1cc4724ceb4ca6c6184d7a97e59, type: 2}
+  - {fileID: 11400000, guid: 7be5f48d4bc1dff4c9fe38be91989716, type: 2}
+  - {fileID: 11400000, guid: 9bd39ab47b83ac941bea94049a86b30e, type: 2}
+  - {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
+  - {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
   spawnPoint: {fileID: 814760530}

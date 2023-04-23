@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 // This class represents an archer tower
-public class ArcherTowerController : TowerController
+public class ArcherTowerController : AttackTowerController
 {
     // Start is called before the first frame update
     void Start()
