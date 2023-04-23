@@ -76,9 +76,9 @@ public abstract class CharacterController : MonoBehaviour
         return characterStats;
     }
 
-    protected void OnObjectDestroyed()
+    protected void OnObjectDestroyed(bool isPlacedByPlayer)
     {
-        var drops = characterStats.GetDroppedGameObjects(false);
+        var drops = characterStats.GetDroppedGameObjects(isPlacedByPlayer);
         foreach (GameObject droppedItem in drops)
         {
             //droppedItem.transform.parent = gameObject.transform.parent;
