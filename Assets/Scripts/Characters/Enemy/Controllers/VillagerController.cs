@@ -40,9 +40,10 @@ public class VillagerController : EnemyController
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
 
         if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); }
-        if (IsPlayerSensed())
+        if (IsPlayerSensed() && villager_sight())   
         {
             animator.SetBool("IsStanding", true);           // villager stand
+
             
             if (IsPlayerInAtkRange())
             {
@@ -53,7 +54,7 @@ public class VillagerController : EnemyController
             else
             {
                 // approaching player
-                approachPlayer(2*MovingSpeed);
+                approachPlayer(2 * MovingSpeed);
                 flip(player.transform);
                 //Debug.Log("approach");
             }
@@ -80,7 +81,7 @@ public class VillagerController : EnemyController
         {
             patrol();
         }
-        
+         
     }
 
     
@@ -155,7 +156,7 @@ public class VillagerController : EnemyController
 
         if (Vector2.Distance(transform.position, player.transform.position) > 0.7f)
         {
-            approachPlayer(MovingSpeed * 2f);
+            approachPlayer(2 * MovingSpeed);
         }
         
         if (Vector2.Distance(transform.position, player.transform.position) < 1f && !rest)
@@ -171,10 +172,11 @@ public class VillagerController : EnemyController
 
     void approachPlayer(float speed)
     {
-        Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        //if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        //else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+        //Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
+        //transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
+        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+        Debug.Log("bug here approachPlayer");
     }
 
     void patrol()
@@ -258,14 +260,11 @@ public class VillagerController : EnemyController
             if (hitFront.transform != null)
             {
                 if (headCheck()) { Jump(); }
-                else { //Debug.Log("front obstacle too high!"); 
-                }
+                else { /*Debug.Log("front obstacle too high!");*/ }
             }
-            else { //Debug.Log("no obstacle in front"); 
-            }
+            else { /*Debug.Log("no obstacle in front");*/ }
         }
-        else { //Debug.Log("foot in the air"); 
-        }
+        else { /*Debug.Log("foot in the air");*/ }
 
     }
     bool headCheck()
@@ -283,8 +282,36 @@ public class VillagerController : EnemyController
     }
     private void Jump()
     {
-        //rb.velocity = new Vector2(rb.velocity.x, JumpForce);
         rb.AddForce(Vector2.up * JumpForce, (ForceMode2D)ForceMode.Impulse);
         //Debug.Log("up_force: " + JumpForce + " jump");
     }
+
+    private bool villager_sight()
+    {
+        Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
+        Vector2 playerTop = playerRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 playerBottom = playerRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+
+        Debug.DrawRay(playerTop, villagerTop - playerTop, Color.red);   // top
+        Debug.DrawRay(playerBottom, villagerBottom - playerBottom, Color.red);   // bottom
+
+        float distance1 = Vector2.Distance(playerTop, villagerTop);
+        float distance2 = Vector2.Distance(playerBottom, villagerBottom);
+
+        RaycastHit2D checkTop = Physics2D.Raycast(playerTop, villagerTop - playerTop, distance1, ground_mask);
+        RaycastHit2D checkBottom = Physics2D.Raycast(playerBottom, villagerBottom - playerBottom, distance2, ground_mask);
+        if (checkTop.collider != null && 
+            checkBottom.collider != null &&
+            checkTop.collider.gameObject.CompareTag("ground") && 
+            checkBottom.collider.gameObject.CompareTag("ground"))
+        {
+            //Debug.Log("there is ground block");
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
