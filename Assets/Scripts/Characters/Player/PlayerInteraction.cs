@@ -20,6 +20,7 @@ public class PlayerInteraction : MonoBehaviour
     private Playermovement playerMovement;
     private ConstructionMode constructionMode;
     private Inventory inventory;
+    private RectTransform hotbarFirstRow;
 
     private ShadowGenerator shadowGenerator;
 
@@ -65,6 +66,7 @@ public class PlayerInteraction : MonoBehaviour
     void Start()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
+        hotbarFirstRow = GameObject.Find("InventoryUI").transform.Find("Hotbar").Find("Row(Clone)").GetComponent<RectTransform>();
     }
 
     private void OnEnable()
@@ -80,18 +82,22 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+        if(IsMouseOverInventoryUI())
+        {
+            return;
+        }
         PickUpItemCheck();
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
             BreakTileCheck();
         }
-
         PlaceTileCheck();
         PlaceTileCancelCheck();
         playAnim();
-        
-    }
 
+    }
+    
 
     void playAnim()
     {
@@ -112,15 +118,22 @@ public class PlayerInteraction : MonoBehaviour
     }
 
 
-
-        
+    private bool IsMouseOverInventoryUI()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+        bool isOverUI = RectTransformUtility.RectangleContainsScreenPoint(hotbarFirstRow, mousePosition);
+        return isOverUI;
+    }
+    
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
+        
+        UseItemInSlot(args.slotIndex);
         //Debug.Log(args.slotIndex);
-        UseItemInSlot(args.slotIndex); 
+        
     }
-
+  
     private void UseItemInSlot(int slotIndex)
     {
         if (indexInUse == slotIndex)
@@ -223,7 +236,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void BreakTileCheck()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject))) ) 
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
             if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)

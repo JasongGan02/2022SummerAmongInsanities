@@ -5,7 +5,6 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
 public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
 {
@@ -106,13 +105,19 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
-        controllerName = itemName+"Controller";
+        if(itemName.Contains("Wall"))
+        {
+            controllerName = "TowerController";
+        }
+        else
+        {
+            controllerName = itemName+"Controller";
+        }
         Type type = Type.GetType(controllerName);
-        worldGameObject.transform.rotation = curAngle;
-        //Debug.Log("curAngle: "+curAngle.eulerAngles);
         var controller = worldGameObject.AddComponent(type);
         (controller as CharacterController).Initialize(this);
         controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
+        worldGameObject.transform.rotation = curAngle;
         curAngle =  Quaternion.Euler(0,0,0);
         return worldGameObject;
     }
