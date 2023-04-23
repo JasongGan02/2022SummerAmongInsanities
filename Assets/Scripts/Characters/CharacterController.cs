@@ -72,6 +72,10 @@ public abstract class CharacterController : MonoBehaviour
 
     public abstract void death();
 
+    public CharacterObject GetCharacterObject(){
+        return characterStats;
+    }
+
     protected void OnObjectDestroyed()
     {
         var drops = characterStats.GetDroppedGameObjects(false);

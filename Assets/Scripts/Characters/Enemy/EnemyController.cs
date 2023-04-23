@@ -8,6 +8,7 @@ public abstract class EnemyController : CharacterController
 {
 
     protected float SensingRange;
+    protected CharacterObject[] priorities;
     
 
     //run-time variables
