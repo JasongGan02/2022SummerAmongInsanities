@@ -68,7 +68,7 @@ public class CharacterSpawner : MonoBehaviour
         LadyGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }
 
-    public bool TooMuch(int max)
+    public bool TooMuch(float max)
     {
         if (GameObject.FindGameObjectsWithTag("enemy").Length > max)
         {

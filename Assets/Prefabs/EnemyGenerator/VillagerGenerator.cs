@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class VillagerGenerator : CharacterSpawner
 {
-    public int EnemyMax;
+    public float EnemyMax;
     private float timerr;
 
     void Start()
