@@ -64,11 +64,13 @@ public class Projectile : MonoBehaviour
 
     public virtual void Flip()
     {
-        if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
+        if (playermovement.facingRight)
         {
-            Vector3 transformScale = transform.localScale;
-            transformScale.y *= -1;
-            transform.localScale = transformScale;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 315));
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 135));
         }
     }
 

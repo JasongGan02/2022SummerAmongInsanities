@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyObject : CharacterObject
 {
     public float SensingRange;
+    public CharacterObject[] priorities;
 
     /*
     public override GameObject GetSpawnedGameObject()

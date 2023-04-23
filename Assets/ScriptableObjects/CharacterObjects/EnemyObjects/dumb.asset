@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642ba1d2a3e83fd4786524d331e17b53, type: 3}
+  m_Name: dumb
+  m_EditorClassIdentifier: 
+  itemName: dumb
+  sizeRatio: 1
+  prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
+  HP: 20
+  AtkDamage: 0
+  AtkInterval: 0
+  AtkRange: 0
+  MovingSpeed: 1
+  Drops: []
+  JumpForce: 0.5
+  SensingRange: 0

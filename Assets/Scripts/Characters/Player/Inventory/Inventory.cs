@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Lumin;
 
 public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 {
@@ -306,6 +307,23 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return 0;
     }
 
+    public InventorySlot findSlot(string inventoryObject)
+    {
+
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+            if (slot != null && (slot.item as BaseObject).itemName == inventoryObject)
+            {
+
+                return slot;
+
+            }
+        }
+
+        return null;
+    }
 
     public int findItemCount(string inventoryObject)
     {

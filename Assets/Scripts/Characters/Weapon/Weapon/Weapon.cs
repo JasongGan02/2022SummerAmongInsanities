@@ -37,6 +37,7 @@ public class Weapon : MonoBehaviour
         playermovement = player.GetComponent<Playermovement>();
         playerinteraction = player.GetComponent<PlayerInteraction>();
         inventory = FindObjectOfType<Inventory>();
+        
   
     }
 
