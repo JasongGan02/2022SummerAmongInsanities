@@ -45,10 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258cb3e4136a78942becb70968f5573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  target: {fileID: 0}
+  towerContainer: {fileID: 0}
+  lady: {fileID: 0}
   speed: 5
-  AtkDamage: 5
   fireRate: 5
   canDetect: 1
   canChangeMod: 1
@@ -96,12 +95,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 412230e5581a45a46b697aad0d64f1e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dda25df000f12274d9b8eeb7bca36c93, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

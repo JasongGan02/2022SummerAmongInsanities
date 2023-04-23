@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: ArcherTower
   sizeRatio: 0.25
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
-  HP: 1
+  HP: 10
   AtkDamage: 1
   AtkInterval: 1
   AtkRange: 5

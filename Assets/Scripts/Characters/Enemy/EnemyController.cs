@@ -8,11 +8,13 @@ public abstract class EnemyController : CharacterController
 {
 
     protected float SensingRange;
+    protected CharacterObject[] priorities;
     
 
     //run-time variables
     public TowerContainer towerContainer;   // Changed from protected to public
     protected GameObject player;
+    protected GameObject nearestTower;
     protected float timer;
     protected Transform NearestTowerTransform;
 
@@ -173,29 +175,15 @@ public abstract class EnemyController : CharacterController
 
     protected void UpdateNearestTower() 
     {
-        Transform[] towerTransforms = towerContainer.GetComponentsInChildren<Transform>(); 
-        Transform nearest_Transform = transform;
-        float min_distance = 0;
+        Transform[] towerTransforms = towerContainer.GetComponentsInChildren<Transform>();
+        Transform nearest_Transform = towerTransforms[0];
+        float min_distance = Vector2.Distance(towerTransforms[0].position, transform.position);
         foreach(Transform e in towerTransforms)
         {
-            if(e==towerTransforms[0])
-            {
-                continue;
-            }
-            // for the first tower
-            if(e==towerTransforms[1])
-            {
-                min_distance = CalculateDistanceFromEnemyToTower(e);
-                nearest_Transform = e;
-                continue;
-            }
 
-            // for other towers
-            float distance = CalculateDistanceFromEnemyToTower(e);
-            if(distance < min_distance)
-            {
-                min_distance = distance;
+            if((Vector2.Distance(e.position, transform.position) < min_distance)&&(e.name != "FiringPoint")){
                 nearest_Transform = e;
+                min_distance = Vector2.Distance(e.position, transform.position);
             }
         }
         NearestTowerTransform = nearest_Transform;

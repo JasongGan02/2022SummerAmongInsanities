@@ -72,11 +72,16 @@ public abstract class CharacterController : MonoBehaviour
 
     public abstract void death();
 
-    protected virtual void OnObjectDestroyed(bool isDestroyedByPlayer)
+    public CharacterObject GetCharacterObject(){
+        return characterStats;
+    }
+
+    protected void OnObjectDestroyed()
     {
-        var drops = characterStats.GetDroppedGameObjects(isDestroyedByPlayer);
+        var drops = characterStats.GetDroppedGameObjects(false);
         foreach (GameObject droppedItem in drops)
         {
+            //droppedItem.transform.parent = gameObject.transform.parent;
             droppedItem.transform.position = gameObject.transform.position;
             droppedItem.GetComponent<Rigidbody2D>().AddTorque(10f);
         }
