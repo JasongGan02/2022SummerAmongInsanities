@@ -20,6 +20,7 @@ public class PlayerInteraction : MonoBehaviour
     private Playermovement playerMovement;
     private ConstructionMode constructionMode;
     private Inventory inventory;
+    private RectTransform hotbarFirstRow;
 
     private ShadowGenerator shadowGenerator;
 
@@ -32,7 +33,6 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentInUseItemUI;
     public GameObject equipmentTemplate;
     private InventorySlot currentSlotInUse = null;
-    private bool usedInventoryInteraction = false;
     private int indexInUse = EMPTY;
     public float handAttack = 1;
     public float handFarm = 0.5f;
@@ -66,6 +66,7 @@ public class PlayerInteraction : MonoBehaviour
     void Start()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
+        hotbarFirstRow = GameObject.Find("InventoryUI").transform.Find("Hotbar").Find("Row(Clone)").GetComponent<RectTransform>();
     }
 
     private void OnEnable()
@@ -81,27 +82,22 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!usedInventoryInteraction)
-        {
-            PickUpItemCheck();
-            if (!PlayerStatusRepository.GetIsViewingUi())
-            {
-                BreakTileCheck();
-            }
-            PlaceTileCheck();
-            PlaceTileCancelCheck();
-            playAnim();
-        }
        
+        if(IsMouseOverInventoryUI())
+        {
+            return;
+        }
+        PickUpItemCheck();
+        if (!PlayerStatusRepository.GetIsViewingUi())
+        {
+            BreakTileCheck();
+        }
+        PlaceTileCheck();
+        PlaceTileCancelCheck();
+        playAnim();
+
+    }
     
-
-
-    }
-    private void LateUpdate()
-    {
-        // Reset the flag in LateUpdate, after other update calls have been made
-        usedInventoryInteraction = false;
-    }
 
     void playAnim()
     {
@@ -122,23 +118,22 @@ public class PlayerInteraction : MonoBehaviour
     }
 
 
-
+    private bool IsMouseOverInventoryUI()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+        bool isOverUI = RectTransformUtility.RectangleContainsScreenPoint(hotbarFirstRow, mousePosition);
+        return isOverUI;
+    }
     
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
-        usedInventoryInteraction = true;
+        
         UseItemInSlot(args.slotIndex);
-        //isHandlingSlotLeftClick = true;
         //Debug.Log(args.slotIndex);
-        //UseItemInSlot(args.slotIndex);
-        //isHandlingSlotLeftClick = false;
+        
     }
-    private int SlotLeftClickEvent(InventoryEventBus.OnSlotLeftClickedEventArgs args)
-    {
-        //Debug.Log(args.slotIndex);
-        return args.slotIndex;
-    }
+  
     private void UseItemInSlot(int slotIndex)
     {
         if (indexInUse == slotIndex)
@@ -157,7 +152,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (currentTileGhost != null)
             {
-                Debug.Log("Ghost ORDER");
                 Destroy(currentTileGhost);
             }
             currentTileGhost = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
@@ -331,8 +325,6 @@ public class PlayerInteraction : MonoBehaviour
             Input.GetMouseButtonDown(1) || 
             Input.GetMouseButtonDown(2) || (!UIViewStateManager.GetCurUI() && UIViewStateManager.isViewingUI()))
         {
-            if(Input.GetMouseButtonDown(1))
-                Debug.Log(Input.GetMouseButtonDown(1));
             ClearCurrentItemInUse();
             if (currentTileGhost != null)
             {
@@ -353,7 +345,6 @@ public class PlayerInteraction : MonoBehaviour
                 currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
                 if (Input.GetMouseButtonDown(0) )
                 {
-                    Debug.Log("PalceORder");
                     // TODO: should put the tile under the correct chunk
                     PlaceTile(result.position);
                 }

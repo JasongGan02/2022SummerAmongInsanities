@@ -5,7 +5,7 @@ using UnityEngine;
 // Trap tower can shoot horizontally and vertically
 // The bullet of trap tower have no gravity
 
-public class TrapTowerController : TowerController
+public class TrapTowerController : AttackTowerController
 {
     LayerMask enemyLayer;
     // Start is called before the first frame update

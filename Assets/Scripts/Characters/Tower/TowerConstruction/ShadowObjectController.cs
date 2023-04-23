@@ -6,6 +6,7 @@ using System;
 
 public class ShadowObjectController : MonoBehaviour
 {
+    CoreArchitecture coreArchitecture;
     IShadowObject curShadow; 
     private uint CollisionCount = 0;
     private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
@@ -21,7 +22,10 @@ public class ShadowObjectController : MonoBehaviour
         }
     }
    
-    
+    private void Awake()
+    {
+        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+    }
     /***
     Place Tile Implementations
 
@@ -73,13 +77,12 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool TileObjectCheck(float x, float y)
     {
-        return worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4))) == false && CheckAdjcentPos(new Vector2Int((int)(x * 4), (int)(y * 4)))  && CollisionCount==0;
+        return worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4))) == false && CheckAdjcentPos(new Vector2Int((int)(x * 4), (int)(y * 4)))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
     }
 
     private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)
     {
         Vector2 mousePosition = GetMousePosition2D();
-        CoreArchitecture coreArchitecture = FindObjectOfType<CoreArchitecture>();
         ConstructionMode constructionMode = FindObjectOfType<ConstructionMode>();
         Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);

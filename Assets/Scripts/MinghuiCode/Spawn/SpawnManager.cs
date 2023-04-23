@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
 {
     public EquipmentObject[] equipments;
     public TowerObject[] testCase; //to-do just a test. do a list
-    
+    public DivinityFragObject divinityFrag;
     [SerializeField]
     private GameObject spawnPoint;
 
@@ -31,6 +31,12 @@ public class SpawnManager : MonoBehaviour
         GameObject dropTower = testCase[0].GetDroppedGameObject(1);
         dropTower.transform.position = spawnPoint.transform.position;
     }
+
+    public void SpwanFrags(int num) 
+    {
+        GameObject drop = divinityFrag.GetDroppedGameObject(num);
+        drop.transform.position = spawnPoint.transform.position;
+    }
 }
 
 [CustomEditor(typeof(SpawnManager))]
@@ -44,6 +50,10 @@ public class SpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn ramdon weapon"))
         {
             spawnManager.SpwanRamdonWeapon();
+        }
+        if (GUILayout.Button("Spawn 10 Frags"))
+        {
+            spawnManager.SpwanFrags(10);
         }
     }
 }
