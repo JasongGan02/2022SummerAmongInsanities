@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class RogueGraphNode : ScriptableObject
 {
-    public Buff buff = new();
+    public Buff buff;
     private RogueGraph containerGraph;
     public bool isRoot = false;
 
@@ -64,7 +64,9 @@ public class RogueGraphNode : ScriptableObject
     {
         GUILayout.BeginArea(rect, style);
         EditorGUI.BeginChangeCheck();
+        //buff = EditorGUILayout.ObjectField(buff.name, buff, typeof(Buff), false) as Buff;
         buff.name = EditorGUILayout.TextField(buff.name);
+        
         if (EditorGUI.EndChangeCheck())
         {
             EditorUtility.SetDirty(this);

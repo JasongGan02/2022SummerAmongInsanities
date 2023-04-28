@@ -4,7 +4,8 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public class Buff
+//[CreateAssetMenu(menuName = "Effects")]
+public class Buff //: ScriptableObject
 {
     public string name;
     public int level;
