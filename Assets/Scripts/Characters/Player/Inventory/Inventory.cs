@@ -166,7 +166,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return database.HasEmptySlot();
     }
 
-    private void UpdateSlotUi(int index)
+    public void UpdateSlotUi(int index)
     {
         uiController.UpdateSlotUi(index, database.GetInventorySlotAtIndex(index));
     }
@@ -325,26 +325,9 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return null;
     }
 
-    public int findItemCount(string inventoryObject)
-    {
-
-        for (int i = 0; i < database.GetSize(); i++)
-        {
-            InventorySlot slot = database.GetInventorySlotAtIndex(i);
-
-            if (slot != null && (slot.item as BaseObject).itemName == inventoryObject)
-            {
-
-                return slot.count;
-
-            }
-        }
-
-        return 0;
-    }
 
 
-    public IInventoryObject findItem(string inventoryObject)
+    public int findSlotIndex(string inventoryObject)
     {
 
         for (int i = 0; i < database.GetSize(); i++)
@@ -354,12 +337,12 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             if (slot != null && (slot.item as BaseObject).itemName == inventoryObject )
             {
 
-                return slot.item;
+                return i;
 
             }
         }
 
-        return null;
+        return -1;
     }
 
 

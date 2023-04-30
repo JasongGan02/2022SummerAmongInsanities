@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -36,26 +37,29 @@ public class BowController : Weapon
 
     public override void attack()
     {
+        int arrowSlotIndex = inventory.findSlotIndex("Arrow");
         InventorySlot arrowSlot = inventory.findSlot("Arrow");
-        WeaponObject arrow = inventory.findItem("Arrow") as WeaponObject;
 
         if (arrowSlot.count > 0)
         {
-
+            
             if (playermovement.facingRight)
             {
 
-                spawnArrow = arrow.GetSpawnedGameObject<Projectile>();
+                spawnArrow = (arrowSlot.item as WeaponObject).GetSpawnedGameObject<Projectile>();
                 spawnArrow.transform.position = transform.position + Vector3.right * 0.5f;
                 arrowSlot.count--;
+                inventory.UpdateSlotUi(arrowSlotIndex);
+                
             }
             else
             {
 
 
-                spawnArrow = arrow.GetSpawnedGameObject<Projectile>();
+                spawnArrow = (arrowSlot.item as WeaponObject).GetSpawnedGameObject<Projectile>();
                 spawnArrow.transform.position = transform.position - Vector3.right * 0.5f;
                 arrowSlot.count--;
+                inventory.UpdateSlotUi(arrowSlotIndex);
             }
         }
     }

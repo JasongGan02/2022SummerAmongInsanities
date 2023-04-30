@@ -70,7 +70,7 @@ public abstract class CharacterController : MonoBehaviour
         }
     }
 
-    public abstract void death();
+    public abstract void death();  
 
     public CharacterObject GetCharacterObject(){
         return characterStats;
