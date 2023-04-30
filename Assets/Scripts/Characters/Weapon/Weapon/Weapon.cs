@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
+using System.Threading;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Weapon : MonoBehaviour
 {
@@ -23,7 +25,7 @@ public class Weapon : MonoBehaviour
     protected WeaponObject weaponStats;
     protected float AtkInterval = 1f;
     protected float farm;
-    
+    protected float Attack;
 
     public float speed;
     public float magnitude = 0.1f;
@@ -151,7 +153,18 @@ public class Weapon : MonoBehaviour
        
     }
 
-    
+
+    public virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
+        {
+            Debug.Log("da dao le");
+            VillagerController villager = collision.gameObject.GetComponent<VillagerController>();
+            villager.takenDamage(1);
+        }
+           
+    }
 
 
 }
