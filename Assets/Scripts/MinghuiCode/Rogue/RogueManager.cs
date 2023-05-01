@@ -65,9 +65,23 @@ public class RogueManager : MonoBehaviour
             }
             
         }
+        else
+        {
+            if(inventory.spendEXP(levelUpCost))
+            {
+                for(int i = 0; i < buffContainer.transform.childCount; i++)
+                {
+                    GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
+                    buffCard.GetComponent<BuffSelectionController>().OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+                    Destroy(buffCard);
+                }
+                AddBuffs();
+            }
+        }
         
     }
 
+   
     private void AddBuffs()
     {
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
@@ -146,8 +160,9 @@ public class RogueManager : MonoBehaviour
 
     private void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
+        if (!inventory.spendEXP((node.effect?.cost ?? 0))) return;
         selectedNodes.Add(node);
-        selectedBuffText.text += "\n" + node.buff.name;
+        selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
         for(int i = 0; i < buffContainer.transform.childCount; i++)
         {
             GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
@@ -161,4 +176,5 @@ public class RogueManager : MonoBehaviour
     private const string NAME_LEVEL_UP_BUTTON = "LevelUpButton";
     private const string NAME_SELECTED_BUFF_TEXT = "SelectedBuffText";
     private const string NAME_BUFF_CONTAINER = "BuffContainer";
+    
 }

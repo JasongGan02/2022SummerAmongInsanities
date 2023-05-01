@@ -6,6 +6,7 @@ using UnityEditor;
 public class RogueGraphNode : ScriptableObject
 {
     public Buff buff;
+    public Effect effect;
     private RogueGraph containerGraph;
     public bool isRoot = false;
 
@@ -64,15 +65,23 @@ public class RogueGraphNode : ScriptableObject
     {
         GUILayout.BeginArea(rect, style);
         EditorGUI.BeginChangeCheck();
-        //buff = EditorGUILayout.ObjectField(buff.name, buff, typeof(Buff), false) as Buff;
-        buff.name = EditorGUILayout.TextField(buff.name);
-        
+
+        float remainingHeight = rect.height - EditorGUIUtility.singleLineHeight - 10f;
+        Rect objectFieldRect = new Rect(5f, 5f + remainingHeight / 2f, rect.width - 10f, EditorGUIUtility.singleLineHeight);
+        effect = EditorGUI.ObjectField(objectFieldRect, "Effect", effect, typeof(Effect), false) as Effect;
+
+        GUILayout.BeginArea(new Rect(5f, 5f, rect.width - 10f, remainingHeight / 2f));
+        GUILayout.Label(effect?.name ?? "No Effect Selected");
+        GUILayout.EndArea();
+
         if (EditorGUI.EndChangeCheck())
         {
             EditorUtility.SetDirty(this);
         }
+
         GUILayout.EndArea();
     }
+
 
     public void Move(Vector2 delta)
     {
@@ -155,3 +164,6 @@ public class RogueGraphNode : ScriptableObject
     private const float connectingLineArrowSize = 6f;
 #endif
 }
+
+
+
