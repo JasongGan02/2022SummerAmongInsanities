@@ -16,3 +16,5 @@ MonoBehaviour:
   player: {fileID: 11400000, guid: c4c1a86a209c6a14d89731a37a92f48d, type: 2}
   bat: {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
   lady: {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+  dumb: {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
+  towerList: []
