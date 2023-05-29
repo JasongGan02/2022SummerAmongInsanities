@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] public GameObject player;
 
     public Playermovement playermovement;
-    
+    private Inventory inventory;
 
     private float speed = 18f;
     private int damage = 1;
@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
         Launch();
-
+        inventory = FindObjectOfType<Inventory>();
     }
 
     public virtual void Update()
@@ -34,12 +34,23 @@ public class Projectile : MonoBehaviour
     // Called when the projectile collides with another object
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
         {
+            Debug.Log("arrow da dao le");
+            VillagerController villager = collision.gameObject.GetComponent<VillagerController>();
+            villager.takenDamage(2);
             Destroy(gameObject);
         }
-        
+        else
+        {
+            Destroy(this);
+            gameObject.layer = LayerMask.NameToLayer("resource");
+            var controller = gameObject.AddComponent<DroppedObjectController>();
+            controller.Initialize(inventory.findSlot("Arrow").item, 1);
+
+
+        }
+
     }
 
 

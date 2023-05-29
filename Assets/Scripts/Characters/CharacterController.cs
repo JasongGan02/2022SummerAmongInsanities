@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Reflection;
- 
+using System.Threading;
+using UnityEditor.Build;
+
 public abstract class CharacterController : MonoBehaviour
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
@@ -68,9 +70,27 @@ public abstract class CharacterController : MonoBehaviour
         {
             death();
         }
+        StartCoroutine(FlashRed());
     }
 
+    private System.Collections.IEnumerator FlashRed()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        for (int i = 0; i < 5; i++)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(2 / (5 * 2));
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(2 / (5* 2));
+        }
+    }
+
+
+
+
     public abstract void death();
+
+
 
     public CharacterObject GetCharacterObject(){
         return characterStats;
