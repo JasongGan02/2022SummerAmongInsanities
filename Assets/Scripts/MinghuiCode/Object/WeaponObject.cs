@@ -24,9 +24,9 @@ public class WeaponObject : EquipmentObject
     public virtual GameObject GetSpawnedGameObject() //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.layer = LayerMask.NameToLayer("resource");
+        worldGameObject.layer = LayerMask.NameToLayer("weapon");
         worldGameObject.name = itemName;
-        worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+        //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
         worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Type type = Type.GetType(itemName+"Controller");
         var controller = worldGameObject.AddComponent(type);

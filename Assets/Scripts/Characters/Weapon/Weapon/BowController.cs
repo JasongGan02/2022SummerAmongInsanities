@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,13 +10,13 @@ public class BowController : Weapon
     private GameObject spawnArrow;
     public float attackInterval = 0.5f; // the minimum time between attacks
     private float timeSinceLastAttack = 0f; // the time since the last attack
-    
 
-    
+
+
 
     public override void Update()
     {
-        
+
         Flip();
         Patrol();
 
@@ -28,7 +29,7 @@ public class BowController : Weapon
                 timeSinceLastAttack = 0f;
             }
         }
-       
+
 
 
 
@@ -36,8 +37,8 @@ public class BowController : Weapon
 
     public override void attack()
     {
+        int arrowSlotIndex = inventory.findSlotIndex("Arrow");
         InventorySlot arrowSlot = inventory.findSlot("Arrow");
-        WeaponObject arrow = inventory.findItem("Arrow") as WeaponObject;
 
         if (arrowSlot.count > 0)
         {
@@ -45,17 +46,20 @@ public class BowController : Weapon
             if (playermovement.facingRight)
             {
 
-                spawnArrow = arrow.GetSpawnedGameObject<Projectile>();
+                spawnArrow = (arrowSlot.item as WeaponObject).GetSpawnedGameObject<Projectile>();
                 spawnArrow.transform.position = transform.position + Vector3.right * 0.5f;
                 arrowSlot.count--;
+                inventory.UpdateSlotUi(arrowSlotIndex);
+
             }
             else
             {
 
 
-                spawnArrow = arrow.GetSpawnedGameObject<Projectile>();
+                spawnArrow = (arrowSlot.item as WeaponObject).GetSpawnedGameObject<Projectile>();
                 spawnArrow.transform.position = transform.position - Vector3.right * 0.5f;
                 arrowSlot.count--;
+                inventory.UpdateSlotUi(arrowSlotIndex);
             }
         }
     }
@@ -75,13 +79,18 @@ public class BowController : Weapon
     {
         if (playermovement.facingRight)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0,0,315));
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 315));
         }
         else
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0,135));
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 135));
         }
 
     }
 
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+
+
+    }
 }
