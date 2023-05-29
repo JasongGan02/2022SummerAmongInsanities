@@ -22,6 +22,9 @@ public class VillagerController : EnemyController
     public Transform frontCheck;
     LayerMask ground_mask;
 
+    private BoxCollider2D boxCollider;
+    private EdgeCollider2D edgeCollider;
+
     new void Awake()
     {
         animator = GetComponent<Animator>();
@@ -31,6 +34,8 @@ public class VillagerController : EnemyController
         groundCheckCenter = transform.Find("groundCheckCenter");
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
+        boxCollider = GetComponent<BoxCollider2D>();
+        edgeCollider = GetComponent<EdgeCollider2D>();
     }
 
     protected override void EnemyLoop()
@@ -39,12 +44,12 @@ public class VillagerController : EnemyController
         rb = GetComponent<Rigidbody2D>();
         //Debug.Log(Vector2.Distance(transform.position, player.transform.position));
 
-        if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); }
+        if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider(true); }
+        else { ChangeCollider(false); }
         if (IsPlayerSensed() && villager_sight())   
         {
             animator.SetBool("IsStanding", true);           // villager stand
 
-            
             if (IsPlayerInAtkRange())
             {
                 //Debug.Log(timer);
@@ -172,12 +177,10 @@ public class VillagerController : EnemyController
 
     void approachPlayer(float speed)
     {
-        //Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
-        //transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
         if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
-        Debug.Log("bug here approachPlayer");
     }
+    
 
     void patrol()
     {
@@ -259,7 +262,7 @@ public class VillagerController : EnemyController
         {
             if (hitFront.transform != null)
             {
-                if (headCheck()) { Jump(); }
+                if (headCheck()) { Jump(); Debug.Log("jumping."); }
                 else { /*Debug.Log("front obstacle too high!");*/ }
             }
             else { /*Debug.Log("no obstacle in front");*/ }
@@ -282,8 +285,8 @@ public class VillagerController : EnemyController
     }
     private void Jump()
     {
-        rb.AddForce(Vector2.up * JumpForce, (ForceMode2D)ForceMode.Impulse);
-        //Debug.Log("up_force: " + JumpForce + " jump");
+        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
 
     private bool villager_sight()
@@ -312,6 +315,11 @@ public class VillagerController : EnemyController
         }
         return true;
     }
-    
-    
+
+    public void ChangeCollider(bool isSitting)
+    {
+        // Enable or disable the colliders based on the state
+        boxCollider.enabled = !isSitting;
+        edgeCollider.enabled = isSitting;
+    }   
 }
