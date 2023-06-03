@@ -1,18 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class IEffectableObject : MonoBehaviour
+public interface IEffectableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    List<EffectObject> Effects { get; set; } 
 
-    // Update is called once per frame
-    void Update()
+   void ExecuteEffects();
+
+    /*** 
+    To Implement: 
+
+    public List<EffectObject> Effects { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    protected virtual void Awake()
     {
-        
-    }
+        Effects = new List<EffectObject>();
+    }***/
+
 }

@@ -24,9 +24,10 @@ public abstract class EnemyController : CharacterController
     protected bool isTouchPlayer;
 
 
-    protected void Awake()
+    protected override void Awake()
     {
         //towerContainer = FindObjectOfType<TowerContainer>();
+        base.Awake();
         timer = 0;
  
     }
@@ -36,8 +37,9 @@ public abstract class EnemyController : CharacterController
         timer += Time.fixedDeltaTime;
     }
 
-    protected void Update()
+    protected override void Update()
     {
+        base.Update();
         if (player == null) 
         { 
             player = GameObject.Find("Player"); 

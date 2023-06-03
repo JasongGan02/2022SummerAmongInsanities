@@ -210,7 +210,7 @@ MonoBehaviour:
     name: 2
     level: 0
     canRepeat: 0
-  effect: {fileID: 0}
+  effect: {fileID: 11400000, guid: 375d2b27f98eb4a44964430a541e5571, type: 2}
   isRoot: 0
   childNodes:
   - {fileID: -1684480885411025288}

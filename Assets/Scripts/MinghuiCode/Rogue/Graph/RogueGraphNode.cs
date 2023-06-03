@@ -6,7 +6,7 @@ using UnityEditor;
 public class RogueGraphNode : ScriptableObject
 {
     public Buff buff;
-    public Effect effect;
+    public EffectObject effect;
     private RogueGraph containerGraph;
     public bool isRoot = false;
 
@@ -68,7 +68,7 @@ public class RogueGraphNode : ScriptableObject
 
         float remainingHeight = rect.height - EditorGUIUtility.singleLineHeight - 10f;
         Rect objectFieldRect = new Rect(5f, 5f + remainingHeight / 2f, rect.width - 10f, EditorGUIUtility.singleLineHeight);
-        effect = EditorGUI.ObjectField(objectFieldRect, "Effect", effect, typeof(Effect), false) as Effect;
+        effect = EditorGUI.ObjectField(objectFieldRect, "Effect", effect, typeof(EffectObject), false) as EffectObject;
 
         GUILayout.BeginArea(new Rect(5f, 5f, rect.width - 10f, remainingHeight / 2f));
         GUILayout.Label(effect?.name ?? "No Effect Selected");

@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
-  m_Name: TestingEffect
+  m_Name: HealingPlayer
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: HealingPlayer
   sizeRatio: 1
   prefab: {fileID: 0}
-  cost: 0
+  cost: 3
   level: 0
-  canRepeat: 0
+  duration: 100
+  stackable: 1
+  applyingControllerType: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  dHP: 5

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading;
 using UnityEditor.Build;
 
-public abstract class CharacterController : MonoBehaviour
+public abstract class CharacterController : MonoBehaviour, IEffectableObject
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
     in the scriptable objects by directly calling them. e.g. characterStats.HP +=1; this is not allowed as this HP is the MaxHP of a character. They should only be modified through other 
@@ -25,6 +25,34 @@ public abstract class CharacterController : MonoBehaviour
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
+
+    protected List<EffectObject> effects;
+
+    public List<EffectObject> Effects
+    {
+        get { return effects; }
+        set { effects = value; }
+    }
+
+    protected virtual void Awake()
+    {
+        effects = new List<EffectObject>();
+    }
+
+    protected virtual void Update()
+    {
+        ExecuteEffects();
+    }
+
+    public void ExecuteEffects()
+    {
+        foreach (EffectObject effect in Effects)
+        {
+            effect.ExecuteEffect(this);
+        }
+        Effects.Clear();
+    }
+
 
     public virtual void Initialize(CharacterObject characterObject)
     {
@@ -70,7 +98,12 @@ public abstract class CharacterController : MonoBehaviour
         {
             death();
         }
-        StartCoroutine(FlashRed());
+        if (HP > characterStats.HP)
+        {
+            HP = characterStats.HP;
+        }
+        if(dmg > 0)
+            StartCoroutine(FlashRed());
     }
 
     private System.Collections.IEnumerator FlashRed()
