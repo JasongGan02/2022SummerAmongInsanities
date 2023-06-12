@@ -14,6 +14,11 @@ public class PlayerController : CharacterController
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
     Image healthBar;
+    Image damagedHealthBar;
+    Color damagedColor;
+    float damagedHealthFadeTimer;
+    float damaged_health_fade_timer_max = 2f; 
+
 
     private int playerLevel = 0;
     private float playerExperience = 0f;
@@ -24,7 +29,11 @@ public class PlayerController : CharacterController
         spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
-        healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
+        healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(2).GetComponent<Image>();
+        damagedHealthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
+        damagedColor = damagedHealthBar.color;
+        damagedColor.a = 0f;
+        damagedHealthBar.color = damagedColor;
         if (healthBar != null)
         {
             healthBar.fillAmount = (float) HP / characterStats.HP;
@@ -35,6 +44,19 @@ public class PlayerController : CharacterController
     {
         if(GetComponent<Transform>().position.y < -100)
             death();
+    }
+    private void Update()
+    {
+        if (damagedColor.a > 0)
+        {
+            damagedHealthFadeTimer -= Time.deltaTime;
+            if (damagedHealthFadeTimer < 0)
+            {
+                float fadeAmount = 5f;
+                damagedColor.a -= fadeAmount * Time.deltaTime;
+                damagedHealthBar.color = damagedColor;
+            }
+        }
     }
     public override void death()
     {
@@ -47,6 +69,15 @@ public class PlayerController : CharacterController
     public override void takenDamage(float dmg)
     {
         base.takenDamage(dmg);
+
+        if (damagedColor.a <= 0)
+        {   // Damaged Bar is invisible
+            damagedHealthBar.fillAmount = healthBar.fillAmount;
+        }
+        damagedColor.a = 1;
+        damagedHealthBar.color = damagedColor;
+        damagedHealthFadeTimer = damaged_health_fade_timer_max;
+
         if (healthBar != null)
         {
             healthBar.fillAmount = (float) HP / characterStats.HP;

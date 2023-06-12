@@ -166,7 +166,7 @@ public class BatEnemy : EnemyController
             Tr.emitting = true;
             if (Vector2.Distance(transform.position, player.gameObject.transform.position) < 0.4f && !attacked)
             {
-                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+                //player.GetComponent<PlayerController>().takenDamage(AtkDamage);
                 attacked = true;
             }
             if (CloseEnough(transform.position, dash_end))

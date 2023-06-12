@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -86,7 +87,7 @@ public class VillagerController : EnemyController
         {
             patrol();
         }
-         
+
     }
 
     
@@ -321,5 +322,6 @@ public class VillagerController : EnemyController
         // Enable or disable the colliders based on the state
         boxCollider.enabled = !isSitting;
         edgeCollider.enabled = isSitting;
-    }   
+    }
+    
 }

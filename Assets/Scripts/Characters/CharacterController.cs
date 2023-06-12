@@ -5,6 +5,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using UnityEditor.Build;
+using System.Linq;
 
 public abstract class CharacterController : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public abstract class CharacterController : MonoBehaviour
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
+    protected CharacterController[] Hatred;
 
     public virtual void Initialize(CharacterObject characterObject)
     {
