@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEditor.Tilemaps;
 using UnityEngine;
@@ -20,7 +21,7 @@ public class DumbController : EnemyController
     private float PrevHP;
     private bool isFleeing = false;
     private float patrolRest = 2f;
-    private float hittingback = 1f;
+    private float hittingback = 0.3f;
 
     private UnityEngine.Animator animator;
     
@@ -55,7 +56,7 @@ public class DumbController : EnemyController
             animator.SetBool("walk", false);
             animator.SetBool("flee", false);
             animator.SetBool("knockback", true);
-            hittingback = 1f;
+            hittingback = 0.3f;
             isFleeing = true;
             PrevHP = CurrentHP;
         }
@@ -153,7 +154,7 @@ public class DumbController : EnemyController
         }
         else {
             animator.SetBool("flee", false);
-            hittingback = 1f;
+            hittingback = 0.3f;
             fleeTime = 5f;
             isFleeing = false;
         }
@@ -200,4 +201,5 @@ public class DumbController : EnemyController
         Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
         rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
+    
 }
