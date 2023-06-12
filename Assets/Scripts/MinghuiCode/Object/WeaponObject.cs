@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static Constants;
 
 [CreateAssetMenu(fileName = "weapon", menuName = "Objects/Weapon Object")]
 public class WeaponObject : EquipmentObject
@@ -25,6 +26,7 @@ public class WeaponObject : EquipmentObject
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.layer = LayerMask.NameToLayer("weapon");
+        worldGameObject.tag = "weapon";
         worldGameObject.name = itemName;
         //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
         worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
