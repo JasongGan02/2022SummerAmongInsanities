@@ -136,6 +136,7 @@ public class PlayerInteraction : MonoBehaviour
   
     private void UseItemInSlot(int slotIndex)
     {
+
         if (indexInUse == slotIndex)
         {
             ClearCurrentItemInUse();
@@ -159,6 +160,11 @@ public class PlayerInteraction : MonoBehaviour
 
         if (currentSlotInUse.item is WeaponObject)
         {
+            GameObject LastWeapon = GameObject.FindWithTag("weapon");
+            if (LastWeapon != null)
+            {
+                Destroy(LastWeapon);
+            }
             currentWeapon = currentSlotInUse.item as WeaponObject;
             currentWeapon.GetSpawnedGameObject();
             waitTime = 1 / currentWeapon.frequency;
