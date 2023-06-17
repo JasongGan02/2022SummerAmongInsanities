@@ -14,7 +14,7 @@ public class StatsEffectController : EffectController
         StartEffect();
     }
 
-    private void StartEffect()
+    protected override void StartEffect()
     {
         // Start the effect or perform any necessary setup
 
@@ -22,7 +22,7 @@ public class StatsEffectController : EffectController
         StartCoroutine(DestroyAfterDuration());
     }
 
-    private System.Collections.IEnumerator DestroyAfterDuration()
+    protected override System.Collections.IEnumerator DestroyAfterDuration()
     {
         float elapsedTime = 0f;
 

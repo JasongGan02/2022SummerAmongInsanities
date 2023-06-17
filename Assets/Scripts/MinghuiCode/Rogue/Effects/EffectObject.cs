@@ -14,7 +14,8 @@ public abstract class EffectObject : BaseObject
     public int level;
     public float duration;
     public bool stackable;
-    
+    public bool repeatable; //If the effect can be selected multiple times
+
     public virtual void ExecuteEffect(IEffectableObject effectedGameObject) //Use this when you are unsure about what type of controller will be using.
     {
         string controllerName = itemName+"Controller";

@@ -140,7 +140,7 @@ public class RogueManager : MonoBehaviour
 
     private bool CanAddNodeToCandidates(RogueGraphNode node, List<RogueGraphNode> candidateNodes)
     {
-        if (selectedNodes.Contains(node)) return false;
+        if (selectedNodes.Contains(node) && !(node.effect?.repeatable ?? false)) return false;
 
         if (candidateNodes.Contains(node)) return false;
 

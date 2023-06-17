@@ -34,6 +34,12 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         set { effects = value; }
     }
 
+    public CharacterObject CharacterStats
+    {
+        get { return characterStats; }
+        set { characterStats = value; }
+    }
+
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();
@@ -118,7 +124,26 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
     }
 
+    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    {
+        this.takenDamage(-dHP);
+        this.AtkDamage += dAtkDamage;
+        this.AtkInterval += dAtkInterval;
+        this.MovingSpeed += dMovingSpeed;
+        this.AtkRange += dAtkRange;
+        this.JumpForce += dJumpForce;
+    }
 
+    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    {
+        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce);
+        characterStats.HP += dHP;
+        characterStats.AtkDamage += dAtkDamage;
+        characterStats.AtkInterval += dAtkInterval;
+        characterStats.MovingSpeed += dMovingSpeed;
+        characterStats.AtkRange += dAtkRange;
+        characterStats.JumpForce += dJumpForce;
+    }
 
 
     public abstract void death();

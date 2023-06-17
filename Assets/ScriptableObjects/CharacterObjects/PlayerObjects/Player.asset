@@ -20,6 +20,6 @@ MonoBehaviour:
   AtkInterval: 1
   AtkRange: 1
   MovingSpeed: 1
-  drops: []
   JumpForce: 0
+  Drops: []
   RespwanTimeInterval: 4.99
