@@ -14,9 +14,9 @@ public class CharacterObject : BaseObject
     public float AtkInterval;
     public float AtkRange;
     public float MovingSpeed;
+    public float JumpForce;
 
     public Drop[] Drops;
-    public float JumpForce;
 
     protected string controllerName;
     

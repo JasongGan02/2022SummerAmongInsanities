@@ -7,7 +7,7 @@ using System.Threading;
 using UnityEditor.Build;
 using System.Linq;
 
-public abstract class CharacterController : MonoBehaviour
+public abstract class CharacterController : MonoBehaviour, IEffectableObject
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
     in the scriptable objects by directly calling them. e.g. characterStats.HP +=1; this is not allowed as this HP is the MaxHP of a character. They should only be modified through other 
@@ -27,6 +27,40 @@ public abstract class CharacterController : MonoBehaviour
     protected float AtkRange;
     protected float JumpForce;
     protected CharacterController[] Hatred;
+
+    protected List<EffectObject> effects;
+
+    public List<EffectObject> Effects
+    {
+        get { return effects; }
+        set { effects = value; }
+    }
+
+    public CharacterObject CharacterStats
+    {
+        get { return characterStats; }
+        set { characterStats = value; }
+    }
+
+    protected virtual void Awake()
+    {
+        effects = new List<EffectObject>();
+    }
+
+    protected virtual void Update()
+    {
+        ExecuteEffects();
+    }
+
+    public void ExecuteEffects()
+    {
+        foreach (EffectObject effect in Effects)
+        {
+            effect.ExecuteEffect(this);
+        }
+        Effects.Clear();
+    }
+
 
     public virtual void Initialize(CharacterObject characterObject)
     {
@@ -72,7 +106,12 @@ public abstract class CharacterController : MonoBehaviour
         {
             death();
         }
-        StartCoroutine(FlashRed());
+        if (HP > characterStats.HP)
+        {
+            HP = characterStats.HP;
+        }
+        if(dmg > 0)
+            StartCoroutine(FlashRed());
     }
 
     private System.Collections.IEnumerator FlashRed()
@@ -87,7 +126,26 @@ public abstract class CharacterController : MonoBehaviour
         }
     }
 
+    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    {
+        this.takenDamage(-dHP);
+        this.AtkDamage += dAtkDamage;
+        this.AtkInterval += dAtkInterval;
+        this.MovingSpeed += dMovingSpeed;
+        this.AtkRange += dAtkRange;
+        this.JumpForce += dJumpForce;
+    }
 
+    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    {
+        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce);
+        characterStats.HP += dHP;
+        characterStats.AtkDamage += dAtkDamage;
+        characterStats.AtkInterval += dAtkInterval;
+        characterStats.MovingSpeed += dMovingSpeed;
+        characterStats.AtkRange += dAtkRange;
+        characterStats.JumpForce += dJumpForce;
+    }
 
 
     public abstract void death();

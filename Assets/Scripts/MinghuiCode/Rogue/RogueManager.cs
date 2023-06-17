@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class RogueManager : MonoBehaviour
 {
@@ -65,9 +66,23 @@ public class RogueManager : MonoBehaviour
             }
             
         }
+        else
+        {
+            if(inventory.spendEXP(levelUpCost))
+            {
+                for(int i = 0; i < buffContainer.transform.childCount; i++)
+                {
+                    GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
+                    buffCard.GetComponent<BuffSelectionController>().OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+                    Destroy(buffCard);
+                }
+                AddBuffs();
+            }
+        }
         
     }
 
+   
     private void AddBuffs()
     {
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
@@ -108,7 +123,7 @@ public class RogueManager : MonoBehaviour
             HashSet<int> indice = new();
             while(indice.Count < 3)
             {
-                int index = (int)Random.Range(0f, candidateNodes.Count - 0.01f);
+                int index = (int)UnityEngine.Random.Range(0f, candidateNodes.Count - 0.01f);
                 if (indice.Contains(index)) continue;
                 indice.Add(index);
             }
@@ -125,7 +140,7 @@ public class RogueManager : MonoBehaviour
 
     private bool CanAddNodeToCandidates(RogueGraphNode node, List<RogueGraphNode> candidateNodes)
     {
-        if (selectedNodes.Contains(node)) return false;
+        if (selectedNodes.Contains(node) && !(node.effect?.repeatable ?? false)) return false;
 
         if (candidateNodes.Contains(node)) return false;
 
@@ -146,8 +161,28 @@ public class RogueManager : MonoBehaviour
 
     private void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
+        if (!inventory.spendEXP((node.effect?.cost ?? 0))) return;
         selectedNodes.Add(node);
-        selectedBuffText.text += "\n" + node.buff.name;
+        selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
+
+
+        // Get the script component type from the EffectObject
+        Type applyingControllerType = node.effect?.GetApplyingControllerType();
+
+        if (applyingControllerType != null)
+        {
+            // Find all game objects with the specified script component type
+            IEffectableObject[] controllers = FindObjectsOfType(applyingControllerType) as IEffectableObject[];
+
+            foreach (IEffectableObject controller in controllers)
+            {
+                // Add the effect to the found game objects
+                controller.Effects.Add(node.effect);
+                Debug.Log("Added effect " + node.effect.name + " to " + (controller as MonoBehaviour).name);
+                
+            }
+        }
+
         for(int i = 0; i < buffContainer.transform.childCount; i++)
         {
             GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
@@ -161,4 +196,5 @@ public class RogueManager : MonoBehaviour
     private const string NAME_LEVEL_UP_BUTTON = "LevelUpButton";
     private const string NAME_SELECTED_BUFF_TEXT = "SelectedBuffText";
     private const string NAME_BUFF_CONTAINER = "BuffContainer";
+    
 }

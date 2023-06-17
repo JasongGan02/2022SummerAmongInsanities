@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c1cfae4369b6ea46afba00be827b9d3, type: 3}
+  m_Name: Upgrade
+  m_EditorClassIdentifier: 
+  itemName: Upgrade
+  sizeRatio: 1
+  prefab: {fileID: 0}
+  cost: 0
+  level: 0
+  duration: 0
+  stackable: 0
+  repeatable: 1
+  applyingControllerType: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  dHP: 0.5
+  dAtkDamage: 0
+  dAtkInterval: 0
+  dAtkRange: 0
+  dMovingSpeed: 0
+  dJumpForce: 0
