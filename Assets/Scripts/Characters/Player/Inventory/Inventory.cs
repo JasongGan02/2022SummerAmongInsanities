@@ -160,6 +160,42 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return remainingItemCount;
     }
 
+
+
+    public void CraftItems(IInventoryObject item1, IInventoryObject item2, IInventoryObject outputItem)
+    {
+        // Check if we have the required items in the inventory
+        int index1 = findObject(item1);
+        int index2 = findObject(item2);
+
+        // Check if both items were found
+        if (index1 == -1 || index2 == -1)
+        {
+            Debug.Log("Required items not found in the inventory");
+
+        }
+
+        // Check if the outputItem was successfully created
+        if (outputItem == null)
+        {
+            Debug.Log("Failed to create the output item");
+        }
+
+        // Remove the input items from the inventory
+        database.RemoveItem(index1);
+        database.RemoveItem(index2);
+
+        // Update UI for the slots
+        UpdateSlotUi(index1);
+        UpdateSlotUi(index2);
+
+        // Add the new item to the inventory
+        AddItem(outputItem, 1);
+    }
+
+
+
+
     // TODO: check if there's an existing slot that is not full
     public bool CanAddItem(IInventoryObject item)
     {

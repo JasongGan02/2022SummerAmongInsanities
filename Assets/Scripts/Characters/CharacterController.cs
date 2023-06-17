@@ -5,6 +5,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using UnityEditor.Build;
+using System.Linq;
 
 public abstract class CharacterController : MonoBehaviour, IEffectableObject
 {
@@ -25,6 +26,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
+    protected CharacterController[] Hatred;
 
     protected List<EffectObject> effects;
 
