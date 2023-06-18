@@ -79,7 +79,7 @@ public class PlayerController : CharacterController, IDataPersistence
 
     }
 
-    public void takenDamage(float dmg)
+    public override void takenDamage(float dmg)
     {
         HP -= dmg;
         if (HP <= 0)
