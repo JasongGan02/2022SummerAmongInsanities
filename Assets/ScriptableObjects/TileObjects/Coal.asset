@@ -19,3 +19,4 @@ MonoBehaviour:
   _healthPoint: 1
   _drops: []
   _prefabs: []
+  _recipe: []
