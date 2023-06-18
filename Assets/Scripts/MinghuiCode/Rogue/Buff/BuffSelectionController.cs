@@ -19,7 +19,9 @@ public class BuffSelectionController : MonoBehaviour, IPointerClickHandler
     {
         this.node = node;
         TMP_Text buffName = transform.Find(NAME_BUFF_NAME_TEXT).GetComponent<TMP_Text>();
-        buffName.text = node.buff.name;
+        //buffName.text = node.buff.name;
+        buffName.text = node.effect?.name ?? "No Effect Selected";
+        
         transform.SetParent(parent);
         transform.position = position;
     }

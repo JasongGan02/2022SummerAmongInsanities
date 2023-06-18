@@ -18,7 +18,7 @@ public class TowerController : CharacterController
     }
     //protected abstract void TowerLoop(); 
 
-    
+
     public override void death()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();

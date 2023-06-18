@@ -23,5 +23,6 @@ MonoBehaviour:
   Drops:
   - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
     chance: 4
-  JumpForce: 0.75
+  JumpForce: 0.5
   SensingRange: 5
+  Hatred: []

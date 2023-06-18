@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2069985172}
   - component: {fileID: 3164605268787969525}
   - component: {fileID: 6529597180981525054}
+  - component: {fileID: -8509296499974774028}
   m_Layer: 10
   m_Name: CatapultTower
   m_TagString: tower
@@ -168,14 +169,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AtkRange: 11
-  AtkIntervalTime: 1
-  AtkTimer: 1
-  bullet_speed: 1
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
-  isEnemySpotted: 0
-  enemyContainer: {fileID: 0}
   bullet_x_flyingSpeed: 5
+  minBulletYSpeed: 5
+  maxBulletYSpeed: 10
 --- !u!114 &6529597180981525054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,3 +186,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health_point: 11
+--- !u!114 &-8509296499974774028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115298586428798980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -19,9 +19,8 @@ public class CharacterSpawner : MonoBehaviour
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnPlayer();
         //SpawnBat();
-        //SpawnLady();
         //SpawnVillager();
-        //SpawnLady();
+        SpawnLady();
 
     }
 
@@ -48,12 +47,12 @@ public class CharacterSpawner : MonoBehaviour
             villagerGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
         }
 
-        public void SpawnPlayer()
-        {
-            GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject<PlayerController>();
-            playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
-            GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
-        }
+    public void SpawnPlayer()
+    {
+        GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject<PlayerController>();
+        playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
+    }
 
     public void SpawnBat()
     {
@@ -66,6 +65,12 @@ public class CharacterSpawner : MonoBehaviour
         GameObject LadyGameObject = characterAtlas.lady.GetSpawnedGameObject<LadyController>();
         LadyGameObject.transform.position = GetComponentInChildren<Transform>().position;
         LadyGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
+    }
+    public void SpawnDumb()
+    {
+        GameObject DumbGameObject = characterAtlas.dumb.GetSpawnedGameObject<DumbController>();
+        DumbGameObject.transform.position = GetComponentInChildren<Transform>().position;
+        DumbGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
     }
 
     public bool TooMuch(float max)
