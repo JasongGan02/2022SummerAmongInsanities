@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : CharacterController
+public class PlayerController : CharacterController, IDataPersistence
 {
 
     private float RespwanTimeInterval;
@@ -19,7 +19,7 @@ public class PlayerController : CharacterController
     float damagedHealthFadeTimer;
     float damaged_health_fade_timer_max = 2f; 
 
-
+    private int deathCount = 0;
     private int playerLevel = 0;
     private float playerExperience = 0f;
 
@@ -40,13 +40,24 @@ public class PlayerController : CharacterController
         }
     }
 
+    public void LoadData(GameData data)
+    {
+        this.deathCount = data.deathCount;
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.deathCount = this.deathCount;
+    }
+
     void FixedUpdate()
     {
         if(GetComponent<Transform>().position.y < -100)
             death();
     }
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (damagedColor.a > 0)
         {
             damagedHealthFadeTimer -= Time.deltaTime;
@@ -63,7 +74,9 @@ public class PlayerController : CharacterController
         healthBar.fillAmount = 0;
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
+        deathCount++;
         Destroy(this.gameObject);
+
     }
 
     public override void takenDamage(float dmg)
