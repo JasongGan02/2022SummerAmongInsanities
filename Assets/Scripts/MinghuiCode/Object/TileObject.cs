@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
-public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject
+public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
     [SerializeField]
     private int _maxStack;
@@ -19,6 +19,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private GameObject[] _prefabs;
+
+    [SerializeField]
+    private BaseObject[] _recipe;
+
 
     public GameObject GetPlacedGameObject()
     {
@@ -157,4 +161,26 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         return worldGameObject;
     }
     #endregion
+
+
+
+    /**
+     * implementation of ICraftableObject
+     */
+    #region
+    public BaseObject[] Recipe
+    {
+        get => _recipe;
+        set => _recipe = value;
+    }
+
+    public void Craft(Inventory inventory)
+    {
+        inventory.CraftItems(this.Recipe, this);
+    }
+
+
+    #endregion
+
+
 }

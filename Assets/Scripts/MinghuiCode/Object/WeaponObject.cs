@@ -6,13 +6,33 @@ using System;
 using static Constants;
 
 [CreateAssetMenu(fileName = "weapon", menuName = "Objects/Weapon Object")]
-public class WeaponObject : EquipmentObject
+public class WeaponObject : EquipmentObject , ICraftableObject
 { 
-    public float attack;
-    public float farm;
-    public float frequency;
+    private float attack;
+    private float farm;
+    private float frequency;
 
-    
+    [SerializeField]
+    private BaseObject[] _recipe;
+
+
+    public float getAttack()
+    {
+        return attack;
+    }
+
+
+    public float getfarm()
+    {
+        return farm;
+    }
+
+
+    public float getfrequency()
+    {
+        return frequency;
+    }
+
 
     public virtual GameObject GetSpawnedGameObject<T>() where T : MonoBehaviour //Spawn the actual game object through calling this function. 
     {
@@ -35,4 +55,25 @@ public class WeaponObject : EquipmentObject
         (controller as Weapon).Initialize(this);
         return worldGameObject;
     }
+
+
+
+    /**
+     * implementation of ICraftableObject
+     */
+    #region
+    public BaseObject[] Recipe
+    {
+        get => _recipe;
+        set => _recipe = value;
+    }
+
+    public void Craft(Inventory inventory)
+    {
+        inventory.CraftItems(this.Recipe, this);
+    }
+
+    #endregion
+
+
 }

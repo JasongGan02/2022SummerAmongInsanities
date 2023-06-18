@@ -167,7 +167,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             currentWeapon = currentSlotInUse.item as WeaponObject;
             currentWeapon.GetSpawnedGameObject();
-            waitTime = 1 / currentWeapon.frequency;
+            waitTime = 1 / currentWeapon.getfrequency();
         } 
         else
         {
@@ -433,7 +433,7 @@ public class PlayerInteraction : MonoBehaviour
         if (breakableTile != null)
         {
             Debug.Log("Dig with " + (currentWeapon?.name ?? "hand"));
-            breakableTile.OnClicked(currentWeapon?.farm ?? handFarm);
+            breakableTile.OnClicked(currentWeapon?.getfarm() ?? handFarm);
 
             Vector2Int coord = new((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
             shadowGenerator.OnTileBroken(coord);
