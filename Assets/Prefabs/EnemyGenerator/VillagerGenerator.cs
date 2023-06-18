@@ -20,7 +20,7 @@ public class VillagerGenerator : CharacterSpawner
         {
             SpawnVillager();
             //SpawnDumb();
-            SpawnBat();
+            //SpawnBat();
             timerr = 0f;
         }
     }

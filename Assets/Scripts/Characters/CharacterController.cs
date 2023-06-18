@@ -26,7 +26,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
-    protected CharacterController[] Hatred;
+   
 
     protected List<EffectObject> effects;
 
@@ -114,7 +114,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
             StartCoroutine(FlashRed());
     }
 
-    private System.Collections.IEnumerator FlashRed()
+    public System.Collections.IEnumerator FlashRed()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         for (int i = 0; i < 5; i++)

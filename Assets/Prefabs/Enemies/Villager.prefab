@@ -264,7 +264,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5469098318322386293}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -301,8 +301,8 @@ EdgeCollider2D:
   m_Points:
   - {x: -0.006965637, y: -0.5337}
   - {x: -0.015054703, y: 0.42074394}
-  - {x: 0.16194534, y: 0.42092896}
-  - {x: 0.17433167, y: -0.5324583}
+  - {x: 0.084926605, y: 0.42326164}
+  - {x: 0.09030914, y: -0.527791}
   - {x: -0.008241653, y: -0.53027916}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
