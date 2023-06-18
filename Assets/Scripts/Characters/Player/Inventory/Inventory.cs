@@ -162,36 +162,38 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
 
 
-    public void CraftItems(IInventoryObject item1, IInventoryObject item2, IInventoryObject outputItem)
+    public void CraftItems(BaseObject[] items, BaseObject outputItem)
     {
+        // Create a list to hold the indices of the found items
+        List<int> foundIndices = new List<int>();
+
         // Check if we have the required items in the inventory
-        int index1 = findObject(item1);
-        int index2 = findObject(item2);
-
-        // Check if both items were found
-        if (index1 == -1 || index2 == -1)
+        foreach (BaseObject item in items)
         {
-            Debug.Log("Required items not found in the inventory");
-
-        }
-
-        // Check if the outputItem was successfully created
-        if (outputItem == null)
-        {
-            Debug.Log("Failed to create the output item");
+            int index = findObject(item as IInventoryObject);
+            if (index != -1)
+            {
+                foundIndices.Add(index);
+            }
+            else
+            {
+                Debug.Log("Required item not found in the inventory: " + item);
+                return;
+            }
         }
 
         // Remove the input items from the inventory
-        database.RemoveItem(index1);
-        database.RemoveItem(index2);
-
-        // Update UI for the slots
-        UpdateSlotUi(index1);
-        UpdateSlotUi(index2);
+        foreach (int index in foundIndices)
+        {
+            database.RemoveItem(index);
+            // Update UI for the slot
+            UpdateSlotUi(index);
+        }
 
         // Add the new item to the inventory
-        AddItem(outputItem, 1);
+        AddItem(outputItem as IInventoryObject, 1);
     }
+
 
 
 
@@ -342,6 +344,9 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         
         return 0;
     }
+
+
+
 
     public InventorySlot findSlot(string inventoryObject)
     {
