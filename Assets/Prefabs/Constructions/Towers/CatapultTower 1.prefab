@@ -196,6 +196,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7115298586428798980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fac815b03599abd40a7b59a8391017ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
+  bullet_x_flyingSpeed: 0
+  minBulletYSpeed: 5
+  maxBulletYSpeed: 10

@@ -4,6 +4,7 @@ using UnityEngine;
 // This class represents an archer tower
 public class ArcherTowerController : AttackTowerController
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +27,10 @@ public class ArcherTowerController : AttackTowerController
         {
             Vector3 direction = enemyTransform.position - transform.position;
             GameObject bulletInstance = Instantiate(bullet, transform.position, Quaternion.identity);
+            bulletInstance.transform.SetParent(transform);
             bulletInstance.GetComponent<Rigidbody2D>().velocity = direction * bullet_speed;
         }
     }
+
+    
 }

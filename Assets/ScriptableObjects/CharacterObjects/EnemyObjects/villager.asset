@@ -25,4 +25,4 @@ MonoBehaviour:
     chance: 4
   JumpForce: 0.5
   SensingRange: 5
-  priorities: []
+  Hatred: []
