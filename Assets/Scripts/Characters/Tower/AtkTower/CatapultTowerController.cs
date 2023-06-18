@@ -5,6 +5,7 @@ using UnityEngine;
 // This is Catapult tower
 public class CatapultTowerController : AttackTowerController
 {
+
     [SerializeField] float bullet_x_flyingSpeed;   // Bullet flying speed in x axis, absolute value without direction
     [SerializeField] float minBulletYSpeed = 5f;  // minimum bullet y speed
     [SerializeField] float maxBulletYSpeed = 10f; // maximum bullet y speed
@@ -120,4 +121,5 @@ public class CatapultTowerController : AttackTowerController
 
         
     }
+
 }

@@ -66,9 +66,14 @@ public class PlayerController : CharacterController
         Destroy(this.gameObject);
     }
 
-    public override void takenDamage(float dmg)
+    public void takenDamage(float dmg)
     {
-        base.takenDamage(dmg);
+        HP -= dmg;
+        if (HP <= 0)
+        {
+            death();
+        }
+        StartCoroutine(FlashRed());
 
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible

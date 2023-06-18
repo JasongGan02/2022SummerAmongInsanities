@@ -8,7 +8,7 @@ public abstract class EnemyController : CharacterController
 {
 
     protected float SensingRange;
-    protected CharacterObject[] priorities;
+    protected List<CharacterObject> Hatred;
     
 
     //run-time variables
@@ -23,6 +23,15 @@ public abstract class EnemyController : CharacterController
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
 
+    public void takenDamage(float dmg, GameObject attacker)
+    {
+        HP -= dmg;
+        if (HP <= 0)
+        {
+            death();
+        }
+        StartCoroutine(FlashRed());
+    }
 
     protected void Awake()
     {
@@ -180,10 +189,13 @@ public abstract class EnemyController : CharacterController
         float min_distance = Vector2.Distance(towerTransforms[0].position, transform.position);
         foreach(Transform e in towerTransforms)
         {
-
-            if((Vector2.Distance(e.position, transform.position) < min_distance)&&(e.name != "FiringPoint")){
-                nearest_Transform = e;
-                min_distance = Vector2.Distance(e.position, transform.position);
+            if (e.transform.gameObject.CompareTag("tower"))
+            {
+                if ((Vector2.Distance(e.position, transform.position) < min_distance) && (e.name != "FiringPoint"))
+                {
+                    nearest_Transform = e;
+                    min_distance = Vector2.Distance(e.position, transform.position);
+                }
             }
         }
         NearestTowerTransform = nearest_Transform;
