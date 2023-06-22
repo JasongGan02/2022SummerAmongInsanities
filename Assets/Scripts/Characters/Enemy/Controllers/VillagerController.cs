@@ -16,6 +16,7 @@ public class VillagerController : EnemyController
     private Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
+    GameObject target;
 
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
@@ -39,17 +40,56 @@ public class VillagerController : EnemyController
         frontCheck = transform.Find("frontCheck");
         boxCollider = GetComponent<BoxCollider2D>();
         edgeCollider = GetComponent<EdgeCollider2D>();
+
+        Hatred.Add("PlayerController");
+        Hatred.Add("ArcherTowerController");
+        Hatred.Add("CatapultTowerController");
+        Hatred.Add("TrapTowerController");
     }
 
     protected override void EnemyLoop()
     {
         
-        UpdateNearestTower();
+        //UpdateNearestTower();
         rb = GetComponent<Rigidbody2D>();
 
         if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider(true); }
         else { ChangeCollider(false); }
-        if (IsPlayerSensed() && villager_sight())   
+        //if (IsPlayerSensed() && villager_sight())   
+        //{
+        //    if (IsPlayerInAtkRange())
+        //    {
+        //        attack();
+        //    }
+        //    else
+        //    {
+        //        approachPlayer(2 * MovingSpeed);
+        //        flip(player.transform);
+        //    }
+        //}
+        //else if(IsTowerSensed())
+        //{
+        //    if (IsTowerInAtkRange( (int) AtkRange))
+        //    {
+        //        flip(NearestTowerTransform);
+        //        attackTower(NearestTowerTransform); 
+        //    }else
+        //    {
+        //        animator.SetBool("IsStanding", true);
+        //        animator.SetBool("IsRunning", false);
+        //        transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * Time.deltaTime);
+        //        flip(NearestTowerTransform);
+
+        //    }
+        //}
+        //else
+        //{
+        //    patrol();
+        //}
+
+        target = WhatToAttack();
+        if (target == null) { patrol(); }
+        else if (target.Equals(player) && IsPlayerSensed() && villager_sight())
         {
             if (IsPlayerInAtkRange())
             {
@@ -61,33 +101,28 @@ public class VillagerController : EnemyController
                 flip(player.transform);
             }
         }
-        else if(IsTowerSensed())
+        else
         {
-            if (IsTowerInAtkRange( (int) AtkRange))
+            if (IsTowerInAtkRange((int)AtkRange))
             {
-                flip(NearestTowerTransform);
-                attackTower(NearestTowerTransform); 
-            }else
+                flip(target.transform);
+                attackTower(target.transform);
+            }
+            else
             {
                 animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
-                transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * Time.deltaTime);
-                flip(NearestTowerTransform);
-                
+                transform.position = Vector2.MoveTowards(transform.position, target.transform.position, MovingSpeed * Time.deltaTime);
+                flip(target.transform);
             }
         }
-        else
-        {
-            patrol();
-        }
-
     }
 
     
 
     bool IsTowerInAtkRange(int AtkRange)
     {
-        float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
+        float distance = CalculateDistanceFromEnemyToTower(target.transform);
         if (distance <= AtkRange)
         {
             return true;
@@ -105,7 +140,7 @@ public class VillagerController : EnemyController
             if (Wait > 0) { Wait -= Time.deltaTime; }
             else
             {
-                animator.SetBool("isStanding", true);
+                animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("Attack", false);
                 if (cooldown > AtkInterval)
@@ -147,7 +182,7 @@ public class VillagerController : EnemyController
             if (Wait > 0) { Wait -= Time.deltaTime; }
             else
             {
-                animator.SetBool("isStanding", true);
+                animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("Attack", false);
                 if (cooldown > AtkInterval)
