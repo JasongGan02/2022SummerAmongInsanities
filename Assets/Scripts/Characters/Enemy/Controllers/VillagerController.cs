@@ -89,7 +89,7 @@ public class VillagerController : EnemyController
 
         target = WhatToAttack();
         if (target == null) { patrol(); }
-        else if (target.Equals(player) && IsPlayerSensed() && villager_sight())
+        else if (target.CompareTag("Player") && IsPlayerSensed() && villager_sight())
         {
             if (IsPlayerInAtkRange())
             {
@@ -112,13 +112,11 @@ public class VillagerController : EnemyController
             {
                 animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
-                transform.position = Vector2.MoveTowards(transform.position, target.transform.position, MovingSpeed * Time.deltaTime);
+                approach(MovingSpeed, target.transform);
                 flip(target.transform);
             }
         }
     }
-
-    
 
     bool IsTowerInAtkRange(int AtkRange)
     {
@@ -132,7 +130,6 @@ public class VillagerController : EnemyController
             return false;
         }
     }
-
     void attackTower(Transform target)
     {
         if (rest)
@@ -153,12 +150,12 @@ public class VillagerController : EnemyController
             }
         }
 
-        if (Vector2.Distance(transform.position, target.position) > 1f)
+        else if (Vector2.Distance(transform.position, target.position) > 1f)
         {
             animator.SetBool("IsStanding", true);
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", false);
-            transform.position = Vector2.MoveTowards(transform.position, target.position, MovingSpeed * 2 * Time.deltaTime);
+            approach(2 * MovingSpeed, target);
         }
 
         else
@@ -166,15 +163,13 @@ public class VillagerController : EnemyController
             animator.SetBool("IsStanding", true);
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", true);
-            (target.gameObject.GetComponent(typeof(CharacterController)) as CharacterController).takenDamage(AtkDamage);
+            target.gameObject.GetComponent<TowerController>().takenDamage(AtkDamage);
             rest = true;
             Wait = 0.3f;
         }
 
-        flip(target.transform);
+        flip(target);
     }
-
-
     new void attack()
     {
         if (rest)
@@ -216,7 +211,6 @@ public class VillagerController : EnemyController
 
         flip(player.transform);
     }
-
     void approachPlayer(float speed)
     {
         animator.SetBool("IsStanding", true);
@@ -225,8 +219,14 @@ public class VillagerController : EnemyController
         if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
-    
-
+    void approach(float speed, Transform target)
+    {
+        animator.SetBool("IsStanding", true);
+        if (speed > 1f) { animator.SetBool("IsRunning", true); }
+        else { animator.SetBool("IsRunning", false); }
+        if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
+        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+    }
     void patrol()
     {
         animator.SetBool("Attack", false);
@@ -266,7 +266,6 @@ public class VillagerController : EnemyController
             }
         }
     }
-
     void flip(Transform target)
     {
         if (target.position.x >= transform.position.x && !facingright)
@@ -293,8 +292,6 @@ public class VillagerController : EnemyController
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
-
-
     new void SenseFrontBlock()
     {
         headCheck();
@@ -336,7 +333,6 @@ public class VillagerController : EnemyController
         Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
         rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
-
     private bool villager_sight()
     {
         Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
@@ -363,12 +359,10 @@ public class VillagerController : EnemyController
         }
         return true;
     }
-
     public void ChangeCollider(bool isSitting)
     {
         // Enable or disable the colliders based on the state
         boxCollider.enabled = !isSitting;
         edgeCollider.enabled = isSitting;
     }
-    
 }

@@ -14,6 +14,7 @@ public abstract class EnemyController : CharacterController
     protected float SensingRange;
     public List<string> Hatred = new List<string>();
     public GameObject tempTarget;
+    public Collider2D[] colliders;
 
     //run-time variables
     public TowerContainer towerContainer;   // Changed from protected to public
@@ -27,7 +28,7 @@ public abstract class EnemyController : CharacterController
     protected bool isFindPlayer;
     protected bool isTouchPlayer;
 
-    //int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
+    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
 
 
     protected override void Awake()
@@ -255,16 +256,19 @@ public abstract class EnemyController : CharacterController
 
     public bool CouldSense(string name, float range)
     {
-        Collider[] colliders = Physics.OverlapSphere((Vector2)transform.position, range);
-        Debug.Log(colliders.Length);
-        foreach (Collider collider in colliders)
+        colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
+        //Debug.Log(colliders.Length);
+        foreach (Collider2D collider in colliders)
         {
+            //Debug.Log("collider's name is " + collider.gameObject.name);
             if (collider.gameObject.GetComponent(name) != null)
             {
                 // Found a component with the specified name on the GameObject
+                tempTarget = collider.gameObject;
                 return true;
             }
         }
+        //Debug.Log("didn't find target");
         return false; 
     }
 }
