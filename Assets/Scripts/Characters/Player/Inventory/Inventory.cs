@@ -162,37 +162,40 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
 
 
-    public void CraftItems(BaseObject[] items, BaseObject outputItem)
+    public void CraftItems(BaseObject[] items,int[] quantity, BaseObject outputItem)
     {
-        // Create a list to hold the indices of the found items
-        List<int> foundIndices = new List<int>();
-
-        // Check if we have the required items in the inventory
-        foreach (BaseObject item in items)
+        // Check if we have the required quantity of each item in the inventory
+        for (int i = 0; i < items.Length; i++)
         {
-            int index = findObject(item as IInventoryObject);
-            if (index != -1)
+            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
+            if (targetSlot.count < quantity[i])
             {
-                foundIndices.Add(index);
+
+                Debug.Log("Not enough of item in the inventory: " + items[i]);
+                return;
+            }
+
+        }
+        // If we have all the required items in the necessary quantity, remove them
+        for (int i = 0; i < items.Length; i++)
+        {
+            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
+            int index = findSLOTINDEX(items[i] as IInventoryObject);
+
+            if (targetSlot.count == quantity[i])
+            {
+                database.RemoveItem(index);
+                UpdateSlotUi(index);
             }
             else
             {
-                Debug.Log("Required item not found in the inventory: " + item);
-                return;
+                UpdateSlotUi(index);
             }
         }
 
-        // Remove the input items from the inventory
-        foreach (int index in foundIndices)
-        {
-            database.RemoveItem(index);
-            // Update UI for the slot
-            UpdateSlotUi(index);
-        }
-
-        // Add the new item to the inventory
         AddItem(outputItem as IInventoryObject, 1);
     }
+
 
 
 
@@ -326,8 +329,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         
         return false;
     }
-    
-    public int findObject(IInventoryObject inventoryObject)
+
+    public InventorySlot findSLOT (IInventoryObject inventoryObject)
     {   
         
         for (int i = 0; i < database.GetSize(); i++)
@@ -337,15 +340,48 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             if (slot != null && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
             {
                 
-                return slot.count;
+                return slot;
                     
             }
         }
         
-        return 0;
+        return null;
     }
 
+    public int findSLOTINDEX(IInventoryObject inventoryObject)
+    {
 
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+            if (slot != null && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
+            {
+
+                return i;
+
+            }
+        }
+
+        return -1;
+    }
+    public int findSlotIndex(string inventoryObject)
+    {
+
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+            if (slot != null && (slot.item as BaseObject).itemName == inventoryObject)
+            {
+
+                return i;
+
+            }
+        }
+
+        return -1;
+    }
 
 
     public InventorySlot findSlot(string inventoryObject)
@@ -367,24 +403,25 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     }
 
 
-
-    public int findSlotIndex(string inventoryObject)
+    public BaseObject GetItemByName(string name)
     {
 
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
 
-            if (slot != null && (slot.item as BaseObject).itemName == inventoryObject )
+            if (slot != null && (slot.item as BaseObject).itemName == name)
             {
 
-                return i;
+                return slot.item as BaseObject;
 
             }
         }
 
-        return -1;
+        return null;
     }
+
+
 
 
 

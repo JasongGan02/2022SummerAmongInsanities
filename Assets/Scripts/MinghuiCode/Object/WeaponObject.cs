@@ -15,6 +15,8 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     [SerializeField]
     private BaseObject[] _recipe;
 
+    [SerializeField]
+    private int[] _quantity;
 
     public float getAttack()
     {
@@ -67,12 +69,18 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         get => _recipe;
         set => _recipe = value;
     }
-
     public void Craft(Inventory inventory)
     {
-        inventory.CraftItems(this.Recipe, this);
+        inventory.CraftItems(this.Recipe, this.Quantity, this);
     }
+    #endregion
 
+    #region
+    public int[] Quantity
+    {
+        get => _quantity;
+        set => _quantity = value;
+    }
     #endregion
 
 

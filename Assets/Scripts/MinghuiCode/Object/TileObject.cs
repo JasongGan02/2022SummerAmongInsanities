@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
@@ -22,6 +24,9 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private BaseObject[] _recipe;
+
+    [SerializeField]
+    private int[] _quantity;
 
 
     public GameObject GetPlacedGameObject()
@@ -173,14 +178,17 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         get => _recipe;
         set => _recipe = value;
     }
-
     public void Craft(Inventory inventory)
     {
-        inventory.CraftItems(this.Recipe, this);
+        inventory.CraftItems(this.Recipe,this.Quantity,this);
     }
-
-
     #endregion
 
-
+    #region
+    public int[] Quantity
+    {
+        get => _quantity;
+        set => _quantity = value;
+    }
+    #endregion
 }
