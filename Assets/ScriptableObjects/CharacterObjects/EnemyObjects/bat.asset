@@ -18,9 +18,11 @@ MonoBehaviour:
   HP: 10
   AtkDamage: 4
   AtkInterval: 3
-  AtkRange: 0
+  AtkRange: 3
   MovingSpeed: 3
+  JumpForce: 0
   Drops:
   - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
     chance: 5
-  SensingRange: 4
+  SensingRange: 6
+  Hatred: []

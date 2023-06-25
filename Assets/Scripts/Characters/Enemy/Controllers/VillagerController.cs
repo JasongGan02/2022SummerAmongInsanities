@@ -55,37 +55,7 @@ public class VillagerController : EnemyController
 
         if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider(true); }
         else { ChangeCollider(false); }
-        //if (IsPlayerSensed() && villager_sight())   
-        //{
-        //    if (IsPlayerInAtkRange())
-        //    {
-        //        attack();
-        //    }
-        //    else
-        //    {
-        //        approachPlayer(2 * MovingSpeed);
-        //        flip(player.transform);
-        //    }
-        //}
-        //else if(IsTowerSensed())
-        //{
-        //    if (IsTowerInAtkRange( (int) AtkRange))
-        //    {
-        //        flip(NearestTowerTransform);
-        //        attackTower(NearestTowerTransform); 
-        //    }else
-        //    {
-        //        animator.SetBool("IsStanding", true);
-        //        animator.SetBool("IsRunning", false);
-        //        transform.position = Vector2.MoveTowards(transform.position, NearestTowerTransform.position, MovingSpeed * Time.deltaTime);
-        //        flip(NearestTowerTransform);
-
-        //    }
-        //}
-        //else
-        //{
-        //    patrol();
-        //}
+        
 
         target = WhatToAttack();
         if (target == null) { patrol(); }
@@ -120,15 +90,19 @@ public class VillagerController : EnemyController
 
     bool IsTowerInAtkRange(int AtkRange)
     {
-        float distance = CalculateDistanceFromEnemyToTower(target.transform);
-        if (distance <= AtkRange)
+        if (target != null)
         {
-            return true;
+            float distance = CalculateDistanceFromEnemyToTower(target.transform);
+            if (distance <= AtkRange)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     void attackTower(Transform target)
     {
