@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyObject : CharacterObject
 {
     public float SensingRange;
-    public List<CharacterObject> Hatred;
+    public List<string> Hatred;
 
     /*
     public override GameObject GetSpawnedGameObject()

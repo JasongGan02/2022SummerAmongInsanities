@@ -21,6 +21,8 @@ public class BatController : EnemyController
     private ParticleSystem Ps;
     private float BatTimer;
 
+    private GameObject target;
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -50,13 +52,19 @@ public class BatController : EnemyController
         animator = GetComponent<Animator>();
         Tr = GetComponent<TrailRenderer>();
         Ps = GetComponent<ParticleSystem>();
-        //if (Ps.isPlaying) Ps.Stop();
+
+        Hatred.Add("PlayerController");
+        Hatred.Add("CatapultTowerController");
+        Hatred.Add("ArcherTowerController");
     }
     
 
     protected override void EnemyLoop()
     {
-        if (player == null)
+        if (!planned) { target = WhatToAttack(); } // attacking behavior is uninterruptable
+        else if (target == null) { target = WhatToAttack(); } // once target is destroied but an attack is planned
+
+        if (target == null)
         {
             // Patrol
             if(animator.GetBool("is_attacking") == true) { animator.SetBool("is_attacking", false); }
@@ -69,22 +77,21 @@ public class BatController : EnemyController
         }
         else 
         {
-            if (IsPlayerSensed() || planned)
+            if (Vector2.Distance(target.transform.position, transform.position) < SensingRange || planned)
             {
-                if (IsPlayerInAtkRange() || planned)
+                if (Vector2.Distance(target.transform.position, transform.position) < AtkRange || planned)
                 {
                     // atk player
-                    DashAttack();
+                    DashAttack(target.transform);
                 }
                 else
                 {
                     // approaching player
-                    ApproachingTarget(player.transform);
+                    ApproachingTarget(target.transform);
                 }
             }
             else
             {
-                // Patrol
                 Patrol();
                 if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
                 {
@@ -135,16 +142,16 @@ public class BatController : EnemyController
         }
     }
 
-    void DashAttack()
+    void DashAttack(Transform destination)
     {
-
+        Debug.Log("is attacking");
         if (prepare_dash)           
         {
             if (!Ps.isPlaying) Ps.Play();
 
             if (!planned)
             {         // set attack route
-                PlanRoute();
+                PlanRoute(destination);
                 planned = true;
             }
             
@@ -152,7 +159,7 @@ public class BatController : EnemyController
             {
                 prepare_dash = false;
                 is_dashing = true;
-                PlanRoute();
+                PlanRoute(destination);
             }
             else
             {
@@ -167,9 +174,9 @@ public class BatController : EnemyController
             transform.position = Vector2.MoveTowards(transform.position, dash_end, MovingSpeed * 5 * Time.deltaTime);
             animator.SetBool("is_attacking", true); 
             Tr.emitting = true;
-            if (Vector2.Distance(transform.position, player.transform.position) < 0.4f && !attacked)
+            if (Vector2.Distance(transform.position, destination.position) < 0.4f && !attacked)
             {
-                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+                target.GetComponent<CharacterController>().takenDamage(AtkDamage);
                 attacked = true;
             }
             if (CloseEnough(transform.position, dash_end))
@@ -192,7 +199,7 @@ public class BatController : EnemyController
             {
                 transform.position = Vector2.MoveTowards(transform.position, stop_point, MovingSpeed * Time.deltaTime);
             }
-            if (player.transform.position.x < transform.position.x && facingRight || player.transform.position.x > transform.position.x && !facingRight)
+            if (destination.position.x < transform.position.x && facingRight || destination.position.x > transform.position.x && !facingRight)
             {
                 Flip();
             }
@@ -200,21 +207,21 @@ public class BatController : EnemyController
 
     }
     // make attack plan (dash_start -> dash_End -> stop_point -> dash_start...)
-    void PlanRoute()
+    void PlanRoute(Transform destination)
     {
-        dash_end = player.transform.position;
-        stop_point = player.transform.position;
-        if (player.transform.position.x > transform.position.x)           // player is on the right side
+        dash_end = destination.position;
+        stop_point = destination.position;
+        if (destination.position.x > transform.position.x)           // player is on the right side
         {
-            dash_end.x += player.transform.position.x - transform.position.x;
-            dash_end.y -= transform.position.y - player.transform.position.y;
+            dash_end.x += destination.position.x - transform.position.x;
+            dash_end.y -= transform.position.y - destination.position.y;
             stop_point.x += 1;
             stop_point.y += 3;
         }
         else                                                    // player is on the left side
         {
-            dash_end.x -= (transform.position.x - player.transform.position.x);
-            dash_end.y -= (transform.position.y - player.transform.position.y);
+            dash_end.x -= (transform.position.x - destination.position.x);
+            dash_end.y -= (transform.position.y - destination.position.y);
             stop_point.x -= 1;
             stop_point.y += 3;
         }

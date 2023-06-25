@@ -20,7 +20,8 @@ MonoBehaviour:
   AtkInterval: 5
   AtkRange: 10
   MovingSpeed: 1.5
-  Drops: []
   JumpForce: 0.75
+  Drops: []
   SensingRange: 10
+  Hatred: []
   arrowPrefab: {fileID: 2674270034793632360, guid: 155a51388b89c304ea0688b86461d282, type: 3}
