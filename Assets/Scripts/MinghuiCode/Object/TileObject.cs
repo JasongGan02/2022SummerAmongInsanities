@@ -183,6 +183,11 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         inventory.CraftItems(this.Recipe,this.Quantity,this);
     }
+
+    public BaseObject[] getRecipe()
+    {
+        return Recipe;
+    }
     #endregion
 
     #region
@@ -190,6 +195,11 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         get => _quantity;
         set => _quantity = value;
+    }
+
+    public int[] getQuantity()
+    {
+        return Quantity;
     }
     #endregion
 }
