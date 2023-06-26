@@ -161,6 +161,8 @@ public class Weapon : MonoBehaviour
             Debug.Log("da dao le");
             VillagerController villager = collision.gameObject.GetComponent<VillagerController>();
             villager.takenDamage(1);
+            LadyController lady = collision.gameObject.GetComponent<LadyController>();
+            lady.takenDamage(1);
         }
            
     }

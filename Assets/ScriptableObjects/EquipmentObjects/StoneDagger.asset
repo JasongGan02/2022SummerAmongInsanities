@@ -20,3 +20,4 @@ MonoBehaviour:
   durability: 99
   _maxStack: 1
   _recipe: []
+  _quantity: 

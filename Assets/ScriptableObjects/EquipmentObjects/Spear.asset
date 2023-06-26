@@ -19,6 +19,5 @@ MonoBehaviour:
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
-  attack: 10
-  farm: 0.5
-  frequency: 0.5
+  _recipe: []
+  _quantity: 

@@ -178,6 +178,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         get => _recipe;
         set => _recipe = value;
     }
+
     public void Craft(Inventory inventory)
     {
         inventory.CraftItems(this.Recipe,this.Quantity,this);

@@ -181,16 +181,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         {
             InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
             int index = findSLOTINDEX(items[i] as IInventoryObject);
-
-            if (targetSlot.count == quantity[i])
-            {
-                database.RemoveItem(index);
-                UpdateSlotUi(index);
-            }
-            else
-            {
-                UpdateSlotUi(index);
-            }
+            targetSlot.count = targetSlot.count - quantity[i];
+            UpdateSlotUi(index);
         }
 
         AddItem(outputItem as IInventoryObject, 1);
@@ -336,7 +328,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-   
+    
             if (slot != null && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
             {
                 
@@ -344,7 +336,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
                     
             }
         }
-        
+
+        Debug.Log("Item not found in the inventory");
         return null;
     }
 
@@ -401,29 +394,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
         return null;
     }
-
-
-    public BaseObject GetItemByName(string name)
-    {
-
-        for (int i = 0; i < database.GetSize(); i++)
-        {
-            InventorySlot slot = database.GetInventorySlotAtIndex(i);
-
-            if (slot != null && (slot.item as BaseObject).itemName == name)
-            {
-
-                return slot.item as BaseObject;
-
-            }
-        }
-
-        return null;
-    }
-
-
-
-
 
 
 

@@ -66,7 +66,7 @@ public class LadyController : EnemyController
         }
         else
         {
-            Debug.Log("not patroling");
+            /*Debug.Log("not patroling");*/
             Vector2 direction = (target.transform.position - transform.position);
             if (direction.x > 0)
             {

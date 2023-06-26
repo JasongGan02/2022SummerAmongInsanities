@@ -24,6 +24,18 @@ public class CraftingUIManager : MonoBehaviour
     private Button item4;
     private Image item4Image;
 
+    [SerializeField]
+    private BaseObject object0;
+    [SerializeField]
+    private BaseObject object1;
+    [SerializeField]
+    private BaseObject object2;
+    [SerializeField]
+    private BaseObject object3;
+    [SerializeField]
+    private BaseObject object4;
+
+
     private Image outputItem;
     private Image inputItem0;
     private Image inputItem1;
@@ -79,11 +91,13 @@ public class CraftingUIManager : MonoBehaviour
         item3.onClick.AddListener(() => ItemButtonClicked(item3Image.sprite, item3));
         item4.onClick.AddListener(() => ItemButtonClicked(item4Image.sprite, item4));
 
-        itemButtonToBaseObjectMapping[item0] = inventory.GetItemByName("Gold");
-        itemButtonToBaseObjectMapping[item1] = inventory.GetItemByName("Iron");
-        itemButtonToBaseObjectMapping[item2] = inventory.GetItemByName("Axe");
-        itemButtonToBaseObjectMapping[item3] = inventory.GetItemByName("Bow");
-        itemButtonToBaseObjectMapping[item4] = inventory.GetItemByName("Arrow");
+        itemButtonToBaseObjectMapping.Add(item0, object0);
+        itemButtonToBaseObjectMapping.Add(item1, object1);
+        itemButtonToBaseObjectMapping.Add(item2, object2);
+        itemButtonToBaseObjectMapping.Add(item3, object3);
+        itemButtonToBaseObjectMapping.Add(item4, object4);
+
+
 
 
         //set them to not be visible
@@ -113,8 +127,10 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftButtonClicked()
     {
+        
         if (selectedBaseObject is ICraftableObject craftableObject)
         {
+  
             craftableObject.Craft(inventory);
         }
 
@@ -135,9 +151,6 @@ public class CraftingUIManager : MonoBehaviour
         CraftButton.gameObject.SetActive(true);
 
         selectedBaseObject = itemButtonToBaseObjectMapping[n];
-
-
-
 
 
     }
