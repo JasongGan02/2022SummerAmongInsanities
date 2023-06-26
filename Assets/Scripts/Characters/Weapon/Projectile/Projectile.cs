@@ -9,7 +9,9 @@ public class Projectile : MonoBehaviour
     public Playermovement playermovement;
     private Inventory inventory;
 
+    [SerializeField]
     private float speed = 18f;
+    [SerializeField]
     private int damage = 1;
 
     public virtual void Start()
@@ -36,9 +38,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
         {
-            Debug.Log("arrow da dao le");
-            VillagerController villager = collision.gameObject.GetComponent<VillagerController>();
-            villager.takenDamage(2);
+            collision.gameObject.GetComponent<CharacterController>().takenDamage(damage);
             Destroy(gameObject);
         }
         else
