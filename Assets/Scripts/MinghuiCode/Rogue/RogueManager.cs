@@ -43,6 +43,7 @@ public class RogueManager : MonoBehaviour
         uiViewStateManager.UpdateUiBeingViewedEvent -= ToggleRogueUI;
     }
 
+
     private void SetupUI()
     {
         rogueUI = GameObject.Find(NAME_ROGUE_UI);
