@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using System;
 using System.Threading;
 using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.GraphicsBuffer;
 
 public class Weapon : MonoBehaviour
 {
@@ -15,23 +16,23 @@ public class Weapon : MonoBehaviour
 
     
 
-    [SerializeField] public GameObject player; 
+    protected GameObject player;
 
-    public Playermovement playermovement;
-    public PlayerInteraction playerinteraction;
-    public Inventory inventory;
+    protected Playermovement playermovement;
+    protected PlayerInteraction playerinteraction;
+    protected Inventory inventory;
     
 
     protected WeaponObject weaponStats;
     protected float AtkInterval = 1f;
     protected float farm;
-    protected float Attack;
+    protected float AttackDamage;
 
-    public float speed;
-    public float magnitude = 0.1f;
-    public float maxSpeed = 10f; // Set the maximum speed of the object
-    public float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
-    public float frequency = 10f;
+    protected float speed;
+    protected float magnitude = 0.1f;
+    protected float maxSpeed = 10f; // Set the maximum speed of the object
+    protected float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
+    protected float frequency = 10f;
 
     public virtual void Start()
     {
@@ -158,11 +159,9 @@ public class Weapon : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
         {
-            Debug.Log("da dao le");
-            VillagerController villager = collision.gameObject.GetComponent<VillagerController>();
-            villager.takenDamage(1);
-            LadyController lady = collision.gameObject.GetComponent<LadyController>();
-            lady.takenDamage(1);
+            
+            collision.gameObject.GetComponent<CharacterController>().takenDamage(1);
+
         }
            
     }
