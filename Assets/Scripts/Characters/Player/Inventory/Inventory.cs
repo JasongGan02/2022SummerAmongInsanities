@@ -379,7 +379,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
     public InventorySlot findSlot(string inventoryObject)
     {
-
+       
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
@@ -393,6 +393,44 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
 
         return null;
+    }
+
+
+    public int findItemCount(BaseObject inventoryObject)
+    {
+        // Ensure that inventoryObject is not null
+        if (inventoryObject == null)
+        {
+            Debug.LogError("inventoryObject is null");
+            return 0;
+        }
+
+        int count = 0;
+
+        // Ensure that database is not null
+        if (database != null)
+        {
+            for (int i = 0; i < database.GetSize(); i++)
+            {
+                InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+                // Ensure that slot and slot.item are not null
+                if (slot != null && slot.item != null)
+                {
+                    BaseObject baseObject = slot.item as BaseObject;
+                    if (baseObject != null && baseObject.itemName == inventoryObject.itemName)
+                    {
+                        count += slot.count;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("database is null");
+        }
+
+        return count;
     }
 
 

@@ -18,6 +18,11 @@ public class BaseObject : ScriptableObject
     /**
      * set itemName to fileName
      */
+
+    public Sprite getPrefabSprite()
+    {
+        return prefab.GetComponent<SpriteRenderer>().sprite;
+    }
     private void OnValidate()
     {
         itemName = Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(this));

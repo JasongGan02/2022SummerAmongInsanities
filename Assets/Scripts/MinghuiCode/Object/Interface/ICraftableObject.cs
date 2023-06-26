@@ -12,6 +12,8 @@ public interface ICraftableObject
 
     public void Craft(Inventory inventory);
 
- 
+    public BaseObject[] getRecipe();
+
+    public int[] getQuantity();
 
 }

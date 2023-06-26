@@ -69,6 +69,11 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         get => _recipe;
         set => _recipe = value;
     }
+
+    public BaseObject[] getRecipe()
+    {
+        return Recipe;
+    }
     public void Craft(Inventory inventory)
     {
         inventory.CraftItems(this.Recipe, this.Quantity, this);
@@ -80,6 +85,10 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     {
         get => _quantity;
         set => _quantity = value;
+    }
+    public int[] getQuantity()
+    {
+        return Quantity;
     }
     #endregion
 

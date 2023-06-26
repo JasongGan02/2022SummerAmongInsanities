@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class CraftingUIManager : MonoBehaviour
@@ -132,7 +133,9 @@ public class CraftingUIManager : MonoBehaviour
         {
   
             craftableObject.Craft(inventory);
+            UpdateUi();
         }
+
 
     }
 
@@ -140,20 +143,65 @@ public class CraftingUIManager : MonoBehaviour
     {
         outputItem.sprite = itemSprite;
         outputItem.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
-        inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
-        inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 1);
-        inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 1);
-
-        num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 1);
-        num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 1);
-        num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 1);
     
         CraftButton.gameObject.SetActive(true);
 
         selectedBaseObject = itemButtonToBaseObjectMapping[n];
-
+        UpdateUi();
 
     }
+
+
+    private void UpdateUi()
+    {
+        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+        BaseObject[] inputItems = craftableObject.getRecipe();
+        int[] inputQuantities = craftableObject.getQuantity();
+        if (inputItems.Length == 0)
+        {
+            inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0);
+            num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 0);
+        }
+        else
+        {
+            inputItem0.sprite = inputItems[0].getPrefabSprite();
+            inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
+            num0.text = inventory.findItemCount(inputItems[0]) + "/" + inputQuantities[0];
+            num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 1);
+        }
+
+        if (inputItems.Length <= 1)
+        {
+            inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 0);
+            num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 0);
+
+        }
+        else
+        {
+            inputItem1.sprite = inputItems[1].getPrefabSprite();
+            inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 1);
+            num1.text = inventory.findItemCount(inputItems[1]) + "/" + inputQuantities[1];
+            num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 1);
+        }
+
+
+        if (inputItems.Length <= 2)
+        {
+            inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 0);
+            num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 0);
+        }
+        else
+        {
+            inputItem2.sprite = inputItems[2].getPrefabSprite();
+            inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 1);
+            num2.text = inventory.findItemCount(inputItems[2]) + "/" + inputQuantities[2];
+            num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 1);
+        }
+    }
+
+
+
+
 
 
     private const string NAME_CRAFT_UI = "CraftUI";
