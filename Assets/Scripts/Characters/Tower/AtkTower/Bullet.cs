@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
         if(other.gameObject.tag == "enemy")
         {
             // cause damage
-            (other.GetComponent(typeof(EnemyController)) as EnemyController).takenDamage(damage, transform.parent.gameObject);
+            (other.GetComponent(typeof(EnemyController)) as CharacterController).takenDamage(damage);
             
             // delete bullet
             Destroy(gameObject);

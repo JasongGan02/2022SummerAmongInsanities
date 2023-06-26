@@ -25,9 +25,18 @@ public class TowerController : CharacterController
         constructionMode.EnergyConsumption(energyCost*-1);
         Destroy(gameObject);
         OnObjectDestroyed(isPlacedByPlayer);
-    }   
+    }
 
-    
+    public override void takenDamage(float dmg)
+    {
+        HP -= dmg;
+        if (HP <= 0)
+        {
+            death();
+        }
+    }
+
+
     public void TestDrop() 
     {
         if (Input.GetMouseButtonDown(1)) // Check if right mouse button was clicked
