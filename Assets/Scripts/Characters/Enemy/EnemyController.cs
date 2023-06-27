@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 using System.Linq.Expressions;
+using static UnityEngine.GraphicsBuffer;
 
 public abstract class EnemyController : CharacterController
 {
@@ -30,6 +31,8 @@ public abstract class EnemyController : CharacterController
 
     protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
 
+    public LayerMask ground_mask;
+    protected Rigidbody2D rb;
 
     protected override void Awake()
     {
@@ -270,5 +273,24 @@ public abstract class EnemyController : CharacterController
         }
         //Debug.Log("didn't find target");
         return false; 
+    }
+    
+    public bool headCheck()
+    {
+        Vector3 direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
+        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
+        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
+        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
+        {
+            return false;
+        }
+
+        return true;
+    }
+    public void Jump()
+    {
+        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
 }

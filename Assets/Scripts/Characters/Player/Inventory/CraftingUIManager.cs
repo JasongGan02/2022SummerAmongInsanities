@@ -147,7 +147,7 @@ public class CraftingUIManager : MonoBehaviour
         CraftButton.gameObject.SetActive(true);
 
         selectedBaseObject = itemButtonToBaseObjectMapping[n];
-        UpdateUi();
+        UpdateUi(); 
 
     }
 

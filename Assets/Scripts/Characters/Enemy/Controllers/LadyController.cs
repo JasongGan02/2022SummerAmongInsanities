@@ -28,6 +28,13 @@ public class LadyController : EnemyController
     private bool patrolToRight = false;
     private bool facingright = false;
 
+    public Transform groundCheckLeft;
+    public Transform groundCheckCenter;
+    public Transform groundCheckRight;
+    public Transform frontCheck;
+    public Transform backCheck;
+    LayerMask ground_mask;
+
     void Start()
     {
         arrowSpawnPoint = transform;
@@ -35,6 +42,7 @@ public class LadyController : EnemyController
         rb = gameObject.GetComponent<Rigidbody2D>();
         wallLayer = LayerMask.GetMask("ground");
         towerContainer = FindObjectOfType<TowerContainer>();
+        
     }
 
     new void Awake()
@@ -43,6 +51,12 @@ public class LadyController : EnemyController
         Hatred.Add("CatapultTowerController");
         Hatred.Add("ArcherTowerController");
         Hatred.Add("TrapTowerController");
+        ground_mask = LayerMask.GetMask("ground");
+        groundCheckLeft = transform.Find("groundCheckLeft");
+        groundCheckCenter = transform.Find("groundCheckCenter");
+        groundCheckRight = transform.Find("groundCheckRight");
+        frontCheck = transform.Find("frontCheck");
+        backCheck = transform.Find("frontCheck");
     }
 
     void FireArrow(){
@@ -124,7 +138,7 @@ public class LadyController : EnemyController
                 }
             }
 
-            if (Vector2.Distance(transform.position, target.transform.position) <= AtkRange)
+            if (Vector2.Distance(transform.position, target.transform.position) <= AtkRange && lady_sight())
             {
                 // Check if the archer can fire
                 if (canFire)
@@ -210,5 +224,56 @@ public class LadyController : EnemyController
             facingright = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
+    }
+
+    private bool lady_sight()
+    {
+        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
+        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+
+        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
+        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
+
+        float distance1 = Vector2.Distance(targetTop, villagerTop);
+        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
+
+        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
+        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
+        if (checkTop.collider != null &&
+            checkBottom.collider != null &&
+            checkTop.collider.gameObject.CompareTag("ground") &&
+            checkBottom.collider.gameObject.CompareTag("ground"))
+        {
+            //Debug.Log("there is ground block");
+            return false;
+        }
+        return true;
+    }
+    new void SenseFrontBlock()
+    {
+        headCheck();
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.05f, ground_mask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.left, 0.05f, ground_mask);
+
+
+        if (hitLeft.transform != null
+            || hitRight.transform != null
+            || hitCenter.transform != null)
+        {
+            if (hitFront.transform != null || hitBack.transform != null)
+            {
+                if (headCheck()) { Jump(); /*Debug.Log("jumping."); */ }
+                else { /*Debug.Log("front obstacle too high!");*/ }
+            }
+            else { /*Debug.Log("no obstacle in front");*/ }
+        }
+        else { /*Debug.Log("foot in the air");*/ }
+
     }
 }
