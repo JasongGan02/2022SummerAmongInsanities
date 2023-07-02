@@ -1,17 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class SaveSlotsMenu : MonoBehaviour
+public class SaveSlotsMenu : Menu
 {
     [Header("Manu Navigation")]
     [SerializeField] private MainMenu mainMenu;
+
+    [Header("Manu Buttons")]
+    [SerializeField] private Button backButton;
 
     private SaveSlot[] saveSlots;
     
     private void Awake()
     {
         saveSlots = this.GetComponentsInChildren<SaveSlot>();
+    }
+
+    public void OnSaveSlotClicked(SaveSlot saveSlot)
+    {
+        DisableMenuButtons();
+        DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+        DataPersistenceManager.instance.NewGame();
+        SceneManager.LoadSceneAsync("JasonScene");
     }
 
     public void OnBackClicked()
@@ -36,5 +49,14 @@ public class SaveSlotsMenu : MonoBehaviour
     public void DeactivateMenu()
     {
         this.gameObject.SetActive(false);
+    }
+
+    private void DisableMenuButtons()
+    {
+        foreach (SaveSlot saveSlot in saveSlots)
+        {
+            saveSlot.SetInteractable(false);
+        }
+        backButton.interactable = false;
     }
 }
