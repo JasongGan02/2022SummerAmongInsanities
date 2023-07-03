@@ -24,7 +24,7 @@ public class SaveSlotsMenu : Menu
         DisableMenuButtons();
         DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
         DataPersistenceManager.instance.NewGame();
-        SceneManager.LoadSceneAsync("JasonScene");
+        SceneManager.LoadSceneAsync("MainScene");
     }
 
     public void OnBackClicked()
