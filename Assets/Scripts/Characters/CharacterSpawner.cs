@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSpawner : MonoBehaviour
+public class CharacterSpawner : MonoBehaviour, IDataPersistence
 {
     public CharacterAtlas characterAtlas;
     CoreArchitecture coreArchitecture;
     float RespwanTimeInterval;
     float timer;
+    private int deathCount = 0;
 
     private void Awake()
     {
@@ -24,6 +25,15 @@ public class CharacterSpawner : MonoBehaviour
 
     }
 
+    public void LoadData(GameData data)
+    {
+        this.deathCount = data.deathCount;
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.deathCount = this.deathCount;
+    }
 
     protected void Update()
     {
@@ -34,6 +44,7 @@ public class CharacterSpawner : MonoBehaviour
             {
                 SpawnPlayer();
                 timer = 0f;
+                deathCount++;
             }
         }
     }
