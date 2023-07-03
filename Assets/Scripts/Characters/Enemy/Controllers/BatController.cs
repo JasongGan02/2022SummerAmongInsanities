@@ -53,9 +53,6 @@ public class BatController : EnemyController
         Tr = GetComponent<TrailRenderer>();
         Ps = GetComponent<ParticleSystem>();
 
-        Hatred.Add("PlayerController");
-        Hatred.Add("CatapultTowerController");
-        Hatred.Add("ArcherTowerController");
     }
     
 
@@ -144,7 +141,7 @@ public class BatController : EnemyController
 
     void DashAttack(Transform destination)
     {
-        Debug.Log("is attacking");
+        //Debug.Log("is attacking");
         if (prepare_dash)           
         {
             if (!Ps.isPlaying) Ps.Play();

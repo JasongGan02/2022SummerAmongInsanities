@@ -26,6 +26,7 @@ public abstract class CharacterController : MonoBehaviour /*, IEffectableObject*
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
+    protected List<TextAsset> Hatred;
    
 
     protected List<EffectObject> effects;

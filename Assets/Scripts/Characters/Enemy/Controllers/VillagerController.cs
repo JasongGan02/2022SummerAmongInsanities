@@ -22,6 +22,7 @@ public class VillagerController : EnemyController
     public Transform groundCheckCenter;
     public Transform groundCheckRight;
     public Transform frontCheck;
+    public Transform backCheck;
     LayerMask ground_mask;
 
     private BoxCollider2D boxCollider;
@@ -38,13 +39,14 @@ public class VillagerController : EnemyController
         groundCheckCenter = transform.Find("groundCheckCenter");
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
+        backCheck = transform.Find("backCheck");
         boxCollider = GetComponent<BoxCollider2D>();
         edgeCollider = GetComponent<EdgeCollider2D>();
 
-        Hatred.Add("PlayerController");
-        Hatred.Add("ArcherTowerController");
-        Hatred.Add("CatapultTowerController");
-        Hatred.Add("TrapTowerController");
+        //Hatred.Add("PlayerController");
+        //Hatred.Add("ArcherTowerController");
+        //Hatred.Add("CatapultTowerController");
+        //Hatred.Add("TrapTowerController");
     }
 
     protected override void EnemyLoop()
@@ -272,14 +274,14 @@ public class VillagerController : EnemyController
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.05f, ground_mask);
-        
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
 
         if (hitLeft.transform != null
             || hitRight.transform != null
             || hitCenter.transform != null)
         {
-            if (hitFront.transform != null)
+            if (hitFront.transform != null || hitBack.transform != null)
             {
                 if (headCheck()) { Jump(); /*Debug.Log("jumping."); */ }
                 else { /*Debug.Log("front obstacle too high!");*/ }

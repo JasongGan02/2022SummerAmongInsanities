@@ -13,7 +13,6 @@ public abstract class EnemyController : CharacterController
 {
 
     protected float SensingRange;
-    public List<string> Hatred = new List<string>();
     public GameObject tempTarget;
     public Collider2D[] colliders;
 
@@ -31,8 +30,7 @@ public abstract class EnemyController : CharacterController
 
     protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
 
-    public LayerMask ground_mask;
-    protected Rigidbody2D rb;
+    
 
     protected override void Awake()
     {
@@ -54,6 +52,7 @@ public abstract class EnemyController : CharacterController
         { 
             player = GameObject.Find("Player"); 
         }
+        if (this.transform.position.y < -400) death();
         EnemyLoop();
     }
 
@@ -247,13 +246,13 @@ public abstract class EnemyController : CharacterController
             //Debug.Log(Hatred.Count);
             for (int i = 0; i < Hatred.Count; i++)
             {
-                if (CouldSense(Hatred[i], SensingRange))
+                if (CouldSense(Hatred[i].name, SensingRange))
                 {
                     return tempTarget;
                 }
             }
         }
-        else { Debug.Log("Hatred is less than 0"); }
+        else { Debug.Log("Hatred is empty"); }
         return target;
     }
 
@@ -263,34 +262,27 @@ public abstract class EnemyController : CharacterController
         //Debug.Log(colliders.Length);
         foreach (Collider2D collider in colliders)
         {
-            //Debug.Log("collider's name is " + collider.gameObject.name);
-            if (collider.gameObject.GetComponent(name) != null)
+            Component[] components = collider.gameObject.GetComponents<Component>();
+            foreach (Component component in components)
             {
-                // Found a component with the specified name on the GameObject
-                tempTarget = collider.gameObject;
-                return true;
+                if (component != null && component.GetType().Name == name)
+                {
+                    tempTarget = collider.gameObject;
+                    return true;
+                }
             }
+
+            ////Debug.Log("collider's name is " + collider.gameObject.name);
+            //if (collider.gameObject.GetComponent(name) != null)
+            //{
+            //    // Found a component with the specified name on the GameObject
+            //    tempTarget = collider.gameObject;
+            //    return true;
+            //}
         }
         //Debug.Log("didn't find target");
         return false; 
     }
     
-    public bool headCheck()
-    {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
-        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
-        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
-        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
-        {
-            return false;
-        }
-
-        return true;
-    }
-    public void Jump()
-    {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
-        rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
-    }
+    
 }

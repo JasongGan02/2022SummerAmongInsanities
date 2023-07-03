@@ -11,14 +11,19 @@ public class CatapultTowerController : AttackTowerController
     [SerializeField] float maxBulletYSpeed = 10f; // maximum bullet y speed
 
     Animator animator;
+    GameObject target;
+
     // Start is called before the first frame update
     void Start()
     {
-        enemyContainer = FindObjectOfType<EnemyContainer>();
+        //enemyContainer = FindObjectOfType<EnemyContainer>();
         animator = GetComponent<Animator>();
-        isEnemySpotted = false;
+        //isEnemySpotted = false;
         bullet_x_flyingSpeed = bullet_speed;
-        InvokeRepeating("Attack", 0.5f, AtkInterval);   
+        InvokeRepeating("Attack", 0.5f, AtkInterval);
+        //Hatred.Add("VillagerController");
+        //Hatred.Add("LadyController");
+        SensingRange = AtkRange;
     }   
 
     
@@ -26,12 +31,10 @@ public class CatapultTowerController : AttackTowerController
     
     public void Attack()
     {
-        Transform enemyTransform = SenseNearestEnemyTransform();
-        
-        if (isEnemySpotted)
+        target = WhatToAttack();
+        if (target != null)
         {
-            
-            Shoot(enemyTransform);
+            Shoot(tempTarget.transform);
         }
     }
 
@@ -87,7 +90,9 @@ public class CatapultTowerController : AttackTowerController
 */
     Vector2 CalculateBulletSpeed(Transform enemyTransform)
     {
-        float deltaX = enemyTransform.position.x - transform.position.x;
+        Transform firingStart = transform.Find("FiringPoint");
+        float deltaX = enemyTransform.position.x - firingStart.position.x;
+        //Debug.Log("Distance: " + Mathf.Abs(deltaX));
         if(Mathf.Abs(deltaX) <= 3f)
         {
             Debug.Log("Catapult cannot firing in this direction");
@@ -96,7 +101,7 @@ public class CatapultTowerController : AttackTowerController
 
         float bullet_xSpeed = (deltaX > 0) ? bullet_x_flyingSpeed : -bullet_x_flyingSpeed;
 
-        float deltaY = enemyTransform.position.y - transform.position.y;
+        float deltaY = enemyTransform.position.y - firingStart.position.y;
         float flying_time = deltaX / bullet_xSpeed;
         float gravity = Physics2D.gravity.y;
         float bullet_ySpeed = (deltaY - 0.5f*gravity*flying_time*flying_time)/flying_time;

@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6284e36f157029949865bad2c5419cbc, type: 3}
   m_Name: BatSo
   m_EditorClassIdentifier: 
-  EnemyName: Bat
+  itemName: BatSo
+  sizeRatio: 1
+  prefab: {fileID: 0}
   HP: 12
   AtkDamage: 4
   AtkInterval: 3
+  AtkRange: 0
   MovingSpeed: 3
+  JumpForce: 0
+  Drops: []
   SensingRange: 5
-  drops: []
+  Hatred:
+  - {fileID: 11400000, guid: c4c1a86a209c6a14d89731a37a92f48d, type: 2}

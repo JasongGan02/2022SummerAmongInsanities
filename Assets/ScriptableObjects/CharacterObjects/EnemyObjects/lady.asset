@@ -16,11 +16,11 @@ MonoBehaviour:
   sizeRatio: 1
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
   HP: 10
-  AtkDamage: 1
+  AtkDamage: 3
   AtkInterval: 5
   AtkRange: 10
-  MovingSpeed: 1.5
-  JumpForce: 0.75
+  MovingSpeed: 3
+  JumpForce: 0.25
   Drops: []
   SensingRange: 10
   Hatred: []
