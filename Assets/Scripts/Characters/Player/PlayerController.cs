@@ -42,12 +42,12 @@ public class PlayerController : CharacterController, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        this.deathCount = data.deathCount;
+        //this.deathCount = data.deathCount;
     }
 
     public void SaveData(GameData data)
     {
-        data.deathCount = this.deathCount;
+        //data.deathCount = this.deathCount;
     }
 
     void FixedUpdate()
