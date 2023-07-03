@@ -19,8 +19,8 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnPlayer();
-        //SpawnBat();
-        //SpawnVillager();
+        SpawnBat();
+        SpawnVillager();
         //SpawnLady();
 
     }
