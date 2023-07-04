@@ -166,7 +166,7 @@ public class RogueManager : MonoBehaviour
         selectedNodes.Add(node);
         selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
 
-
+        
         // Get the script component type from the EffectObject
         Type applyingControllerType = node.effect?.GetApplyingControllerType();
 
@@ -186,6 +186,7 @@ public class RogueManager : MonoBehaviour
 
         for(int i = 0; i < buffContainer.transform.childCount; i++)
         {
+            Debug.Log("899");
             GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
             buffCard.GetComponent<BuffSelectionController>().OnBuffSelectedEvent -= HandleBuffSelectedEvent;
             Destroy(buffCard);

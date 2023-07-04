@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DivinityFrag
   m_EditorClassIdentifier: 
   itemName: DivinityFrag
-  sizeRatio: 0.125
-  prefab: {fileID: 5481595800395744475, guid: f4aea43a44866dd4ba8565affa9f5946, type: 3}
+  sizeRatio: 0.25
+  prefab: {fileID: 2894248192951013740, guid: 72ea33cb856920b48889d7cc1f39ae11, type: 3}
   _maxStack: 64
