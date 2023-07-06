@@ -18,11 +18,9 @@ public class CatapultTowerController : AttackTowerController
     {
         //enemyContainer = FindObjectOfType<EnemyContainer>();
         animator = GetComponent<Animator>();
-        //isEnemySpotted = false;
+        isEnemySpotted = false;
         bullet_x_flyingSpeed = bullet_speed;
         InvokeRepeating("Attack", 0.5f, AtkInterval);
-        //Hatred.Add("VillagerController");
-        //Hatred.Add("LadyController");
         SensingRange = AtkRange;
     }   
 

@@ -30,3 +30,6 @@ MonoBehaviour:
   bullet_speed: 3
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   _maxStack: 4
+  Hatred:
+  - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
+  - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}

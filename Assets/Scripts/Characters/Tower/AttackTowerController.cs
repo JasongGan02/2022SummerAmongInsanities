@@ -14,7 +14,6 @@ public abstract class AttackTowerController : TowerController
     protected float AtkTimer;        // Timer
 
     protected float SensingRange;
-    public List<string> Hatred = new List<string>();
     public GameObject tempTarget;
     public Collider2D[] colliders;
 
@@ -65,7 +64,7 @@ public abstract class AttackTowerController : TowerController
             //Debug.Log(Hatred.Count);
             for (int i = 0; i < Hatred.Count; i++)
             {
-                if (CouldSense(Hatred[i], SensingRange))
+                if (CouldSense(Hatred[i].name, SensingRange))
                 {
                     return tempTarget;
                 }
@@ -81,12 +80,14 @@ public abstract class AttackTowerController : TowerController
         //Debug.Log(colliders.Length);
         foreach (Collider2D collider in colliders)
         {
-            //Debug.Log("collider's name is " + collider.gameObject.name);
-            if (collider.gameObject.GetComponent(name) != null)
+            Component[] components = collider.gameObject.GetComponents<Component>();
+            foreach (Component component in components)
             {
-                // Found a component with the specified name on the GameObject
-                tempTarget = collider.gameObject;
-                return true;
+                if (component != null && component.GetType().Name == name)
+                {
+                    tempTarget = collider.gameObject;
+                    return true;
+                }
             }
         }
         //Debug.Log("didn't find target");
