@@ -8,7 +8,7 @@ using UnityEngine;
 public class BowController : Weapon
 {
     private GameObject spawnArrow;
-    public float attackInterval = 0.5f; // the minimum time between attacks
+    private float attackInterval = 0.5f; // the minimum time between attacks
     private float timeSinceLastAttack = 0f; // the time since the last attack
 
 

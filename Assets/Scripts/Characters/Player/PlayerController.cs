@@ -77,6 +77,16 @@ public class PlayerController : CharacterController, IDataPersistence
         deathCount++;
         Destroy(this.gameObject);
 
+        GameObject WeaponInUse = GameObject.FindWithTag("weapon");
+        if (WeaponInUse != null)
+        {
+            Destroy(WeaponInUse);
+        }
+        GameObject TowerInUse = GameObject.FindWithTag("tower");
+        if (TowerInUse != null)
+        {
+            Destroy(TowerInUse);
+        }
     }
 
     public override void takenDamage(float dmg)

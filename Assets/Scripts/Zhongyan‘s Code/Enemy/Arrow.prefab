@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258cb3e4136a78942becb70968f5573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Hatred: []
+  tempTarget: {fileID: 0}
+  colliders: []
   towerContainer: {fileID: 0}
   lady: {fileID: 0}
   speed: 5
@@ -94,7 +97,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: dda25df000f12274d9b8eeb7bca36c93, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

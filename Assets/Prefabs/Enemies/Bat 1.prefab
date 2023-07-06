@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3018555575201582532}
   - component: {fileID: 3018555575201582539}
   - component: {fileID: 3018555575201582537}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Bat 1
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.06561279, y: -0.03148079}

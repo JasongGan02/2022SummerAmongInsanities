@@ -7,14 +7,18 @@ using static Constants;
 
 [CreateAssetMenu(fileName = "weapon", menuName = "Objects/Weapon Object")]
 public class WeaponObject : EquipmentObject , ICraftableObject
-{ 
+{
+    [Header("Weapon Stats")]
+    [SerializeField]
     private float attack;
+    [SerializeField]
     private float farm;
+    [SerializeField]
     private float frequency;
 
+    [Header("Craft")]
     [SerializeField]
     private BaseObject[] _recipe;
-
     [SerializeField]
     private int[] _quantity;
 
@@ -39,7 +43,10 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     public virtual GameObject GetSpawnedGameObject<T>() where T : MonoBehaviour //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.name = itemName; 
+        worldGameObject.layer = LayerMask.NameToLayer("weapon");
+        worldGameObject.tag = "weapon";
+        worldGameObject.name = itemName;
+        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
         var controller = worldGameObject.AddComponent<T>();
         return worldGameObject;
     }
