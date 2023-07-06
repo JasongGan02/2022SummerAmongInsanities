@@ -50,6 +50,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         worldGameObject.layer = LayerMask.NameToLayer("weapon");
         worldGameObject.tag = "weapon";
         worldGameObject.name = itemName;
+        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
         //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
         worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Type type = Type.GetType(itemName+"Controller");
