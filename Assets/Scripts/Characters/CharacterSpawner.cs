@@ -28,6 +28,7 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         this.deathCount = data.deathCount;
+        Debug.Log("Death Count: " + this.deathCount);
     }
 
     public void SaveData(GameData data)
