@@ -29,6 +29,7 @@ public class PlayerInteraction : MonoBehaviour
     public int placeTileRange = 15;
 
     [Header("use item")]
+    private GameObject weaponInUse;
     private WeaponObject currentWeapon;
     private GameObject currentInUseItemUI;
     public GameObject equipmentTemplate;
@@ -99,7 +100,7 @@ public class PlayerInteraction : MonoBehaviour
     }
     
 
-    void playAnim()
+    private void playAnim()
     {
         if (GetCurrentInUseItem() == null)
         {
@@ -149,24 +150,26 @@ public class PlayerInteraction : MonoBehaviour
         UpdateCurrentInUseItemUI();
 
         Debug.Log("PlayerInteraction: using " + currentSlotInUse.item.GetItemName());
+
+
+      
+        if (currentTileGhost != null)
+        {
+            Destroy(currentTileGhost);
+        }
+        if (weaponInUse != null)
+        {
+            Destroy(weaponInUse);
+        }
+
         if (currentSlotInUse.item is IShadowObject)
         {
-            if (currentTileGhost != null)
-            {
-                Destroy(currentTileGhost);
-            }
             currentTileGhost = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
         }
 
         if (currentSlotInUse.item is WeaponObject)
         {
-            GameObject LastWeapon = GameObject.FindWithTag("weapon");
-            if (LastWeapon != null)
-            {
-                Destroy(LastWeapon);
-            }
-            currentWeapon = currentSlotInUse.item as WeaponObject;
-            currentWeapon.GetSpawnedGameObject();
+            weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject();
             waitTime = 1 / currentWeapon.getfrequency();
         } 
         else
