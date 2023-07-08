@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bef8c4131e249bbbff11398223d261, type: 3}
+  m_Name: Medicine
+  m_EditorClassIdentifier: 
+  itemName: Medicine
+  sizeRatio: 0.1
+  prefab: {fileID: 4192573540381174803, guid: 0d25f4ebb7a44476fab2cd211c647046, type: 3}
+  HealAmount: 35
+  HealTimeCost: 5
+  _maxStack: 32
