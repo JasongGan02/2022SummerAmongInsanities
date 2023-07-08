@@ -22,3 +22,5 @@ MonoBehaviour:
   attack: 1
   farm: 5
   frequency: 1
+  _recipe: []
+  _quantity: 
