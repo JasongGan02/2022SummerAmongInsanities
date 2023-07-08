@@ -89,6 +89,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
         PickUpItemCheck();
+
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
             BreakTileCheck();
@@ -112,6 +113,19 @@ public class PlayerInteraction : MonoBehaviour
             else
             {
                 animator.SetBool("Hand", false);
+
+            }   
+        }
+        else if (GetCurrentInUseItem().GetItemName() == "Shovel")
+        {
+            if (Input.GetMouseButton(0))
+            {
+                animator.SetBool("Shovel", true);
+
+            }
+            else
+            {
+                animator.SetBool("Shovel", false);
 
             }
         }
@@ -160,14 +174,14 @@ public class PlayerInteraction : MonoBehaviour
         if (weaponInUse != null)
         {
             Destroy(weaponInUse);
-        }
+        }           
 
         if (currentSlotInUse.item is IShadowObject)
         {
             currentTileGhost = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
         }
 
-        if (currentSlotInUse.item is WeaponObject)
+        if (currentSlotInUse.item is WeaponObject && currentSlotInUse.item.GetItemName() != "Shovel")
         {
             weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject();
             waitTime = 1 / currentWeapon.getfrequency();
@@ -245,7 +259,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void BreakTileCheck()
     {
-        if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject))) ) 
+        
+
+        if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject) && !(currentSlotInUse.item is WeaponObject))))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
             if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)
