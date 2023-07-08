@@ -13,6 +13,8 @@ public class SaveSlotsMenu : Menu
     [SerializeField] private Button backButton;
 
     private SaveSlot[] saveSlots;
+
+    private bool isLoadingGame = false;
     
     private void Awake()
     {
@@ -33,9 +35,10 @@ public class SaveSlotsMenu : Menu
         this.DeactivateMenu();
     }
 
-    public void ActivateMenu()
+    public void ActivateMenu()//bool isLoadingGame)
     {
         this.gameObject.SetActive(true);
+        //this.isLoadingGame = isLoadingGame;
         Dictionary<string, GameData> profilesGameData = DataPersistenceManager.instance.GetAllProfilesGameData();
 
         foreach (SaveSlot saveSlot in saveSlots)

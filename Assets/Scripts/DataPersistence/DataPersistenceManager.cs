@@ -76,6 +76,7 @@ public class DataPersistenceManager : MonoBehaviour
 
         if (this.gameData == null && initializeDataIfNull)
         {
+            Debug.Log("No saved data found. Initializing new data.");
             NewGame();
         }
 
