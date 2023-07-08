@@ -261,7 +261,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         
 
-        if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject) && !(currentSlotInUse.item is WeaponObject))))
+        if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject) && (currentSlotInUse.item.GetItemName() == "Shovel"))))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
             if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)
