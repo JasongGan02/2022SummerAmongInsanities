@@ -36,7 +36,7 @@ public class Projectile : MonoBehaviour
     // Called when the projectile collides with another object
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
+        if (collision.gameObject.tag == "enemy")
         {
             collision.gameObject.GetComponent<CharacterController>().takenDamage(damage);
             Destroy(gameObject);
