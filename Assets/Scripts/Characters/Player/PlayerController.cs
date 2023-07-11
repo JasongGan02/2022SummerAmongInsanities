@@ -119,6 +119,19 @@ public class PlayerController : CharacterController, IDataPersistence
         }
     }
 
+    public void Heal(float amount)
+    {
+        HP += amount;
+        if (HP > characterStats.HP)
+        {
+            HP = characterStats.HP;
+        }
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float)HP / characterStats.HP;
+        }
+    }
+
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }
     public void SetLevel(int newLevel) { playerLevel = newLevel; }

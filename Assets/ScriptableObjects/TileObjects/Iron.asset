@@ -19,3 +19,6 @@ MonoBehaviour:
   _healthPoint: 1
   _drops: []
   _prefabs: []
+  _recipe:
+  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  _quantity: 03000000

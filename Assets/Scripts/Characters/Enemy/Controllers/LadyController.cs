@@ -20,13 +20,22 @@ public class LadyController : EnemyController
     private Rigidbody2D rb;
     private float nextJump;
     private bool canJump = true;
+    private bool isJump = false;
+    private float distance;
 
-    private GameObject target;
+    public GameObject target;
 
     public float patroltime = 0f;
     public float patrolRest = 2f;
     private bool patrolToRight = false;
     private bool facingright = false;
+
+    public Transform groundCheckLeft;
+    public Transform groundCheckCenter;
+    public Transform groundCheckRight;
+    public Transform frontCheck;
+    public Transform backCheck;
+    LayerMask ground_mask;
 
     void Start()
     {
@@ -34,20 +43,27 @@ public class LadyController : EnemyController
         animator = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         wallLayer = LayerMask.GetMask("ground");
-        towerContainer = FindObjectOfType<TowerContainer>();
+        //towerContainer = FindObjectOfType<TowerContainer>();
+        //Hatred.Add("PlayerController");
+        //Hatred.Add("CatapultTowerController");
+        //Hatred.Add("ArcherTowerController");
+        //Hatred.Add("TrapTowerController");
     }
 
     new void Awake()
     {
-        Hatred.Add("PlayerController");
-        Hatred.Add("CatapultTowerController");
-        Hatred.Add("ArcherTowerController");
-        Hatred.Add("TrapTowerController");
+        ground_mask = LayerMask.GetMask("ground");
+        groundCheckLeft = transform.Find("groundCheckLeft");
+        groundCheckCenter = transform.Find("groundCheckCenter");
+        groundCheckRight = transform.Find("groundCheckRight");
+        frontCheck = transform.Find("frontCheck");
+        backCheck = transform.Find("backCheck");
     }
 
     void FireArrow(){
      //Instantiate the arrow
         arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
+        arrow.transform.parent = this.transform;
     }
 
 
@@ -77,43 +93,10 @@ public class LadyController : EnemyController
                 transform.right = Vector2.right;
             }
 
-            if (canJump)
-            {
-                SenseFrontBlock();
-                nextJump = Time.time + 5f;
-            }
-            if (Time.time > nextJump)
-            {
-                canJump = true;
-            }
-
-            if (canMove)
-            {
-
-                if (Vector2.Distance(transform.position, target.transform.position) < 3f)
-                {
-                    transform.position = Vector2.MoveTowards(transform.position, target.transform.position, -MovingSpeed * Time.deltaTime);
-                    animator.SetFloat("movingSpeed", 1f);
-                }
-                if (Vector2.Distance(transform.position, target.transform.position) > 3f && Vector2.Distance(transform.position, target.transform.position) < 10f)
-                {
-                    transform.position = Vector2.MoveTowards(transform.position, target.transform.position, MovingSpeed * Time.deltaTime);
-                    animator.SetFloat("movingSpeed", 1f);
-                }
-                if (Vector2.Distance(transform.position, target.transform.position) >= 10f)
-                {
-                    animator.SetFloat("movingSpeed", 0f);
-                    // idle state
-                }
-            }
-
-            if (Vector2.Distance(transform.position, target.transform.position) >= 2.9f && Vector2.Distance(transform.position, target.transform.position) <= 3.1)
-            {
-                animator.SetFloat("movingSpeed", 0f);
-
-            }
-
-
+            SenseFrontBlock();
+            distance = Mathf.Abs(transform.position.x - target.transform.position.x);
+            approach(MovingSpeed, target.transform, distance);
+            
             // Target Taken Damage
             if (arrow != null)
             {
@@ -124,7 +107,7 @@ public class LadyController : EnemyController
                 }
             }
 
-            if (Vector2.Distance(transform.position, target.transform.position) <= AtkRange)
+            if (Vector2.Distance(transform.position, target.transform.position) <= AtkRange && lady_sight())
             {
                 // Check if the archer can fire
                 if (canFire)
@@ -132,11 +115,8 @@ public class LadyController : EnemyController
                     // Fire an arrow
                     FireArrow();
 
-                    canMove = false;
-
                     // Set the next fire time
                     nextFire = Time.time + AtkInterval;
-                    nextMove = Time.time + 1f;
 
                     // Set the canFire flag to false
                     canFire = false;
@@ -150,10 +130,6 @@ public class LadyController : EnemyController
                     canFire = true;
                     animator.SetBool("canFire", true);
 
-                }
-                if (Time.time > nextMove)
-                {
-                    canMove = true;
                 }
             }
 
@@ -210,5 +186,97 @@ public class LadyController : EnemyController
             facingright = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
+    }
+
+    private bool lady_sight()
+    {
+        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
+        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+
+        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
+        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
+
+        float distance1 = Vector2.Distance(targetTop, villagerTop);
+        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
+
+        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
+        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
+        if (checkTop.collider != null &&
+            checkBottom.collider != null &&
+            checkTop.collider.gameObject.CompareTag("ground") &&
+            checkBottom.collider.gameObject.CompareTag("ground"))
+        {
+            //Debug.Log("there is ground block");
+            return false;
+        }
+        return true;
+    }
+    new void SenseFrontBlock()
+    {
+        headCheck();
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
+
+        Debug.DrawRay(frontCheck.position, Vector2.left * 0.05f, Color.red); // Debug statement to display the raycast
+        Debug.DrawRay(backCheck.position, Vector2.right * 0.05f, Color.red); // Debug statement to display the raycast
+
+        if (hitLeft.transform != null
+            || hitRight.transform != null
+            || hitCenter.transform != null)
+        {
+            if (hitFront.transform != null || hitBack.transform != null)
+            {
+                if (headCheck())
+                {
+                    Jump();
+                    Debug.Log("jumping.");
+                }
+                //else { Debug.Log("front or back obstacle too high!"); }
+            }
+            //else { Debug.Log("no obstacle in front or back"); }
+        }
+        //else { Debug.Log("foot in the air"); }
+
+    }
+    public bool headCheck()
+    {
+        Vector3 direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position + new Vector3(0, -0.1f, 0);
+        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.3f, ground_mask);
+        Debug.DrawRay(origin, direction * 0.3f, Color.red);        // bottom right
+        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
+        {
+            return false;
+        }
+
+        return true;
+    }
+    private void Jump()
+    {
+        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+    }
+    void approach(float speed, Transform target, float distance)
+    {
+        if (distance < 0.5f * AtkRange)
+        {
+            if (target.position.x > transform.position.x)
+            {
+                rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                Debug.Log("going Left");
+            }
+            else
+            {
+                rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                Debug.Log("going Right");
+            }
+        }
+        else { animator.SetFloat("movingSpeed", 0f); }
     }
 }

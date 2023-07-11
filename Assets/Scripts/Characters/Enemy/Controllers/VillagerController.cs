@@ -22,6 +22,7 @@ public class VillagerController : EnemyController
     public Transform groundCheckCenter;
     public Transform groundCheckRight;
     public Transform frontCheck;
+    public Transform backCheck;
     LayerMask ground_mask;
 
     private BoxCollider2D boxCollider;
@@ -38,13 +39,14 @@ public class VillagerController : EnemyController
         groundCheckCenter = transform.Find("groundCheckCenter");
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
+        backCheck = transform.Find("backCheck");
         boxCollider = GetComponent<BoxCollider2D>();
         edgeCollider = GetComponent<EdgeCollider2D>();
 
-        Hatred.Add("PlayerController");
-        Hatred.Add("ArcherTowerController");
-        Hatred.Add("CatapultTowerController");
-        Hatred.Add("TrapTowerController");
+        //Hatred.Add("PlayerController");
+        //Hatred.Add("ArcherTowerController");
+        //Hatred.Add("CatapultTowerController");
+        //Hatred.Add("TrapTowerController");
     }
 
     protected override void EnemyLoop()
@@ -73,7 +75,7 @@ public class VillagerController : EnemyController
         }
         else
         {
-            if (IsTowerInAtkRange((int)AtkRange))
+            if (IsTowerInAtkRange((int)AtkRange) && villager_sight())
             {
                 flip(target.transform);
                 attackTower(target.transform);
@@ -272,14 +274,14 @@ public class VillagerController : EnemyController
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.05f, ground_mask);
-        
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
 
         if (hitLeft.transform != null
             || hitRight.transform != null
             || hitCenter.transform != null)
         {
-            if (hitFront.transform != null)
+            if (hitFront.transform != null || hitBack.transform != null)
             {
                 if (headCheck()) { Jump(); /*Debug.Log("jumping."); */ }
                 else { /*Debug.Log("front obstacle too high!");*/ }
@@ -309,20 +311,20 @@ public class VillagerController : EnemyController
     }
     private bool villager_sight()
     {
-        Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-        Vector2 playerTop = playerRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
+        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
         Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 playerBottom = playerRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
         Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
 
-        Debug.DrawRay(playerTop, villagerTop - playerTop, Color.red);   // top
-        Debug.DrawRay(playerBottom, villagerBottom - playerBottom, Color.red);   // bottom
+        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
+        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
 
-        float distance1 = Vector2.Distance(playerTop, villagerTop);
-        float distance2 = Vector2.Distance(playerBottom, villagerBottom);
+        float distance1 = Vector2.Distance(targetTop, villagerTop);
+        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
 
-        RaycastHit2D checkTop = Physics2D.Raycast(playerTop, villagerTop - playerTop, distance1, ground_mask);
-        RaycastHit2D checkBottom = Physics2D.Raycast(playerBottom, villagerBottom - playerBottom, distance2, ground_mask);
+        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
+        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
         if (checkTop.collider != null && 
             checkBottom.collider != null &&
             checkTop.collider.gameObject.CompareTag("ground") && 

@@ -20,9 +20,13 @@ MonoBehaviour:
   AtkInterval: 1
   AtkRange: 3
   MovingSpeed: 1
+  JumpForce: 0.5
   Drops:
   - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
     chance: 4
-  JumpForce: 0.5
   SensingRange: 5
-  Hatred: []
+  Hatred:
+  - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  - {fileID: 11500000, guid: 5b889914607fafa4f87fd046a99656b8, type: 3}
+  - {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
+  - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}

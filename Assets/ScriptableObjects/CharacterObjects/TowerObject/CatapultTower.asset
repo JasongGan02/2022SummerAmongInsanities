@@ -16,16 +16,20 @@ MonoBehaviour:
   sizeRatio: 0.25
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
   HP: 10
-  AtkDamage: 1
+  AtkDamage: 3
   AtkInterval: 3
   AtkRange: 10
   MovingSpeed: 0
+  JumpForce: 0
   Drops:
   - droppedItem: {fileID: 11400000}
     chance: 1
-  JumpForce: 0
   energyCost: 30
   rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  curAngle: {x: 0, y: 0, z: 0, w: 1}
   bullet_speed: 3
   bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
   _maxStack: 4
+  Hatred:
+  - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
+  - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}

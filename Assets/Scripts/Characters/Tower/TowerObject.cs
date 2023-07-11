@@ -20,6 +20,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
     [SerializeField]
     private int _maxStack;
 
+    public List<TextAsset> Hatred;
+
     /**
      * implementation of IInventoryObject
      */

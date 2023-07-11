@@ -39,6 +39,8 @@ public class PlayerInteraction : MonoBehaviour
     public float handFarm = 0.5f;
     public float handFrequency = 1;
 
+    public GameObject prop;
+    public MedicineObject currentMedicine;
 
   
 
@@ -174,7 +176,11 @@ public class PlayerInteraction : MonoBehaviour
         if (weaponInUse != null)
         {
             Destroy(weaponInUse);
-        }           
+        }         
+        if (prop != null)
+        {
+            Destroy(prop); // be careful!
+        }
 
         if (currentSlotInUse.item is IShadowObject)
         {
@@ -185,7 +191,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject();
             waitTime = 1 / currentWeapon.getfrequency();
-        } 
+        }
+
+        if (currentSlotInUse.item is MedicineObject)
+        {
+            prop = (currentSlotInUse.item as MedicineObject).GetSpawnedGameObject();
+        }
+
         else
         {
             currentWeapon = null;

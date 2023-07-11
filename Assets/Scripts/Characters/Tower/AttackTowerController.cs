@@ -13,6 +13,11 @@ public abstract class AttackTowerController : TowerController
     protected EnemyContainer enemyContainer;
     protected float AtkTimer;        // Timer
 
+    protected float SensingRange;
+    public GameObject tempTarget;
+    public Collider2D[] colliders;
+
+    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
 
     //protected abstract void TowerLoop(); 
 
@@ -49,6 +54,44 @@ public abstract class AttackTowerController : TowerController
     protected bool CheckIfEnemyInRange()
     {
         return Vector3.Distance(transform.position, SenseNearestEnemyTransform().position) < AtkRange;
+    }
+
+    public GameObject WhatToAttack()
+    {
+        GameObject target = null;
+        if (Hatred.Count > 0)
+        {
+            //Debug.Log(Hatred.Count);
+            for (int i = 0; i < Hatred.Count; i++)
+            {
+                if (CouldSense(Hatred[i].name, SensingRange))
+                {
+                    return tempTarget;
+                }
+            }
+        }
+        else { Debug.Log("Hatred is less than 0"); }
+        return target;
+    }
+
+    public bool CouldSense(string name, float range)
+    {
+        colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
+        //Debug.Log(colliders.Length);
+        foreach (Collider2D collider in colliders)
+        {
+            Component[] components = collider.gameObject.GetComponents<Component>();
+            foreach (Component component in components)
+            {
+                if (component != null && component.GetType().Name == name)
+                {
+                    tempTarget = collider.gameObject;
+                    return true;
+                }
+            }
+        }
+        //Debug.Log("didn't find target");
+        return false;
     }
 
 }

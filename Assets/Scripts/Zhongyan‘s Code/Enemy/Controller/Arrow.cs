@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Arrow : EnemyController
 {
-    public GameObject lady;
+    private GameObject lady;
+    private GameObject target;
+    private LadyController file;
     public float speed;
     private float nextFire; // the time at which the archer can fire again
     private bool canFire = true; // flag to check if the archer can fire
@@ -19,8 +21,8 @@ public class Arrow : EnemyController
 
     private float ladyX;
     private float ladyY;
-    private float playerX;
-    private float playerY;
+    private float targetX;
+    private float targetY;
     private float nextX;
     private float dist;
     private float baseY;
@@ -29,23 +31,26 @@ public class Arrow : EnemyController
     // Start is called before the first frame update
     void Start()
     {
-
+        lady = transform.parent.gameObject;
+        file = lady.GetComponent<LadyController>();
     }
 
     // Update is called once per frame
     protected override void EnemyLoop()
     {
-        if(lady == null)
-            lady = GameObject.Find("lady");
-        
+        target = file.target;
+        if (lady == null || target == null) // the parent gameobject is destroied
+        {
+            death();
+        }
 
-        if (Vector2.Distance(lady.transform.position, player.transform.position) <= 4 && canDetect)
+        if (Vector2.Distance(lady.transform.position, target.transform.position) <= 4 && canDetect)
         {
             speed = 3.5f;
             fireRate = 1.5f;
             canDetect = false;
             
-        }else if (Vector2.Distance(lady.transform.position, player.transform.position) > 4 && canDetect){
+        }else if (Vector2.Distance(lady.transform.position, target.transform.position) > 4 && canDetect){
             speed = 7f;
             fireRate = 3f;
             canDetect = false;
@@ -55,19 +60,19 @@ public class Arrow : EnemyController
                 // Fire an arrow
             ladyX = lady.transform.position.x;
             ladyY = lady.transform.position.y;
-            playerX = player.transform.position.x;
-            playerY = player.transform.position.y - 0.2f;
-            dist = playerX - ladyX;
-            if (player.transform.position.y > 16.3)
+            targetX = target.transform.position.x;
+            targetY = target.transform.position.y - 0.2f;
+            dist = targetX - ladyX;
+            if (target.transform.position.y > 16.3)
             {
-                if (player.transform.position.x < transform.position.x)
+                if (target.transform.position.x < transform.position.x)
                 {
-                    playerX = player.transform.position.x-1;
-                    playerY = 16.2f;
+                    targetX = target.transform.position.x-1;
+                    targetY = 16.2f;
                 }
                 else{
-                    playerX = player.transform.position.x+1;
-                    playerY = 16.2f;
+                    targetX = target.transform.position.x+1;
+                    targetY = 16.2f;
                 }
             }
             
@@ -87,12 +92,12 @@ public class Arrow : EnemyController
         }
 
 
-        if (Vector2.Distance(lady.transform.position, player.transform.position) <= 4)
+        if (Vector2.Distance(lady.transform.position, target.transform.position) <= 4)
         {
             attackMod_2();
 
         }
-        else if (Vector2.Distance(lady.transform.position, player.transform.position) > 4)
+        else if (Vector2.Distance(lady.transform.position, target.transform.position) > 4)
         {
             attackMod_2();
 
@@ -105,7 +110,7 @@ public class Arrow : EnemyController
 
 
         if (dist < 0){
-            if (transform.position.x + 0.01 < playerX || transform.position.x - 0.01 < playerX)
+            if (transform.position.x + 0.01 < targetX || transform.position.x - 0.01 < targetX)
             {
                if (transform.position.y < 16.3)
                {
@@ -114,7 +119,7 @@ public class Arrow : EnemyController
                }
             }
         }else{
-            if (transform.position.x + 0.01 > playerX || transform.position.x - 0.01 > playerX)
+            if (transform.position.x + 0.01 > targetX || transform.position.x - 0.01 > targetX)
             {
                if (transform.position.y < 16.3)
                {
@@ -130,7 +135,7 @@ public class Arrow : EnemyController
 
     void attackMod_1()
         {
-            nextX = Mathf.MoveTowards(transform.position.x, playerX, speed * Time.deltaTime);
+            nextX = Mathf.MoveTowards(transform.position.x, targetX, speed * Time.deltaTime);
             baseY = ladyY;
 
             movePosition = new Vector2(nextX, baseY + 0.15f);
@@ -139,9 +144,9 @@ public class Arrow : EnemyController
 
     void attackMod_2()
         {
-            nextX = Mathf.MoveTowards(transform.position.x, playerX, speed * Time.deltaTime);
-            baseY = Mathf.Lerp(lady.transform.position.y, playerY, (nextX - ladyX) / dist);
-            height = 1.25f * (nextX - ladyX) * (nextX - playerX) / (-0.25f * dist * dist);
+            nextX = Mathf.MoveTowards(transform.position.x, targetX, speed * Time.deltaTime);
+            baseY = Mathf.Lerp(lady.transform.position.y, targetY, (nextX - ladyX) / dist);
+            height = 1.25f * (nextX - ladyX) * (nextX - targetX) / (-0.25f * dist * dist);
 
             movePosition = new Vector3(nextX, baseY + height, transform.position.z);
 
