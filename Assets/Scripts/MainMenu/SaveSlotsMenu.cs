@@ -12,6 +12,9 @@ public class SaveSlotsMenu : Menu
     [Header("Manu Buttons")]
     [SerializeField] private Button backButton;
 
+    [Header("Confirmation Popup")]
+    [SerializeField] private ConfirmationPopupMenu confirmationPopupMenu;
+
     private SaveSlot[] saveSlots;
 
     private bool isLoadingGame = false;
@@ -25,7 +28,16 @@ public class SaveSlotsMenu : Menu
     {
         DisableMenuButtons();
         DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-        DataPersistenceManager.instance.NewGame();
+        if (!isLoadingGame)
+        {
+            DataPersistenceManager.instance.NewGame();
+        }
+        SaveGameAndLoadScene();
+    }
+
+    private void SaveGameAndLoadScene()
+    {
+        DataPersistenceManager.instance.SaveGame();
         SceneManager.LoadSceneAsync("MainScene");
     }
 
@@ -35,18 +47,40 @@ public class SaveSlotsMenu : Menu
         this.DeactivateMenu();
     }
 
-    public void ActivateMenu()//bool isLoadingGame)
+    public void OnClearClicked(SaveSlot saveSlot)
+    {
+        DataPersistenceManager.instance.DeleteProfileData(saveSlot.GetProfileId());
+        ActivateMenu(isLoadingGame);
+    }
+
+    public void ActivateMenu(bool isLoadingGame)
     {
         this.gameObject.SetActive(true);
-        //this.isLoadingGame = isLoadingGame;
+        this.isLoadingGame = isLoadingGame;
         Dictionary<string, GameData> profilesGameData = DataPersistenceManager.instance.GetAllProfilesGameData();
 
+        GameObject firstSelected = backButton.gameObject;
         foreach (SaveSlot saveSlot in saveSlots)
         {
             GameData profileData = null;
             profilesGameData.TryGetValue(saveSlot.GetProfileId(), out profileData);
             saveSlot.SetData(profileData);
+            if (profileData == null && isLoadingGame)
+            {
+                saveSlot.SetInteractable(false);
+            }
+            else
+            {
+                saveSlot.SetInteractable(true);
+                if (firstSelected.Equals(backButton.gameObject))
+                {
+                    firstSelected = saveSlot.gameObject;
+                }
+            }
         }
+
+        Button firstSelectedButton = firstSelected.GetComponent<Button>();
+        this.SetFirstSelected(firstSelectedButton);
     }
 
     public void DeactivateMenu()

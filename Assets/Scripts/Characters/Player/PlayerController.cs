@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : CharacterController, IDataPersistence
 {
@@ -58,6 +59,12 @@ public class PlayerController : CharacterController, IDataPersistence
     protected override void Update()
     {
         base.Update();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            DataPersistenceManager.instance.SaveGame();
+            SceneManager.LoadSceneAsync("MainMenu");
+        }
+        
         if (damagedColor.a > 0)
         {
             damagedHealthFadeTimer -= Time.deltaTime;

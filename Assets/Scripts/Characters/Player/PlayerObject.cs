@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Player Object")]
+
 public class PlayerObject : CharacterObject
 {
     public float RespwanTimeInterval;

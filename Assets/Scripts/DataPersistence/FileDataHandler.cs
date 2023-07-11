@@ -21,6 +21,10 @@ public class FileDataHandler
 
    public void Save(GameData data, string profileId)
    {
+        if (profileId == null)
+        {
+            return;
+        }
         string fullPath = Path.Combine(dataDirPath, profileId, dataFileName); //for diff OS's
         try
         {
@@ -50,6 +54,11 @@ public class FileDataHandler
 
    public GameData Load(string profileId)
    {
+        if (profileId == null)
+        {
+            return null;
+        }
+
         string fullPath = Path.Combine(dataDirPath, profileId, dataFileName); //for diff OS's
         GameData loadedData = null;
         if (File.Exists(fullPath))
@@ -82,6 +91,31 @@ public class FileDataHandler
         }
         return loadedData;
    }
+
+   public void Delete(string profileId)
+   {
+        if (profileId == null)
+        {
+            return;
+        }
+
+        string  fullPath = Path.Combine(dataDirPath, profileId, dataFileName); //for diff OS's
+        try 
+        {
+            if (File.Exists(fullPath))
+            {
+                Directory.Delete(Path.GetDirectoryName(fullPath), true);
+            }
+            else
+            {
+                Debug.LogWarning("Tried to delete profile but it does not exist. ProfileId: " + profileId);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to delete profile data for profileId: " + profileId + " at pathL: " + fullPath + "\n" + e);
+        }
+   }
    
    public Dictionary<string, GameData> LoadAllProfiles()
    {
@@ -109,6 +143,39 @@ public class FileDataHandler
             }
         }
         return profileDictionary;
+   }
+
+   public string GetMostRecentlyUpdatedProfileId()
+   {
+        string mostRecentProfileId = null;
+
+        Dictionary<string, GameData> profilesGameData = LoadAllProfiles();
+        foreach (KeyValuePair<string, GameData> pair in profilesGameData)
+        {
+            string profileId = pair.Key;
+            GameData gameData = pair.Value;
+
+            if (gameData == null)
+            {
+                continue;
+            }
+            
+            if (mostRecentProfileId == null)
+            {
+                mostRecentProfileId = profileId;
+            }
+            else
+            {
+                DateTime mostRecentDateTime = DateTime.FromBinary(profilesGameData[mostRecentProfileId].lastUpdated);
+                DateTime newDateTime = DateTime.FromBinary(gameData.lastUpdated);
+                if (newDateTime > mostRecentDateTime)
+                {
+                    mostRecentProfileId = profileId;
+                }
+            }
+        }
+
+        return mostRecentProfileId;
    }
 
    private string EncryptDecrypt(string data)
