@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47bef8c4131e249bbbff11398223d261, type: 3}
-  m_Name: Medicine
+  m_Name: HealthPotion
   m_EditorClassIdentifier: 
-  itemName: Medicine
+  itemName: Health Potion
   sizeRatio: 0.1
   prefab: {fileID: 4192573540381174803, guid: 0d25f4ebb7a44476fab2cd211c647046, type: 3}
   HealAmount: 35

@@ -29,7 +29,7 @@ public abstract class EnemyController : CharacterController
 
     protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
 
-    
+    Type type;
 
     protected override void Awake()
     {
@@ -257,6 +257,8 @@ public abstract class EnemyController : CharacterController
 
     public bool CouldSense(string name, float range)
     {
+        type = Type.GetType(name);
+
         colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
         //Debug.Log(colliders.Length);
         foreach (Collider2D collider in colliders)
@@ -264,20 +266,16 @@ public abstract class EnemyController : CharacterController
             Component[] components = collider.gameObject.GetComponents<Component>();
             foreach (Component component in components)
             {
-                if (component != null && component.GetType().Name == name)
+                if (component != null )
                 {
-                    tempTarget = collider.gameObject;
-                    return true;
+                    if (type.IsAssignableFrom(component.GetType()) || type.Equals(component.GetType()))
+                    {
+                        tempTarget = collider.gameObject;
+                        return true;
+                    }
                 }
             }
 
-            ////Debug.Log("collider's name is " + collider.gameObject.name);
-            //if (collider.gameObject.GetComponent(name) != null)
-            //{
-            //    // Found a component with the specified name on the GameObject
-            //    tempTarget = collider.gameObject;
-            //    return true;
-            //}
         }
         //Debug.Log("didn't find target");
         return false; 

@@ -1,14 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Medicine", menuName = "Objects/Medicine Object")]
-public class medicineObject : BaseObject, IInventoryObject
+public class MedicineObject : BaseObject, IInventoryObject
 {
-    [SerializeField] private float HealAmount;
-    [SerializeField] private float HealTimeCost;
-    protected bool isHealing;
-    private float healTimeCount;
+    [Header("Medicine Stats")]
+    [SerializeField] float HealAmount;
+    [SerializeField] float HealTimeCost;
 
     [SerializeField]
     private int _maxStack;
@@ -44,44 +44,35 @@ public class medicineObject : BaseObject, IInventoryObject
     }
     #endregion
 
-    GameObject player;
 
-
-    // Start is called before the first frame update
-    void Start()
+    public virtual GameObject GetSpawnedGameObject<T>() where T : MonoBehaviour //Spawn the actual game object through calling this function. 
     {
-        isHealing = false;
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.layer = LayerMask.NameToLayer("weapon"); // weapon layer is good for props or other hand-use items
+        worldGameObject.tag = "prop";
+        worldGameObject.name = itemName;
+        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
+        var controller = worldGameObject.AddComponent<T>();
+        return worldGameObject;
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual GameObject GetSpawnedGameObject() //Spawn the actual game object through calling this function. 
     {
-        Debug.Log("running");
-
-
-        if (player == null)
-        {
-            Debug.Log("player is null");
-            try { player = GameObject.FindGameObjectWithTag("Player"); }
-            catch { Debug.Log("Player is dead or missing"); }
-        }
-        else { Debug.Log("found player");  }
-
-        if (Input.GetKey(KeyCode.F) && player != null && !isHealing)
-        {
-            isHealing = true;
-            healTimeCount = HealTimeCost;
-        }
-
-        if (isHealing)
-        {
-            Debug.Log("is Healing");
-            healTimeCount -= Time.deltaTime;
-            player.GetComponent<PlayerController>().Heal(HealAmount);
-            if (healTimeCount <= 0f)
-            {
-                isHealing = false;
-            }
-        }
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.layer = LayerMask.NameToLayer("weapon");
+        worldGameObject.tag = "prop";
+        worldGameObject.name = itemName;
+        Debug.Log("name: " + name);
+        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
+        //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+        worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        Type type = Type.GetType(itemName + "Controller");
+        Debug.Log(type);
+        var controller = worldGameObject.AddComponent(type);
+        (controller as HealthPotionController).Initialize(this);
+        //var controllerType = typeof(MedicineController); // Assuming MedicineController is a MonoBehaviour script
+        //var controller = worldGameObject.AddComponent(controllerType) as MedicineController;
+        //controller.Initialize(this);
+        return worldGameObject;
     }
 }
