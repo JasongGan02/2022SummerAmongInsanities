@@ -20,12 +20,17 @@ MonoBehaviour:
   AtkInterval: 1
   AtkRange: 5
   MovingSpeed: 0
+  JumpForce: 0
   Drops:
   - droppedItem: {fileID: 11400000}
     chance: 1
-  JumpForce: 0
   energyCost: 10
   rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  curAngle: {x: 0, y: 0, z: 0, w: 1}
   bullet_speed: 4
   bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
   _maxStack: 5
+  _recipe:
+  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  - {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
+  _quantity: 0200000001000000

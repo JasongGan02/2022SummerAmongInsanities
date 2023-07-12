@@ -19,5 +19,10 @@ MonoBehaviour:
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
-  _recipe: []
-  _quantity: 
+  attack: 0
+  farm: 0
+  frequency: 0
+  _recipe:
+  - {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
+  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  _quantity: 0100000002000000
