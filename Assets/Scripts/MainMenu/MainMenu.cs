@@ -12,25 +12,38 @@ public class MainMenu : Menu
     [Header("Manu Buttons")]
     [SerializeField] private Button newGameButton;
     [SerializeField] private Button continueGameButton;
+    [SerializeField] private Button loadGameButton;
 
     private void Start()
     {
+        DisableButtonsDependingOnData();
+    }
+
+    private void DisableButtonsDependingOnData()
+    {
         if(!DataPersistenceManager.instance.HasGameData())
         {
-            Debug.Log(DataPersistenceManager.instance.HasGameData());
             continueGameButton.interactable = false;
+            loadGameButton.interactable = false;
         }
     }
 
     public void OnNewGameClicked()
     {
-        saveSlotsMenu.ActivateMenu();
+        saveSlotsMenu.ActivateMenu(false);
+        this.DeactivateMenu(); 
+    }
+
+    public void OnLoadGameClicked()
+    {
+        saveSlotsMenu.ActivateMenu(true);
         this.DeactivateMenu(); 
     }
 
     public void OnContinueGameClicked()
     {
         DisableMenuButtons();
+        DataPersistenceManager.instance.SaveGame(); // save the game before loading a new scene
         SceneManager.LoadSceneAsync("MainScene");
     }
 
@@ -43,6 +56,7 @@ public class MainMenu : Menu
     public void ActivateMenu()
     {
         this.gameObject.SetActive(true);
+        DisableButtonsDependingOnData();
     }
 
     public void DeactivateMenu()

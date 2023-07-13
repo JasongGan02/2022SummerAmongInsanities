@@ -13,7 +13,8 @@ public class SaveSlot : MonoBehaviour
    [SerializeField] private GameObject hasDataContent;
    [SerializeField] private TextMeshProUGUI percentageCompleteText;
    [SerializeField] private TextMeshProUGUI deathCountText;
-
+   [Header("Clear Data Button")]
+   [SerializeField] private Button clearButton;
    private Button saveSlotButton;
 
    private void Awake()
@@ -27,11 +28,13 @@ public class SaveSlot : MonoBehaviour
         {
             noDataContent.SetActive(true);
             hasDataContent.SetActive(false);
+            clearButton.gameObject.SetActive(false);
         }
         else
         {
             noDataContent.SetActive(false);
             hasDataContent.SetActive(true);
+            clearButton.gameObject.SetActive(true);
             //percentageCompleteText.text = data.percentageComplete.ToString() + "%";
             deathCountText.text = "DEATH COUNT: " + data.deathCount;
         }
@@ -44,6 +47,7 @@ public class SaveSlot : MonoBehaviour
 
    public void SetInteractable(bool interactable)
    {
-       saveSlotButton.interactable = interactable;
+        saveSlotButton.interactable = interactable;
+        clearButton.interactable = interactable;
    }
 }

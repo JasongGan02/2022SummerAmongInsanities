@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2928407146681889766}
   - component: {fileID: 3177992343258819052}
   - component: {fileID: -9115947348901238595}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: DivinityFrag
   m_TagString: resource
   m_Icon: {fileID: 0}

@@ -10,6 +10,7 @@ public class CharacterAtlas : ScriptableObject
     public CharacterObject bat;
     public CharacterObject lady;
     public CharacterObject dumb;
+    public CharacterObject villagerWithWeapon;
 
     public List<CharacterObject> towerList;
 }

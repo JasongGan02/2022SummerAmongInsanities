@@ -19,15 +19,18 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnPlayer();
-        SpawnBat();
-        SpawnVillager();
+        //SpawnBat();
+        //SpawnVillager();
         //SpawnLady();
 
     }
 
     public void LoadData(GameData data)
     {
+        Debug.Log("On file: " + data.deathCount);
         this.deathCount = data.deathCount;
+        Debug.Log("Death Count: " + data.deathCount);
+        
     }
 
     public void SaveData(GameData data)

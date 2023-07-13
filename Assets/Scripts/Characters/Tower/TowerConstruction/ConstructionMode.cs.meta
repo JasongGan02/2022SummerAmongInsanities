@@ -3,7 +3,9 @@ guid: 290c22c35e0105e4b9db8c750bbe8c53
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - ConstructionUI: {fileID: 434440040033154592, guid: 30a6720cad4079a43a7fa1d6e963d929, type: 3}
+  - EnergyText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

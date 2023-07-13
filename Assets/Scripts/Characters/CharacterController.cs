@@ -7,7 +7,7 @@ using System.Threading;
 using UnityEditor.Build;
 using System.Linq;
 
-public abstract class CharacterController : MonoBehaviour /*, IEffectableObject*/
+public abstract class CharacterController : MonoBehaviour, IEffectableObject
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
     in the scriptable objects by directly calling them. e.g. characterStats.HP +=1; this is not allowed as this HP is the MaxHP of a character. They should only be modified through other 
@@ -26,6 +26,7 @@ public abstract class CharacterController : MonoBehaviour /*, IEffectableObject*
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
+    protected List<TextAsset> Hatred;
    
 
     protected List<EffectObject> effects;
@@ -49,17 +50,24 @@ public abstract class CharacterController : MonoBehaviour /*, IEffectableObject*
 
     protected virtual void Update()
     {
-        //ExecuteEffects();
+        ExecuteEffects();
     }
 
     public void ExecuteEffects()
     {
-        //foreach (EffectObject effect in Effects)
-        //{
-        //    effect.ExecuteEffect(this);
-        //}
-        //Effects.Clear();
+        if (Effects != null)
+        {
+            foreach (EffectObject effect in Effects)
+            {
+                if (effect != null)
+                {
+                    effect.ExecuteEffect(this);
+                }
+            }
+            Effects.Clear();
+        }
     }
+
 
 
     public virtual void Initialize(CharacterObject characterObject)
