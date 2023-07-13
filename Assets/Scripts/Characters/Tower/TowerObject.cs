@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
-public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
+public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject
 {
     [Header("Construction Parameter")]
     public int energyCost;
@@ -20,7 +20,11 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
     [SerializeField]
     private int _maxStack;
 
-    public List<TextAsset> Hatred;
+    [Header("Craft")]
+    [SerializeField]
+    private BaseObject[] _recipe;
+    [SerializeField]
+    private int[] _quantity;
 
     /**
      * implementation of IInventoryObject
@@ -131,6 +135,40 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject
         return rotateAngle;
     }
 
-  
-    
+
+    /**
+ * implementation of ICraftableObject
+ */
+    #region
+    public BaseObject[] Recipe
+    {
+        get => _recipe;
+        set => _recipe = value;
+    }
+
+    public void Craft(Inventory inventory)
+    {
+        inventory.CraftItems(this.Recipe, this.Quantity, this);
+    }
+
+    public BaseObject[] getRecipe()
+    {
+        return Recipe;
+    }
+    #endregion
+
+    #region
+    public int[] Quantity
+    {
+        get => _quantity;
+        set => _quantity = value;
+    }
+
+    public int[] getQuantity()
+    {
+        return Quantity;
+    }
+    #endregion
+
+
 }

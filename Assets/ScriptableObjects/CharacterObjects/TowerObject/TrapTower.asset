@@ -30,7 +30,7 @@ MonoBehaviour:
   bullet_speed: 3
   bullet: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
   _maxStack: 0
-  Hatred:
-  - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
-  - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
-  - {fileID: 11500000, guid: f0e58e27ab464934e956051578db451b, type: 3}
+  _recipe:
+  - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
+  - {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
+  _quantity: 0200000004000000

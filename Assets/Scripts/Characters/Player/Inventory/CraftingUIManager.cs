@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using UnityEditor;
+using System;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 public class CraftingUIManager : MonoBehaviour
 {
@@ -12,29 +18,26 @@ public class CraftingUIManager : MonoBehaviour
     private UIViewStateManager uiViewStateManager;
     private Inventory inventory;
 
-    private GameObject CraftUI;
-    private Button CraftButton;
-    private Button item0;
-    private Image item0Image;
-    private Button item1;
-    private Image item1Image;
-    private Button item2;
-    private Image item2Image;
-    private Button item3;
-    private Image item3Image;
-    private Button item4;
-    private Image item4Image;
+    private GameObject MenuUI;
 
+    private Button weapons;
+    private Button towers;
+
+    
+    private BaseObject[] weaponObjects;
+    private BaseObject[] towerObjects;
+    public GameObject buttonPrefab;
+    public RectTransform content;
+
+
+
+    private GameObject CraftUI;
     [SerializeField]
-    private BaseObject object0;
-    [SerializeField]
-    private BaseObject object1;
-    [SerializeField]
-    private BaseObject object2;
-    [SerializeField]
-    private BaseObject object3;
-    [SerializeField]
-    private BaseObject object4;
+    private ScrollView scrollView;
+
+    private Button CraftButton;
+
+    
 
 
     private Image outputItem;
@@ -43,61 +46,143 @@ public class CraftingUIManager : MonoBehaviour
     private Image inputItem2;
     private TMP_Text num0;
     private TMP_Text num1;
-    private TMP_Text num2;
+    private TMP_Text num2;  
 
 
+    void Awake()
+    {
+        // 使用 AssetDatabase 来查找所有的 WeaponObject
+        string[] weaponguids = AssetDatabase.FindAssets("t:WeaponObject");
+        string[] towerguids = AssetDatabase.FindAssets("t:TowerObject");
 
+        // 根据 GUID 获取对应的路径，并加载 ScriptableObject
+        weaponObjects = new WeaponObject[weaponguids.Length];
+        towerObjects = new TowerObject[towerguids.Length];
+
+        for (int i = 0; i < weaponguids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(weaponguids[i]);
+            weaponObjects[i] = AssetDatabase.LoadAssetAtPath<WeaponObject>(path);
+        }
+        for (int i = 0; i < towerguids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(towerguids[i]);
+            towerObjects[i] = AssetDatabase.LoadAssetAtPath<TowerObject>(path);
+        }
+
+
+    }
     void Start()
     {
 
         inventory = FindObjectOfType<Inventory>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleCraftUi;
-        SetupUI();
+        SetupMenuUI();
     }
+
+
+    public BaseObject[] RemoveEmptyRecipeItems(BaseObject[] objects)
+    {
+        if (objects != null)
+        {
+            int filteredCount = 0;
+            BaseObject[] filteredList = new BaseObject[objects.Length];
+
+            foreach (BaseObject obj in objects)
+            {
+                ICraftableObject craftableObject = obj as ICraftableObject;
+                if (craftableObject != null && craftableObject.getRecipe() != null && craftableObject.getRecipe().Length > 0)
+                {
+                    filteredList[filteredCount] = obj;
+                    filteredCount++;
+                }
+            }
+
+            BaseObject[] result = new BaseObject[filteredCount];
+            Array.Copy(filteredList, result, filteredCount);
+            return result;
+        }
+        else
+        {
+            
+            Debug.LogError("weaponObjects is null or not initialized.");
+            return objects;
+        }
+
+
+    }
+
+
+
+
+
 
     private void OnDestroy()
     {
         uiViewStateManager.UpdateUiBeingViewedEvent -= ToggleCraftUi;
     }
 
-    private void SetupUI()
-    {
-        CraftUI = GameObject.Find(NAME_CRAFT_UI);
-        CraftButton = CraftUI.transform.Find(NAME_Craft_BUTTON).GetComponent<Button>();
-        item0 = CraftUI.transform.Find(NAME_0_BUTTON).GetComponent<Button>();
-        item0Image = item0.transform.Find("Image").GetComponent<Image>();
-        item1 = CraftUI.transform.Find(NAME_1_BUTTON).GetComponent<Button>();
-        item1Image = item1.transform.Find("Image").GetComponent<Image>();
-        item2 = CraftUI.transform.Find(NAME_2_BUTTON).GetComponent<Button>();
-        item2Image = item2.transform.Find("Image").GetComponent<Image>();
-        item3 = CraftUI.transform.Find(NAME_3_BUTTON).GetComponent<Button>();
-        item3Image = item3.transform.Find("Image").GetComponent<Image>();
-        item4 = CraftUI.transform.Find(NAME_4_BUTTON).GetComponent<Button>();
-        item4Image = item4.transform.Find("Image").GetComponent<Image>();
 
+
+    private void SetupMenuUI()
+    {
+        MenuUI = GameObject.Find(NAME_CRAFT_MENU);
+        CraftUI = GameObject.Find(NAME_CRAFT_UI);
+        weapons = MenuUI.transform.Find(NAME_BUTTON_0).GetComponent<Button>();
+        towers = MenuUI.transform.Find(NAME_BUTTON_1).GetComponent<Button>();
+        weapons.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(weaponObjects)));
+        towers.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(towerObjects)));
+        MenuUI.SetActive(false);
+        CraftUI.SetActive(false);
+    }
+
+
+    private void SetupCraftUI(BaseObject[] list)
+    {
+        CraftUI.SetActive(true);
+        CraftButton = CraftUI.transform.Find(NAME_Craft_BUTTON).GetComponent<Button>();
+        
         outputItem = CraftUI.transform.Find(NAME_OUTPUT_IMAGE).GetComponent<Image>();
         inputItem0 = CraftUI.transform.Find(NAME_IMAGE_0).GetComponent<Image>();
         inputItem1 = CraftUI.transform.Find(NAME_IMAGE_1).GetComponent<Image>();
         inputItem2 = CraftUI.transform.Find(NAME_IMAGE_2).GetComponent<Image>();
-
         num0 = CraftUI.transform.Find(NAME_NUM_0).GetComponent<TMP_Text>();
         num1 = CraftUI.transform.Find(NAME_NUM_1).GetComponent<TMP_Text>();
         num2 = CraftUI.transform.Find(NAME_NUM_2).GetComponent<TMP_Text>();
-
         CraftButton.onClick.AddListener(CraftButtonClicked);
-        item0.onClick.AddListener(() => ItemButtonClicked(item0Image.sprite, item0));
-        item1.onClick.AddListener(() => ItemButtonClicked(item1Image.sprite, item1));
-        item2.onClick.AddListener(() => ItemButtonClicked(item2Image.sprite, item2));
-        item3.onClick.AddListener(() => ItemButtonClicked(item3Image.sprite, item3));
-        item4.onClick.AddListener(() => ItemButtonClicked(item4Image.sprite, item4));
 
-        itemButtonToBaseObjectMapping.Add(item0, object0);
-        itemButtonToBaseObjectMapping.Add(item1, object1);
-        itemButtonToBaseObjectMapping.Add(item2, object2);
-        itemButtonToBaseObjectMapping.Add(item3, object3);
-        itemButtonToBaseObjectMapping.Add(item4, object4);
+        foreach (Transform child in content.transform)
+        {
+            Destroy(child.gameObject);  
+        }
+        for (int i = 0; i < list.Length; i++)
+        {
+            
+            GameObject buttonObj = Instantiate(buttonPrefab, content);
+            Button button = buttonObj.GetComponent<Button>();   
+            
+            RectTransform buttonRect = buttonObj.GetComponent<RectTransform>();
+           
+            buttonRect.sizeDelta = new Vector2(120, 120);
+            buttonRect.anchoredPosition = new Vector2(0, -i * 130 + 190);
 
+            itemButtonToBaseObjectMapping[button] = list[i];
+         
+            GameObject buttonImage = new GameObject();
+            buttonImage.transform.SetParent(buttonObj.transform);
+
+            Image image = buttonImage.AddComponent<Image>();
+            RectTransform ImageRect = buttonImage.GetComponent<RectTransform>();
+            ImageRect.localPosition = new Vector2(0, 0);
+
+
+            
+            image.sprite = list[i].getPrefabSprite();
+
+            button.onClick.AddListener(() => ItemButtonClicked(image.sprite, button));
+
+        }
 
 
 
@@ -113,17 +198,34 @@ public class CraftingUIManager : MonoBehaviour
         num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 0);
         num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 0);
 
-        CraftUI.SetActive(false);
- 
     }
 
 
     private void ToggleCraftUi(object sender, UIBeingViewed ui)
     {
         Debug.Log("ToggleCraftUi called. UIBeingViewed is: " + ui);
-        CraftUI.SetActive(ui == UIBeingViewed.Craft);
+        if(ui == UIBeingViewed.Craft)
+        {
+            MenuUIOn();
+        }
+        else
+        {
+            BothUIOff();
+        }
+        
     }
 
+    private void MenuUIOn()
+    {
+        MenuUI.SetActive(true);
+    }
+
+    private void BothUIOff()
+    {
+        MenuUI.SetActive(false);
+        CraftUI.SetActive(false);
+    }
+    
     
 
     private void CraftButtonClicked()
@@ -139,17 +241,17 @@ public class CraftingUIManager : MonoBehaviour
 
     }
 
-    private void ItemButtonClicked(Sprite itemSprite,Button n)
-    {
-        outputItem.sprite = itemSprite;
-        outputItem.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
+        private void ItemButtonClicked(Sprite itemSprite,Button n)
+        {
+            outputItem.sprite = itemSprite;
+            outputItem.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
     
-        CraftButton.gameObject.SetActive(true);
+            CraftButton.gameObject.SetActive(true);
 
-        selectedBaseObject = itemButtonToBaseObjectMapping[n];
-        UpdateUi(); 
+            selectedBaseObject = itemButtonToBaseObjectMapping[n];
+            UpdateUi();
 
-    }
+        }
 
 
     private void UpdateUi()
@@ -204,13 +306,16 @@ public class CraftingUIManager : MonoBehaviour
 
 
 
+
+    private const string NAME_CRAFT_MENU = "CraftMenu";
+    private const string NAME_BUTTON_0 = "type0";
+    private const string NAME_BUTTON_1 = "type1";
+
+
+
     private const string NAME_CRAFT_UI = "CraftUI";
     private const string NAME_Craft_BUTTON = "CraftButton";
-    private const string NAME_0_BUTTON = "item0";
-    private const string NAME_1_BUTTON = "item1";
-    private const string NAME_2_BUTTON = "item2";
-    private const string NAME_3_BUTTON = "item3";
-    private const string NAME_4_BUTTON = "item4";
+
 
     private const string NAME_OUTPUT_IMAGE = "OutputItem";
     private const string NAME_IMAGE_0 = "InputItem0";
@@ -220,6 +325,8 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_NUM_1 = "num1";
     private const string NAME_NUM_2 = "num2";
 
+
+    private const string NAME_SCROLLVIEW = "ScrollView";
 
 
 
