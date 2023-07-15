@@ -69,7 +69,7 @@ public class ConstructionMode : MonoBehaviour
     void ExitConstruction()
     {
         
-        ConstructionUI.SetActive(false);                // hide the construction UI
+        //ConstructionUI.SetActive(false);                // hide the construction UI
       // hide the image in under the cursor
         coreArchitecture.CloseConstructionMode();
         

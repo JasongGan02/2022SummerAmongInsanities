@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b80aff767a32a48b33e96c301de720, type: 3}
+  m_Name: villagerWithWeapon
+  m_EditorClassIdentifier: 
+  itemName: villagerWithWeapon
+  sizeRatio: 1
+  prefab: {fileID: 6137642198306298877, guid: 35ddd67cd6bff424f9fbb9e2eb8e3db9, type: 3}
+  HP: 15
+  AtkDamage: 5
+  AtkInterval: 1
+  AtkRange: 1
+  MovingSpeed: 3
+  JumpForce: 1
+  Drops:
+  - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
+    chance: 1
+  SensingRange: 3
+  Hatred:
+  - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
+  - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  - {fileID: 11500000, guid: 611155adb19289445a79bf5069e9adb9, type: 3}

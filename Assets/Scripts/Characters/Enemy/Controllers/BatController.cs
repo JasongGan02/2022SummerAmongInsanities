@@ -53,9 +53,6 @@ public class BatController : EnemyController
         Tr = GetComponent<TrailRenderer>();
         Ps = GetComponent<ParticleSystem>();
 
-        Hatred.Add("PlayerController");
-        Hatred.Add("CatapultTowerController");
-        Hatred.Add("ArcherTowerController");
     }
     
 

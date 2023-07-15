@@ -17,7 +17,6 @@ public class Weapon : MonoBehaviour
     
 
     protected GameObject player;
-
     protected Playermovement playermovement;
     protected PlayerInteraction playerinteraction;
     protected Inventory inventory;
@@ -157,7 +156,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
+        if (collision.gameObject.tag == "enemy")
         {
             
             collision.gameObject.GetComponent<CharacterController>().takenDamage(1);
