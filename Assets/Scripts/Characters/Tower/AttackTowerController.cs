@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public abstract class AttackTowerController : TowerController
     protected float SensingRange;
     public GameObject tempTarget;
     public Collider2D[] colliders;
+
+    Type type;
 
     protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
 
@@ -64,7 +67,7 @@ public abstract class AttackTowerController : TowerController
             //Debug.Log(Hatred.Count);
             for (int i = 0; i < Hatred.Count; i++)
             {
-                if (CouldSense(Hatred[i].name, SensingRange))
+                if (CouldSense(Hatred[i].name, AtkRange))
                 {
                     return tempTarget;
                 }
@@ -76,6 +79,8 @@ public abstract class AttackTowerController : TowerController
 
     public bool CouldSense(string name, float range)
     {
+        type = Type.GetType(name);
+
         colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
         //Debug.Log(colliders.Length);
         foreach (Collider2D collider in colliders)
@@ -83,10 +88,13 @@ public abstract class AttackTowerController : TowerController
             Component[] components = collider.gameObject.GetComponents<Component>();
             foreach (Component component in components)
             {
-                if (component != null && component.GetType().Name == name)
+                if (component != null)
                 {
-                    tempTarget = collider.gameObject;
-                    return true;
+                    if (type.IsAssignableFrom(component.GetType()) || type.Equals(component.GetType()))
+                    {
+                        tempTarget = collider.gameObject;
+                        return true;
+                    }
                 }
             }
         }

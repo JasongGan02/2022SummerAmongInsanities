@@ -19,9 +19,10 @@ public class VillagerGenerator : CharacterSpawner
         if (!TooMuch(EnemyMax) && timerr > 1f)
         {
             //SpawnDumb();
-            //SpawnVillager();
+            SpawnVillager();
             //SpawnLady();
-            SpawnBat();
+            //SpawnBat();
+            SpawnVillagerWithWeapon();
             timerr = 0f;
         }
     }
