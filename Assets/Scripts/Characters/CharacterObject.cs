@@ -15,9 +15,9 @@ public class CharacterObject : BaseObject
     public float AtkRange;
     public float MovingSpeed;
     public float JumpForce;
-
+    
     public Drop[] Drops;
-
+    public List<TextAsset> Hatred;
     protected string controllerName;
     
     public virtual GameObject GetSpawnedGameObject<T>()  where T : CharacterController //Spawn the actual game object through calling this function. 

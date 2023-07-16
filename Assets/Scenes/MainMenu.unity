@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 131211197}
+  - component: {fileID: 131211198}
   m_Layer: 5
   m_Name: ConfirmationPopupMenu
   m_TagString: Untagged
@@ -163,6 +164,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &131211198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131211196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a3b39c8e7c866847a1f019c64404f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstSelected: {fileID: 1148862800}
+  displayText: {fileID: 2065480878}
+  confirmButton: {fileID: 446899492}
+  cancelButton: {fileID: 1148862800}
 --- !u!1001 &204251165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -831,8 +848,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5079619153873286885, guid: 8f8da3ed9ffe163459311a2bb0b204be, type: 3}
+      propertyPath: autoSaveTimeSeconds
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079619153873286885, guid: 8f8da3ed9ffe163459311a2bb0b204be, type: 3}
       propertyPath: initializeDataIfNull
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5079619153873286885, guid: 8f8da3ed9ffe163459311a2bb0b204be, type: 3}
       propertyPath: overrideSelectedProfileId
@@ -2084,6 +2105,7 @@ MonoBehaviour:
   firstSelected: {fileID: 531770850}
   mainMenu: {fileID: 1015051935}
   backButton: {fileID: 1885275421}
+  confirmationPopupMenu: {fileID: 131211198}
 --- !u!1 &1525530085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3024,7 +3046,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -161.8974, y: 0, z: -45.943848, w: 0}
+  m_margin: {x: -352.98682, y: 0, z: -193.60376, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

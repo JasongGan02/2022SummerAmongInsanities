@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
 public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject
-{
+{   
     [Header("Construction Parameter")]
     public int energyCost;
     public Quaternion rotateAngle;//a fixed amount that determines the rotation type of a tower
@@ -17,6 +17,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     public float bullet_speed;
     public GameObject bullet;
 
+    
+    [Header("Iventory Parameters")]
     [SerializeField]
     private int _maxStack;
 

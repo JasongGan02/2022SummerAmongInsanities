@@ -10,6 +10,7 @@ public class FileDataHandler
    private string dataFileName = "";
    private bool useEncryption = false;
    private readonly string encryptionCodeWord = "word";
+   private readonly string backupExtension = ".bak";
 
    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
    {
@@ -26,6 +27,7 @@ public class FileDataHandler
             return;
         }
         string fullPath = Path.Combine(dataDirPath, profileId, dataFileName); //for diff OS's
+        string backupFilePath = fullPath + backupExtension;
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
@@ -43,6 +45,17 @@ public class FileDataHandler
                 {
                     writer.Write(dataToStore);
                 }
+            }
+
+            GameData verifiedGameData = Load(profileId);
+            if (verifiedGameData != null)
+            {
+                File.Copy(fullPath, backupFilePath, true);
+            }
+            else
+            {
+                throw new Exception("Save file could not be verified and backup could not be created.");
+                
             }
         }
         catch (Exception e)
@@ -82,7 +95,6 @@ public class FileDataHandler
 
                 // deserialize the data from Json back into the C# object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
-                Debug.Log("Loaded: "+ loadedData.deathCount);
             }
             catch (Exception e)
             {
