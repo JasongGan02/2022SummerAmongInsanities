@@ -27,12 +27,36 @@ public class SaveSlotsMenu : Menu
     public void OnSaveSlotClicked(SaveSlot saveSlot)
     {
         DisableMenuButtons();
-        DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-        if (!isLoadingGame)
+
+        if (isLoadingGame)
         {
-            DataPersistenceManager.instance.NewGame();
+            DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+            SaveGameAndLoadScene();
         }
-        SaveGameAndLoadScene();
+        // case - new game, but the save slot has data
+        else if (saveSlot.hasData)
+        {
+            confirmationPopupMenu.ActivateMenu(
+                "Starting a New Game with this slot will override the currently saved data. Are You Sure?", 
+                // function to excecute if we select 'yes'
+                () => {
+                    DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+                    DataPersistenceManager.instance.NewGame();
+                    SaveGameAndLoadScene();
+                },
+                // function to excecute if we select 'cancel'
+                () => {
+                    this.ActivateMenu(isLoadingGame);
+                }
+            );
+        }
+        // case - new game, and the save slot has no data
+        else
+        {
+            DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+            DataPersistenceManager.instance.NewGame();
+            SaveGameAndLoadScene();
+        }
     }
 
     private void SaveGameAndLoadScene()
@@ -49,8 +73,19 @@ public class SaveSlotsMenu : Menu
 
     public void OnClearClicked(SaveSlot saveSlot)
     {
-        DataPersistenceManager.instance.DeleteProfileData(saveSlot.GetProfileId());
-        ActivateMenu(isLoadingGame);
+        DisableMenuButtons();
+        confirmationPopupMenu.ActivateMenu(
+            "Are you sure you want to delete this saved data?", 
+            // function to excecute if we select 'yes'
+            () => {
+                DataPersistenceManager.instance.DeleteProfileData(saveSlot.GetProfileId());
+                ActivateMenu(isLoadingGame);
+            },
+            // function to excecute if we select 'cancel'
+            () => {
+                ActivateMenu(isLoadingGame);
+            }
+        );
     }
 
     public void ActivateMenu(bool isLoadingGame)
@@ -58,6 +93,7 @@ public class SaveSlotsMenu : Menu
         this.gameObject.SetActive(true);
         this.isLoadingGame = isLoadingGame;
         Dictionary<string, GameData> profilesGameData = DataPersistenceManager.instance.GetAllProfilesGameData();
+        backButton.interactable = true;
 
         GameObject firstSelected = backButton.gameObject;
         foreach (SaveSlot saveSlot in saveSlots)

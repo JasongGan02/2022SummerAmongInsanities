@@ -24,6 +24,9 @@ MonoBehaviour:
   Drops:
   - droppedItem: {fileID: 11400000}
     chance: 1
+  Hatred:
+  - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
+  - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
   energyCost: 30
   rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   curAngle: {x: 0, y: 0, z: 0, w: 1}

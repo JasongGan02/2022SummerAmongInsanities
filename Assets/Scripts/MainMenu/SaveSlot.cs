@@ -15,6 +15,8 @@ public class SaveSlot : MonoBehaviour
    [SerializeField] private TextMeshProUGUI deathCountText;
    [Header("Clear Data Button")]
    [SerializeField] private Button clearButton;
+
+   public bool hasData { get; private set;} = false;
    private Button saveSlotButton;
 
    private void Awake()
@@ -26,12 +28,14 @@ public class SaveSlot : MonoBehaviour
    {
         if (data == null)
         {
+            hasData = false;
             noDataContent.SetActive(true);
             hasDataContent.SetActive(false);
             clearButton.gameObject.SetActive(false);
         }
         else
         {
+            hasData = true;
             noDataContent.SetActive(false);
             hasDataContent.SetActive(true);
             clearButton.gameObject.SetActive(true);

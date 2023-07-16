@@ -12,7 +12,6 @@ public class ArcherTowerController : AttackTowerController
         transform.parent = GameObject.Find("TowerContainer").transform; // Nathan's change
         enemyContainer = FindObjectOfType<EnemyContainer>();
         isEnemySpotted = false;
-        SensingRange = AtkRange;
         InvokeRepeating("Attack", 0f, AtkInterval);
         //Hatred.Add("BatController");
         //Hatred.Add("VillagerController");
