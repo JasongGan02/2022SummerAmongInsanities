@@ -21,7 +21,6 @@ public class CatapultTowerController : AttackTowerController
         isEnemySpotted = false;
         bullet_x_flyingSpeed = bullet_speed;
         InvokeRepeating("Attack", 0.5f, AtkInterval);
-        SensingRange = AtkRange;
     }   
 
     

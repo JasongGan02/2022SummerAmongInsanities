@@ -263,8 +263,8 @@ public abstract class EnemyController : CharacterController
         //Debug.Log(colliders.Length);
         foreach (Collider2D collider in colliders)
         {
-            Component[] components = collider.gameObject.GetComponents<Component>();
-            foreach (Component component in components)
+            MonoBehaviour[] components = collider.gameObject.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour component in components)
             {
                 if (component != null )
                 {

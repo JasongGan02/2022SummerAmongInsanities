@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public abstract class AttackTowerController : TowerController
 {
 
@@ -13,11 +13,10 @@ public abstract class AttackTowerController : TowerController
     protected EnemyContainer enemyContainer;
     protected float AtkTimer;        // Timer
 
-    protected float SensingRange;
     public GameObject tempTarget;
     public Collider2D[] colliders;
 
-    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
+    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10) | (1 << 12);
 
     //protected abstract void TowerLoop(); 
 
@@ -64,7 +63,7 @@ public abstract class AttackTowerController : TowerController
             //Debug.Log(Hatred.Count);
             for (int i = 0; i < Hatred.Count; i++)
             {
-                if (CouldSense(Hatred[i].name, SensingRange))
+                if (CouldSense(Hatred[i].name, AtkRange))
                 {
                     return tempTarget;
                 }
@@ -76,22 +75,27 @@ public abstract class AttackTowerController : TowerController
 
     public bool CouldSense(string name, float range)
     {
+        Type type = Type.GetType(name);
         colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
         //Debug.Log(colliders.Length);
         foreach (Collider2D collider in colliders)
         {
-            Component[] components = collider.gameObject.GetComponents<Component>();
-            foreach (Component component in components)
+            MonoBehaviour[] components = collider.gameObject.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour component in components)
             {
-                if (component != null && component.GetType().Name == name)
+                if (component != null )
                 {
-                    tempTarget = collider.gameObject;
-                    return true;
+                    if (type.IsAssignableFrom(component.GetType()) || type.Equals(component.GetType()))
+                    {
+                        tempTarget = collider.gameObject;
+                        return true;
+                    }
                 }
             }
+
         }
         //Debug.Log("didn't find target");
-        return false;
+        return false; 
     }
 
 }

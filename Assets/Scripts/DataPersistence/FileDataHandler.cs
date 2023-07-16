@@ -95,7 +95,6 @@ public class FileDataHandler
 
                 // deserialize the data from Json back into the C# object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
-                Debug.Log("Loaded: "+ loadedData.deathCount);
             }
             catch (Exception e)
             {
