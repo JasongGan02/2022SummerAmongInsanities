@@ -324,7 +324,6 @@ public class PlayerInteraction : MonoBehaviour
             {
                 ClickOnGameObject(targetObject);
             }
-            
             StartTimer();
         }
     }
