@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: villagerWithWeapon
   m_EditorClassIdentifier: 
   itemName: villagerWithWeapon
-  sizeRatio: 1
-  prefab: {fileID: 6137642198306298877, guid: 35ddd67cd6bff424f9fbb9e2eb8e3db9, type: 3}
+  sizeRatio: 0.8
+  prefab: {fileID: 5469098318322386293, guid: a5061e01c5ca21f4fb2f7b8ad582b6a7, type: 3}
   HP: 15
   AtkDamage: 5
   AtkInterval: 1
   AtkRange: 1
-  MovingSpeed: 3
-  JumpForce: 1
+  MovingSpeed: 2.5
+  JumpForce: 0.5
   Drops:
   - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
     chance: 1
@@ -28,4 +28,3 @@ MonoBehaviour:
   Hatred:
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
-  - {fileID: 11500000, guid: 611155adb19289445a79bf5069e9adb9, type: 3}

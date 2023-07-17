@@ -37,3 +37,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
   - {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
   _quantity: 0300000003000000
+  Hatred:
+  - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}

@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
+
 public class TerrainGeneration : MonoBehaviour
 {    
     [Header("Tile Atlas")]
@@ -52,6 +54,11 @@ public class TerrainGeneration : MonoBehaviour
     
     [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
     private ShadowGenerator shadowGenerator;
+    public Dictionary<Vector2Int, GameObject> currentTerrain;
+    public static int groundLayer;
+    private static Vector2 PlayerPosition;
+    static GameObject Player;
+    [HideInInspector] public static Dictionary<Vector2, GameObject> TileWithShadowDictionary= new();
 
     private void OnValidate()
     {
@@ -69,7 +76,78 @@ public class TerrainGeneration : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
         {
-            shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+            //shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+        }
+
+        groundLayer = LayerMask.GetMask("ground");
+    }
+    public void Update()
+    {
+        PlayerUpdate();
+        ShadowUpdate();
+        ShadowClose();
+    }
+
+    public static void PlayerUpdate()
+    {
+        if (Player == null)
+        {
+            Player = GameObject.FindGameObjectWithTag("Player");
+        }
+        else
+        {
+            PlayerPosition = Player.transform.position;
+        }
+    }
+
+    public static void ShadowUpdate()
+    {
+        for (float x = PlayerPosition.x - 13f ; x < PlayerPosition.x + 13f; x += 0.25f)
+        {
+            for (float y = PlayerPosition.y; y > PlayerPosition.y - 6.5f; y -= 0.25f) 
+            {
+                Vector2 currentCoordinate = new Vector2(x, y);
+                RaycastHit2D hit = Physics2D.Raycast(currentCoordinate, Vector2.down, 0f, groundLayer);
+
+                if (hit.collider != null)
+                {
+                    GameObject currentTile = hit.collider.gameObject;
+                    ShadowCaster2D shadowCaster = currentTile.GetComponent<ShadowCaster2D>();
+
+                    if (shadowCaster != null && shadowCaster.enabled == false)
+                    {
+                        Debug.Log("Shadow enabled");
+                        shadowCaster.enabled = true;
+                        if (TileWithShadowDictionary.ContainsKey(currentCoordinate) == false)
+                        {
+                            TileWithShadowDictionary.Add(currentCoordinate, currentTile);
+                        }
+                    }
+                    //else
+                    //{
+                    //    Debug.LogWarning("ShadowCaster2D component not found on GameObject at coordinate (" + currentCoordinate.x + ", " + currentCoordinate.y + ")");
+                    //}
+
+                    break;
+                }
+            }
+        }
+    }
+    
+    public static void ShadowClose()
+    {
+        foreach (KeyValuePair<Vector2, GameObject> pair in TileWithShadowDictionary)
+        {
+            Vector2 coordinate = pair.Key;
+            GameObject tileObject = pair.Value;
+
+            if (coordinate.x > PlayerPosition.x + 13f || coordinate.x < PlayerPosition.x - 13f && tileObject != null)
+            {
+                if (tileObject.GetComponent<ShadowCaster2D>() != null) { tileObject.GetComponent<ShadowCaster2D>().enabled = false; }
+            } else if (coordinate.y < PlayerPosition.y - 10f || coordinate.y > PlayerPosition.y + 10f && tileObject != null)
+            {
+                if (tileObject.GetComponent<ShadowCaster2D>() != null) { tileObject.GetComponent<ShadowCaster2D>().enabled = false; }
+            }
         }
     }
 
@@ -251,7 +329,7 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
-
+        currentTerrain = worldTilesDictionary;
         
     }
     public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)
