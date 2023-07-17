@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEditor.Tilemaps;
 using UnityEngine;
-using static Constants;
 
 
 public class DumbController : EnemyController
@@ -23,8 +22,8 @@ public class DumbController : EnemyController
     private float patrolRest = 2f;
     private float hittingback = 0.3f;
 
-    private UnityEngine.Animator animator;
-    
+    private Animator animator;
+
 
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
@@ -39,7 +38,7 @@ public class DumbController : EnemyController
         rb = GetComponent<Rigidbody2D>();
         CurrentHP = HP;
         PrevHP = CurrentHP;
-        animator = GetComponent<UnityEngine.Animator>();
+        animator = GetComponent<Animator>();
         ground_mask = LayerMask.GetMask("ground");
         groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");

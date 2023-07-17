@@ -18,10 +18,10 @@ public class VillagerGenerator : CharacterSpawner
         timerr += Time.deltaTime;
         if (!TooMuch(EnemyMax) && timerr > 1f)
         {
-            SpawnDumb();
-            SpawnVillager();
-            SpawnLady();
-            SpawnBat();
+            //SpawnDumb();
+            //SpawnVillager();
+            //SpawnLady();
+            //SpawnBat();
             timerr = 0f;
         }
     }

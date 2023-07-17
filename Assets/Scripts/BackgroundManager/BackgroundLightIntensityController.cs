@@ -13,6 +13,8 @@ public class BackgroundLightIntensityController : MonoBehaviour
 
     private bool sunrise = false;
     private bool sunset = false;
+
+    GameObject Player;
     // Start is called before the first frame update
     void Awake()
     {
@@ -30,6 +32,15 @@ public class BackgroundLightIntensityController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Player == null)
+        {
+            Player = GameObject.FindGameObjectWithTag("Player");
+        }
+        else
+        {
+            transform.position = new Vector2(Player.transform.position.x, transform.position.y);
+        }
+
         timeCounter += Time.deltaTime / transitionTimeInRealSecond;
         if (sunrise)
         {
