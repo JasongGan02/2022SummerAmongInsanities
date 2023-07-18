@@ -103,6 +103,8 @@ public class TerrainGeneration : MonoBehaviour
 
     public static void ShadowUpdate()
     {
+        int count = 0;
+
         for (float x = PlayerPosition.x - 13f ; x < PlayerPosition.x + 13f; x += 0.25f)
         {
             for (float y = PlayerPosition.y + 7f; y > PlayerPosition.y - 6.5f; y -= 0.25f) 
@@ -115,18 +117,26 @@ public class TerrainGeneration : MonoBehaviour
                     GameObject currentTile = hit.collider.gameObject;
                     ShadowCaster2D shadowCaster = currentTile.GetComponent<ShadowCaster2D>();
 
-                    if (shadowCaster != null && shadowCaster.enabled == false)
+                    if (shadowCaster != null)
                     {
-                        //Debug.Log("Shadow enabled");
-                        shadowCaster.enabled = true;
-                        if (TileWithShadowDictionary.ContainsKey(currentCoordinate) == false)
+                        if (shadowCaster.enabled == false)
                         {
-                            TileWithShadowDictionary.Add(currentCoordinate, currentTile);
+                            shadowCaster.enabled = true;
+                            if (TileWithShadowDictionary.ContainsKey(currentCoordinate) == false)
+                            {
+                                TileWithShadowDictionary.Add(currentCoordinate, currentTile);
+                            }
+                        }
+
+                        count++;
+                        if (count > 1)
+                        {
+                            count = 0;
+                            break;
                         }
                     }
-
-                    break;
                 }
+
             }
         }
     }
