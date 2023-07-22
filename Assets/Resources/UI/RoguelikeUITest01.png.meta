@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1ec1744a1ffaaab43be312ae8dc414ba
+guid: fc7cf20002fdaf649b3b7b3b7234482f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -118,13 +118,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UIbackground-0001_0
+      name: RoguelikeUITest01_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 312
-        height: 177
+        width: 166
+        height: 184
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,8 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 292a23928c3de3a489ea11eda78fd862
-      internalID: 2062086976
+      spriteID: 072bc0ca6de106349a75fa0643b92984
+      internalID: 1146486383
       vertices: []
       indices: 
       edges: []
@@ -149,7 +149,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      UIbackground-0001_0: 2062086976
+      RoguelikeUITest01_0: 1146486383
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
