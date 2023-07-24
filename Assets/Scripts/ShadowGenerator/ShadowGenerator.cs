@@ -11,16 +11,17 @@ public class ShadowGenerator : MonoBehaviour
     // position to x index should be => position.x - 0.5 or (int) position.x
     public Texture2D lightMap;
     public Material lightShader;
-    public int lightRadius = 4;
-    public int thresholdToSnapOverlay = 20;
+    public int lightRadius;
+    public int thresholdToSnapOverlay;
     [Tooltip("the height of top tile + 1")]
-    public int skyLightHeight = 62;
-    public int skyLightRange = 5;
+    public int skyLightHeight;
+    public int skyLightRange;
 
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary = null;
     private GameObject player;
     private int worldWidthInBlock;
     private int worldHeightInBlock = 100; // TODO don't hardcode
+    TerrainGeneration terrainGeneration;
 
     private void Start()
     {
@@ -41,6 +42,7 @@ public class ShadowGenerator : MonoBehaviour
             }
         }
         // distance is in global space, so needs to time 4 for global -> object conversion
+
         
     }
 
@@ -75,26 +77,46 @@ public class ShadowGenerator : MonoBehaviour
             }
         }
 
-        // add sky light
+        //// add sky light
+        //for (int x = 0; x < worldWidth; x++)
+        //{
+        //    for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
+        //    {
+        //        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        //        {
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            colors[y * worldWidth + x] = Color.clear;
+        //        }
+        //    }
+        //}
+            
         for (int x = 0; x < worldWidth; x++)
         {
+            bool isExposedToSky = true; // Flag to track if the current position is exposed to the sky
+
             for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
             {
                 if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
                 {
+                    isExposedToSky = false; // Found an obstruction, mark it as not exposed to the sky
                     break;
                 }
-                else
+            }
+
+            if (isExposedToSky)
+            {
+                for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
                 {
                     colors[y * worldWidth + x] = Color.clear;
                 }
             }
         }
-
-
+        
         lightMap.SetPixels(colors);
         lightMap.Apply();
-
         LightBlocks();
     }
 
@@ -104,7 +126,7 @@ public class ShadowGenerator : MonoBehaviour
         {
             for (int y = 0; y < worldHeightInBlock; y++)
             {
-                if (lightMap.GetPixel(x, y).a == 0f)
+                if (lightMap.GetPixel(x, y).a == 0f) // this pixel is completely transparent
                 {
                     LightBlock(x, y, 1f, 0);
                 }
@@ -112,7 +134,7 @@ public class ShadowGenerator : MonoBehaviour
         }
     }
 
-    private void LightBlock(int x, int y, float intensity, int iteration)
+    private void LightBlock(int x, int y, float intensity, float iteration)
     {
         if (iteration < lightRadius)
         {
@@ -161,7 +183,7 @@ public class ShadowGenerator : MonoBehaviour
         this.transform.position = new Vector3(blockX, 0 + this.transform.position.y, 0);
     }
 
-    public void OnTileBroken(Vector2Int coord)
+    public void OnTileBrokenOriginal(Vector2Int coord)
     {
         if (worldTilesDictionary.ContainsKey(coord))
         {
@@ -184,5 +206,62 @@ public class ShadowGenerator : MonoBehaviour
                 }
             }
         }        
+    }
+
+    public void OnTileBroken(Vector2Int coord)
+    {
+        if (worldTilesDictionary.ContainsKey(coord))
+        {
+            if (coord.y >= skyLightHeight - skyLightRange)
+            {
+                for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
+                {
+                    if (worldTilesDictionary.ContainsKey(new Vector2Int(coord.x, y)))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        float intensity = Mathf.Clamp01((skyLightHeight - y) / (float)skyLightRange);
+                        float transparency = Mathf.Clamp01(1 - intensity);
+                        LightBlock(coord.x, y, transparency, intensity);
+                    }
+                }
+            }
+
+            worldTilesDictionary.Remove(coord);
+        }
+    }
+
+    public void TerrainShadowUpdate(int worldWidth)
+    {
+        terrainGeneration = FindObjectOfType<TerrainGeneration>();
+        if (terrainGeneration != null)
+        {
+            worldTilesDictionary = terrainGeneration.currentTerrain;
+        }
+        Color[] colors = new Color[worldWidth * worldHeightInBlock];
+
+        for (int x = 0; x < worldWidth; x++)
+        {
+            bool isExposedToSky = true; // Flag to track if the current position is exposed to the sky
+
+            for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
+            {
+                if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+                {
+                    isExposedToSky = false; // Found an obstruction, mark it as not exposed to the sky
+                    break;
+                }
+            }
+
+            if (isExposedToSky)
+            {
+                for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
+                {
+                    colors[y * worldWidth + x] = Color.clear;
+                }
+            }
+        }
     }
 }

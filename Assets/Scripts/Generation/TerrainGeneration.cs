@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
+
 public class TerrainGeneration : MonoBehaviour
 {    
     [Header("Tile Atlas")]
@@ -52,6 +54,12 @@ public class TerrainGeneration : MonoBehaviour
     
     [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
     private ShadowGenerator shadowGenerator;
+    public Dictionary<Vector2Int, GameObject> currentTerrain;
+    public static int groundLayer;
+    private static Vector2 PlayerPosition;
+    static GameObject Player;
+    [HideInInspector] public static Dictionary<Vector2, GameObject> TileWithShadowDictionary= new();
+    static List<Vector2> coordinatesToRemove;
 
     private void OnValidate()
     {
@@ -69,8 +77,101 @@ public class TerrainGeneration : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
         {
-            shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+            //shadowGenerator.Initialize(worldTilesDictionary, worldSize);
         }
+
+        groundLayer = LayerMask.GetMask("ground");
+    }
+    public void Update()
+    {
+        PlayerUpdate();
+        ShadowUpdate();
+        ShadowClose();
+    }
+
+    public static void PlayerUpdate()
+    {
+        if (Player == null)
+        {
+            Player = GameObject.FindGameObjectWithTag("Player");
+        }
+        else
+        {
+            PlayerPosition = Player.transform.position;
+        }
+    }
+
+    public static void ShadowUpdate()
+    {
+        int count = 0;
+
+        for (float x = PlayerPosition.x - 13f ; x < PlayerPosition.x + 13f; x += 0.25f)
+        {
+            for (float y = PlayerPosition.y + 7f; y > PlayerPosition.y - 6.5f; y -= 0.25f) 
+            {
+                Vector2 currentCoordinate = new Vector2(x, y);
+                RaycastHit2D hit = Physics2D.Raycast(currentCoordinate, Vector2.down, 0f, groundLayer);
+
+                if (hit.collider != null)
+                {
+                    GameObject currentTile = hit.collider.gameObject;
+                    ShadowCaster2D shadowCaster = currentTile.GetComponent<ShadowCaster2D>();
+
+                    if (shadowCaster != null)
+                    {
+                        if (shadowCaster.enabled == false)
+                        {
+                            shadowCaster.enabled = true;
+                            if (TileWithShadowDictionary.ContainsKey(currentCoordinate) == false)
+                            {
+                                TileWithShadowDictionary.Add(currentCoordinate, currentTile);
+                            }
+                        }
+
+                        count++;
+                        if (count > 1)
+                        {
+                            count = 0;
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
+    public static void ShadowClose()
+    {
+        coordinatesToRemove = new List<Vector2>();
+        
+        foreach (KeyValuePair<Vector2, GameObject> pair in TileWithShadowDictionary)
+        {
+            Vector2 coordinate = pair.Key;
+            GameObject tileObject = pair.Value;
+
+            if (coordinate.x > PlayerPosition.x + 13f || coordinate.x < PlayerPosition.x - 13f && tileObject != null)
+            {
+                if (tileObject.GetComponent<ShadowCaster2D>() != null) 
+                { 
+                    tileObject.GetComponent<ShadowCaster2D>().enabled = false;
+                    coordinatesToRemove.Add(coordinate);
+                }
+            } 
+            else if (coordinate.y < PlayerPosition.y - 6.5f || coordinate.y > PlayerPosition.y + 7.5f && tileObject != null)
+            {
+                if (tileObject.GetComponent<ShadowCaster2D>() != null) 
+                {
+                    tileObject.GetComponent<ShadowCaster2D>().enabled = false;
+                    coordinatesToRemove.Add(coordinate);
+                }
+            }
+        }
+        foreach (Vector2 coordinate in coordinatesToRemove)
+        {
+            TileWithShadowDictionary.Remove(coordinate);
+        }
+        Debug.Log(TileWithShadowDictionary.Count);
     }
 
     private void RemoveLightSource(int x, int y)
@@ -251,7 +352,7 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
-
+        currentTerrain = worldTilesDictionary;
         
     }
     public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)

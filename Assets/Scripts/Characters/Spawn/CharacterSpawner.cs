@@ -85,6 +85,13 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
     }
 
+    public void SpawnVillagerWithWeapon()
+    {
+        GameObject VillagerWithWeaponGameObject = characterAtlas.villagerWithWeapon.GetSpawnedGameObject<VillagerWithWeaponController>();
+        VillagerWithWeaponGameObject.transform.position = GetComponentInChildren<Transform>().position;
+        VillagerWithWeaponGameObject.transform.parent = GameObject.Find("EnemyContainer").transform;
+    }
+
     public void SpawnBat()
     {
         GameObject BatGameObject = characterAtlas.bat.GetSpawnedGameObject<BatController>();

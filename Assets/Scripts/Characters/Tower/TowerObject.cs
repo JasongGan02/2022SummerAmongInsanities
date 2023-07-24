@@ -28,6 +28,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     [SerializeField]
     private int[] _quantity;
 
+    public List<TextAsset> Hatred;
+
     /**
      * implementation of IInventoryObject
      */
