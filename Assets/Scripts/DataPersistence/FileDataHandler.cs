@@ -65,7 +65,7 @@ public class FileDataHandler
         
    }
 
-   public GameData Load(string profileId)
+   public GameData Load(string profileId, bool allowRestoreFromBackup = true)
    {
         if (profileId == null)
         {
@@ -98,7 +98,20 @@ public class FileDataHandler
             }
             catch (Exception e)
             {
-                Debug.LogError("Error occured when trying to load data from file: " + fullPath + "\n" + e);
+                if(allowRestoreFromBackup)
+                {
+                    Debug.LogWarning("Failed to load data file. Attempting to roll back \n" + e);
+                    bool rollbackSuccess = AttemptRollback(fullPath);
+                    if (rollbackSuccess)
+                    {
+                        //try to load again recursively
+                        loadedData = Load(profileId, false);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error occured when trying to load file at path " + fullPath + " and backup did not work. \n" + e);
+                }
             }
         }
         return loadedData;
@@ -198,5 +211,29 @@ public class FileDataHandler
             modifiedData += (char) (data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
         }  
         return modifiedData;
+   }
+
+   private bool AttemptRollback(string fullPath)
+   {
+        bool success = false;
+        string backupFilePath = fullPath + backupExtension;
+        try
+        {
+            if (File.Exists(backupFilePath))
+            {
+                File.Copy(backupFilePath, fullPath, true);
+                success = true;
+                Debug.LogWarning("Rollback successful for file: " + backupFilePath);
+            }
+            else
+            {
+                throw new Exception("Tried to roll back, but backup file does not exist");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error occured when trying to rollback data file: " + backupFilePath + "\n" + e);
+        }
+        return success;
    }
 }
