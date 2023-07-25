@@ -171,7 +171,7 @@ public class TerrainGeneration : MonoBehaviour
         {
             TileWithShadowDictionary.Remove(coordinate);
         }
-        Debug.Log(TileWithShadowDictionary.Count);
+        //Debug.Log(TileWithShadowDictionary.Count);
     }
 
     private void RemoveLightSource(int x, int y)

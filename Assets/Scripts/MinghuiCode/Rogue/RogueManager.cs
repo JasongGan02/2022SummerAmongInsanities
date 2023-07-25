@@ -12,7 +12,8 @@ public class RogueManager : MonoBehaviour
 
     [SerializeField]
     private GameObject buffSelectionTemplate;
-
+    [SerializeField]
+    private GameObject hoveringBuffUIPrefab;
     private UIViewStateManager uiViewStateManager;
     private GameObject rogueUI;
     private Button levelUpButton;
@@ -74,7 +75,10 @@ public class RogueManager : MonoBehaviour
                 for(int i = 0; i < buffContainer.transform.childCount; i++)
                 {
                     GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
-                    buffCard.GetComponent<BuffSelectionController>().OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+                    BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
+                    buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+                    buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
+                    buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
                     Destroy(buffCard);
                 }
                 AddBuffs();
@@ -95,9 +99,11 @@ public class RogueManager : MonoBehaviour
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
             buffSelectionController.Init(node, buffContainer.transform, new Vector2(460 + 500 * i, 590f));
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
+            buffSelectionController.OnBuffHoverEnterEvent += ShowHoveringBuffUI;
+            buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI;
         }
     }
-
+            
     private List<RogueGraphNode> GetRandomBuffNodes()
     {
         List<RogueGraphNode> candidateNodes = new();
@@ -186,12 +192,31 @@ public class RogueManager : MonoBehaviour
 
         for(int i = 0; i < buffContainer.transform.childCount; i++)
         {
-            Debug.Log("899");
             GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
-            buffCard.GetComponent<BuffSelectionController>().OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+            BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
+            buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+            buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
+            buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
             Destroy(buffCard);
         }
         
+    }
+
+    private void ShowHoveringBuffUI(object sender, RogueGraphNode node)
+    {
+        // Instantiate the hovering UI prefab and set its position to the mouse position
+        Vector2 mousePosition = Input.mousePosition;
+        GameObject hoveringBuffUI = Instantiate(hoveringBuffUIPrefab, mousePosition, Quaternion.identity);
+        Debug.Log("HoveringBuffUI instantiated at " + mousePosition);
+        // Set the buff description in the hovering UI
+        TMP_Text descriptionText = hoveringBuffUI.GetComponentInChildren<TMP_Text>();
+        //descriptionText.text = node.effect?.description ?? "No Description Available";
+    }
+
+    private void HideHoveringBuffUI(object sender, RogueGraphNode node)
+    {
+        // Destroy the hovering UI when the player's mouse exits the buff card
+        Destroy(GameObject.FindGameObjectWithTag("HoveringBuffUI"));
     }
 
     private const string NAME_ROGUE_UI = "RogueUI";

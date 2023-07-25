@@ -1,37 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class CameraMover : MonoBehaviour {
 
     public float speed;
     float inputX;
     float inputZ;
-	
-	// Update is called once per frame
-	void Update () {
+     private PixelPerfectCamera pixelPerfectCamera;
+
+    private void Start()
+    {
+        // Get the reference to the PixelPerfectCamera component on the main camera
+        pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
 
         if (inputX != 0)
-                moveX();
+            moveX();
         if (inputZ != 0)
-                moveZ();
+            moveZ();
 
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
             {
-                Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize - 1, 100);
+                // Decrease assetsPPU to zoom out
+                pixelPerfectCamera.assetsPPU += 4;
             }
             else if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize + 1, 100);
-
+                // Increase assetsPPU to zoom in
+                pixelPerfectCamera.assetsPPU -= 4;
             }
         }
-        
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 1f, 7f);
+
+        // Clamp the assetsPPU to a reasonable range (adjust the range as needed)
+        pixelPerfectCamera.assetsPPU = Mathf.Clamp(pixelPerfectCamera.assetsPPU, 16, 32);
     }
 
 
