@@ -19,5 +19,7 @@ MonoBehaviour:
   level: 0
   duration: 10
   stackable: 1
+  repeatable: 0
+  description: "\u6301\u7EED\u6CBB\u7597\u73A9\u5BB6"
   applyingControllerType: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   dHP: 1

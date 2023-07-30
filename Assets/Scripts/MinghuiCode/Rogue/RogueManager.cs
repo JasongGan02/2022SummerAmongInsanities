@@ -202,26 +202,29 @@ public class RogueManager : MonoBehaviour
         
     }
 
-    private void ShowHoveringBuffUI(object sender, RogueGraphNode node)
+    private void ShowHoveringBuffUI(object sender, BuffSelectionController.OnBuffEventArgs args)
     {
         // Instantiate the hovering UI prefab and set its position to the mouse position
-        Vector2 mousePosition = Input.mousePosition;
-        GameObject hoveringBuffUI = Instantiate(hoveringBuffUIPrefab, mousePosition, Quaternion.identity);
-        Debug.Log("HoveringBuffUI instantiated at " + mousePosition);
+        Vector2 mousePosition = Input.mousePosition + new Vector3(0, -100f);
+        GameObject hoveringBuffUI = Instantiate(hoveringBuffUIPrefab, args.buffSelectionTemplate.transform.position + new Vector3(0, -300f), Quaternion.identity);
+        hoveringBuffUI.transform.SetParent(args.buffSelectionTemplate.transform);
+       //Debug.Log("HoveringBuffUI instantiated at " + mousePosition);
         // Set the buff description in the hovering UI
         TMP_Text descriptionText = hoveringBuffUI.GetComponentInChildren<TMP_Text>();
-        //descriptionText.text = node.effect?.description ?? "No Description Available";
+        descriptionText.text = args.node.effect?.description ?? "No Description Available";
     }
 
-    private void HideHoveringBuffUI(object sender, RogueGraphNode node)
+    private void HideHoveringBuffUI(object sender, BuffSelectionController.OnBuffEventArgs args)
     {
         // Destroy the hovering UI when the player's mouse exits the buff card
-        Destroy(GameObject.FindGameObjectWithTag("HoveringBuffUI"));
+        Destroy(GameObject.FindGameObjectWithTag(NAME_HOVERING_BUFF));
     }
 
     private const string NAME_ROGUE_UI = "RogueUI";
     private const string NAME_LEVEL_UP_BUTTON = "LevelUpButton";
     private const string NAME_SELECTED_BUFF_TEXT = "SelectedBuffText";
     private const string NAME_BUFF_CONTAINER = "BuffContainer";
+
+    private const string NAME_HOVERING_BUFF = "HoveringBuffUI";
     
 }

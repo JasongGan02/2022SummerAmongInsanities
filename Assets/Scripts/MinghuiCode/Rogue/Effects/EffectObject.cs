@@ -15,6 +15,7 @@ public abstract class EffectObject : BaseObject
     public float duration;
     public bool stackable;
     public bool repeatable; //If the effect can be selected multiple times
+    public string description;
 
     public virtual void ExecuteEffect(IEffectableObject effectedGameObject) //Use this when you are unsure about what type of controller will be using.
     {

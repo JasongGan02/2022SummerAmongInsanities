@@ -13,6 +13,7 @@ public class EffectController : MonoBehaviour
     protected int level;
     protected float duration; // The duration of the effect in seconds
     protected bool stackable;
+    protected string description;
     protected EffectObject effectObject;
 
     public virtual void Initialize(EffectObject effectObject)
