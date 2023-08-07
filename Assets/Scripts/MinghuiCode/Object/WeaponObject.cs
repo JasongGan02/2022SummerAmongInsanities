@@ -21,6 +21,10 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     private BaseObject[] _recipe;
     [SerializeField]
     private int[] _quantity;
+    [SerializeField]
+    private bool _isCraftable;
+    [SerializeField]
+    private bool _isCoreNeeded;
 
     public float getAttack()
     {
@@ -97,6 +101,30 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     public int[] getQuantity()
     {
         return Quantity;
+    }
+
+
+    public bool IsCraftable
+    {
+        get => _isCraftable;
+        set => _isCraftable = value;
+
+    }
+
+    public bool getIsCraftable()
+    {
+        return IsCraftable;
+    }
+
+    public bool IsCoreNeeded
+    {
+        get => _isCoreNeeded;
+        set => _isCoreNeeded = value;
+    }
+
+    public bool isCoreNeeded()
+    {
+        return _isCoreNeeded;
     }
     #endregion
 

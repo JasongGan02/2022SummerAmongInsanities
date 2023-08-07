@@ -9,6 +9,9 @@ using System;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
+using Color = UnityEngine.Color;
+using System.Drawing;
+using System.Security.Cryptography;
 
 public class CraftingUIManager : MonoBehaviour
 {
@@ -177,8 +180,27 @@ public class CraftingUIManager : MonoBehaviour
             ImageRect.localPosition = new Vector2(0, 0);
 
 
-            
+
             image.sprite = list[i].getPrefabSprite();
+
+            CoreArchitecture coreArchitecture = FindObjectOfType<CoreArchitecture>();
+
+            ICraftableObject isCraftable = list[i] as ICraftableObject;
+            if (isCraftable.getIsCraftable()) 
+            {
+                if (isCraftable.isCoreNeeded())
+                {
+                    if (coreArchitecture.IsPlayerInControlRange() == false)
+                    {
+                        image.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0.3f);
+                    }
+                }
+            }
+            else
+            {
+                image.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0.3f);
+            }
+            
 
             button.onClick.AddListener(() => ItemButtonClicked(image.sprite, button));
 
@@ -218,12 +240,14 @@ public class CraftingUIManager : MonoBehaviour
     private void MenuUIOn()
     {
         MenuUI.SetActive(true);
+        PlayerStatusRepository.SetIsViewingUi(true);
     }
 
     private void BothUIOff()
     {
         MenuUI.SetActive(false);
         CraftUI.SetActive(false);
+        PlayerStatusRepository.SetIsViewingUi(false);
     }
     
     
@@ -252,17 +276,49 @@ public class CraftingUIManager : MonoBehaviour
             UpdateUi();
 
         }
-
+        
 
     private void UpdateUi()
     {
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+        CoreArchitecture coreArchitecture = FindObjectOfType<CoreArchitecture>();
+
+        if (craftableObject.getIsCraftable())
+        {
+            if (craftableObject.isCoreNeeded())
+            {
+                if (coreArchitecture.IsPlayerInControlRange())
+                {
+                    enableInputItems();
+                    
+                }
+                else
+                {
+                    CraftButton.gameObject.SetActive(false);
+                    disableInputItems();
+                }
+            }
+            enableInputItems();
+        }
+        else
+        {
+            CraftButton.gameObject.SetActive(false);
+            disableInputItems();
+        }
+
+    }
+
+    private void enableInputItems()
+    {
+        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
         BaseObject[] inputItems = craftableObject.getRecipe();
         int[] inputQuantities = craftableObject.getQuantity();
+
         if (inputItems.Length == 0)
         {
             inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0);
             num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 0);
+
         }
         else
         {
@@ -300,8 +356,15 @@ public class CraftingUIManager : MonoBehaviour
             num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 1);
         }
     }
-
-
+    private void disableInputItems()
+    {
+        inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0);
+        num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 0);
+        inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 0);
+        num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 0);
+        inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 0);
+        num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 0);
+    }
 
 
 
