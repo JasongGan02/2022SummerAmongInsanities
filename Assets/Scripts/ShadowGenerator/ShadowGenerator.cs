@@ -6,7 +6,7 @@ public class ShadowGenerator : MonoBehaviour
 {
     // in world space, the width of a block is 0.25. The first block's x is 0.13
     // position to x index should be => (position.x - 0.13) / 0.25
-
+    
     // in parent object's space, the width of a block is 1. The first block's x is 0.5
     // position to x index should be => position.x - 0.5 or (int) position.x
     public Texture2D lightMap;

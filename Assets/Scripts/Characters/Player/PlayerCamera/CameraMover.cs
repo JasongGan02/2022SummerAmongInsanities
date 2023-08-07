@@ -42,7 +42,7 @@ public class CameraMover : MonoBehaviour {
         }
 
         // Clamp the assetsPPU to a reasonable range (adjust the range as needed)
-        pixelPerfectCamera.assetsPPU = Mathf.Clamp(pixelPerfectCamera.assetsPPU, 16, 32);
+        pixelPerfectCamera.assetsPPU = Mathf.Clamp(pixelPerfectCamera.assetsPPU, 16, 40);
     }
 
 

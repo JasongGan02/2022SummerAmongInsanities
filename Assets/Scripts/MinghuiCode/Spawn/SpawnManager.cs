@@ -18,6 +18,7 @@ public class SpawnManager : MonoBehaviour
             GameObject dropTower = each.GetDroppedGameObject(1);
             dropTower.transform.position = spawnPoint.transform.position;
         }
+        SpwanFrags(30);
     }
     // only a temporary solution
     public void SpwanRamdonWeapon() 

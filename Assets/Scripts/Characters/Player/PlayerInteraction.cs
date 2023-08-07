@@ -407,7 +407,9 @@ public class PlayerInteraction : MonoBehaviour
             newTile.transform.position = position;
             newTile.transform.localScale = new Vector2(0.25f, 0.25f);
             inventory.RemoveItemByOne(indexInUse);
+            Debug.Log("PlayerInteraction: placing " + currentSlotInUse.item.GetItemName() + " at " + position);
             worldTilesDictionary.Add(new Vector2Int((int)(position.x * 4), (int)(position.y * 4)), newTile);
+            Debug.Log("PlayerInteraction: adding a tile to dict at :" + (int)(position.x * 4) + ", "+(int)(position.y * 4));
         } 
         else if(currentSlotInUse.item is TowerObject)
         {
@@ -465,8 +467,8 @@ public class PlayerInteraction : MonoBehaviour
             Debug.Log("Dig with " + (currentWeapon?.name ?? "hand"));
             breakableTile.OnClicked(currentWeapon?.getfarm() ?? handFarm);
 
-            Vector2Int coord = new((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
-            shadowGenerator.OnTileBroken(coord);
+            //Vector2Int coord = new((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
+            //shadowGenerator.OnTileBroken(coord);
         }
         
     }

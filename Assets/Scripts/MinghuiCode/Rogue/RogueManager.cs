@@ -19,6 +19,7 @@ public class RogueManager : MonoBehaviour
     private Button levelUpButton;
     private TMP_Text selectedBuffText;
     private GameObject buffContainer;
+    private GameObject rogueBackground;
     private Inventory inventory;
 
     public List<RogueGraphNode> selectedNodes = new();
@@ -51,9 +52,9 @@ public class RogueManager : MonoBehaviour
         levelUpButton = rogueUI.transform.Find(NAME_LEVEL_UP_BUTTON).GetComponent<Button>();
         selectedBuffText = rogueUI.transform.Find(NAME_SELECTED_BUFF_TEXT).GetComponent<TMP_Text>();
         buffContainer = rogueUI.transform.Find(NAME_BUFF_CONTAINER).gameObject;
-
+        rogueBackground = rogueUI.transform.Find(NAME_ROGUE_BACKGROUND).gameObject;
         levelUpButton.onClick.AddListener(OnLevelUpButtonClicked);
-
+        
         rogueUI.SetActive(false);
     }
 
@@ -226,5 +227,6 @@ public class RogueManager : MonoBehaviour
     private const string NAME_BUFF_CONTAINER = "BuffContainer";
 
     private const string NAME_HOVERING_BUFF = "HoveringBuffUI";
+    private const string NAME_ROGUE_BACKGROUND = "RogueBackground";
     
 }

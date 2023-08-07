@@ -174,65 +174,6 @@ public class TerrainGeneration : MonoBehaviour
     }
 
     private void RemoveLightSource(int x, int y)
-    {
-        /*unlitBlocks.Clear();
-        UnlightBlock(x, y, x, y);
-
-        List<Vector2Int> toRelight = new();
-        foreach (Vector2Int block in unlitBlocks)
-        {
-            for (int nx = x - 1; nx < x + 2; nx++)
-            {
-                for (int ny = y - 1; ny < y + 2; ny++)
-                {
-                    if (lightMap.GetPixel(nx, ny) != null)
-                    {
-                        if (lightMap.GetPixel(nx, ny).r > lightMap.GetPixel(block.x, block.y).r)
-                        {
-                            if (!toRelight.Contains(new Vector2Int(nx, ny)))
-                            {
-                                toRelight.Add(new Vector2Int(nx, ny));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        foreach (Vector2Int source in toRelight)
-        {
-            LightBlock(source.x, source.y, lightMap.GetPixel(source.x, source.y).r, 0);
-        }
-
-        lightMap.Apply();*/
-    }
-
-    private void UnlightBlock(int x, int y, int initialX, int initialY)
-    {
-        /*if (Mathf.Abs(x - initialX) >= lightRadius || Mathf.Abs(y - initialY) >= lightRadius || unlitBlocks.Contains(new Vector2Int(x, y)))
-        {
-            return;
-        }
-
-        for (int nx = x - 1; nx < x + 2; nx++)
-        {
-            for (int ny = y - 1; ny < y + 2; ny++)
-            {
-                if (!(nx == x && ny == y))
-                {
-                    Color targetTile = lightMap.GetPixel(nx, ny);
-                    if (targetTile != null && targetTile.r < lightMap.GetPixel(x, y).r)
-                    {
-                        UnlightBlock(nx, ny, initialX, initialY);
-                    }
-                }
-            }
-        }
-
-        lightMap.SetPixel(x, y, Color.black);
-        unlitBlocks.Add(new Vector2Int(x, y));*/
-    }
-
     public void DrawTexture()
     {
         biomeMap = new Texture2D(terrainSize,terrainSize);
@@ -248,11 +189,6 @@ public class TerrainGeneration : MonoBehaviour
         {
             GenerateNoiseTexture(ore.rarity, ore.size, ore.spreadTexture);
         }
-        /*
-        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
-        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
-        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
-        */
     }
 
     public void DrawBiomeTexture()
@@ -321,14 +257,13 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        GameObject tile = PlaceTile(tileSprites, x, y);
+                        PlaceTile(tileSprites, x, y);
                         
                     }
                 }
                 else
                 {
-                    GameObject tile = PlaceTile(tileSprites, x, y);
-                   
+                    PlaceTile(tileSprites, x, y);
                 }
 
                 //tree
@@ -338,7 +273,7 @@ public class TerrainGeneration : MonoBehaviour
                     if (t == 1)
                     {
                         //generate a tree
-                        if (worldTilesDictionary.Keys.Contains(new Vector2Int(x, y)))
+                        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
                         {
                             GenerateTree(x, y+1);
                         }
@@ -349,7 +284,7 @@ public class TerrainGeneration : MonoBehaviour
                         int i = Random.Range(0, addonsChance);
                         //generate natural stuff like flowers and tall grass
                       
-                        if (worldTilesDictionary.Keys.Contains(new Vector2Int(x, y)) && i==1)
+                        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)) && i==1)
                         {
                             PlaceTile(tileAtlas.natureAddons, x, y+1);
                         }
@@ -387,8 +322,10 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree, x, y);
     }
 
-    private GameObject PlaceTile(IGenerationObject tile, int x, int y)
+    private void PlaceTile(IGenerationObject tile, int x, int y)
     {
+        if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        {
         var tileGameObject = tile.GetGeneratedGameObjects();
 
         float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
@@ -397,6 +334,6 @@ public class TerrainGeneration : MonoBehaviour
         tileGameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
         worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
-        return tileGameObject;
+        }
     }
 }
