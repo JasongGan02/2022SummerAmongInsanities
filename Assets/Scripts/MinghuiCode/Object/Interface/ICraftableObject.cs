@@ -10,10 +10,19 @@ public interface ICraftableObject
 
     int[] Quantity { get; set; }
 
+    bool IsCraftable { get; set; }
+
+    bool IsCoreNeeded { get; set; }
+
+   
     public void Craft(Inventory inventory);
 
     public BaseObject[] getRecipe();
 
     public int[] getQuantity();
+
+    public bool getIsCraftable();
+
+    public bool isCoreNeeded();
 
 }

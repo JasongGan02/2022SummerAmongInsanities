@@ -28,6 +28,11 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     [SerializeField]
     private int[] _quantity;
 
+    [SerializeField]
+    private bool _isCraftable;
+
+    [SerializeField]
+    private bool _isCoreNeeded;
 
     public GameObject GetPlacedGameObject()
     {
@@ -200,6 +205,28 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     public int[] getQuantity()
     {
         return Quantity;
+    }
+
+    public bool IsCraftable
+    { 
+      get => _isCraftable; 
+      set => _isCraftable = value; 
+    }
+
+    public bool getIsCraftable()
+    {
+        return IsCraftable;
+    }
+
+    public bool IsCoreNeeded
+    {
+        get => _isCoreNeeded;
+        set => _isCoreNeeded = value;
+    }
+
+    public bool isCoreNeeded()
+    {
+        return _isCoreNeeded;
     }
     #endregion
 }
