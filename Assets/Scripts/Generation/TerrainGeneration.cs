@@ -77,16 +77,16 @@ public class TerrainGeneration : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
         {
-            //shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+            shadowGenerator.Initialize(worldTilesDictionary, worldSize);
         }
 
         groundLayer = LayerMask.GetMask("ground");
     }
     public void Update()
     {
-        PlayerUpdate();
-        ShadowUpdate();
-        ShadowClose();
+        //PlayerUpdate();
+        //ShadowUpdate();
+        //ShadowClose();
     }
 
     public static void PlayerUpdate()
@@ -171,7 +171,7 @@ public class TerrainGeneration : MonoBehaviour
         {
             TileWithShadowDictionary.Remove(coordinate);
         }
-        Debug.Log(TileWithShadowDictionary.Count);
+        //Debug.Log(TileWithShadowDictionary.Count);
     }
 
     private void RemoveLightSource(int x, int y)

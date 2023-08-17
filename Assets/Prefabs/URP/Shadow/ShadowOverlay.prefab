@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7325007939855369765
 SpriteRenderer:
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightMap: {fileID: 0}
   lightShader: {fileID: 2100000, guid: ab1ade238a393fe4a850e46e03ef5607, type: 2}
-  lightRadius: 4
-  thresholdToSnapOverlay: 20
+  lightRadius: 2
+  thresholdToSnapOverlay: 1
   skyLightHeight: 60
   skyLightRange: 10

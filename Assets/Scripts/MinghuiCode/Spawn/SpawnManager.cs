@@ -8,6 +8,8 @@ public class SpawnManager : MonoBehaviour
     public EquipmentObject[] equipments;
     public TowerObject[] testCase; //to-do just a test. do a list
     public DivinityFragObject divinityFrag;
+    public MedicineObject[] medicineObjects;
+    public FireTorchObject[] firetorchObjects;
     [SerializeField]
     private GameObject spawnPoint;
 
@@ -37,6 +39,24 @@ public class SpawnManager : MonoBehaviour
         GameObject drop = divinityFrag.GetDroppedGameObject(num);
         drop.transform.position = spawnPoint.transform.position;
     }
+
+    public void SpawnMedicine()
+    {
+        foreach(MedicineObject each in medicineObjects)
+        {
+            GameObject m1 = each.GetDroppedGameObject(1);
+            m1.transform.position = spawnPoint.transform.position;
+        }
+    }
+
+    public void SpawnFireTorch()
+    {
+        foreach(FireTorchObject each in firetorchObjects)
+        {
+            GameObject p = each.GetDroppedGameObject(1);
+            p.transform.position = spawnPoint.transform.position;
+        }
+    }
 }
 
 [CustomEditor(typeof(SpawnManager))]
@@ -54,6 +74,14 @@ public class SpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn 10 Frags"))
         {
             spawnManager.SpwanFrags(10);
+        }
+        if (GUILayout.Button("Spawn Medicine"))
+        {
+            spawnManager.SpawnMedicine();
+        }
+        if (GUILayout.Button("Spawn FireTorch"))
+        {
+            spawnManager.SpawnFireTorch();
         }
     }
 }

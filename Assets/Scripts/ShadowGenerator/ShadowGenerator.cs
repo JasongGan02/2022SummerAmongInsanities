@@ -20,30 +20,29 @@ public class ShadowGenerator : MonoBehaviour
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary = null;
     private GameObject player;
     private int worldWidthInBlock;
-    private int worldHeightInBlock = 100; // TODO don't hardcode
+    private int worldHeightInBlock = 110; // TODO don't hardcode
     TerrainGeneration terrainGeneration;
 
     private void Start()
     {
-        player = GameObject.Find(Constants.Name.PLAYER);    
+        player = GameObject.Find(Constants.Name.PLAYER);
     }
 
     private void Update()
     {
-        if(player == null)
+        if (player == null)
             player = GameObject.FindWithTag("Player");
         else
         {
             float distanceX = Mathf.Abs(player.transform.position.x - transform.position.x) * 4;
             //Debug.Log(distanceX);
-            if (distanceX > thresholdToSnapOverlay)
+            if (player.transform.position.x > 13.25f && player.transform.position.x < 36.75f && distanceX > thresholdToSnapOverlay)
             {
                 SnapOverlayToPlayer();
             }
         }
         // distance is in global space, so needs to time 4 for global -> object conversion
-
-        
+        PlayerAutoCleanShadow(new Vector2Int((int)player.transform.position.x, (int)player.transform.position.y));
     }
 
     public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)
@@ -92,8 +91,8 @@ public class ShadowGenerator : MonoBehaviour
         //        }
         //    }
         //}
-            
-        for (int x = 0; x < worldWidth; x++)
+
+        /* for (int x = 0; x < worldWidth; x++)
         {
             bool isExposedToSky = true; // Flag to track if the current position is exposed to the sky
 
@@ -113,11 +112,31 @@ public class ShadowGenerator : MonoBehaviour
                     colors[y * worldWidth + x] = Color.clear;
                 }
             }
-        }
-        
+        } */
+
         lightMap.SetPixels(colors);
         lightMap.Apply();
         LightBlocks();
+
+        for (int x = 0; x < worldWidth; x++)
+        {
+            for (int y = skyLightHeight + skyLightRange; y > 0; y--)
+            {
+                //if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))  // only consider tile object
+                //{
+                //    if (!IsCovered(x, y) && !IsUnderGround(x, y))
+                //    {
+                //        LightBlock(x, y, 0.8f, 0.2f);
+                //    }
+                //}
+                if (!IsCovered(x, y) && !IsUnderGround(x, y))
+                {
+                    float intensity = Mathf.Clamp01((skyLightHeight - y) / (float)skyLightRange);
+                    float transparency = Mathf.Clamp01(1 - intensity);
+                    LightBlock(x, y, transparency, intensity);
+                }
+            }
+        }
     }
 
     private void LightBlocks()
@@ -164,7 +183,7 @@ public class ShadowGenerator : MonoBehaviour
     private void SnapOverlayToPlayer()
     {
         float blockX = 0;
-        switch(player.transform.position.x % 1)
+        switch (player.transform.position.x % 1)
         {
             case float res when (res >= 0.25 && res < 0.5):
                 blockX = (int)player.transform.position.x + 0.38f;
@@ -205,7 +224,7 @@ public class ShadowGenerator : MonoBehaviour
                     }
                 }
             }
-        }        
+        }
     }
 
     public void OnTileBroken(Vector2Int coord)
@@ -260,6 +279,56 @@ public class ShadowGenerator : MonoBehaviour
                 for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
                 {
                     colors[y * worldWidth + x] = Color.clear;
+                }
+            }
+        }
+    }
+
+    public bool IsCovered(int x, int y)
+    {
+        if (worldTilesDictionary.ContainsKey(new Vector2Int(x - 1, y)) &&
+            worldTilesDictionary.ContainsKey(new Vector2Int(x + 1, y)) &&
+            worldTilesDictionary.ContainsKey(new Vector2Int(x, y - 1)) &&
+            worldTilesDictionary.ContainsKey(new Vector2Int(x, y + 1)))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsUnderGround(int x, int y)
+    {
+        if (x != 1 && x != worldWidthInBlock - 1 && y != 1 && y != worldHeightInBlock - 1) // skip Map Boundary Tile
+        {
+            for (int yy = y + 1; yy < worldHeightInBlock; yy++)
+            {
+                if (worldTilesDictionary.ContainsKey(new Vector2Int(x, yy)))
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
+    public void PlayerAutoCleanShadow(Vector2Int coor)
+    {
+        int cleaningRadius = 3; // Adjust this value as needed
+
+        for (int x = (int)player.transform.position.x - cleaningRadius; x <= player.transform.position.x + cleaningRadius; x++)
+        {
+            for (int y = (int)player.transform.position.y - cleaningRadius; y <= player.transform.position.y + cleaningRadius; y++)
+            {
+                if (x >= 0 && x < worldWidthInBlock && y >= 0 && y < worldHeightInBlock)
+                {
+                    if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+                    {
+                        float intensity = Mathf.Clamp01((skyLightHeight - y) / (float)skyLightRange);
+                        float transparency = Mathf.Clamp01(1 - intensity);
+                        LightBlock(x, y, transparency, intensity);
+                    }
                 }
             }
         }
