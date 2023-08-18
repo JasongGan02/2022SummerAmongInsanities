@@ -19,6 +19,12 @@ public class BaseObject : ScriptableObject
      * set itemName to fileName
      */
 
+    public GameObject getPrefab()
+    { 
+        return prefab; 
+    }
+
+
     public Sprite getPrefabSprite()
     {
         return prefab.GetComponent<SpriteRenderer>().sprite;

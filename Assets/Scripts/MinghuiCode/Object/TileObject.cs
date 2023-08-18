@@ -188,7 +188,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         inventory.CraftItems(this.Recipe,this.Quantity,this);
     }
-
+    public void CoreCraft(Inventory inventory)
+    {
+        inventory.CraftItemsCore(this.Recipe, this.Quantity, this);
+    }
     public BaseObject[] getRecipe()
     {
         return Recipe;

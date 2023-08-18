@@ -20,6 +20,7 @@ public class CraftingUIManager : MonoBehaviour
 
     private UIViewStateManager uiViewStateManager;
     private Inventory inventory;
+    private CoreArchitecture coreArchitecture;
 
     private GameObject MenuUI;
 
@@ -58,6 +59,7 @@ public class CraftingUIManager : MonoBehaviour
         string[] weaponguids = AssetDatabase.FindAssets("t:WeaponObject");
         string[] towerguids = AssetDatabase.FindAssets("t:TowerObject");
 
+
         // 根据 GUID 获取对应的路径，并加载 ScriptableObject
         weaponObjects = new WeaponObject[weaponguids.Length];
         towerObjects = new TowerObject[towerguids.Length];
@@ -77,7 +79,7 @@ public class CraftingUIManager : MonoBehaviour
     }
     void Start()
     {
-
+        coreArchitecture = FindObjectOfType<CoreArchitecture>();
         inventory = FindObjectOfType<Inventory>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleCraftUi;
@@ -254,15 +256,27 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftButtonClicked()
     {
-        
-        if (selectedBaseObject is ICraftableObject craftableObject)
+        ICraftableObject Object = selectedBaseObject as ICraftableObject;
+        if (Object.isCoreNeeded())
         {
-  
-            craftableObject.Craft(inventory);
-            UpdateUi();
+            if (selectedBaseObject is ICraftableObject craftableObject)
+            {
+
+                craftableObject.CoreCraft(inventory);
+
+            }
+
         }
+        else
+        {
+            if (selectedBaseObject is ICraftableObject craftableObject)
+            {
 
+                craftableObject.Craft(inventory);
 
+            }
+        }
+        UpdateUi();
     }
 
         private void ItemButtonClicked(Sprite itemSprite,Button n)
@@ -281,7 +295,7 @@ public class CraftingUIManager : MonoBehaviour
     private void UpdateUi()
     {
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
-        CoreArchitecture coreArchitecture = FindObjectOfType<CoreArchitecture>();
+
 
         if (craftableObject.getIsCraftable())
         {
