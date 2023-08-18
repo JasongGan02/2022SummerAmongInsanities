@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     private GameObject player;
     private GameObject inventoryGrid;
     private GameObject hotbar;
+    private CoreArchitecture coreArchitecture;
 
     private InventoryEventBus eventBus;
     private InventoryUiController uiController;
@@ -42,7 +43,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         hotbar = inventoryGrid.transform.GetChild(0).gameObject;
 
         eventBus = new InventoryEventBus();
-        
+        coreArchitecture = FindObjectOfType<CoreArchitecture>();
     }
 
     void Update()
@@ -186,10 +187,36 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
 
         AddItem(outputItem as IInventoryObject, 1);
+
     }
 
 
+    public void CraftItemsCore(BaseObject[] items, int[] quantity, BaseObject outputItem)
+    {
+        // Check if we have the required quantity of each item in the inventory
+        for (int i = 0; i < items.Length; i++)
+        {
+            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
+            if (targetSlot.count < quantity[i])
+            {
 
+                Debug.Log("Not enough of item in the inventory: " + items[i]);
+                return;
+            }
+
+        }
+        // If we have all the required items in the necessary quantity, remove them
+        for (int i = 0; i < items.Length; i++)
+        {
+            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
+            int index = findSLOTINDEX(items[i] as IInventoryObject);
+            targetSlot.count = targetSlot.count - quantity[i];
+            UpdateSlotUi(index);
+        }
+
+        coreArchitecture.spawnItems(outputItem);
+
+    }
 
 
 

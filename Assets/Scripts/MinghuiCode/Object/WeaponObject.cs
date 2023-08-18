@@ -90,6 +90,12 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     {
         inventory.CraftItems(this.Recipe, this.Quantity, this);
     }
+
+    public void CoreCraft(Inventory inventory)
+    {
+        inventory.CraftItemsCore(this.Recipe, this.Quantity, this);
+    }
+
     #endregion
 
     #region

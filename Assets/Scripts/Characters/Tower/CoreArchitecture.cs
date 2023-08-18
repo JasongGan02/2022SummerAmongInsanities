@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class CoreArchitecture : MonoBehaviour
 {
     [SerializeField] float Constructable_Distance;
     [SerializeField] GameObject Constructable_Circle;
+    private CoreArchitecture coreArchitecture;
+    private Inventory inventory;
     GameObject player;
 
     // Start is called before the first frame update
@@ -13,6 +17,8 @@ public class CoreArchitecture : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         InitConstructableCircle();
+        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        inventory = FindObjectOfType<Inventory>();
     }
 
     // Update is called once per frame
@@ -20,6 +26,24 @@ public class CoreArchitecture : MonoBehaviour
     {
         if(player == null)
             player = GameObject.FindWithTag("Player");
+    }
+
+
+    public void spawnItems(BaseObject item)
+    {
+        StartCoroutine(Spawn(item));
+    }
+
+
+    public System.Collections.IEnumerator Spawn(BaseObject item)
+    {
+        yield return new WaitForSeconds(5);
+        GameObject spawnObject = Instantiate(item.getPrefab(), coreArchitecture.transform.position + new Vector3(1,0,0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        spawnObject.layer = LayerMask.NameToLayer("resource");
+        var controller = spawnObject.AddComponent<DroppedObjectController>();
+        controller.Initialize(item as IInventoryObject, 1);
+        yield return new WaitForSeconds(5);
+
     }
 
     void InitConstructableCircle()
