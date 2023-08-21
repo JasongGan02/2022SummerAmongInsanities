@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour
     public TowerObject[] testCase; //to-do just a test. do a list
     public DivinityFragObject divinityFrag;
     public MedicineObject[] medicineObjects;
-    public FireTorchObject[] firetorchObjects;
+    public TorchObject[] torchObjects;
     [SerializeField]
     private GameObject spawnPoint;
 
@@ -49,9 +49,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public void SpawnFireTorch()
+    public void SpawnTorch()
     {
-        foreach(FireTorchObject each in firetorchObjects)
+        foreach(TorchObject each in torchObjects)
         {
             GameObject p = each.GetDroppedGameObject(1);
             p.transform.position = spawnPoint.transform.position;
@@ -79,9 +79,9 @@ public class SpawnManagerEditor : Editor
         {
             spawnManager.SpawnMedicine();
         }
-        if (GUILayout.Button("Spawn FireTorch"))
+        if (GUILayout.Button("Spawn Torch"))
         {
-            spawnManager.SpawnFireTorch();
+            spawnManager.SpawnTorch();
         }
     }
 }

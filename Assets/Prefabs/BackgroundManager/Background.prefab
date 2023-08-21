@@ -386,6 +386,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 5245653059314779895}
     m_Modifications:
+    - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
+      propertyPath: m_BlendStyleIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
+      propertyPath: m_OverlapOperation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7247447722379933729, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
       propertyPath: m_Name
       value: BackgroundLight
