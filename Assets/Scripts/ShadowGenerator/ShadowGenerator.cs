@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class ShadowGenerator : MonoBehaviour
 {
@@ -22,10 +23,12 @@ public class ShadowGenerator : MonoBehaviour
     private int worldWidthInBlock;
     private int worldHeightInBlock = 110; // TODO don't hardcode
     TerrainGeneration terrainGeneration;
+    Light2D GlobalLight;
 
     private void Start()
     {
         player = GameObject.Find(Constants.Name.PLAYER);
+        GlobalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
     }
 
     private void Update()
@@ -42,7 +45,8 @@ public class ShadowGenerator : MonoBehaviour
             }
         }
         // distance is in global space, so needs to time 4 for global -> object conversion
-        PlayerAutoCleanShadow(new Vector2Int((int)player.transform.position.x, (int)player.transform.position.y));
+        PlayerAutoCleanShadow();
+        ShadowAutoRecover();
     }
 
     public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)
@@ -313,24 +317,89 @@ public class ShadowGenerator : MonoBehaviour
         return false;
     }
 
-    public void PlayerAutoCleanShadow(Vector2Int coor)
+    public void PlayerAutoCleanShadow()
     {
-        int cleaningRadius = 3; // Adjust this value as needed
+        int cleaningRadius = 2; // Adjust this value as needed
+        float playerX = player.transform.position.x * 4;
+        float playerY = player.transform.position.y * 4;
 
-        for (int x = (int)player.transform.position.x - cleaningRadius; x <= player.transform.position.x + cleaningRadius; x++)
+        for (int x = (int)playerX - cleaningRadius; x <= playerX + cleaningRadius; x++)
         {
-            for (int y = (int)player.transform.position.y - cleaningRadius; y <= player.transform.position.y + cleaningRadius; y++)
+            for (int y = (int)playerY - cleaningRadius; y <= playerY + cleaningRadius; y++)
             {
                 if (x >= 0 && x < worldWidthInBlock && y >= 0 && y < worldHeightInBlock)
                 {
-                    if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+                    if (lightMap.GetPixel(x, y) != Color.white && lightMap.GetPixel(x, y).a > 0f)
                     {
-                        float intensity = Mathf.Clamp01((skyLightHeight - y) / (float)skyLightRange);
-                        float transparency = Mathf.Clamp01(1 - intensity);
-                        LightBlock(x, y, transparency, intensity);
+                        Debug.Log("Clean position: " + x + "," + y);
+                        LightBlock(x, y, 0.8f, 0.2f);
                     }
                 }
             }
         }
+    }
+
+    public void LightAutoCleanShadow(float a, float b, float cleanRadius)
+    {
+        float propX = a * 4f;
+        float propY = b * 4f;
+
+        for (int x = (int) (propX - cleanRadius); x <= propX + cleanRadius; x++)
+        {
+            for (int y = (int) (propY - cleanRadius); y <= propY + cleanRadius; y++)
+            {
+                if (x >= 0 && x < worldWidthInBlock && y >= 0 && y < worldHeightInBlock)
+                {
+                    float distanceSquared = (x - propX) * (x - propX) + (y - propY) * (y - propY);
+                    if (distanceSquared <= cleanRadius * cleanRadius)
+                    {
+                        if (lightMap.GetPixel(x, y) != Color.white && lightMap.GetPixel(x, y).a > 0f)
+                        {
+                            LightBlock(x, y, 0.8f, 0.2f);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void ShadowAutoRecover()
+    {
+        for (int x = 2; x < worldWidthInBlock-2; x++)
+        {
+            for (int y = skyLightHeight; y > 0; y--)
+            {
+                if (IsUnderGround(x, y) && !IsLightCovered(x,y))
+                {
+                    lightMap.SetPixel(x, y, Color.black);
+                }
+            }
+        }
+        lightMap.Apply();
+    }
+
+    public bool IsLightCovered(int x, int y)
+    {
+        if (GlobalLight.intensity < 0.2f)
+        {
+            return true;
+        }
+
+        Color pixelColor = lightMap.GetPixel(x, y);
+        float intensity = 0.299f * pixelColor.r + 0.587f * pixelColor.g + 0.114f * pixelColor.b;
+        if (intensity > 0.3f)
+        {
+            return true;
+        }
+
+        float playerX = player.transform.position.x * 4;
+        float playerY = player.transform.position.y * 4;
+        float distanceToPlayer = (x - playerX) * (x - playerX) + (y - playerY) * (y - playerY);
+        if (distanceToPlayer < 9)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

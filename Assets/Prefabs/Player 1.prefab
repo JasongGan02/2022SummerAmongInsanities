@@ -252,7 +252,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -410,6 +410,7 @@ MonoBehaviour:
   handFrequency: 1
   prop: {fileID: 0}
   currentMedicine: {fileID: 0}
+  currentTorch: {fileID: 0}
 --- !u!114 &1120449656137656567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,7 +638,7 @@ MonoBehaviour:
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
-  m_SelfShadows: 1
+  m_SelfShadows: 0
   m_ApplyToSortingLayers: 
   m_ShapePath:
   - {x: -0.18249893, y: -0.45615387, z: 0}
@@ -646,7 +647,7 @@ MonoBehaviour:
   - {x: 0.19680214, y: -0.46011162, z: 0}
   m_ShapePathHash: 1986624917
   m_Mesh: {fileID: 0}
-  m_InstanceId: -551976
+  m_InstanceId: 43090
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0

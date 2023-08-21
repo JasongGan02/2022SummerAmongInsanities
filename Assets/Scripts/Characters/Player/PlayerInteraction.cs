@@ -41,6 +41,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public GameObject prop;
     public MedicineObject currentMedicine;
+    public TorchObject currentTorch;
 
   
 
@@ -196,6 +197,11 @@ public class PlayerInteraction : MonoBehaviour
         if (currentSlotInUse.item is MedicineObject)
         {
             prop = (currentSlotInUse.item as MedicineObject).GetSpawnedGameObject();
+        }
+
+        if (currentSlotInUse.item is TorchObject)
+        {
+            prop = (currentSlotInUse.item as TorchObject).GetSpawnedGameObject();
         }
 
         else

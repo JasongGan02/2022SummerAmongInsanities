@@ -29,6 +29,8 @@ public class PlayerController : CharacterController, IDataPersistence
 
     Light2D personalLight;
     Light2D globalLight;
+    public float intensityThreshold = 0.3f;
+    public float checkRadius = 6f;
 
     void Start()
     {
@@ -144,24 +146,33 @@ public class PlayerController : CharacterController, IDataPersistence
     public void PlayerSurroundingLight()
     {
         personalLight = GetComponent<Light2D>();
-        
-        if (personalLight != null && globalLight.intensity < 0.5f) 
+
+        if (personalLight != null && globalLight.intensity < 0.5f)
         {
             personalLight.intensity = 0.6f - globalLight.intensity;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, checkRadius);
+
+            foreach (var collider in colliders)
+            {
+                Light2D otherLight = collider.GetComponent<Light2D>();
+                if (otherLight != null && otherLight != personalLight)
+                {
+                    if (otherLight.intensity > intensityThreshold)
+                    {
+                        personalLight.intensity = 0f; // Turn off the personal light
+                        return;
+                    }
+                }
+            }
+
+            personalLight.intensity = 0.6f - globalLight.intensity; // Turn on the personal light
         }
         else
         {
             personalLight.intensity = 0f;
         }
     }
-
-    public bool IsInShadow()
-    {
-        
-
-
-        return false;
-    }
+    public float GetPersonalLight() { return personalLight.intensity; }
 
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }
