@@ -27,6 +27,11 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     private BaseObject[] _recipe;
     [SerializeField]
     private int[] _quantity;
+    [SerializeField]
+    private bool _isCraftable;
+    [SerializeField]
+    private bool _isCoreNeeded;
+
 
 
     /**
@@ -154,6 +159,11 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         inventory.CraftItems(this.Recipe, this.Quantity, this);
     }
 
+    public void CoreCraft(Inventory inventory)
+    {
+        inventory.CraftItemsCore(this.Recipe, this.Quantity, this);
+    }
+
     public BaseObject[] getRecipe()
     {
         return Recipe;
@@ -171,6 +181,30 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         return Quantity;
     }
+
+    public bool IsCraftable
+    {
+        get => _isCraftable;
+        set => _isCraftable = value;
+
+    }
+
+    public bool getIsCraftable()
+    {
+        return IsCraftable;
+    }
+
+    public bool IsCoreNeeded
+    { 
+        get => _isCoreNeeded;
+        set => _isCoreNeeded = value;
+    }
+
+    public bool isCoreNeeded()
+    {
+        return _isCoreNeeded;
+    }
+
     #endregion
 
 

@@ -35,7 +35,7 @@ Transform:
   - {fileID: 1059863171208397261}
   - {fileID: 1609682452758840841}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1133895213236214824
 PrefabInstance:
@@ -387,23 +387,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 5245653059314779895}
     m_Modifications:
     - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
-      propertyPath: m_LightType
-      value: 3
+      propertyPath: m_BlendStyleIndex
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
-      propertyPath: m_ShadowIntensity
-      value: 0.95
-      objectReference: {fileID: 0}
-    - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
-      propertyPath: m_PointLightInnerRadius
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
-      propertyPath: m_PointLightOuterRadius
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7247447722379933728, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
-      propertyPath: m_ShadowIntensityEnabled
+      propertyPath: m_OverlapOperation
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7247447722379933729, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
@@ -424,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7247447722379933731, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2000
+      value: 16.803852
       objectReference: {fileID: 0}
     - target: {fileID: 7247447722379933731, guid: a661cdbad07de704586ed55d5cd028ee, type: 3}
       propertyPath: m_LocalPosition.z

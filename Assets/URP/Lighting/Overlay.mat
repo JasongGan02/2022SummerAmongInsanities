@@ -56,7 +56,7 @@ Material:
     - _OverlayHeight: 10
     - _OverlaySize: 10
     - _OverlayWidth: 10
-    - _WorldHeight: 25
+    - _WorldHeight: 27
     - _WorldSize: 61
     - _WorldWidth: 50
     m_Colors: []

@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 814760531}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4582701435173347104
 MonoBehaviour:
@@ -90,4 +90,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
   - {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
   divinityFrag: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
+  medicineObjects:
+  - {fileID: 11400000, guid: b1d5a2618457e49319d9db4b939c6c46, type: 2}
+  torchObjects:
+  - {fileID: 11400000, guid: 8cdab55e5f7f7ce45a0ddbb179b0b88d, type: 2}
   spawnPoint: {fileID: 814760530}

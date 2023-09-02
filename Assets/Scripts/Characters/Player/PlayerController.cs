@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.Universal;
+using UnityEditor.PackageManager;
+using Unity.VisualScripting;
 
 public class PlayerController : CharacterController, IDataPersistence
 {
@@ -24,6 +27,11 @@ public class PlayerController : CharacterController, IDataPersistence
     private int playerLevel = 0;
     private float playerExperience = 0f;
 
+    Light2D personalLight;
+    Light2D globalLight;
+    public float intensityThreshold = 0.3f;
+    public float checkRadius = 6f;
+
     void Start()
     {
         timer = 0f;
@@ -39,6 +47,7 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             healthBar.fillAmount = (float) HP / characterStats.HP;
         }
+        globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
     }
 
     public void LoadData(GameData data)
@@ -75,6 +84,8 @@ public class PlayerController : CharacterController, IDataPersistence
                 damagedHealthBar.color = damagedColor;
             }
         }
+
+        PlayerSurroundingLight();
     }
     public override void death()
     {
@@ -131,6 +142,37 @@ public class PlayerController : CharacterController, IDataPersistence
             healthBar.fillAmount = (float)HP / characterStats.HP;
         }
     }
+
+    public void PlayerSurroundingLight()
+    {
+        personalLight = GetComponent<Light2D>();
+
+        if (personalLight != null && globalLight.intensity < 0.5f)
+        {
+            personalLight.intensity = 0.6f - globalLight.intensity;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, checkRadius);
+
+            foreach (var collider in colliders)
+            {
+                Light2D otherLight = collider.GetComponent<Light2D>();
+                if (otherLight != null && otherLight != personalLight)
+                {
+                    if (otherLight.intensity > intensityThreshold)
+                    {
+                        personalLight.intensity = 0f; // Turn off the personal light
+                        return;
+                    }
+                }
+            }
+
+            personalLight.intensity = 0.6f - globalLight.intensity; // Turn on the personal light
+        }
+        else
+        {
+            personalLight.intensity = 0f;
+        }
+    }
+    public float GetPersonalLight() { return personalLight.intensity; }
 
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }

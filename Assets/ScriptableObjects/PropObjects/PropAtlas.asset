@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: PropAtlas
   m_EditorClassIdentifier: 
   Health_Potion: {fileID: 11400000, guid: b1d5a2618457e49319d9db4b939c6c46, type: 2}
+  Torch: {fileID: 11400000, guid: 8cdab55e5f7f7ce45a0ddbb179b0b88d, type: 2}

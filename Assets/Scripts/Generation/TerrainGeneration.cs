@@ -76,16 +76,16 @@ public class TerrainGeneration : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
         {
-            //shadowGenerator.Initialize(worldTilesDictionary, terrainSize);
+            shadowGenerator.Initialize(worldTilesDictionary, terrainSize);
         }
 
         groundLayer = LayerMask.GetMask("ground");
     }
     public void Update()
     {
-        PlayerUpdate();
-        ShadowUpdate();
-        ShadowClose();
+        //PlayerUpdate();
+        //ShadowUpdate();
+        //ShadowClose();
     }
 
     public static void PlayerUpdate()
@@ -171,6 +171,66 @@ public class TerrainGeneration : MonoBehaviour
             TileWithShadowDictionary.Remove(coordinate);
         }
         //Debug.Log(TileWithShadowDictionary.Count);
+    }
+
+    private void RemoveLightSource(int x, int y)
+    {
+        /*unlitBlocks.Clear();
+        UnlightBlock(x, y, x, y);
+
+        List<Vector2Int> toRelight = new();
+        foreach (Vector2Int block in unlitBlocks)
+        {
+            for (int nx = x - 1; nx < x + 2; nx++)
+            {
+                for (int ny = y - 1; ny < y + 2; ny++)
+                {
+                    if (lightMap.GetPixel(nx, ny) != null)
+                    {
+                        if (lightMap.GetPixel(nx, ny).r > lightMap.GetPixel(block.x, block.y).r)
+                        {
+                            if (!toRelight.Contains(new Vector2Int(nx, ny)))
+                            {
+                                toRelight.Add(new Vector2Int(nx, ny));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach (Vector2Int source in toRelight)
+        {
+            LightBlock(source.x, source.y, lightMap.GetPixel(source.x, source.y).r, 0);
+        }
+
+        lightMap.Apply();*/
+    }
+
+    private void UnlightBlock(int x, int y, int initialX, int initialY)
+    {
+        /*if (Mathf.Abs(x - initialX) >= lightRadius || Mathf.Abs(y - initialY) >= lightRadius || unlitBlocks.Contains(new Vector2Int(x, y)))
+        {
+            return;
+        }
+
+        for (int nx = x - 1; nx < x + 2; nx++)
+        {
+            for (int ny = y - 1; ny < y + 2; ny++)
+            {
+                if (!(nx == x && ny == y))
+                {
+                    Color targetTile = lightMap.GetPixel(nx, ny);
+                    if (targetTile != null && targetTile.r < lightMap.GetPixel(x, y).r)
+                    {
+                        UnlightBlock(nx, ny, initialX, initialY);
+                    }
+                }
+            }
+        }
+
+        lightMap.SetPixel(x, y, Color.black);
+        unlitBlocks.Add(new Vector2Int(x, y));*/
     }
 
     public void DrawTexture()
