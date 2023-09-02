@@ -173,7 +173,6 @@ public class TerrainGeneration : MonoBehaviour
         //Debug.Log(TileWithShadowDictionary.Count);
     }
 
-    private void RemoveLightSource(int x, int y)
     public void DrawTexture()
     {
         biomeMap = new Texture2D(terrainSize,terrainSize);
