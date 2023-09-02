@@ -34,6 +34,9 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     [SerializeField]
     private bool _isCoreNeeded;
 
+    [SerializeField]
+    private int _craftTime;
+
     public GameObject GetPlacedGameObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -196,6 +199,8 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         return Recipe;
     }
+
+
     #endregion
 
     #region
@@ -231,5 +236,18 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         return _isCoreNeeded;
     }
+
+
+    public int CraftTime
+    {
+        get => _craftTime;
+        set => _craftTime = value;
+    }
+
+    public int getCraftTime()
+    {
+        return _craftTime;
+    }
+
     #endregion
 }
