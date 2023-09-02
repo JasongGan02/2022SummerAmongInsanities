@@ -33,7 +33,6 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     private bool _isCoreNeeded;
 
 
-    public List<TextAsset> Hatred;
 
     /**
      * implementation of IInventoryObject

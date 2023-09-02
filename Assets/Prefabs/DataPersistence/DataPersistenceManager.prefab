@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5079619153873286885
 MonoBehaviour:
@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737873f9c7d9aaf4581517e7f39d1461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableDataPersistence: 1
   initializeDataIfNull: 1
+  overrideSelectedProfileId: 0
+  testSelectedProfileId: test
   fileName: data.game
   useEncryption: 1
+  autoSaveTimeSeconds: 60

@@ -29,7 +29,7 @@ public class TerrainGeneration : MonoBehaviour
     public int treeChance = 10;
 
     [Header("Generation Settings")]
-    public int worldSize = 100;
+    public int terrainSize = 100;
     public float height;
     public int chunkSize = 16;
     public bool generateCave = true;
@@ -50,7 +50,6 @@ public class TerrainGeneration : MonoBehaviour
     private GameObject[] worldChunks;
 
     // TODO can be replaced by the below dictionary.
-    private HashSet<Vector2> worldTiles = new HashSet<Vector2>();
     
     [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
     private ShadowGenerator shadowGenerator;
@@ -77,7 +76,7 @@ public class TerrainGeneration : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
         {
-            shadowGenerator.Initialize(worldTilesDictionary, worldSize);
+            shadowGenerator.Initialize(worldTilesDictionary, terrainSize);
         }
 
         groundLayer = LayerMask.GetMask("ground");
@@ -236,18 +235,19 @@ public class TerrainGeneration : MonoBehaviour
 
     public void DrawTexture()
     {
-        biomeMap = new Texture2D(worldSize,worldSize);
+        biomeMap = new Texture2D(terrainSize,terrainSize);
         DrawBiomeTexture();
-        caveNoiseTexture = new Texture2D(worldSize, worldSize);
-        ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
+        caveNoiseTexture = new Texture2D(terrainSize, terrainSize);
+        ores[0].spreadTexture = new Texture2D(terrainSize, terrainSize);
+        ores[1].spreadTexture = new Texture2D(terrainSize, terrainSize);
+        ores[2].spreadTexture = new Texture2D(terrainSize, terrainSize);
 
         GenerateNoiseTexture(caveFreq, surfacePortion, caveNoiseTexture);
         //ores
-        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
-        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
-        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
+        foreach (OreClass ore in ores)
+        {
+            GenerateNoiseTexture(ore.rarity, ore.size, ore.spreadTexture);
+        }
     }
 
     public void DrawBiomeTexture()
@@ -270,7 +270,7 @@ public class TerrainGeneration : MonoBehaviour
 
     public void CreateChunks()
     {
-        int numChunks = worldSize / chunkSize;
+        int numChunks = terrainSize / chunkSize;
         worldChunks = new GameObject[numChunks];
         for (int i = 0; i<numChunks; i++)
         {
@@ -283,10 +283,10 @@ public class TerrainGeneration : MonoBehaviour
 
     public void GenerateTerrain()
     {
-        float mid = Mathf.Round(worldSize / 2);
-        for (int x = 0; x < worldSize; x++)
+        float mid = Mathf.Round(terrainSize / 2);
+        for (int x = 0; x < terrainSize; x++)
         {  
-            height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier +heightAddition;
+            height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier + heightAddition;
             
             for (int y = 0; y < height; y++)
             {
@@ -316,14 +316,13 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        GameObject tile = PlaceTile(tileSprites, x, y);
-                        worldTilesDictionary.Add(new Vector2Int(x, y), tile);
+                        PlaceTile(tileSprites, x, y);
+                        
                     }
                 }
                 else
                 {
-                    GameObject tile = PlaceTile(tileSprites, x, y);
-                    worldTilesDictionary.Add(new Vector2Int(x, y), tile);
+                    PlaceTile(tileSprites, x, y);
                 }
 
                 //tree
@@ -333,7 +332,7 @@ public class TerrainGeneration : MonoBehaviour
                     if (t == 1)
                     {
                         //generate a tree
-                        if (worldTiles.Contains(new Vector2(x, y)))
+                        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
                         {
                             GenerateTree(x, y+1);
                         }
@@ -344,7 +343,7 @@ public class TerrainGeneration : MonoBehaviour
                         int i = Random.Range(0, addonsChance);
                         //generate natural stuff like flowers and tall grass
                       
-                        if (worldTiles.Contains(new Vector2(x, y)) && i==1)
+                        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)) && i==1)
                         {
                             PlaceTile(tileAtlas.natureAddons, x, y+1);
                         }
@@ -382,8 +381,10 @@ public class TerrainGeneration : MonoBehaviour
         PlaceTile(tileAtlas.tree, x, y);
     }
 
-    private GameObject PlaceTile(IGenerationObject tile, int x, int y)
+    private void PlaceTile(IGenerationObject tile, int x, int y)
     {
+        if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        {
         var tileGameObject = tile.GetGeneratedGameObjects();
 
         float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
@@ -391,9 +392,7 @@ public class TerrainGeneration : MonoBehaviour
 
         tileGameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-        //worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
-        worldTiles.Add(tileGameObject.transform.position - (Vector3.one * 0.5f));
-
-        return tileGameObject;
+        worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
+        }
     }
 }

@@ -5,16 +5,30 @@ using UnityEngine.EventSystems;
 using TMPro;
 using System;
 
-public class BuffSelectionController : MonoBehaviour, IPointerClickHandler
+public class BuffSelectionController : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
     private RogueGraphNode node;
     public EventHandler<RogueGraphNode> OnBuffSelectedEvent;
-
+    public EventHandler<OnBuffEventArgs> OnBuffHoverEnterEvent;
+    public EventHandler<OnBuffEventArgs> OnBuffHoverExitEvent;
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         OnBuffSelectedEvent?.Invoke(this, node);
     }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // Create and display the buff description UI
+        Debug.Log("Hovering over buff card");
+        OnBuffHoverEnterEvent?.Invoke(this, new OnBuffEventArgs(node, this.gameObject));
+    }
 
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Destroy the buff description UI when the pointer exits the buff card
+        Debug.Log("Exit buff card");
+        OnBuffHoverExitEvent?.Invoke(this, new OnBuffEventArgs(node, this.gameObject));
+    }
     public void Init(RogueGraphNode node, Transform parent, Vector2 position)
     {
         this.node = node;
@@ -26,5 +40,15 @@ public class BuffSelectionController : MonoBehaviour, IPointerClickHandler
         transform.position = position;
     }
 
+    public class OnBuffEventArgs : EventArgs
+    {
+        public RogueGraphNode node;
+        public GameObject buffSelectionTemplate;
+        public OnBuffEventArgs(RogueGraphNode node, GameObject buffSelectionTemplate)
+        {
+            this.node = node;
+            this.buffSelectionTemplate = buffSelectionTemplate;
+        }
+    }
     private const string NAME_BUFF_NAME_TEXT = "BuffNameText";
 }
