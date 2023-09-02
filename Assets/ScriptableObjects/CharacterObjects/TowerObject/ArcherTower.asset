@@ -24,8 +24,6 @@ MonoBehaviour:
   Drops:
   - droppedItem: {fileID: 11400000}
     chance: 1
-  - droppedItem: {fileID: 11400000, guid: 753554f365dafae46a19bab31db6b4ba, type: 2}
-    chance: 1
   Hatred:
   - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
   energyCost: 10

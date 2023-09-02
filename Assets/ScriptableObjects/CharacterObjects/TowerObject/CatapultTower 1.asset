@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
   m_Name: CatapultTower 1
   m_EditorClassIdentifier: 
-  itemName: CatapultTower1
+  itemName: CatapultTower 1
   sizeRatio: 1
-  prefab: {fileID: 7115298586428798980, guid: b4465ae4a0d5620449040e8a25a9a76a, type: 3}
+  prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
   HP: 30
   AtkDamage: 4
   AtkInterval: 4
