@@ -42,22 +42,24 @@ public class CraftingQueueManager : MonoBehaviour
             }
 
             // Item crafting is complete; you can handle item creation here
-            GameObject spawnObject = Instantiate(itemToCraft.getPrefab(), coreArchitecture.transform.position + new Vector3(1, 0, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
-            spawnObject.layer = LayerMask.NameToLayer("resource");
-            var controller = spawnObject.AddComponent<DroppedObjectController>();
-            controller.Initialize(itemToCraft as IInventoryObject, 1);
 
+            spawn(itemToCraft);
 
             // Remove the item from the queue
             craftQueue.Dequeue();
-
-            // Check if there are more items in the queue
-            if (craftQueue.Count > 0)
-            {
-                // Craft the next item in the queue
-                itemToCraft = craftQueue.Peek();
-                StartCoroutine(CraftItemFromQueue());
-            }
         }
     }
+
+
+    private void spawn(BaseObject itemToCraft)
+    {
+        GameObject spawnObject = Instantiate(itemToCraft.getPrefab(), coreArchitecture.transform.position + new Vector3(1, 0, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        spawnObject.layer = LayerMask.NameToLayer("resource");
+        var controller = spawnObject.AddComponent<DroppedObjectController>();
+        controller.Initialize(itemToCraft as IInventoryObject, 1);
+    }
+
+
+
+
 }
