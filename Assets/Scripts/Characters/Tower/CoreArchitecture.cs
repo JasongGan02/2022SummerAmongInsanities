@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class CoreArchitecture : MonoBehaviour
 {
@@ -35,7 +35,7 @@ public class CoreArchitecture : MonoBehaviour
     }
 
 
-    public System.Collections.IEnumerator Spawn(BaseObject item)
+    public IEnumerator Spawn(BaseObject item)
     {
         yield return new WaitForSeconds(5);
         GameObject spawnObject = Instantiate(item.getPrefab(), coreArchitecture.transform.position + new Vector3(1,0,0), Quaternion.Euler(new Vector3(0, 0, 90)));

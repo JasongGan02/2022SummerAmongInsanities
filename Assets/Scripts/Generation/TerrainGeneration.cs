@@ -395,4 +395,19 @@ public class TerrainGeneration : MonoBehaviour
         worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
         }
     }
+    public bool placeTile(GameObject gameObject, Vector2 position)
+    {
+        position *= 4;
+        int x = (int) position.x;
+        int y = (int) position.y;
+        if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        {
+            float chunkCoord = Mathf.Round(x / chunkSize) * chunkSize;
+            chunkCoord /= chunkSize;
+            gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
+            worldTilesDictionary.Add(new Vector2Int(x, y), gameObject);
+            return true;
+        }
+        return false;
+    }
 }

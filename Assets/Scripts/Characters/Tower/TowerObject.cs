@@ -73,10 +73,10 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     }
     #endregion
 
-    public override List<GameObject> GetDroppedGameObjects(bool isUserPlaced) //need to consider the case if it is placed by User.
+    public override List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer) //need to consider the case if it is placed by User.
     {
         List<GameObject> droppedItems = new();
-        if (isUserPlaced)
+        if (isDestroyedByPlayer)
         {
             droppedItems.Add(GetDroppedGameObject(1)); //drop itself
         }

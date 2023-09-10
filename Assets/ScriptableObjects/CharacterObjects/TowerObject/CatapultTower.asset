@@ -21,9 +21,7 @@ MonoBehaviour:
   AtkRange: 15
   MovingSpeed: 0
   JumpForce: 0
-  Drops:
-  - droppedItem: {fileID: 11400000}
-    chance: 1
+  Drops: []
   Hatred:
   - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
   - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}

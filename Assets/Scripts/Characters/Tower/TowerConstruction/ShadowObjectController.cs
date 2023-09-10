@@ -9,18 +9,7 @@ public class ShadowObjectController : MonoBehaviour
     CoreArchitecture coreArchitecture;
     IShadowObject curShadow; 
     private uint CollisionCount = 0;
-    private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
-    private Dictionary<Vector2Int, GameObject> worldTilesDictionary
-    {
-        get
-        {
-            if (_worldTilesDictionary == null)
-            {
-                _worldTilesDictionary = TerrainGeneration.worldTilesDictionary;
-            }
-            return _worldTilesDictionary;
-        }
-    }
+    
    
     private void Awake()
     {
@@ -42,7 +31,7 @@ public class ShadowObjectController : MonoBehaviour
                 if (i == 0 && j == 0) continue; // skip the current tile position
                 if (Math.Abs(i)==Math.Abs(j)) continue; 
                 Vector2Int adjacentPos = tilePos + new Vector2Int(i, j);
-                if (worldTilesDictionary.ContainsKey(adjacentPos))
+                if (TerrainGeneration.worldTilesDictionary.ContainsKey(adjacentPos))
                 {
                     return true;
                 }
@@ -77,7 +66,7 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool TileObjectCheck(float x, float y)
     {
-        return worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4))) == false && CheckAdjcentPos(new Vector2Int((int)(x * 4), (int)(y * 4)))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
+        return TerrainGeneration.worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4))) == false && CheckAdjcentPos(new Vector2Int((int)(x * 4), (int)(y * 4)))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
     }
 
     private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)
