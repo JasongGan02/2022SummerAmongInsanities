@@ -14,8 +14,6 @@ public interface ICraftableObject
 
     bool IsCoreNeeded { get; set; }
 
-    int CraftTime { get; set; }
-
    
     public void Craft(Inventory inventory);
 
@@ -28,7 +26,5 @@ public interface ICraftableObject
     public bool getIsCraftable();
 
     public bool isCoreNeeded();
-
-    public int getCraftTime();
 
 }
