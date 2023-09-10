@@ -26,3 +26,4 @@ MonoBehaviour:
   _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
+  _craftTime: 0
