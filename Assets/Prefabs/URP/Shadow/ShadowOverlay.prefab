@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7325007939855369764
 Transform:
   m_ObjectHideFlags: 0
@@ -27,11 +27,11 @@ Transform:
   m_GameObject: {fileID: 7325007939855369766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.5, y: 12.5, z: 0}
-  m_LocalScale: {x: 25, y: 25, z: 0}
+  m_LocalScale: {x: 26, y: 26, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7325007939855369765
 SpriteRenderer:
@@ -101,5 +101,5 @@ MonoBehaviour:
   lightShader: {fileID: 2100000, guid: ab1ade238a393fe4a850e46e03ef5607, type: 2}
   lightRadius: 2
   thresholdToSnapOverlay: 1
-  skyLightHeight: 60
-  skyLightRange: 10
+  skyLightHeight: 63
+  skyLightRange: 20
