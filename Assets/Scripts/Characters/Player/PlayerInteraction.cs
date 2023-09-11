@@ -389,7 +389,6 @@ public class PlayerInteraction : MonoBehaviour
                 currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
                 if (Input.GetMouseButtonDown(0) )
                 {
-                    // TODO: should put the tile under the correct chunk
                     PlaceTile(result.position);
                 }
             }
@@ -414,6 +413,7 @@ public class PlayerInteraction : MonoBehaviour
             GameObject newTile = (currentSlotInUse.item as TileObject).GetPlacedGameObject();
             newTile.transform.position = position;
             newTile.transform.localScale = new Vector2(0.25f, 0.25f);
+            terrainGeneration.placeTile(newTile, position);
             inventory.RemoveItemByOne(indexInUse);
         } 
         else if(currentSlotInUse.item is TowerObject)

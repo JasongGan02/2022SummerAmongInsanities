@@ -4,7 +4,9 @@ using UnityEngine;
 public class BiomeClass
 {
     public string biomeName;
-    public Color biomeColor;
+    //public Color biomeColor;
+    public TileAtlas biomeTiles; //rewritten the corresponding tile in original tile;
+
     [Header("Noise Settings")]
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;

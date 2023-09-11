@@ -8,6 +8,7 @@ public class TerrainGeneration : MonoBehaviour
 {    
     [Header("Tile Atlas")]
     public TileAtlas tileAtlas;
+
     public float seed;
 
     public BiomeClass[] biomes;
@@ -21,7 +22,7 @@ public class TerrainGeneration : MonoBehaviour
 
     [Header("Biomes")]
     public float biomeFrequency;
-    public Gradient biomeColors;    
+    public Gradient biomeGradient;    
     public Texture2D biomeMap;
 
     [Header("Nature Addons")]
@@ -48,10 +49,9 @@ public class TerrainGeneration : MonoBehaviour
 
 
     private GameObject[] worldChunks;
-
-    // TODO can be replaced by the below dictionary.
-    
     [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
+
+
     private ShadowGenerator shadowGenerator;
     public Dictionary<Vector2Int, GameObject> currentTerrain;
     public static int groundLayer;
@@ -237,16 +237,23 @@ public class TerrainGeneration : MonoBehaviour
     {
         biomeMap = new Texture2D(terrainSize,terrainSize);
         DrawBiomeTexture();
-        caveNoiseTexture = new Texture2D(terrainSize, terrainSize);
-        ores[0].spreadTexture = new Texture2D(terrainSize, terrainSize);
-        ores[1].spreadTexture = new Texture2D(terrainSize, terrainSize);
-        ores[2].spreadTexture = new Texture2D(terrainSize, terrainSize);
+        for (int i = 0; i < biomes.Length; i++) 
+        { 
+            biomes[i].caveNoiseTexture = new Texture2D(terrainSize, terrainSize);
+            for (int o = 0; o < biomes[i].ores.Length; o++)
+            {
+                biomes[i].ores[o].spreadTexture = new Texture2D(terrainSize, terrainSize);
+            }
 
-        GenerateNoiseTexture(caveFreq, surfacePortion, caveNoiseTexture);
-        //ores
-        foreach (OreClass ore in ores)
-        {
-            GenerateNoiseTexture(ore.rarity, ore.size, ore.spreadTexture);
+            GenerateNoiseTexture(biomes[i].caveFreq, biomes[i].surfacePortion, biomes[i].caveNoiseTexture);
+
+            //ores
+            for (int o = 0; o < biomes[i].ores.Length; o++)
+            {
+                GenerateNoiseTexture(biomes[i].ores[o].rarity, biomes[i].ores[o].size, biomes[i].ores[o].spreadTexture);
+            }
+           
+            
         }
     }
 
@@ -257,8 +264,8 @@ public class TerrainGeneration : MonoBehaviour
             for (int y=0; y<biomeMap.height; y++)
             {
                 float v = Mathf.PerlinNoise((x+seed)* biomeFrequency, (y+seed)* biomeFrequency);
-                Color col = biomeColors?.Evaluate(v) ?? Color.white;
-                biomeMap.SetPixel(x,y, col);
+                Color col = biomeGradient?.Evaluate(v) ?? Color.white;
+                biomeMap.SetPixel(x, y, col);
             }
         }
         biomeMap.Apply();
@@ -293,6 +300,7 @@ public class TerrainGeneration : MonoBehaviour
                 IGenerationObject tileSprites;
                 if (y < height - dirtLayerHeight)
                 {
+                    Color biomeCol = biomeMap.GetPixel(x, y);
                     tileSprites = tileAtlas.stone;
                     //ore and stone generation
                     if (ores[0].spreadTexture.GetPixel(x,y).r >0.5f && height - y > ores[0].masSpawnHeight)
@@ -406,6 +414,7 @@ public class TerrainGeneration : MonoBehaviour
             chunkCoord /= chunkSize;
             gameObject.transform.parent = worldChunks[(int)chunkCoord].transform;
             worldTilesDictionary.Add(new Vector2Int(x, y), gameObject);
+            Debug.LogWarning("TG added: " +  x + ", " + y + ")");
             return true;
         }
         return false;
