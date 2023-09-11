@@ -27,5 +27,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
   _quantity: 0100000001000000
   _isCraftable: 1
-  _isCoreNeeded: 0
-  _craftTime: 0

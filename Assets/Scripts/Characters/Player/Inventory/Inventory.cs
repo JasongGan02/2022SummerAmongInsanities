@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     private GameObject player;
     private GameObject inventoryGrid;
     private GameObject hotbar;
-    private CraftingQueueManager queueManager;
+    private CoreArchitecture coreArchitecture;
 
     private InventoryEventBus eventBus;
     private InventoryUiController uiController;
@@ -43,7 +43,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         hotbar = inventoryGrid.transform.GetChild(0).gameObject;
 
         eventBus = new InventoryEventBus();
-        queueManager = FindObjectOfType<CraftingQueueManager>();
+        coreArchitecture = FindObjectOfType<CoreArchitecture>();
     }
 
     void Update()
@@ -214,7 +214,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             UpdateSlotUi(index);
         }
 
-        queueManager.AddToQueue(outputItem);
+        coreArchitecture.spawnItems(outputItem);
 
     }
 

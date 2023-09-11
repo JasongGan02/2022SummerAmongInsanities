@@ -31,8 +31,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     private bool _isCraftable;
     [SerializeField]
     private bool _isCoreNeeded;
-    [SerializeField]
-    private int _craftTime;
+
 
 
     /**
@@ -205,16 +204,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         return _isCoreNeeded;
     }
-    public int CraftTime
-    {
-        get => _craftTime;
-        set => _craftTime = value;
-    }
 
-    public int getCraftTime()
-    {
-        return _craftTime;
-    }
     #endregion
 
 

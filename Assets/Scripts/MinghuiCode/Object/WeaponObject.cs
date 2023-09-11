@@ -25,8 +25,6 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     private bool _isCraftable;
     [SerializeField]
     private bool _isCoreNeeded;
-    [SerializeField]
-    private int _craftTime;
 
     public float getAttack()
     {
@@ -133,17 +131,6 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     public bool isCoreNeeded()
     {
         return _isCoreNeeded;
-    }
-
-    public int CraftTime
-    {
-        get => _craftTime;
-        set => _craftTime = value;
-    }
-
-    public int getCraftTime()
-    {
-        return _craftTime;
     }
     #endregion
 
