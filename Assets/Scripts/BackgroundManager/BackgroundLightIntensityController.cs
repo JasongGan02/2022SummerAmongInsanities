@@ -32,6 +32,11 @@ public class BackgroundLightIntensityController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (timeSystemManager.isDebugDayTime)
+        {
+            backgroundLight.intensity = 1; // or whatever daytime intensity you prefer
+            return;
+        }
         if (Player == null)
         {
             Player = GameObject.FindGameObjectWithTag("Player");

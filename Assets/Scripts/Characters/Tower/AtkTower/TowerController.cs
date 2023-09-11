@@ -10,10 +10,11 @@ public class TowerController : CharacterController
     
     //run-time variables
     protected ConstructionMode constructionMode;
-    protected bool isPlacedByPlayer =false;
+    protected bool isDestroyedByPlayer =false;
 
-    protected void Update()
+    protected override void Update()
     {
+        base.Update();
         TestDrop();
     }
     //protected abstract void TowerLoop(); 
@@ -24,7 +25,7 @@ public class TowerController : CharacterController
         constructionMode = FindObjectOfType<ConstructionMode>();
         constructionMode.EnergyConsumption(energyCost*-1);
         Destroy(gameObject);
-        OnObjectDestroyed(isPlacedByPlayer);
+        OnObjectDestroyed(isDestroyedByPlayer);
     }
 
     public override void takenDamage(float dmg)
@@ -46,7 +47,7 @@ public class TowerController : CharacterController
             Collider2D collider = GetComponent<Collider2D>(); // Get the collider of the object you want to check
             if (hitInfo.collider != null && hitInfo.collider == collider) // Check if the collider was hit by the ray
             {
-                isPlacedByPlayer = true;
+                isDestroyedByPlayer = true;
                 // Execute your function here
                 death();
             }

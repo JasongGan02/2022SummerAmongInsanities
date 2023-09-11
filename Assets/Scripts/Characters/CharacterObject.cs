@@ -40,7 +40,7 @@ public class CharacterObject : BaseObject
         return worldGameObject;
     }
 
-    public virtual List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
+    public virtual List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer)
     {
         List<GameObject> droppedItems = new();
         foreach (Drop drop in Drops)
@@ -48,7 +48,6 @@ public class CharacterObject : BaseObject
             GameObject droppedGameObject = drop.GetDroppedItem();
             droppedItems.Add(droppedGameObject);
         }   
-        
         return droppedItems;
 
     }
