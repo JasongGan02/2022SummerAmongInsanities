@@ -27,17 +27,6 @@ public class CoreArchitecture : MonoBehaviour
     }
 
 
-    public System.Collections.IEnumerator Spawn(BaseObject item)
-    {
-        yield return new WaitForSeconds(5);
-        GameObject spawnObject = Instantiate(item.getPrefab(), coreArchitecture.transform.position + new Vector3(1,0,0), Quaternion.Euler(new Vector3(0, 0, 90)));
-        spawnObject.layer = LayerMask.NameToLayer("resource");
-        var controller = spawnObject.AddComponent<DroppedObjectController>();
-        controller.Initialize(item as IInventoryObject, 1);
-        yield return new WaitForSeconds(5);
-
-    }
-
     void InitConstructableCircle()
     {
         Constructable_Circle.gameObject.transform.localScale = new Vector3(Constructable_Distance*2, Constructable_Distance*2, 1);
