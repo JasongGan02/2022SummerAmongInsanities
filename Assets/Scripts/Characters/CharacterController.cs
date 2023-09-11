@@ -164,15 +164,13 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         return characterStats;
     }
 
-    protected void OnObjectDestroyed(bool isPlacedByPlayer)
+    protected void OnObjectDestroyed(bool isDestroyedByPlayer)
     {
-        if (characterStats.GetDroppedGameObjects(isPlacedByPlayer) != null)
+        var drops = characterStats.GetDroppedGameObjects(isDestroyedByPlayer);
+        if (drops != null)
         {
-            var drops = characterStats.GetDroppedGameObjects(isPlacedByPlayer);
-
             foreach (GameObject droppedItem in drops)
             {
-                //droppedItem.transform.parent = gameObject.transform.parent;
                 droppedItem.transform.position = gameObject.transform.position;
                 droppedItem.GetComponent<Rigidbody2D>().AddTorque(10f);
             }

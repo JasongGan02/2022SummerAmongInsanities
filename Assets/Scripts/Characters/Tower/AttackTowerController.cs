@@ -20,7 +20,7 @@ public abstract class AttackTowerController : TowerController
 
     //protected abstract void TowerLoop(); 
 
-    // Find nearest enmey in the enemy array
+    // Find nearest enemy in the enemy array
     protected virtual Transform SenseNearestEnemyTransform()
     {
         var enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();

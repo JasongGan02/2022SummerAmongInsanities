@@ -21,9 +21,7 @@ MonoBehaviour:
   AtkRange: 4
   MovingSpeed: 0
   JumpForce: 0
-  Drops:
-  - droppedItem: {fileID: 11400000}
-    chance: 1
+  Drops: []
   Hatred: []
   energyCost: 10
   rotateAngle: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}

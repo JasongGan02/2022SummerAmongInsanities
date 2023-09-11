@@ -10,6 +10,7 @@ public class TimeSystemManager : MonoBehaviour
     public int dayStartHour = 6;
     public int nightStartHour = 20;
     public int redMoonNightInterval = 5;
+    public bool isDebugDayTime = false;
 
     public Action OnDayStartedHandler;
     public Action<bool> OnNightStartedHandler; // The boolean is used to set moon type
@@ -17,22 +18,32 @@ public class TimeSystemManager : MonoBehaviour
     public Action<int> OnHourUpdatedHandler;
     public Action<int> OnDayUpdatedHandler;
 
-    private GameObject timeText; //xÌìxÊ±
+    private GameObject timeText; //xï¿½ï¿½xÊ±
     private int currentHour = 0;
     private int currentDay = 1;
     // Start is called before the first frame update
     void Start()
     {
         timeText = GameObject.Find(Constants.Name.TIME_TEXT);
-        if (currentHour >= dayStartHour && currentHour < nightStartHour)
+
+        // If debug mode is enabled, set time to daytime
+        if (isDebugDayTime)
         {
+            currentHour = dayStartHour+1;
             OnDayStartedHandler?.Invoke();
         }
         else
         {
-            // The first night will not be a red moon night
-            OnNightStartedHandler?.Invoke(false);
+            if (currentHour >= dayStartHour && currentHour < nightStartHour)
+            {
+                OnDayStartedHandler?.Invoke();
+            }
+            else
+            {
+                OnNightStartedHandler?.Invoke(false);
+            }
         }
+
         StartCoroutine(UpdateTime());
     }
 
@@ -76,17 +87,28 @@ public class TimeSystemManager : MonoBehaviour
 
     private IEnumerator UpdateTime()
     {
-        while(true)
+        while (true)
         {
             yield return new WaitForSeconds(dayToRealTimeInSecond / 24);
-            currentHour += 1;
-            OnHourUpdatedHandler?.Invoke(currentHour);
+
+            // Skip updating the time if debug mode is on
+            if (!isDebugDayTime) 
+            {
+                currentHour += 1;
+                OnHourUpdatedHandler?.Invoke(currentHour);
+            }
+            else
+            {
+                currentHour = dayStartHour;
+            }
+
             if (currentHour == 24)
             {
                 currentDay += 1;
                 currentHour = 0;
                 OnDayUpdatedHandler?.Invoke(currentDay);
             }
+
             UpdateTimeUI();
 
             if (currentHour == dayStartHour)
@@ -95,20 +117,25 @@ public class TimeSystemManager : MonoBehaviour
             }
             else if (currentHour == nightStartHour)
             {
-                if (currentDay % redMoonNightInterval == 0)
+                if (!isDebugDayTime)
                 {
-                    OnNightStartedHandler?.Invoke(true);
-                }
-                else
-                {
-                    OnNightStartedHandler?.Invoke(false);
+                    if (currentDay % redMoonNightInterval == 0)
+                    {
+                        OnNightStartedHandler?.Invoke(true);
+                    }
+                    else
+                    {
+                        OnNightStartedHandler?.Invoke(false);
+                    }
                 }
             }
         }
     }
 
+    
+
     private void UpdateTimeUI()
     {
-        timeText.GetComponent<TMP_Text>().text = currentDay + "Ìì" + currentHour + "Ê±";
+        timeText.GetComponent<TMP_Text>().text = currentDay + "å¤©" + currentHour + "æ—¶";
     }
 }

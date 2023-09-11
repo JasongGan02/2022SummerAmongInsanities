@@ -32,18 +32,10 @@ public class BreakableObjectController : MonoBehaviour
         var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);
         
         Vector2Int coord = new( (int) (transform.localPosition.x), (int) (transform.localPosition.y));
-        Debug.Log("Tile1 position: " + coord);
-        Dictionary<Vector2Int, GameObject> worldTilesDictionary = TerrainGeneration.worldTilesDictionary;
-        foreach (var pair in worldTilesDictionary)
-        {
-            if(EqualityComparer<GameObject>.Default.Equals(pair.Value, this.gameObject))
-                Debug.Log("this tile position: " + pair.Key);
-        }
         if (TerrainGeneration.worldTilesDictionary.ContainsKey(coord))
         {
-            Debug.Log("Does exist");
             // Remove the tile entry from the dictionary
-            TerrainGeneration.worldTilesDictionary.Remove(coord);
+            Debug.Log(TerrainGeneration.worldTilesDictionary.Remove(coord));
         }
 
         foreach (GameObject droppedItem in drops)
