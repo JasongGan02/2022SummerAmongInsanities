@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa17fa77a81428c4d95228e473e50361, type: 3}
+  m_Name: Grass02
+  m_EditorClassIdentifier: 
+  itemName: Grass02
+  sizeRatio: 0.125
+  prefab: {fileID: 3131238724964298343, guid: 858ec57d47bf4104693ecb757cc1894d, type: 3}
+  _maxStack: 99
+  _healthPoint: 1
+  _drops: []
+  _prefabs:
+  - {fileID: 3131238724964298343, guid: 858ec57d47bf4104693ecb757cc1894d, type: 3}
+  - {fileID: 1244750640351971745, guid: c8a1500c8ff0a5348a10e871280912c2, type: 3}
+  - {fileID: 1097059954484856219, guid: 1db4718282a1ddc4bbb2415b7874d993, type: 3}
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0
