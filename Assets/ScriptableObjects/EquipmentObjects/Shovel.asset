@@ -23,7 +23,9 @@ MonoBehaviour:
   farm: 5
   frequency: 1
   _recipe:
-  - {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
-  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  - {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
+  - {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
   _quantity: 0200000003000000
   _isCraftable: 1
+  _isCoreNeeded: 0
+  _craftTime: 0
