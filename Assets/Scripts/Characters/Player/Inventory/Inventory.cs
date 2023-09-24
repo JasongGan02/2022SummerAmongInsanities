@@ -193,6 +193,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
     public void CraftItemsCore(BaseObject[] items, int[] quantity, BaseObject outputItem)
     {
+
+        Debug.Log("CraftItemsCore called");
         // Check if we have the required quantity of each item in the inventory
         for (int i = 0; i < items.Length; i++)
         {
@@ -213,7 +215,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             targetSlot.count = targetSlot.count - quantity[i];
             UpdateSlotUi(index);
         }
-
         queueManager.AddToQueue(outputItem);
 
     }

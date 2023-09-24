@@ -14,7 +14,7 @@ public class CraftingQueueManager : MonoBehaviour
     public GameObject buttonPrefab;
     private float xOffset = -180f;
     private TextMeshProUGUI ProgressText;
-
+    private GameObject QueueUI;
 
     private CoreArchitecture coreArchitecture;
  
@@ -22,43 +22,57 @@ public class CraftingQueueManager : MonoBehaviour
 
     void Start()
     {
+        QueueUI = GameObject.Find("QueueUI");
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
-        ProgressText = GameObject.Find("TimeCount").GetComponent<TextMeshProUGUI>();
+        ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
     }
-    
 
-    private void UpdateQueueUI(BaseObject item)
+
+    private void UpdateQueueUI(Queue<BaseObject> craftQueue)
     {
+        // Clear existing UI elements (assuming content is a transform containing old UI elements)
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
 
+        // Set xOffset to its initial position
+        xOffset = 0;
+
+        // Loop through each item in the craftQueue
+        foreach (BaseObject item in craftQueue)
+        {
             GameObject buttonObj = Instantiate(buttonPrefab, content);
             RectTransform buttonRect = buttonObj.GetComponent<RectTransform>();
 
-            buttonRect.sizeDelta = new Vector2(100,100);
-            buttonRect.anchoredPosition = new Vector2(xOffset, 0);
-            xOffset += (buttonRect.sizeDelta.x+10);
-            
+            buttonRect.sizeDelta = new Vector2(100, 100);
 
-            GameObject buttonImage = new GameObject();
+            // Set anchored position based on the current xOffset
+            buttonRect.anchoredPosition = new Vector2(xOffset, 0);
+
+            // Increment xOffset for next button
+            xOffset += (buttonRect.sizeDelta.x + 10);
+
+            GameObject buttonImage = new GameObject("ButtonImage");
             buttonImage.transform.SetParent(buttonObj.transform);
 
             Image image = buttonImage.AddComponent<Image>();
             RectTransform ImageRect = buttonImage.GetComponent<RectTransform>();
+            ImageRect.sizeDelta = new Vector2(80, 80); // Making the image slightly smaller than the button
             ImageRect.localPosition = new Vector2(0, 0);
             image.sprite = item.getPrefabSprite();
+        }
     }
 
-    private void DestroyQueueUI()
-    {
 
-        Destroy(GameObject.Find("ButtonPrefab(Clone)"));
-    }
+
 
 
     // Add an item to the crafting queue
     public void AddToQueue(BaseObject outputitem)
     {
         craftQueue.Enqueue(outputitem);
-        UpdateQueueUI(outputitem);
+        UpdateQueueUI(craftQueue);
          
         if (craftQueue.Count == 1)
         {
@@ -79,7 +93,7 @@ public class CraftingQueueManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(1.0f);
                 remainingCraftingTime -= 1.0f;
-                ProgressText.text = remainingCraftingTime.ToString();
+                ProgressText.text = remainingCraftingTime.ToString()+"'s";
             }
 
             // Item crafting is complete; you can handle item creation here
@@ -88,7 +102,7 @@ public class CraftingQueueManager : MonoBehaviour
 
             // Remove the item from the queue
             craftQueue.Dequeue();
-            DestroyQueueUI();
+            UpdateQueueUI(craftQueue);
         }
     }
 
