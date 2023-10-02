@@ -23,7 +23,15 @@ public class TerrainGeneration : MonoBehaviour
     public int chunkSize = 16;
     public int heightAddition = 25;
     public bool generateCave = true;
-    
+
+    [Header("Base Area Settings")]
+    public int flatAreaStartX = 50;  // Starting X-coordinate of the flat area
+    public int flatAreaEndX = 150;    // Ending X-coordinate of the flat area
+    public float flatHeightStart = 60;    // Y-coordinate height of the flat area
+    //public float flatHeightStart = 25; // Starting Y-coordinate height of the no-cave zone
+    public float flatHeightEnd = 40; // Ending Y-coordinate height of the no-cave zone
+    public int transitionWidth = 5;  // Width of the transition area
+
     [Header("Noise Settings")]
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
@@ -253,10 +261,14 @@ public class TerrainGeneration : MonoBehaviour
         {
             for (int y = 0; y < terrainSize; y++) 
             { 
+
                 curBiome = GetCurrentBiome(x, y);
-                //Debug.Log(curBiome);
                 v = Mathf.PerlinNoise((x + seed) * caveFreq, (y + seed) * caveFreq);
-                if (v > curBiome.surfacePortion)
+                if (x >= flatAreaStartX && x <= flatAreaEndX && y >= flatHeightStart && y <= flatHeightEnd)// Prevent caves in a certain height range within the flat area
+                {
+                    caveNoiseTexture.SetPixel(x, y, Color.black);
+                }
+                else if (v > curBiome.surfacePortion)
                 {
                     caveNoiseTexture.SetPixel(x, y, Color.white);
                 }
@@ -264,14 +276,18 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     caveNoiseTexture.SetPixel(x, y, Color.black);
                 }
-                for (int i = 0; i < curBiome.ores.Length; i++)
+                for (int i = 0; i < ores.Length; i++)
                 {
-                    o = Mathf.PerlinNoise((x + seed) * curBiome.ores[i].rarity, (y + seed) * curBiome.ores[i].rarity);
-                    if (o > curBiome.ores[i].size)
+                    ores[i].spreadTexture.SetPixel(x, y, Color.black);
+                    if (curBiome.ores.Length >= i + 1)
                     {
-                        ores[i].spreadTexture.SetPixel(x, y, Color.white);
+                        o = Mathf.PerlinNoise((x + seed) * curBiome.ores[i].rarity, (y + seed) * curBiome.ores[i].rarity);
+                        if (o > curBiome.ores[i].size)
+                        {
+                            ores[i].spreadTexture.SetPixel(x, y, Color.white);
+                        }
+                        ores[i].spreadTexture.Apply();
                     }
-                    ores[i].spreadTexture.Apply();
                 }
             }
         }
@@ -321,13 +337,37 @@ public class TerrainGeneration : MonoBehaviour
         IGenerationObject tileSprites;
         for (int x = 0; x < terrainSize; x++)
         {
-            curBiome = GetCurrentBiome(x, 0);
             float height; 
-            
+
             for (int y = 0; y < terrainSize; y++)
             {
                 curBiome = GetCurrentBiome(x, y);
-                height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * curBiome.heightMultiplier + heightAddition;
+                //height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * curBiome.heightMultiplier + heightAddition;
+                float perlinHeight = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * curBiome.heightMultiplier + heightAddition;
+
+                // Smooth transition into flat area
+                if (x >= flatAreaStartX - transitionWidth && x < flatAreaStartX)
+                {
+                    float t = (x - (flatAreaStartX - transitionWidth)) / (float)transitionWidth;
+                    height = Mathf.Lerp(perlinHeight, flatHeightStart, t);
+                }
+                // Smooth transition out of flat area
+                else if (x > flatAreaEndX && x <= flatAreaEndX + transitionWidth)
+                {
+                    float t = (x - flatAreaEndX) / (float)transitionWidth;
+                    height = Mathf.Lerp(flatHeightStart, perlinHeight, t);
+                }
+                // Flat area
+                else if (x >= flatAreaStartX && x <= flatAreaEndX)
+                {
+                    height = flatHeightStart;
+                }
+                // Normal terrain
+                else
+                {
+                    height = perlinHeight;
+                }
+
                 if (y >= height)
                 {
                     break;
@@ -336,9 +376,9 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     tileSprites = curBiome.tileAtlas.stone;
                     //ore and stone generation
-                    if (ores[0].spreadTexture.GetPixel(x,y).r >0.5f && height - y > ores[0].masSpawnHeight)
+                    if (ores[0].spreadTexture.GetPixel(x,y).r > 0.5f && height - y > ores[0].masSpawnHeight)
                         tileSprites = tileAtlas.coal;
-                    if(ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[1].masSpawnHeight)
+                    if (ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[1].masSpawnHeight)
                         tileSprites = tileAtlas.iron;
                     if (ores[2].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[2].masSpawnHeight)
                         tileSprites = tileAtlas.gold;
