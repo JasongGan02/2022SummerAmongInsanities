@@ -5,6 +5,7 @@ using static UnityEditor.Progress;
 using Image = UnityEngine.UI.Image;
 using Text = UnityEngine.UI.Text;
 using TMPro;
+using System;
 
 public class CraftingQueueManager : MonoBehaviour
 {
@@ -14,51 +15,68 @@ public class CraftingQueueManager : MonoBehaviour
     public GameObject buttonPrefab;
     private float xOffset = -180f;
     private TextMeshProUGUI ProgressText;
-
+    private GameObject QueueUI;
 
     private CoreArchitecture coreArchitecture;
- 
+    private TimeSystemManager timeSystemManager;
+
 
 
     void Start()
     {
+        QueueUI = GameObject.Find("QueueUI");
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
-        ProgressText = GameObject.Find("TimeCount").GetComponent<TextMeshProUGUI>();
+        ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
+        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+
     }
-    
 
-    private void UpdateQueueUI(BaseObject item)
+
+    private void UpdateQueueUI(Queue<BaseObject> craftQueue)
     {
+        // Clear existing UI elements (assuming content is a transform containing old UI elements)
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
 
+        // Set xOffset to its initial position
+        xOffset = 0;
+
+        // Loop through each item in the craftQueue
+        foreach (BaseObject item in craftQueue)
+        {
             GameObject buttonObj = Instantiate(buttonPrefab, content);
             RectTransform buttonRect = buttonObj.GetComponent<RectTransform>();
 
-            buttonRect.sizeDelta = new Vector2(100,100);
-            buttonRect.anchoredPosition = new Vector2(xOffset, 0);
-            xOffset += (buttonRect.sizeDelta.x+10);
-            
+            buttonRect.sizeDelta = new Vector2(100, 100);
 
-            GameObject buttonImage = new GameObject();
+            // Set anchored position based on the current xOffset
+            buttonRect.anchoredPosition = new Vector2(xOffset, 0);
+
+            // Increment xOffset for next button
+            xOffset += (buttonRect.sizeDelta.x + 10);
+
+            GameObject buttonImage = new GameObject("ButtonImage");
             buttonImage.transform.SetParent(buttonObj.transform);
 
             Image image = buttonImage.AddComponent<Image>();
             RectTransform ImageRect = buttonImage.GetComponent<RectTransform>();
+            ImageRect.sizeDelta = new Vector2(80, 80); // Making the image slightly smaller than the button
             ImageRect.localPosition = new Vector2(0, 0);
             image.sprite = item.getPrefabSprite();
+        }
     }
 
-    private void DestroyQueueUI()
-    {
 
-        Destroy(GameObject.Find("ButtonPrefab(Clone)"));
-    }
+
 
 
     // Add an item to the crafting queue
     public void AddToQueue(BaseObject outputitem)
     {
         craftQueue.Enqueue(outputitem);
-        UpdateQueueUI(outputitem);
+        UpdateQueueUI(craftQueue);
          
         if (craftQueue.Count == 1)
         {
@@ -72,25 +90,36 @@ public class CraftingQueueManager : MonoBehaviour
         while (craftQueue.Count > 0)
         {
             BaseObject itemToCraft = craftQueue.Peek();
-            
+
             float remainingCraftingTime = (itemToCraft as ICraftableObject).getCraftTime();
 
-            while (remainingCraftingTime > 0)
+            Action<int> hourUpdateHandler = null;
+            hourUpdateHandler = (hour) =>
             {
-                yield return new WaitForSeconds(1.0f);
-                remainingCraftingTime -= 1.0f;
-                ProgressText.text = remainingCraftingTime.ToString();
-            }
+                remainingCraftingTime -= 1; // adjust this value as needed
+                ProgressText.text = remainingCraftingTime.ToString() + "'s";
 
-            // Item crafting is complete; you can handle item creation here
+                if (remainingCraftingTime <= 0)
+                {
+                    // Item crafting is complete; you can handle item creation here
+                    spawn(itemToCraft);
 
-            spawn(itemToCraft);
+                    // Remove the item from the queue
+                    craftQueue.Dequeue();
+                    UpdateQueueUI(craftQueue);
 
-            // Remove the item from the queue
-            craftQueue.Dequeue();
-            DestroyQueueUI();
+                    // IMPORTANT: Unsubscribe from the event to prevent multiple calls
+                    timeSystemManager.OnHourUpdatedHandler -= hourUpdateHandler;
+                }
+            };
+
+            timeSystemManager.OnHourUpdatedHandler += hourUpdateHandler;
+
+            // Wait for crafting time to complete (Note: This is just a safety wait, adjust the value as required)
+            yield return new WaitForSeconds(remainingCraftingTime * timeSystemManager.dayToRealTimeInSecond / 24);
         }
     }
+
 
 
     private void spawn(BaseObject itemToCraft)

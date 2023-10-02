@@ -48,9 +48,17 @@ public class CraftingUIManager : MonoBehaviour
     private Image inputItem0;
     private Image inputItem1;
     private Image inputItem2;
+    private Image inputItem3;
+    private Image inputItem4;
+    private Image inputItem5;
     private TMP_Text num0;
     private TMP_Text num1;
-    private TMP_Text num2;  
+    private TMP_Text num2;
+    private TMP_Text num3;
+    private TMP_Text num4;
+    private TMP_Text num5;
+    private TMP_Text time;
+
 
 
     void Awake()
@@ -152,9 +160,19 @@ public class CraftingUIManager : MonoBehaviour
         inputItem0 = CraftUI.transform.Find(NAME_IMAGE_0).GetComponent<Image>();
         inputItem1 = CraftUI.transform.Find(NAME_IMAGE_1).GetComponent<Image>();
         inputItem2 = CraftUI.transform.Find(NAME_IMAGE_2).GetComponent<Image>();
+
+        inputItem3 = CraftUI.transform.Find(NAME_IMAGE_3).GetComponent<Image>();
+        inputItem4 = CraftUI.transform.Find(NAME_IMAGE_4).GetComponent<Image>();
+        inputItem5 = CraftUI.transform.Find(NAME_IMAGE_5).GetComponent<Image>();
+
         num0 = CraftUI.transform.Find(NAME_NUM_0).GetComponent<TMP_Text>();
         num1 = CraftUI.transform.Find(NAME_NUM_1).GetComponent<TMP_Text>();
         num2 = CraftUI.transform.Find(NAME_NUM_2).GetComponent<TMP_Text>();
+        num3 = CraftUI.transform.Find(NAME_NUM_3).GetComponent<TMP_Text>();
+        num4 = CraftUI.transform.Find(NAME_NUM_4).GetComponent<TMP_Text>();
+        num5 = CraftUI.transform.Find(NAME_NUM_5).GetComponent<TMP_Text>();
+        time = CraftUI.transform.Find("time").GetComponent<TMP_Text>();
+
         CraftButton.onClick.AddListener(CraftButtonClicked);
 
         foreach (Transform child in content.transform)
@@ -194,13 +212,13 @@ public class CraftingUIManager : MonoBehaviour
                 {
                     if (coreArchitecture.IsPlayerInControlRange() == false)
                     {
-                        image.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0.3f);
+                        image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
                     }
                 }
             }
             else
             {
-                image.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0.3f);
+                image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
             }
             
 
@@ -213,14 +231,22 @@ public class CraftingUIManager : MonoBehaviour
         //set them to not be visible
         CraftButton.gameObject.SetActive(false);
 
-        outputItem.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0);
+        outputItem.color = new Color(outputItem.color.r, outputItem.color.g, outputItem.color.b, 0);
         inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0);
         inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 0);
         inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 0);
 
+        inputItem3.color = new Color(inputItem3.color.r, inputItem3.color.g, inputItem3.color.b, 0);
+        inputItem4.color = new Color(inputItem4.color.r, inputItem4.color.g, inputItem4.color.b, 0);
+        inputItem5.color = new Color(inputItem5.color.r, inputItem5.color.g, inputItem5.color.b, 0);
+        time.color = new Color(time.color.r, time.color.g, time.color.b, 0);
         num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 0);
         num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 0);
         num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 0);
+
+        num3.color = new Color(num3.color.r, num3.color.g, num3.color.b, 0);
+        num4.color = new Color(num4.color.r, num4.color.g, num4.color.b, 0);
+        num5.color = new Color(num5.color.r, num5.color.g, num5.color.b, 0);
 
     }
 
@@ -282,11 +308,14 @@ public class CraftingUIManager : MonoBehaviour
         private void ItemButtonClicked(Sprite itemSprite,Button n)
         {
             outputItem.sprite = itemSprite;
-            outputItem.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
-    
+            outputItem.color = new Color(outputItem.color.r, outputItem.color.g, outputItem.color.b, 1);
+            selectedBaseObject = itemButtonToBaseObjectMapping[n];
+            time.text = (selectedBaseObject as ICraftableObject).getCraftTime().ToString() + "'s";
+            time.color = new Color(time.color.r, time.color.g, time.color.b, 1);
+
             CraftButton.gameObject.SetActive(true);
 
-            selectedBaseObject = itemButtonToBaseObjectMapping[n];
+            
             UpdateUi();
 
         }
@@ -369,6 +398,48 @@ public class CraftingUIManager : MonoBehaviour
             num2.text = inventory.findItemCount(inputItems[2]) + "/" + inputQuantities[2];
             num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 1);
         }
+
+        if (inputItems.Length <= 3)
+        {
+            inputItem3.color = new Color(inputItem3.color.r, inputItem3.color.g, inputItem3.color.b, 0);
+            num3.color = new Color(num3.color.r, num3.color.g, num3.color.b, 0);
+        }
+        else
+        {
+            inputItem3.sprite = inputItems[3].getPrefabSprite();
+            inputItem3.color = new Color(inputItem3.color.r, inputItem3.color.g, inputItem3.color.b, 1);
+            num3.text = inventory.findItemCount(inputItems[3]) + "/" + inputQuantities[3];
+            num3.color = new Color(num3.color.r, num3.color.g, num3.color.b, 1);
+        }
+
+        if (inputItems.Length <= 4)
+        {
+            inputItem4.color = new Color(inputItem4.color.r, inputItem4.color.g, inputItem4.color.b, 0);
+            num4.color = new Color(num4.color.r, num4.color.g, num4.color.b, 0);
+        }
+        else
+        {
+            inputItem4.sprite = inputItems[4].getPrefabSprite();
+            inputItem4.color = new Color(inputItem4.color.r, inputItem4.color.g, inputItem4.color.b, 1);
+            num4.text = inventory.findItemCount(inputItems[4]) + "/" + inputQuantities[4];
+            num4.color = new Color(num4.color.r, num4.color.g, num4.color.b, 1);
+        }
+
+
+        if (inputItems.Length <= 5)
+        {
+            inputItem5.color = new Color(inputItem5.color.r, inputItem5.color.g, inputItem5.color.b, 0);
+            num5.color = new Color(num5.color.r, num5.color.g, num5.color.b, 0);
+        }
+        else
+        {
+            inputItem5.sprite = inputItems[5].getPrefabSprite();
+            inputItem5.color = new Color(inputItem5.color.r, inputItem5.color.g, inputItem5.color.b, 1);
+            num5.text = inventory.findItemCount(inputItems[5]) + "/" + inputQuantities[5];
+            num5.color = new Color(num5.color.r, num5.color.g, num5.color.b, 1);
+        }
+
+
     }
     private void disableInputItems()
     {
@@ -378,6 +449,13 @@ public class CraftingUIManager : MonoBehaviour
         num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 0);
         inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 0);
         num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 0);
+
+        inputItem3.color = new Color(inputItem3.color.r, inputItem3.color.g, inputItem3.color.b, 0);
+        num3.color = new Color(num3.color.r, num3.color.g, num3.color.b, 0);
+        inputItem4.color = new Color(inputItem4.color.r, inputItem4.color.g, inputItem4.color.b, 0);
+        num4.color = new Color(num4.color.r, num4.color.g, num4.color.b, 0);
+        inputItem5.color = new Color(inputItem5.color.r, inputItem5.color.g, inputItem5.color.b, 0);
+        num5.color = new Color(num5.color.r, num5.color.g, num5.color.b, 0);
     }
 
 
@@ -398,9 +476,15 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_IMAGE_0 = "InputItem0";
     private const string NAME_IMAGE_1 = "InputItem1";
     private const string NAME_IMAGE_2 = "InputItem2";
+    private const string NAME_IMAGE_3 = "InputItem3";
+    private const string NAME_IMAGE_4 = "InputItem4";
+    private const string NAME_IMAGE_5 = "InputItem5";
     private const string NAME_NUM_0 = "num0";
     private const string NAME_NUM_1 = "num1";
     private const string NAME_NUM_2 = "num2";
+    private const string NAME_NUM_3 = "num3";
+    private const string NAME_NUM_4 = "num4";
+    private const string NAME_NUM_5 = "num5";
 
 
     private const string NAME_SCROLLVIEW = "ScrollView";
