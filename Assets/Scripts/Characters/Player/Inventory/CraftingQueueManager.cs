@@ -5,6 +5,7 @@ using static UnityEditor.Progress;
 using Image = UnityEngine.UI.Image;
 using Text = UnityEngine.UI.Text;
 using TMPro;
+using System;
 
 public class CraftingQueueManager : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class CraftingQueueManager : MonoBehaviour
     private GameObject QueueUI;
 
     private CoreArchitecture coreArchitecture;
- 
+    private TimeSystemManager timeSystemManager;
+
 
 
     void Start()
@@ -25,6 +27,8 @@ public class CraftingQueueManager : MonoBehaviour
         QueueUI = GameObject.Find("QueueUI");
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
+        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+
     }
 
 
@@ -86,25 +90,36 @@ public class CraftingQueueManager : MonoBehaviour
         while (craftQueue.Count > 0)
         {
             BaseObject itemToCraft = craftQueue.Peek();
-            
+
             float remainingCraftingTime = (itemToCraft as ICraftableObject).getCraftTime();
 
-            while (remainingCraftingTime > 0)
+            Action<int> hourUpdateHandler = null;
+            hourUpdateHandler = (hour) =>
             {
-                yield return new WaitForSeconds(1.0f);
-                remainingCraftingTime -= 1.0f;
-                ProgressText.text = remainingCraftingTime.ToString()+"'s";
-            }
+                remainingCraftingTime -= 1; // adjust this value as needed
+                ProgressText.text = remainingCraftingTime.ToString() + "'s";
 
-            // Item crafting is complete; you can handle item creation here
+                if (remainingCraftingTime <= 0)
+                {
+                    // Item crafting is complete; you can handle item creation here
+                    spawn(itemToCraft);
 
-            spawn(itemToCraft);
+                    // Remove the item from the queue
+                    craftQueue.Dequeue();
+                    UpdateQueueUI(craftQueue);
 
-            // Remove the item from the queue
-            craftQueue.Dequeue();
-            UpdateQueueUI(craftQueue);
+                    // IMPORTANT: Unsubscribe from the event to prevent multiple calls
+                    timeSystemManager.OnHourUpdatedHandler -= hourUpdateHandler;
+                }
+            };
+
+            timeSystemManager.OnHourUpdatedHandler += hourUpdateHandler;
+
+            // Wait for crafting time to complete (Note: This is just a safety wait, adjust the value as required)
+            yield return new WaitForSeconds(remainingCraftingTime * timeSystemManager.dayToRealTimeInSecond / 24);
         }
     }
+
 
 
     private void spawn(BaseObject itemToCraft)
