@@ -203,17 +203,37 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: LightFade
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: iterations
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: lightShader
+      value: 
+      objectReference: {fileID: 2100000, guid: ab1ade238a393fe4a850e46e03ef5607, type: 2}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: lightMapOverlay
+      value: 
+      objectReference: {fileID: 1771792932}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: sunlightBrightness
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_RootOrder
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.5
+      value: 12.98
       objectReference: {fileID: 0}
     - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.5
+      value: 12.98
       objectReference: {fileID: 0}
     - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -247,9 +267,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab1ade238a393fe4a850e46e03ef5607, type: 2}
     - target: {fileID: 7325007939855369766, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_Name
       value: ShadowOverlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369766, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1807,6 +1851,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1771792932 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+  m_PrefabInstance: {fileID: 136780352}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1839583374
 PrefabInstance:
   m_ObjectHideFlags: 0
