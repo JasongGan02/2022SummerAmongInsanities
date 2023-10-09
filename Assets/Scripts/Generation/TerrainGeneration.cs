@@ -79,6 +79,7 @@ public class TerrainGeneration : MonoBehaviour
         if (shadowGenerator != null)
         {
             shadowGenerator.Initialize(worldTilesDictionary, terrainSize);
+            shadowGenerator.IUpdate();
         }
 
         groundLayer = LayerMask.GetMask("ground");

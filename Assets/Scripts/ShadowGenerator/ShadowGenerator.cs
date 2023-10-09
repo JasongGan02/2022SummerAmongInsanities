@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -22,8 +23,15 @@ public class ShadowGenerator : MonoBehaviour
     private GameObject player;
     private int worldWidthInBlock;
     private int worldHeightInBlock = 110; // TODO don't hardcode
+    //private int worldHeightInBlock = 80;
     TerrainGeneration terrainGeneration;
     Light2D GlobalLight;
+
+    private float[,] lightValues;
+    [SerializeField] private Transform lightMapOverlay;
+    [SerializeField] private int iterations;
+    [Tooltip("between 0 & 15")][SerializeField] private float sunlightBrightness;
+    [SerializeField] private float LightFade;
 
     private void Start()
     {
@@ -31,25 +39,24 @@ public class ShadowGenerator : MonoBehaviour
         GlobalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (player == null)
             player = GameObject.FindWithTag("Player");
         else
         {
-            float distanceX = Mathf.Abs(player.transform.position.x - transform.position.x) * 4;
-            //Debug.Log(distanceX);
-            if (player.transform.position.x > 13.25f && player.transform.position.x < 36.75f && distanceX > thresholdToSnapOverlay)
+            if (Vector2.Distance(player.transform.position, this.transform.position) > 1)
             {
-                SnapOverlayToPlayer();
+                this.transform.position = player.transform.position;
             }
         }
         // distance is in global space, so needs to time 4 for global -> object conversion
-        PlayerAutoCleanShadow();
-        ShadowAutoRecover();
+        // PlayerAutoCleanShadow();
+        // ShadowAutoRecover();
+
     }
 
-    public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)
+    public void OldInitialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)
     {
         worldTilesDictionary = dictionary;
         worldWidthInBlock = worldWidth;
@@ -80,43 +87,6 @@ public class ShadowGenerator : MonoBehaviour
             }
         }
 
-        //// add sky light
-        //for (int x = 0; x < worldWidth; x++)
-        //{
-        //    for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
-        //    {
-        //        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
-        //        {
-        //            break;
-        //        }
-        //        else
-        //        {
-        //            colors[y * worldWidth + x] = Color.clear;
-        //        }
-        //    }
-        //}
-
-        /* for (int x = 0; x < worldWidth; x++)
-        {
-            bool isExposedToSky = true; // Flag to track if the current position is exposed to the sky
-
-            for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
-            {
-                if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
-                {
-                    isExposedToSky = false; // Found an obstruction, mark it as not exposed to the sky
-                    break;
-                }
-            }
-
-            if (isExposedToSky)
-            {
-                for (int y = skyLightHeight - 1; y >= skyLightHeight - skyLightRange; y--)
-                {
-                    colors[y * worldWidth + x] = Color.clear;
-                }
-            }
-        } */
 
         lightMap.SetPixels(colors);
         lightMap.Apply();
@@ -126,13 +96,6 @@ public class ShadowGenerator : MonoBehaviour
         {
             for (int y = skyLightHeight + skyLightRange; y > 0; y--)
             {
-                //if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))  // only consider tile object
-                //{
-                //    if (!IsCovered(x, y) && !IsUnderGround(x, y))
-                //    {
-                //        LightBlock(x, y, 0.8f, 0.2f);
-                //    }
-                //}
                 if (!IsCovered(x, y) && !IsUnderGround(x, y))
                 {
                     float intensity = Mathf.Clamp01((skyLightHeight - y) / (float)skyLightRange);
@@ -141,6 +104,100 @@ public class ShadowGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)
+    {
+        worldTilesDictionary = dictionary;
+        worldWidthInBlock = worldWidth;
+
+        lightMap = new Texture2D(worldWidth, worldHeightInBlock);
+        lightShader.SetTexture("_ShadowTex", lightMap);
+        lightShader.SetFloat("_WorldWidth", worldWidth / 4);
+        lightShader.SetFloat("_WorldHeight", worldHeightInBlock / 4);
+
+        terrainGeneration = GetComponent<TerrainGeneration>();
+        lightValues = new float[worldWidthInBlock, worldHeightInBlock];
+        lightMapOverlay.localScale = new Vector3(23.5f, 15f, 1);
+        lightMapOverlay.position = new Vector2(0, 0);
+
+
+        lightMap.filterMode = FilterMode.Point; //< remove this line for smooth lighting, keep it for tiled lighting
+    }
+
+    public void IUpdate() //call this method for any lighting updates
+    {
+        StopCoroutine(UpdateLighting());
+        StartCoroutine(UpdateLighting());
+    }
+    
+    private IEnumerator UpdateLighting() //calculate the new light values for every tile in the world
+    {
+        yield return new WaitForEndOfFrame();
+        for (int i = 0; i < iterations; i++)
+        {
+            for (int x = 0; x < worldWidthInBlock; x++)
+            {
+                float lightLevel = sunlightBrightness;
+                for (int y = worldHeightInBlock - 1; y >= 0; y--)
+                {
+                    if (!IsCovered(x, y)) //if illuminate block
+                        lightLevel = sunlightBrightness;
+                    else
+                    {
+                        //find brightest neighbour
+                        int nx1 = Mathf.Clamp(x - 1, 0, worldWidthInBlock - 1);
+                        int nx2 = Mathf.Clamp(x + 1, 0, worldWidthInBlock - 1);
+                        int ny1 = Mathf.Clamp(y - 1, 0, worldHeightInBlock - 1);
+                        int ny2 = Mathf.Clamp(y + 1, 0, worldHeightInBlock - 1);
+
+                        lightLevel = Mathf.Max(
+                            lightValues[nx1, y],
+                            lightValues[nx2, y],
+                            lightValues[x, ny1],
+                            lightValues[x, ny2]);
+
+                        lightLevel -= LightFade;
+                    }
+
+                    lightValues[x, y] = lightLevel;
+                }
+            }
+
+            //reverse calculation to remove artifacts
+            //for (int x = worldWidthInBlock - 1; x > 0; x--)
+            //{
+            //    float lightLevel;
+            //    for (int y = 0; y < worldHeightInBlock; y++)
+            //    {
+            //        //find brightest neighbour
+            //        int nx1 = Mathf.Clamp(x - 1, 0, worldWidthInBlock - 1);
+            //        int nx2 = Mathf.Clamp(x + 1, 0, worldWidthInBlock - 1);
+            //        int ny1 = Mathf.Clamp(y - 1, 0, worldHeightInBlock - 1);
+            //        int ny2 = Mathf.Clamp(y + 1, 0, worldHeightInBlock - 1);
+
+            //        lightLevel = Mathf.Max(
+            //            lightValues[nx1, y],
+            //            lightValues[nx2, y],
+            //            lightValues[x, ny1],
+            //            lightValues[x, ny2]);
+
+            //        lightLevel -= LightFade;
+
+            //        lightValues[x, y] = lightLevel;
+            //    }
+            //}
+        }
+
+        //apply to texture
+        for (int x = 0; x < worldWidthInBlock; x++)
+        {
+            for (int y = 0; y < worldHeightInBlock; y++)
+            {
+                lightMap.SetPixel(x, y, new Color(0, 0, 0, 1 - (lightValues[x, y] / sunlightBrightness)));
+            }
+        }
+        lightMap.Apply(); //send new texture to the GPU so that we can render it on screen
     }
 
     private void LightBlocks()
@@ -203,7 +260,7 @@ public class ShadowGenerator : MonoBehaviour
                 break;
         }
 
-        this.transform.position = new Vector3(blockX, 0 + this.transform.position.y, 0);
+        this.transform.position = new Vector3(blockX, 0 + this.transform.position.y, 1);
     }
 
     public void OnTileBrokenOriginal(Vector2Int coord)
