@@ -150,7 +150,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         
         UseItemInSlot(args.slotIndex);
-        //Debug.Log(args.slotIndex);
         
     }
   
@@ -412,7 +411,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             GameObject newTile = (currentSlotInUse.item as TileObject).GetPlacedGameObject();
             newTile.transform.position = position;
-            newTile.transform.localScale = new Vector2(0.25f, 0.25f);
             terrainGeneration.placeTile(newTile, position);
             inventory.RemoveItemByOne(indexInUse);
         } 
@@ -469,11 +467,7 @@ public class PlayerInteraction : MonoBehaviour
         BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {
-            //Debug.Log("Dig with " + (currentWeapon?.name ?? "hand"));
             breakableTile.OnClicked(currentWeapon?.getfarm() ?? handFarm);
-
-            //Vector2Int coord = new((int)target.transform.localPosition.x, (int)target.transform.localPosition.y);
-            //shadowGenerator.OnTileBroken(coord);
         }
         
     }
