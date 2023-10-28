@@ -20,7 +20,11 @@ public class CraftingQueueManager : MonoBehaviour
     private CoreArchitecture coreArchitecture;
     private TimeSystemManager timeSystemManager;
 
-
+    public int sizeCraftQueue()
+    {
+        return craftQueue.Count;
+    }
+   
 
     void Start()
     {
