@@ -18,6 +18,14 @@ MonoBehaviour:
   _maxStack: 99
   _healthPoint: 1
   _drops: []
-  _prefabs: []
+  _prefabs:
+  - {fileID: 7400510951586041090, guid: 97d85591df3b762468794bea93cba057, type: 3}
+  - {fileID: 6658070493931298410, guid: 198414fb46f001c4b8dc2dfbc543aa21, type: 3}
+  - {fileID: 7622468089927338656, guid: 250f1e6d37decc4489666772f2eb7b23, type: 3}
+  - {fileID: 7544069019748072705, guid: 059be93c828fc654480c2720d7d925f8, type: 3}
+  - {fileID: 4584287241636241228, guid: 0317bc1605349dc4a954f1c616e6dde2, type: 3}
   _recipe: []
   _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

@@ -17,7 +17,12 @@ MonoBehaviour:
   prefab: {fileID: 5481595800395744475, guid: f4aea43a44866dd4ba8565affa9f5946, type: 3}
   _maxStack: 99
   _healthPoint: 1
-  _drops: []
+  _drops:
+  - droppedItem: {fileID: 11400000}
+    chance: 2
   _prefabs: []
   _recipe: []
   _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0
