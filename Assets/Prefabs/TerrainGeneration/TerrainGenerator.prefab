@@ -45,77 +45,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileAtlas: {fileID: 11400000, guid: c6c92fd5ea6040440adbd3e1073220d7, type: 2}
-  seed: 0
-  biomes: []
-  MainArea:
-    biomeName: 
-    biomeColor: {r: 0, g: 0, b: 0, a: 0}
-    terrainFreq: 0.05
-    caveFreq: 0.05
+  seed: 622.95
+  biomes:
+  - biomeName: Village
+    biomeColor: {r: 0.48235294, g: 1, b: 0.043137256, a: 1}
+    tileAtlas: {fileID: 11400000, guid: c6c92fd5ea6040440adbd3e1073220d7, type: 2}
     caveNoiseTexture: {fileID: 0}
     generateCave: 1
     dirtLayerHeight: 5
-    surfacePortion: 0.25
-    heightMultiplier: 15
-    addonsChance: 0
-    treeChance: 10
-    ores: []
-  Kingdom1:
-    biomeName: 
-    biomeColor: {r: 0, g: 0, b: 0, a: 0}
-    terrainFreq: 0.05
-    caveFreq: 0.05
+    surfacePortion: 0.3
+    heightMultiplier: 25
+    addonsChance: 10
+    treeChance: 15
+    ores:
+    - name: Coal
+      rarity: 0.1
+      size: 0.76
+      masSpawnHeight: 5
+      spreadTexture: {fileID: 0}
+    - name: Iron
+      rarity: 0.08
+      size: 0.8
+      masSpawnHeight: 10
+      spreadTexture: {fileID: 0}
+    - name: Gold
+      rarity: 0.07
+      size: 0.85
+      masSpawnHeight: 20
+      spreadTexture: {fileID: 0}
+  - biomeName: VillageTest
+    biomeColor: {r: 1, g: 1, b: 1, a: 1}
+    tileAtlas: {fileID: 11400000, guid: fcb7d4a87e4f8e14fbb9c077d98a3391, type: 2}
     caveNoiseTexture: {fileID: 0}
     generateCave: 1
-    dirtLayerHeight: 5
-    surfacePortion: 0.25
-    heightMultiplier: 15
-    addonsChance: 0
-    treeChance: 10
+    dirtLayerHeight: 10
+    surfacePortion: 0.2
+    heightMultiplier: 25
+    addonsChance: 5
+    treeChance: 0
     ores: []
-  Kingdom2:
-    biomeName: 
-    biomeColor: {r: 0, g: 0, b: 0, a: 0}
-    terrainFreq: 0.05
-    caveFreq: 0.05
-    caveNoiseTexture: {fileID: 0}
-    generateCave: 1
-    dirtLayerHeight: 5
-    surfacePortion: 0.25
-    heightMultiplier: 15
-    addonsChance: 0
-    treeChance: 10
-    ores: []
-  NetherWorld:
-    biomeName: 
-    biomeColor: {r: 0, g: 0, b: 0, a: 0}
-    terrainFreq: 0.05
-    caveFreq: 0.05
-    caveNoiseTexture: {fileID: 0}
-    generateCave: 1
-    dirtLayerHeight: 5
-    surfacePortion: 0.25
-    heightMultiplier: 15
-    addonsChance: 0
-    treeChance: 10
-    ores: []
-  ForbiddenKingdom:
-    biomeName: 
-    biomeColor: {r: 0, g: 0, b: 0, a: 0}
-    terrainFreq: 0.05
-    caveFreq: 0.05
-    caveNoiseTexture: {fileID: 0}
-    generateCave: 1
-    dirtLayerHeight: 5
-    surfacePortion: 0.25
-    heightMultiplier: 15
-    addonsChance: 0
-    treeChance: 10
-    ores: []
-  biomeFrequency: 0
-  biomeColors:
+  biomeFrequency: 0.01
+  biomeGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0.48235294, g: 1, b: 0.043137256, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -123,7 +95,7 @@ MonoBehaviour:
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 42791
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -139,36 +111,38 @@ MonoBehaviour:
     atime5: 0
     atime6: 0
     atime7: 0
-    m_Mode: 0
+    m_Mode: 1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   biomeMap: {fileID: 0}
-  addonsChance: 10
-  treeChance: 15
-  worldSize: 200
+  terrainSize: 200
   height: 0
   chunkSize: 20
-  generateCave: 1
-  dirtLayerHeight: 5
-  surfacePortion: 0.25
-  heightMultiplier: 25
   heightAddition: 50
-  terrainFreq: 0
+  generateCave: 1
+  coreArchPrefab: {fileID: 2767627944182598563, guid: 881ea817df899664cb502686f5086589, type: 3}
+  flatAreaStartX: 50
+  flatAreaEndX: 150
+  flatHeightStart: 60
+  flatHeightEnd: 40
+  transitionWidth: 10
+  terrainFreq: 0.02
   caveFreq: 0.08
   caveNoiseTexture: {fileID: 0}
   ores:
-  - name: Coal
-    rarity: 0.1
-    size: 0.76
-    masSpawnHeight: 5
+  - name: 
+    rarity: 0
+    size: 0
+    masSpawnHeight: 0
     spreadTexture: {fileID: 0}
-  - name: Iron
-    rarity: 0.08
-    size: 0.8
-    masSpawnHeight: 10
+  - name: 
+    rarity: 0
+    size: 0
+    masSpawnHeight: 0
     spreadTexture: {fileID: 0}
-  - name: Gold
-    rarity: 0.06
-    size: 0.9
-    masSpawnHeight: 20
+  - name: 
+    rarity: 0
+    size: 0
+    masSpawnHeight: 0
     spreadTexture: {fileID: 0}
+  biomeCols: []

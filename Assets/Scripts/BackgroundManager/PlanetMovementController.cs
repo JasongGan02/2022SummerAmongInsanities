@@ -4,34 +4,31 @@ using UnityEngine;
 
 public class PlanetMovementController : MonoBehaviour
 {
-    [SerializeField] private float heightOffset = 14.1f;
-    [SerializeField] private float height = 7f;
+    [SerializeField] private float heightOffset = 65f;
+    [SerializeField] private float height = 8f;
     [SerializeField] private float radius = 13f;
-    [SerializeField] private float duration;
-    private float speed;
 
     private Camera mainCamera;
     private TimeSystemManager timeSystemManager;
 
-    private float timeCounter = -Mathf.PI / 2;
     private void Awake()
     {
         mainCamera = Camera.main;
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
-
-        speed = Mathf.PI / duration;
-    }
-
-    private void OnEnable()
-    {
-        timeCounter = -Mathf.PI / 2 + Mathf.PI * timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();
     }
 
     private void Update()
     {
-        timeCounter += Time.deltaTime * speed;
+        // Calculate the position based on the percentage of night time that has passed
+        float nightTimePercentage = timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();
+
+        // Assuming the night starts with timeCounter = -Mathf.PI / 2 and ends at 3 * Mathf.PI / 2
+        float timeCounter = Mathf.PI * 2 * nightTimePercentage - Mathf.PI / 2;
+
         var x = Mathf.Sin(timeCounter) * radius;
         var y = Mathf.Cos(timeCounter) * height;
-        transform.localPosition = new Vector2(x + mainCamera.transform.position.x, y + heightOffset);
+
+        // Update the planet's position based on the night cycle
+        transform.position = new Vector3(x + mainCamera.transform.position.x, y + heightOffset, transform.position.z);
     }
 }

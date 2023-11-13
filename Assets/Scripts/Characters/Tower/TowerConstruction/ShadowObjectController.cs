@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
+
 public class ShadowObjectController : MonoBehaviour
 {
     CoreArchitecture coreArchitecture;
@@ -13,7 +14,7 @@ public class ShadowObjectController : MonoBehaviour
    
     private void Awake()
     {
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = CoreArchitecture.Instance;
     }
     /***
     Place Tile Implementations
@@ -66,7 +67,7 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool TileObjectCheck(float x, float y)
     {
-        return TerrainGeneration.worldTilesDictionary.ContainsKey(new Vector2Int((int)(x * 4), (int)(y * 4))) == false && CheckAdjcentPos(new Vector2Int((int)(x * 4), (int)(y * 4)))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
+        return TerrainGeneration.worldTilesDictionary.ContainsKey(new Vector2Int((int)x, (int)y)) == false && CheckAdjcentPos(new Vector2Int((int) x, (int) y))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
     }
 
     private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)
@@ -106,25 +107,13 @@ public class ShadowObjectController : MonoBehaviour
         return new Vector2(mousePos.x, mousePos.y);
     }
 
+
     private float GetSnappedCoordinate(float number)
     {
-        switch (number % 1)
-        {
-            case float res when (res >= 0.25 && res < 0.5):
-                return (int)number + 0.375f;
-                
-            case float res when (res >= 0.5 && res < 0.75):
-                return (int)number + 0.625f;
-                
-            case float res when (res >= 0.75 && res < 1.0):
-                return (int)number + 0.875f;
-                
-            case float res when (res >= 0.0 && res < 0.25):
-                return (int)number + 0.125f;
-            default:
-                return -1; // impossible to get here
-        }
+        return Mathf.Floor(number) + 0.5f;
     }
+
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

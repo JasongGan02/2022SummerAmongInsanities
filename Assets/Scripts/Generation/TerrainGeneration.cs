@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 
 public class TerrainGeneration : MonoBehaviour
 {    
@@ -25,10 +26,10 @@ public class TerrainGeneration : MonoBehaviour
     public bool generateCave = true;
 
     [Header("Base Area Settings")]
+    public GameObject coreArchPrefab;
     public int flatAreaStartX = 50;  // Starting X-coordinate of the flat area
     public int flatAreaEndX = 150;    // Ending X-coordinate of the flat area
     public float flatHeightStart = 60;    // Y-coordinate height of the flat area
-    //public float flatHeightStart = 25; // Starting Y-coordinate height of the no-cave zone
     public float flatHeightEnd = 40; // Ending Y-coordinate height of the no-cave zone
     public int transitionWidth = 5;  // Width of the transition area
 
@@ -68,12 +69,12 @@ public class TerrainGeneration : MonoBehaviour
         {
             biomeCols[i] = biomes[i].biomeColor;
         }
-        //DrawTexture();
         DrawBiomeMap();
         DrawCavesAndOres();
         CreateChunks();
         GenerateTerrain();
-        ChangeSize();
+        AddCore();
+        //ChangeSize();
 
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
@@ -87,7 +88,8 @@ public class TerrainGeneration : MonoBehaviour
     #region
     public void Update()
     {
-        //PlayerUpdate();
+        PlayerUpdate();
+        RefreshChunks();
         //ShadowUpdate();
         //ShadowClose();
     }
@@ -237,6 +239,19 @@ public class TerrainGeneration : MonoBehaviour
         unlitBlocks.Add(new Vector2Int(x, y));*/
     }
     #endregion
+    void RefreshChunks()
+    {
+        for (int i = 0; i < worldChunks.Length; i++)
+        {
+            if (Vector2.Distance(new Vector2(( i * chunkSize) +(chunkSize/2), 0), new Vector2(PlayerPosition.x, 
+                0))  > Camera.main.orthographicSize * 10f)
+            {
+                worldChunks[i].SetActive(false);
+            }
+            else
+            { worldChunks[i].SetActive(true);}
+        }
+    }
     public void DrawBiomeMap()
     {
         float b;
@@ -308,11 +323,6 @@ public class TerrainGeneration : MonoBehaviour
         }
     }
 
-    public void ChangeSize()
-    {
-        GameObject.Find("TerrainGenerator").transform.localScale = new Vector2(0.25f, 0.25f);
-    }
-
     public void CreateChunks()
     {
         int numChunks = terrainSize / chunkSize;
@@ -343,9 +353,7 @@ public class TerrainGeneration : MonoBehaviour
             for (int y = 0; y < terrainSize; y++)
             {
                 curBiome = GetCurrentBiome(x, y);
-                //height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * curBiome.heightMultiplier + heightAddition;
                 float perlinHeight = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * curBiome.heightMultiplier + heightAddition;
-
                 // Smooth transition into flat area
                 if (x >= flatAreaStartX - transitionWidth && x < flatAreaStartX)
                 {
@@ -437,6 +445,26 @@ public class TerrainGeneration : MonoBehaviour
         currentTerrain = worldTilesDictionary;
         
     }
+    public void ChangeSize()
+    {
+        GameObject.Find("TerrainGenerator").transform.localScale = new Vector2(0.25f, 0.25f);
+    }
+
+    public void AddCore()
+    {
+        // Calculate the middle X-coordinate of the flat area
+        int midX = (flatAreaStartX + flatAreaEndX) /2;
+
+        // Create the position Vector2
+        Vector2 corePosition = new Vector2(midX + 0.5f, flatHeightStart+ 1.67f);
+
+        // Instantiate the coreArchPrefab at the calculated position
+        GameObject coreArch = Instantiate(coreArchPrefab, corePosition, Quaternion.identity);
+
+        PlaceObject(coreArch, corePosition);
+    }
+
+
     public void GenerateNoiseTextures(float frequency, float limit, Texture2D noiseTexture)
     {
         float v;
@@ -480,7 +508,6 @@ public class TerrainGeneration : MonoBehaviour
     }
     public bool placeTile(GameObject gameObject, Vector2 position)
     {
-        position *= 4;
         int x = (int) position.x;
         int y = (int) position.y;
         if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
@@ -493,5 +520,17 @@ public class TerrainGeneration : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void PlaceObject(GameObject gameObject, Vector2 position) //after terrain generation
+    {
+        int x = (int)position.x;
+        int y = (int)position.y;
+        if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        {
+            int chunkCoord = Mathf.RoundToInt(Mathf.Round(x / chunkSize) * chunkSize);
+            chunkCoord /= chunkSize;
+            gameObject.transform.parent = worldChunks[chunkCoord].transform;
+        }
     }
 }

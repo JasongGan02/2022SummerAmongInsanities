@@ -208,7 +208,7 @@ public class CraftingUIManager : MonoBehaviour
             ICraftableObject isCraftable = list[i] as ICraftableObject;
             if (isCraftable.getIsCraftable()) 
             {
-                if (isCraftable.isCoreNeeded())
+                if (isCraftable.getIsCoreNeeded())
                 {
                     if (coreArchitecture.IsPlayerInControlRange() == false)
                     {
@@ -283,7 +283,7 @@ public class CraftingUIManager : MonoBehaviour
     private void CraftButtonClicked()
     {
         ICraftableObject Object = selectedBaseObject as ICraftableObject;
-        if (Object.isCoreNeeded())
+        if (Object.getIsCoreNeeded())
         {
             if (selectedBaseObject is ICraftableObject craftableObject)
             {
@@ -328,7 +328,7 @@ public class CraftingUIManager : MonoBehaviour
 
         if (craftableObject.getIsCraftable())
         {
-            if (craftableObject.isCoreNeeded())
+            if (craftableObject.getIsCoreNeeded())
             {
                 if (coreArchitecture.IsPlayerInControlRange())
                 {

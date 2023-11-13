@@ -13,9 +13,16 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   itemName: Grass
-  sizeRatio: 0.125
+  sizeRatio: 0.5
   prefab: {fileID: 3719754441418985889, guid: 5acd5196880f5534e8e1c4cc7197ae5b, type: 3}
   _maxStack: 99
   _healthPoint: 1
-  _drops: []
+  _drops:
+  - droppedItem: {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
+    chance: 1
   _prefabs: []
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

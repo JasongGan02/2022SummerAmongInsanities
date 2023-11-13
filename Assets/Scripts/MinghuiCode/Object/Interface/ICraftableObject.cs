@@ -27,7 +27,7 @@ public interface ICraftableObject
 
     public bool getIsCraftable();
 
-    public bool isCoreNeeded();
+    public bool getIsCoreNeeded();
 
     public int getCraftTime();
 

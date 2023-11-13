@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dirt
   m_EditorClassIdentifier: 
   itemName: Dirt
-  sizeRatio: 0.125
+  sizeRatio: 0.5
   prefab: {fileID: 1529614696198433121, guid: b6b02f02a6b43544ca6c5b2b64a67a0c, type: 3}
   _maxStack: 99
   _healthPoint: 1
@@ -21,3 +21,8 @@ MonoBehaviour:
   - droppedItem: {fileID: 11400000}
     chance: 4
   _prefabs: []
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

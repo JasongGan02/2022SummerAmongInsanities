@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stone
   m_EditorClassIdentifier: 
   itemName: Stone
-  sizeRatio: 0.125
+  sizeRatio: 0.5
   prefab: {fileID: 1306158573666937238, guid: be13caefde161bd43a09a851be012380, type: 3}
   _maxStack: 99
   _healthPoint: 1
@@ -23,3 +23,8 @@ MonoBehaviour:
   - droppedItem: {fileID: 11400000}
     chance: 1.5
   _prefabs: []
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

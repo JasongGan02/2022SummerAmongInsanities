@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: Iron
   m_EditorClassIdentifier: 
   itemName: Iron
-  sizeRatio: 0.125
+  sizeRatio: 0.5
   prefab: {fileID: 3631478615819504709, guid: bdac988d219e3794485f111dd134dbc6, type: 3}
   _maxStack: 99
   _healthPoint: 1
-  _drops: []
+  _drops:
+  - droppedItem: {fileID: 0}
+    chance: 0
   _prefabs: []
   _recipe:
   - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
   _quantity: 03000000
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

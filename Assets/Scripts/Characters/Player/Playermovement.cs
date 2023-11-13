@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Playermovement : MonoBehaviour
@@ -35,7 +36,17 @@ public class Playermovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        
     }
+    private void Start()
+    {
+        AnimationClip clip = animator.runtimeAnimatorController.animationClips.FirstOrDefault(c => c.name == "playerDoubleJump");
+        if (clip != null)
+        {
+            clip.events = new AnimationEvent[0];  // Clear all events
+        }
+    }
+
 
     void Update()
     {
@@ -112,7 +123,7 @@ public class Playermovement : MonoBehaviour
                 
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
                 animator.Play("playerDoubleJump");
-                
+
             }
         }
     }
@@ -150,4 +161,7 @@ public class Playermovement : MonoBehaviour
         transformScale.x *= -1;
         transform.localScale = transformScale;
     }
+
+   
+
 }
