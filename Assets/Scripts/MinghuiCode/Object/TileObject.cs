@@ -218,7 +218,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _isCoreNeeded = value;
     }
 
-    public bool isCoreNeeded()
+    public bool getIsCoreNeeded()
     {
         return _isCoreNeeded;
     }

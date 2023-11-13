@@ -181,6 +181,7 @@ public class PlayerInteraction : MonoBehaviour
         }         
         if (prop != null)
         {
+            Debug.Log("Destroying prop: " + prop.name);
             Destroy(prop); // be careful!
         }
 
@@ -368,6 +369,9 @@ public class PlayerInteraction : MonoBehaviour
             Input.GetMouseButtonDown(1) || 
             Input.GetMouseButtonDown(2) || (!UIViewStateManager.GetCurUI() && UIViewStateManager.isViewingUI()))
         {
+            if (Input.GetMouseButtonDown(2))
+            Debug.Log("Right");
+
             ClearCurrentItemInUse();
             if (currentTileGhost != null)
             {

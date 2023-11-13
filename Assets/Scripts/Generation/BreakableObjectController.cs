@@ -6,10 +6,27 @@ using UnityEngine.Rendering.Universal;
 
 public class BreakableObjectController : MonoBehaviour
 {
+    public static bool IsGameRunning = true;
     private IBreakableObject tile;
     private float healthPoint;
     [HideInInspector] public bool isPlacedByPlayer;
+    private void Start()
+    {
+        IsGameRunning = true;
+    }
 
+    private void OnApplicationQuit()
+    {
+        IsGameRunning = false;
+    }
+
+    private void OnDestroy()
+    {
+        if (IsGameRunning)
+        {
+            Debug.Log("Object is being destroyed. Call Stack: " + System.Environment.StackTrace);
+        }
+    }
     public void Initialize(TileObject tile, int hp, bool isPlacedByPlayer)
     {
         healthPoint = hp;
@@ -22,11 +39,12 @@ public class BreakableObjectController : MonoBehaviour
         healthPoint -= damage;
         if (healthPoint <= 0)
         {
+            Debug.Log("Destroy by Clicking");
             Destroy(gameObject);
             OnObjectDestroyed();
         }
     }
-
+  
     private void OnObjectDestroyed()
     {
         var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);

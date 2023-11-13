@@ -130,7 +130,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         set => _isCoreNeeded = value;
     }
 
-    public bool isCoreNeeded()
+    public bool getIsCoreNeeded()
     {
         return _isCoreNeeded;
     }
