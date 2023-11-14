@@ -74,7 +74,12 @@ public class TimeSystemManager : MonoBehaviour
         }
     }
 
-    private bool IsInDaytime()
+    public int GetCurHour() 
+    {
+        return currentHour;
+    }
+
+    public bool IsInDaytime()
     {
         return currentHour >= dayStartHour && currentHour < nightStartHour;
     }
