@@ -1896,9 +1896,37 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: LightFade
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: iterations
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: skyLightRange
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: skyLightHeight
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369763, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: sunlightBrightness
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_RootOrder
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7325007939855369764, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1940,9 +1968,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369765, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab1ade238a393fe4a850e46e03ef5607, type: 2}
     - target: {fileID: 7325007939855369766, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
       propertyPath: m_Name
       value: ShadowOverlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 7325007939855369766, guid: bc52a956255b3934ba86bec34dd09ef9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -2240,7 +2296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
