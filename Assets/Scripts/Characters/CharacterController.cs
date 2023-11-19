@@ -27,8 +27,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected float AtkRange;
     protected float JumpForce;
     protected List<TextAsset> Hatred;
-   
 
+    private AudioSource source;
+    private AudioClip vv;
     protected List<EffectObject> effects;
 
     public List<EffectObject> Effects
@@ -46,6 +47,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();
+        vv = Resources.Load("injured0") as AudioClip;
     }
 
     protected virtual void Update()
@@ -110,6 +112,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     public virtual void takenDamage(float dmg)
     {
         HP -= dmg;
+        source.PlayOneShot(vv);
         if (HP <= 0)
         {
             death();
@@ -120,6 +123,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
         if(dmg > 0)
             StartCoroutine(FlashRed());
+
+
     }
 
     public System.Collections.IEnumerator FlashRed()

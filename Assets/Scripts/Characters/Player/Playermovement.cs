@@ -28,13 +28,23 @@ public class Playermovement : MonoBehaviour
     bool multipleJump;                                      
 
     public float range = 0.05f;
-                                                            
+
+    private AudioSource source;
+    private AudioClip step;
+    private AudioClip doubleJump;
+    private AudioClip jump;
+
+
+
     void Awake()
     {
         availableJumps = totalJumps;
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        step = Resources.Load("step0") as AudioClip;
+        doubleJump = Resources.Load("doubleJump") as AudioClip;
+        jump = Resources.Load("jump") as AudioClip;
     }
 
     void Update()
@@ -83,10 +93,10 @@ public class Playermovement : MonoBehaviour
         //speed: 0 idle, 3.5 walking, 7 running
 
         rb.velocity = new Vector2(moveInput, rb.velocity.y);
+        source.PlayOneShot(step);
 
-       
-            
-        if(moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
+
+        if (moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
             Flip();
     }
     private void Jump()
@@ -94,12 +104,13 @@ public class Playermovement : MonoBehaviour
         if (isGrounded)
         {
             
+
             multipleJump = true;
             availableJumps--;
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
-            
-            
+            source.PlayOneShot(jump);
+
 
         }
         else
@@ -112,7 +123,7 @@ public class Playermovement : MonoBehaviour
                 
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
                 animator.Play("playerDoubleJump");
-                
+                source.PlayOneShot(doubleJump);
             }
         }
     }
