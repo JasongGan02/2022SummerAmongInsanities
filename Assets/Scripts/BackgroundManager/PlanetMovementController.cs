@@ -18,7 +18,13 @@ public class PlanetMovementController : MonoBehaviour
     {
         mainCamera = Camera.main;
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
-        if (timeSystemManager.IsInDaytime() ) 
+        
+    }
+
+    private void OnEnable()
+    {
+        timeCounter = -Mathf.PI / 2 + Mathf.PI * timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();
+        if (timeSystemManager.IsInDaytime())
         {
             duration = timeSystemManager.GetDayTimeLengthInHour();
         }
@@ -26,13 +32,8 @@ public class PlanetMovementController : MonoBehaviour
         {
             duration = 24 - timeSystemManager.GetDayTimeLengthInHour() - 1;
         }
-        
-        speed = Mathf.PI / duration;
-    }
 
-    private void OnEnable()
-    {
-        timeCounter = -Mathf.PI / 2 + Mathf.PI * timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();
+        speed = Mathf.PI / duration;
     }
 
     private void Update()
