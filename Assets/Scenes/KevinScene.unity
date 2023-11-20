@@ -228,6 +228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CraftUIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3748841908144596228, guid: a3472d7416eaecc4fb61aa18b5ed7879, type: 3}
+      propertyPath: content
+      value: 
+      objectReference: {fileID: 348996830}
     - target: {fileID: 5193515814946706313, guid: a3472d7416eaecc4fb61aa18b5ed7879, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -820,6 +824,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f8da3ed9ffe163459311a2bb0b204be, type: 3}
+--- !u!224 &348996830 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8692318545455698221, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!28 &489270094
 Texture2D:
   m_ObjectHideFlags: 0
@@ -2906,7 +2915,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y

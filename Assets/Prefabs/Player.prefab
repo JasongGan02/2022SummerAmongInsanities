@@ -524,6 +524,9 @@ MonoBehaviour:
     m_Bits: 64
   facingRight: 1
   range: 0.05
+  step: {fileID: 0}
+  doubleJump: {fileID: 8300000, guid: 76010af760980fa47b7e748cb591284f, type: 3}
+  jump: {fileID: 8300000, guid: fa7dde10530cae642bb4cc092f21b33d, type: 3}
 --- !u!114 &4038972269979073815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,6 +559,9 @@ MonoBehaviour:
   handAttack: 1
   handFarm: 0.5
   handFrequency: 1
+  prop: {fileID: 0}
+  currentMedicine: {fileID: 0}
+  currentTorch: {fileID: 0}
 --- !u!114 &3111690382522566145
 MonoBehaviour:
   m_ObjectHideFlags: 0
