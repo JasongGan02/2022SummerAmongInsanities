@@ -201,7 +201,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         set => _isCoreNeeded = value;
     }
 
-    public bool isCoreNeeded()
+    public bool getIsCoreNeeded()
     {
         return _isCoreNeeded;
     }

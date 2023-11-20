@@ -7,15 +7,16 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
     public CharacterAtlas characterAtlas;
     CoreArchitecture coreArchitecture;
     public enum EnemyType { Villager, Bat, Lady, Dumb }
-    float RespwanTimeInterval;
+    float RespawnTimeInterval;
     float timer;
     private int deathCount = 0;
 
     private void Start()
     {
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
-        RespwanTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
+        coreArchitecture = CoreArchitecture.Instance;
+        RespawnTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
         SpawnPlayer();
+        this.transform.position = coreArchitecture.transform.position;
         //SpawnBat();
         //SpawnVillager();
         //SpawnLady();
@@ -37,7 +38,7 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
         if (GameObject.Find("Player") == null)
         {
             timer += Time.deltaTime;
-            if (timer >= RespwanTimeInterval)
+            if (timer >= RespawnTimeInterval)
             {
                 SpawnPlayer();
                 timer = 0f;

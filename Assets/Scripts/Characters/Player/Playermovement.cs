@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
 
 public class Playermovement : MonoBehaviour
 {
@@ -29,18 +29,24 @@ public class Playermovement : MonoBehaviour
     bool multipleJump;                                      
 
     public float range = 0.05f;
-
-    audioManager am;
-
+                                                            
     void Awake()
     {
         availableJumps = totalJumps;
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
- 
+        
     }
+    private void Start()
+    {
+        AnimationClip clip = animator.runtimeAnimatorController.animationClips.FirstOrDefault(c => c.name == "playerDoubleJump");
+        if (clip != null)
+        {
+            clip.events = new AnimationEvent[0];  // Clear all events
+        }
+    }
+
 
     void Update()
     {
@@ -54,7 +60,6 @@ public class Playermovement : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 Jump();
-
             }
         }
 
@@ -66,7 +71,6 @@ public class Playermovement : MonoBehaviour
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
             Movement();
-            
         } else
         {
             ClearHorizontalVelocity();
@@ -90,10 +94,10 @@ public class Playermovement : MonoBehaviour
         //speed: 0 idle, 3.5 walking, 7 running
 
         rb.velocity = new Vector2(moveInput, rb.velocity.y);
-        
 
-
-        if (moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
+       
+            
+        if(moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
             Flip();
     }
     private void Jump()
@@ -101,12 +105,12 @@ public class Playermovement : MonoBehaviour
         if (isGrounded)
         {
             
-
             multipleJump = true;
             availableJumps--;
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
-            am.playAudio(am.jump);
+            
+            
 
         }
         else
@@ -119,7 +123,7 @@ public class Playermovement : MonoBehaviour
                 
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
                 animator.Play("playerDoubleJump");
-                am.playAudio(am.doublejump);
+
             }
         }
     }
@@ -157,4 +161,7 @@ public class Playermovement : MonoBehaviour
         transformScale.x *= -1;
         transform.localScale = transformScale;
     }
+
+   
+
 }
