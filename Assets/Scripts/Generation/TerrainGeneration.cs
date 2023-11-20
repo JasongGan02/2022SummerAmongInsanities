@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
-
+using UnityEngine.Experimental.Rendering.Universal;
 public class TerrainGeneration : MonoBehaviour
 {    
     [Header("Tile Atlas")]
@@ -45,6 +45,8 @@ public class TerrainGeneration : MonoBehaviour
     [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
     private BiomeClass curBiome;
     public Color[] biomeCols;
+
+    public float occlussion = 7f;
     //For Shadow
     #region
     private ShadowGenerator shadowGenerator;
@@ -244,7 +246,7 @@ public class TerrainGeneration : MonoBehaviour
         for (int i = 0; i < worldChunks.Length; i++)
         {
             if (Vector2.Distance(new Vector2(( i * chunkSize) +(chunkSize/2), 0), new Vector2(PlayerPosition.x, 
-                0))  > Camera.main.orthographicSize * 10f)
+                0))  > 8 * occlussion)
             {
                 worldChunks[i].SetActive(false);
             }

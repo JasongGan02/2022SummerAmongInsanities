@@ -1968,6 +1968,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1229039016}
     - target: {fileID: 5020064896531400633, guid: b2471fc021bfeb541b111ff6d31596ad, type: 3}
+      propertyPath: occlussion
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5020064896531400633, guid: b2471fc021bfeb541b111ff6d31596ad, type: 3}
       propertyPath: caveNoiseTexture
       value: 
       objectReference: {fileID: 596590047}

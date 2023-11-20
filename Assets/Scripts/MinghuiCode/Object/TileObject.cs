@@ -37,6 +37,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     [SerializeField]
     private int _craftTime;
 
+    [SerializeField]
+    private bool inBackground;
+
+    [SerializeField]
+    private bool isLit;
+
     public GameObject GetPlacedGameObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -146,6 +152,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     public GameObject GetGeneratedGameObjects()
     {
         GameObject worldGameObject;
+        
         if (Prefabs.Length > 1)
         {
             worldGameObject = Instantiate(Prefabs[Random.Range(0, Prefabs.Length)]);
@@ -154,10 +161,25 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             worldGameObject = Instantiate(prefab);
         }
+
         worldGameObject.name = itemName;
-        var controller = worldGameObject.AddComponent<BreakableObjectController>();
-        controller.Initialize(this, HealthPoint, false);
-        return worldGameObject;
+        SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
+        if (inBackground)
+        {
+            worldGameObject.name += "_Wall";
+            
+            spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+            spriteRenderer.sortingOrder = -10;
+            return worldGameObject;
+        }
+        else
+        {
+            var controller = worldGameObject.AddComponent<BreakableObjectController>();
+            controller.Initialize(this, HealthPoint, false);
+            spriteRenderer.sortingOrder = -5;
+            return worldGameObject;
+        }
+        
     }
     #endregion
 
