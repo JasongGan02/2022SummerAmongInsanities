@@ -33,14 +33,16 @@ public class Weapon : MonoBehaviour
     protected float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
     protected float frequency = 10f;
 
+    audioManager am;
+
     public virtual void Start()
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
         playerinteraction = player.GetComponent<PlayerInteraction>();
         inventory = FindObjectOfType<Inventory>();
-        
-  
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+
     }
 
 
@@ -110,8 +112,8 @@ public class Weapon : MonoBehaviour
 
     public virtual void attack()
     {
-        
 
+        am.playAudio(am.attack);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
 
