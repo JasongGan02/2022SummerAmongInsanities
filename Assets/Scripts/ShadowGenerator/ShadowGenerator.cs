@@ -19,7 +19,7 @@ public class ShadowGenerator : MonoBehaviour
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary = null;
     private GameObject player;
     private int worldWidthInBlock;
-    private int worldHeightInBlock = 200; // TODO don't hardcode
+    private int worldHeightInBlock = 100; // TODO don't hardcode
     //private int worldHeightInBlock = 80;
     TerrainGeneration terrainGeneration;
     Light2D GlobalLight;
@@ -32,6 +32,8 @@ public class ShadowGenerator : MonoBehaviour
     [SerializeField] private int iterations;
     [Tooltip("between 0 & 15")][SerializeField] private float sunlightBrightness;
     [SerializeField] private float LightFade;
+    [SerializeField] private Transform lightMapOverlay;
+    private int dirtHeight; 
 
     private void Start()
     {
@@ -50,16 +52,18 @@ public class ShadowGenerator : MonoBehaviour
                 this.transform.position = player.transform.position;
             }
         }
-        print(count);
     }
 
-    public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth)
+    public void Initialize(Dictionary<Vector2Int, GameObject> dictionary, int worldWidth, int dirtHeight)
     {
         worldTilesDictionary = dictionary;
         worldWidthInBlock = worldWidth;
+        this.dirtHeight = dirtHeight;
+        worldHeightInBlock = worldWidth / 2 + 6 + dirtHeight;
 
-        lightValues = new float[worldWidth, worldHeightInBlock];
-        lightMap = new Texture2D(worldWidth, worldHeightInBlock);
+        lightMapOverlay.localScale = new Vector3(43, 26, 1);
+        lightValues = new float[worldWidthInBlock, worldHeightInBlock];
+        lightMap = new Texture2D(worldWidthInBlock, worldHeightInBlock);
         lightShader.SetTexture("_ShadowTex", lightMap);
 
         lightMap.filterMode = FilterMode.Point; //< remove this line for smooth lighting, keep it for tiled lighting
@@ -72,9 +76,12 @@ public class ShadowGenerator : MonoBehaviour
         StartCoroutine(UpdateLighting());
     }
 
-    int count = 0;
+
     private IEnumerator UpdateLighting() //calculate the new light values for every tile in the world
     {
+        Debug.Log("worldwidth: " + worldWidthInBlock);
+        Debug.Log("dirtHeight: " + dirtHeight);
+
         yield return new WaitForEndOfFrame();
         for (int i = 0; i < iterations; i++)
         {
@@ -83,10 +90,10 @@ public class ShadowGenerator : MonoBehaviour
                 float lightLevel = sunlightBrightness;
                 for (int y = worldHeightInBlock - 1; y >= 0; y--)
                 {
-                    if (!IsCovered(x, y)) //if illuminate block
+                    if (IsBackground(x, y) && !IsUnderGround(x, y)) //if illuminate block
+                    //if (!IsCovered(x, y))
                     {
                         lightLevel = sunlightBrightness;
-                        count++;
                     }
                     else
                     {
@@ -108,6 +115,37 @@ public class ShadowGenerator : MonoBehaviour
                     lightValues[x, y] = lightLevel;
                 }
             }
+
+            //for (int x = worldWidthInBlock - 1; x >= 0; x--)
+            //{
+            //    float lightLevel = sunlightBrightness;
+            //    for (int y = 0; y < worldHeightInBlock; y++)
+            //    {
+            //        if (IsBackground(x, y) && !IsUnderGround(x, y)) //if illuminate block
+            //        {
+            //            lightLevel = sunlightBrightness;
+            //        }
+            //        else
+            //        {
+            //            //find brightest neighbour
+            //            int nx1 = Mathf.Clamp(x - 1, 0, worldWidthInBlock - 1);
+            //            int nx2 = Mathf.Clamp(x + 1, 0, worldWidthInBlock - 1);
+            //            int ny1 = Mathf.Clamp(y - 1, 0, worldHeightInBlock - 1);
+            //            int ny2 = Mathf.Clamp(y + 1, 0, worldHeightInBlock - 1);
+
+            //            lightLevel = Mathf.Max(
+            //                lightValues[nx1, y],
+            //                lightValues[nx2, y],
+            //                lightValues[x, ny1],
+            //                lightValues[x, ny2]);
+
+            //            lightLevel -= LightFade;
+            //            //lightLevel = 0;
+            //        }
+
+            //        lightValues[x, y] = lightLevel;
+            //    }
+            //}
         }
 
         //apply to texture
@@ -379,5 +417,14 @@ public class ShadowGenerator : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool IsBackground(int x, int y)
+    {
+        if (worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        {
+            return false;
+        }
+        return true;
     }
 }

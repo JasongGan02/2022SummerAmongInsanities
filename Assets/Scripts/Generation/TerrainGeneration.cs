@@ -79,7 +79,7 @@ public class TerrainGeneration : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
         {
-            shadowGenerator.Initialize(worldTilesDictionary, terrainSize);
+            shadowGenerator.Initialize(worldTilesDictionary, terrainSize, curBiome.dirtLayerHeight);
             shadowGenerator.IUpdate();
         }
 
