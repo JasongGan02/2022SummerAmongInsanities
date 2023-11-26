@@ -980,7 +980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8366817067291334112, guid: d69934c998a4f6f4290b0dd04a855707, type: 3}
       propertyPath: isDebugDayTime
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

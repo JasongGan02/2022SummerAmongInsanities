@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
@@ -36,12 +37,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private int _craftTime;
+    
+    [SerializeField]
+    private bool _needsBackground; //when break the front tile, check this bool to see if a background wall is needed and sent to Terrain Generation to generate a background
 
     [SerializeField]
-    private bool inBackground;
-
-    [SerializeField]
-    private bool isLit;
+    private bool _isLit; // determine if this tile is a source of light
 
     public GameObject GetPlacedGameObject()
     {
@@ -51,7 +52,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         controller.Initialize(this, HealthPoint, true);
         return worldGameObject;
     }
-
+    
     public GameObject GetShadowGameObject()
     {
         var ghost = Instantiate(prefab);
@@ -149,10 +150,21 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         get => _prefabs;
         set => _prefabs = value;
     }
+    public bool NeedsBackground
+    {
+        get => _needsBackground;
+        set => _needsBackground = value;
+    }
+
+    public bool IsLit
+    {
+        get => _isLit;
+        set => _isLit = value;
+    }
+
     public GameObject GetGeneratedGameObjects()
     {
         GameObject worldGameObject;
-        
         if (Prefabs.Length > 1)
         {
             worldGameObject = Instantiate(Prefabs[Random.Range(0, Prefabs.Length)]);
@@ -163,23 +175,32 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         }
 
         worldGameObject.name = itemName;
+        var controller = worldGameObject.AddComponent<BreakableObjectController>();
+        controller.Initialize(this, HealthPoint, false);
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
-        if (inBackground)
+        spriteRenderer.sortingOrder = -5;
+        return worldGameObject;
+    }
+    public GameObject GetGeneratedWallGameObjects()
+    {
+        GameObject worldGameObject;
+        if (Prefabs.Length > 1)
         {
-            worldGameObject.name += "_Wall";
-            
-            spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-            spriteRenderer.sortingOrder = -10;
-            return worldGameObject;
+            worldGameObject = Instantiate(Prefabs[Random.Range(0, Prefabs.Length)]);
         }
         else
         {
-            var controller = worldGameObject.AddComponent<BreakableObjectController>();
-            controller.Initialize(this, HealthPoint, false);
-            spriteRenderer.sortingOrder = -5;
-            return worldGameObject;
+            worldGameObject = Instantiate(prefab);
         }
-        
+        worldGameObject.name = itemName;
+        worldGameObject.name += "_Wall";
+        SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
+        spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
+        spriteRenderer.sortingOrder = -10;
+        Collider2D collider2D = worldGameObject.GetComponent<Collider2D>();
+        collider2D.isTrigger = true;
+        worldGameObject.layer = 2; //ignore raycast in general
+        return worldGameObject;
     }
     #endregion
 
@@ -245,7 +266,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         return _isCoreNeeded;
     }
 
-
+    
     public int CraftTime
     {
         get => _craftTime;

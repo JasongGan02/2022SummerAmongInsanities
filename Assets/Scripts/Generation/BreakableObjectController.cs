@@ -9,6 +9,7 @@ public class BreakableObjectController : MonoBehaviour
     public static bool IsGameRunning = true;
     private IBreakableObject tile;
     private float healthPoint;
+    private TerrainGeneration terrainGeneration;
     [HideInInspector] public bool isPlacedByPlayer;
     private void Start()
     {
@@ -55,7 +56,11 @@ public class BreakableObjectController : MonoBehaviour
             // Remove the tile entry from the dictionary
             Debug.Log(TerrainGeneration.worldTilesDictionary.Remove(coord));
         }
-
+        if (((IGenerationObject)tile).NeedsBackground)
+        {
+            terrainGeneration = FindObjectOfType<TerrainGeneration>();
+            terrainGeneration.PlaceWallTile(((IGenerationObject)tile), coord.x, coord.y);
+        }
         foreach (GameObject droppedItem in drops)
         {
             droppedItem.transform.parent = gameObject.transform.parent;
