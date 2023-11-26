@@ -980,7 +980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8366817067291334112, guid: d69934c998a4f6f4290b0dd04a855707, type: 3}
       propertyPath: isDebugDayTime
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1967,6 +1967,10 @@ PrefabInstance:
       propertyPath: biomeMap
       value: 
       objectReference: {fileID: 1229039016}
+    - target: {fileID: 5020064896531400633, guid: b2471fc021bfeb541b111ff6d31596ad, type: 3}
+      propertyPath: occlussion
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5020064896531400633, guid: b2471fc021bfeb541b111ff6d31596ad, type: 3}
       propertyPath: caveNoiseTexture
       value: 

@@ -30,9 +30,9 @@ public class PlanetMovementController : MonoBehaviour
         }
         else
         {
-            duration = 24 - timeSystemManager.GetDayTimeLengthInHour() - 1;
+            duration = 24 - timeSystemManager.GetDayTimeLengthInHour();
         }
-
+        duration *= 0.85f;
         speed = Mathf.PI / duration;
     }
 
