@@ -36,7 +36,7 @@ public class BreakableObjectController : MonoBehaviour
         if (TerrainGeneration.worldTilesDictionary.ContainsKey(coord))
         {
             // Remove the tile entry from the dictionary
-            Debug.Log(TerrainGeneration.worldTilesDictionary.Remove(coord));
+            TerrainGeneration.worldTilesDictionary.Remove(coord);
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
         {
@@ -47,7 +47,10 @@ public class BreakableObjectController : MonoBehaviour
         {
             droppedItem.transform.parent = gameObject.transform.parent;
             droppedItem.transform.position = gameObject.transform.position;
-            droppedItem.GetComponent<Rigidbody2D>().AddTorque(10f);
+
+            // Apply random torque
+            float randomTorque = Random.Range(-20f, 20f); // Adjust the range as needed
+            droppedItem.GetComponent<Rigidbody2D>().AddTorque(randomTorque);
         }
     }
 }
