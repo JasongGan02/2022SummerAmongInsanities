@@ -173,16 +173,15 @@ public class PlayerInteraction : MonoBehaviour
       
         if (currentTileGhost != null)
         {
-            Destroy(currentTileGhost);
+            Destroy(currentTileGhost); 
         }
         if (weaponInUse != null)
         {
-            Destroy(weaponInUse);
+           Destroy(weaponInUse);
         }         
         if (prop != null)
         {
-            Debug.Log("Destroying prop: " + prop.name);
-            Destroy(prop); // be careful!
+            Destroy(prop); 
         }
 
         if (currentSlotInUse.item is IShadowObject)
@@ -226,7 +225,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse.item != null)
         {
-            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+            //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
         }
 
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
@@ -244,7 +243,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse!= null && currentSlotInUse.item != null)
         {
-            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+           //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
         }
 
         indexInUse = EMPTY;

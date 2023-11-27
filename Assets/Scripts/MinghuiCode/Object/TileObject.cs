@@ -197,9 +197,11 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
         spriteRenderer.sortingOrder = -10;
-        Collider2D collider2D = worldGameObject.GetComponent<Collider2D>();
-        collider2D.isTrigger = true;
         worldGameObject.layer = 2; //ignore raycast in general
+        if (worldGameObject.GetComponent<Collider2D>() != null)
+        {
+            Destroy(worldGameObject.GetComponent<Collider2D>());
+        }
         return worldGameObject;
     }
     #endregion

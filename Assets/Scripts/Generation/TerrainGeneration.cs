@@ -522,7 +522,7 @@ public class TerrainGeneration : MonoBehaviour
 
             tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
             tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-            worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
+            //worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
         }
     }
     public bool PlaceTileGameObject(GameObject gameObject, Vector2 position)
