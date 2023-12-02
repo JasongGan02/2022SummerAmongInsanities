@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
-
+using UnityEngine.Experimental.Rendering.Universal;
 public class TerrainGeneration : MonoBehaviour
 {    
     [Header("Tile Atlas")]
@@ -45,6 +45,8 @@ public class TerrainGeneration : MonoBehaviour
     [HideInInspector] public static Dictionary<Vector2Int, GameObject> worldTilesDictionary = new();
     private BiomeClass curBiome;
     public Color[] biomeCols;
+
+    public float occlussion = 7f;
     //For Shadow
     #region
     private ShadowGenerator shadowGenerator;
@@ -244,7 +246,7 @@ public class TerrainGeneration : MonoBehaviour
         for (int i = 0; i < worldChunks.Length; i++)
         {
             if (Vector2.Distance(new Vector2(( i * chunkSize) +(chunkSize/2), 0), new Vector2(PlayerPosition.x, 
-                0))  > Camera.main.orthographicSize * 10f)
+                0))  > 8 * occlussion)
             {
                 worldChunks[i].SetActive(false);
             }
@@ -409,6 +411,10 @@ public class TerrainGeneration : MonoBehaviour
                         PlaceTile(tileSprites, x, y);
                         
                     }
+                    else if (tileSprites.NeedsBackground)
+                    {
+                        PlaceWallTile(tileSprites, x, y);
+                    }
                 }
                 else
                 {
@@ -461,7 +467,7 @@ public class TerrainGeneration : MonoBehaviour
         // Instantiate the coreArchPrefab at the calculated position
         GameObject coreArch = Instantiate(coreArchPrefab, corePosition, Quaternion.identity);
 
-        PlaceObject(coreArch, corePosition);
+        PlaceGameObjectAfter(coreArch, corePosition);
     }
 
 
@@ -496,17 +502,30 @@ public class TerrainGeneration : MonoBehaviour
     {
         if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
         {
-        var tileGameObject = tile.GetGeneratedGameObjects();
+            var tileGameObject = tile.GetGeneratedGameObjects();
+            int chunkCoord = Mathf.RoundToInt(Mathf.Round(x / chunkSize) * chunkSize);
+            chunkCoord /= chunkSize;
 
-        int chunkCoord = Mathf.RoundToInt(Mathf.Round(x / chunkSize) * chunkSize);
-        chunkCoord /= chunkSize;
-
-        tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
-        tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-        worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
+            tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
+            tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+            worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
         }
     }
-    public bool placeTile(GameObject gameObject, Vector2 position)
+
+    public void PlaceWallTile(IGenerationObject tile, int x, int y)
+    {
+        if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+        {
+            var tileGameObject = tile.GetGeneratedWallGameObjects();
+            int chunkCoord = Mathf.RoundToInt(Mathf.Round(x / chunkSize) * chunkSize);
+            chunkCoord /= chunkSize;
+
+            tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
+            tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+            //worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
+        }
+    }
+    public bool PlaceTileGameObject(GameObject gameObject, Vector2 position)
     {
         int x = (int) position.x;
         int y = (int) position.y;
@@ -516,13 +535,12 @@ public class TerrainGeneration : MonoBehaviour
             chunkCoord /= chunkSize;
             gameObject.transform.parent = worldChunks[chunkCoord].transform;
             worldTilesDictionary.Add(new Vector2Int(x, y), gameObject);
-            Debug.LogWarning("TG added: " +  x + ", " + y + ")");
             return true;
         }
         return false;
     }
 
-    public void PlaceObject(GameObject gameObject, Vector2 position) //after terrain generation
+    public void PlaceGameObjectAfter(GameObject gameObject, Vector2 position) //after terrain generation
     {
         int x = (int)position.x;
         int y = (int)position.y;

@@ -173,16 +173,15 @@ public class PlayerInteraction : MonoBehaviour
       
         if (currentTileGhost != null)
         {
-            Destroy(currentTileGhost);
+            Destroy(currentTileGhost); 
         }
         if (weaponInUse != null)
         {
-            Destroy(weaponInUse);
+           Destroy(weaponInUse);
         }         
         if (prop != null)
         {
-            Debug.Log("Destroying prop: " + prop.name);
-            Destroy(prop); // be careful!
+            Destroy(prop); 
         }
 
         if (currentSlotInUse.item is IShadowObject)
@@ -226,7 +225,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse.item != null)
         {
-            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+            //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
         }
 
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
@@ -244,7 +243,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse!= null && currentSlotInUse.item != null)
         {
-            Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
+           //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
         }
 
         indexInUse = EMPTY;
@@ -261,7 +260,7 @@ public class PlayerInteraction : MonoBehaviour
 
         
     }
-
+    #region
     private void StartTimer()
     {
         timeStamp = Time.time + waitTime;
@@ -344,7 +343,18 @@ public class PlayerInteraction : MonoBehaviour
 
         ResetTimer();
     }
+    private void ClickOnGameObject(GameObject target)
+    {
+        if (target == null) return;
 
+        BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
+        if (breakableTile != null)
+        {
+            breakableTile.OnClicked(currentWeapon?.getfarm() ?? handFarm);
+        }
+        
+    }
+    #endregion
     private void PickUpItemCheck()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
@@ -415,7 +425,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             GameObject newTile = (currentSlotInUse.item as TileObject).GetPlacedGameObject();
             newTile.transform.position = position;
-            terrainGeneration.placeTile(newTile, position);
+            terrainGeneration.PlaceTileGameObject(newTile, position);
             inventory.RemoveItemByOne(indexInUse);
         } 
         else if(currentSlotInUse.item is TowerObject)
@@ -464,17 +474,6 @@ public class PlayerInteraction : MonoBehaviour
             
     }
 
-    private void ClickOnGameObject(GameObject target)
-    {
-        if (target == null) return;
-
-        BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
-        if (breakableTile != null)
-        {
-            breakableTile.OnClicked(currentWeapon?.getfarm() ?? handFarm);
-        }
-        
-    }
 
     private const int EMPTY = -1;
 }

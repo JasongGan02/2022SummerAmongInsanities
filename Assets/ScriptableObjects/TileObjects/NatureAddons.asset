@@ -29,3 +29,5 @@ MonoBehaviour:
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0
+  _needsBackground: 0
+  _isLit: 0
