@@ -29,11 +29,13 @@ public class Playermovement : MonoBehaviour
     bool multipleJump;                                      
 
     public float range = 0.05f;
-                                                            
+
+    audioManager am;
+
     void Awake()
     {
         availableJumps = totalJumps;
-
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         
@@ -109,8 +111,8 @@ public class Playermovement : MonoBehaviour
             availableJumps--;
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
-            
-            
+            am.playAudio(am.jump);
+
 
         }
         else
@@ -123,7 +125,7 @@ public class Playermovement : MonoBehaviour
                 
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
                 animator.Play("playerDoubleJump");
-
+                am.playAudio(am.doublejump);
             }
         }
     }
