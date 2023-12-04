@@ -56,6 +56,7 @@ public class Weapon : MonoBehaviour
         {
             //InvokeRepeating("attack", 0.5f, AtkInterval);
             attack();
+            am.playAudio(am.attack);
         }
         else
         {
@@ -113,7 +114,7 @@ public class Weapon : MonoBehaviour
     public virtual void attack()
     {
 
-        am.playAudio(am.attack);
+        
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
 
