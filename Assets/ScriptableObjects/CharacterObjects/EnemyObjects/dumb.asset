@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: dumb
   m_EditorClassIdentifier: 
   itemName: dumb
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
   HP: 20
   AtkDamage: 0
   AtkInterval: 0
   AtkRange: 0
   MovingSpeed: 1
-  Drops: []
   JumpForce: 0.5
+  Drops: []
+  Hatred: []
   SensingRange: 0

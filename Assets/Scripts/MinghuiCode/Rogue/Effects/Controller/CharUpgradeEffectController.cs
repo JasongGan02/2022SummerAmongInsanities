@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class CharUpgradeEffectController : EffectController
 {
     protected float dHP;
@@ -14,7 +14,8 @@ public class CharUpgradeEffectController : EffectController
     protected override void StartEffect()
     {
         // Start the effect or perform any necessary setup
-        CharacterController characterController = this.gameObject.GetComponent<CharacterController>();
+        Type type = effectObject.GetApplyingControllerType();
+        CharacterController characterController = this.gameObject.GetComponent(type) as CharacterController;
         characterController.ChangeCharStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce);
     }
 

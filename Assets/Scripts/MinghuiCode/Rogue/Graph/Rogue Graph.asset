@@ -26,8 +26,8 @@ MonoBehaviour:
   - {fileID: -7251734177019941377}
   rect:
     serializedVersion: 2
-    x: -35
-    y: 704
+    x: -549
+    y: 525
     width: 200
     height: 100
 --- !u!114 &-8692208508223869133
@@ -53,8 +53,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: -216
-    y: 913
+    x: -730
+    y: 734
     width: 200
     height: 100
 --- !u!114 &-8185062224839343926
@@ -73,7 +73,7 @@ MonoBehaviour:
     name: 4
     level: 0
     canRepeat: 0
-  effect: {fileID: 0}
+  effect: {fileID: 11400000, guid: 65b4b0816f81a1a4eb8eacbe3892206b, type: 2}
   isRoot: 0
   childNodes:
   - {fileID: 3914118094428016065}
@@ -81,8 +81,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1441
-    y: 482
+    x: 927
+    y: 303
     width: 200
     height: 100
 --- !u!114 &-7251734177019941377
@@ -109,8 +109,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: -291
-    y: 485
+    x: -805
+    y: 306
     width: 200
     height: 100
 --- !u!114 &-6014722271346273671
@@ -163,8 +163,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 826
-    y: 706
+    x: 312
+    y: 527
     width: 200
     height: 100
 --- !u!114 &-1684480885411025288
@@ -190,8 +190,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 366
-    y: 708
+    x: -148
+    y: 529
     width: 200
     height: 100
 --- !u!114 &-1210576560814337855
@@ -219,8 +219,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 541
-    y: 496
+    x: 27
+    y: 317
     width: 200
     height: 100
 --- !u!114 &-821460624157284328
@@ -246,8 +246,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 572
-    y: 710
+    x: 58
+    y: 531
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -303,8 +303,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 1315
-    y: 707
+    x: 801
+    y: 528
     width: 200
     height: 100
 --- !u!114 &579058131076162650
@@ -335,8 +335,8 @@ MonoBehaviour:
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 766
-    y: 241
+    x: 252
+    y: 62
     width: 200
     height: 100
 --- !u!114 &883222154243436308
@@ -362,8 +362,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: 113
-    y: 914
+    x: -401
+    y: 735
     width: 200
     height: 100
 --- !u!114 &3374202019692122354
@@ -390,8 +390,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 178
-    y: 503
+    x: -336
+    y: 324
     width: 200
     height: 100
 --- !u!114 &3430983906398004119
@@ -444,8 +444,8 @@ MonoBehaviour:
   - {fileID: -8185062224839343926}
   rect:
     serializedVersion: 2
-    x: 1680
-    y: 689
+    x: 1166
+    y: 510
     width: 200
     height: 100
 --- !u!114 &4609158443660531679
@@ -471,8 +471,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 1066
-    y: 706
+    x: 552
+    y: 527
     width: 200
     height: 100
 --- !u!114 &6407617651943876954
@@ -498,8 +498,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1838
-    y: 486
+    x: 1324
+    y: 307
     width: 200
     height: 100
 --- !u!114 &7370120939698119193
@@ -528,7 +528,7 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1042
-    y: 485
+    x: 528
+    y: 306
     width: 200
     height: 100

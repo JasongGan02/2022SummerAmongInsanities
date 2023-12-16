@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2713731730143596488}
   - component: {fileID: 7542262928505854704}
   m_Layer: 0
-  m_Name: audioManager
-  m_TagString: Untagged
+  m_Name: AudioManager
+  m_TagString: audio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0fbdfb0e0a5ace49a26ec6c834c38e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAudio: {fileID: -3220957139522457341, guid: 32ea4d56d7297e84faf1d5db32ed47c1, type: 3}
+  playerAudio: {fileID: 0}
   jump: {fileID: 8300000, guid: fa7dde10530cae642bb4cc092f21b33d, type: 3}
   doublejump: {fileID: 8300000, guid: 76010af760980fa47b7e748cb591284f, type: 3}
   step: {fileID: 0}

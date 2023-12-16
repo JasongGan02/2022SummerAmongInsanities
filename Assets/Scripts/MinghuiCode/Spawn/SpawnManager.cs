@@ -21,11 +21,12 @@ public class SpawnManager : MonoBehaviour
             dropTower.transform.position = spawnPoint.transform.position;
         }
         spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
-        SpwanFrags(30);
+        SpawnFrags(30);
     }
     // only a temporary solution
-    public void SpwanRamdonWeapon() 
+    public void SpawnRamdonWeapon() 
     {
+        spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
         if (equipments.Length == 0) return;
 
         int index = Random.Range(0, equipments.Length);
@@ -36,8 +37,9 @@ public class SpawnManager : MonoBehaviour
         dropTower.transform.position = spawnPoint.transform.position;
     }
 
-    public void SpwanFrags(int num) 
+    public void SpawnFrags(int num) 
     {
+        spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
         GameObject drop = divinityFrag.GetDroppedGameObject(num);
         drop.transform.position = spawnPoint.transform.position;
     }
@@ -71,11 +73,11 @@ public class SpawnManagerEditor : Editor
         SpawnManager spawnManager = (SpawnManager)target;
         if (GUILayout.Button("Spawn ramdon weapon"))
         {
-            spawnManager.SpwanRamdonWeapon();
+            spawnManager.SpawnRamdonWeapon();
         }
         if (GUILayout.Button("Spawn 10 Frags"))
         {
-            spawnManager.SpwanFrags(10);
+            spawnManager.SpawnFrags(10);
         }
         if (GUILayout.Button("Spawn Medicine"))
         {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bat
   m_EditorClassIdentifier: 
   itemName: bat
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 5572140884625632519, guid: d55593716ae05bb438fc113cba10a4d6, type: 3}
   HP: 10
   AtkDamage: 3

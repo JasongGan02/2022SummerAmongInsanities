@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CatapultTower
   m_EditorClassIdentifier: 
   itemName: CatapultTower
-  sizeRatio: 0.25
+  sizeRatio: 0.5
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
   HP: 30
   AtkDamage: 4
@@ -37,3 +37,4 @@ MonoBehaviour:
   _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
+  _craftTime: 0

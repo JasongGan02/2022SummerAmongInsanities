@@ -32,6 +32,7 @@ public class EffectController : MonoBehaviour
             // If there's a matching field, set the value
             if (objectField != null && objectField.FieldType == controllerField.FieldType)
             {
+                Debug.Log(objectField.Name);
                 controllerField.SetValue(this, objectField.GetValue(effectObject));
             }
         }
