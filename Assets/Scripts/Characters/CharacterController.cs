@@ -26,6 +26,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected Drop[] drops;
     protected float AtkRange;
     protected float JumpForce;
+    protected int TotalJumps;
     protected List<TextAsset> Hatred;
 
     audioManager am;
@@ -139,7 +140,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
     }
 
-    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
     {
         this.takenDamage(-dHP);
         this.AtkDamage += dAtkDamage;
@@ -147,19 +148,27 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         this.MovingSpeed += dMovingSpeed;
         this.AtkRange += dAtkRange;
         this.JumpForce += dJumpForce;
+        this.TotalJumps += dTotalJumps;
+        EvokeStatsChange();
     }
 
-    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
     {
-        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce);
+        
         characterStats.HP += dHP;
         characterStats.AtkDamage += dAtkDamage;
         characterStats.AtkInterval += dAtkInterval;
         characterStats.MovingSpeed += dMovingSpeed;
         characterStats.AtkRange += dAtkRange;
         characterStats.JumpForce += dJumpForce;
+        characterStats.TotalJumps += dTotalJumps;
+        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce, dTotalJumps);
     }
 
+    protected virtual void EvokeStatsChange()
+    {
+
+    }
 
     public abstract void death();
 

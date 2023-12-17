@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArcherTower
   m_EditorClassIdentifier: 
   itemName: ArcherTower
-  sizeRatio: 0.5
+  sizeRatio: 0.25
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
   HP: 10
   AtkDamage: 1
@@ -21,6 +21,7 @@ MonoBehaviour:
   AtkRange: 5
   MovingSpeed: 0
   JumpForce: 0
+  TotalJumps: 0
   Drops: []
   Hatred:
   - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}

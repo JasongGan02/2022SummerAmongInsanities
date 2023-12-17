@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2674270034793632360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 33.57841, y: 17.433123, z: -0.14043103}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258cb3e4136a78942becb70968f5573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tempTarget: {fileID: 0}
+  colliders: []
   towerContainer: {fileID: 0}
-  lady: {fileID: 0}
   speed: 5
   fireRate: 5
   canDetect: 1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TrapTower
   m_EditorClassIdentifier: 
   itemName: TrapTower
-  sizeRatio: 0.5
+  sizeRatio: 0.25
   prefab: {fileID: 2844561520478345549, guid: 4f96f8a328f0b924d8869dba2e24555d, type: 3}
   HP: 10
   AtkDamage: 2
@@ -21,6 +21,7 @@ MonoBehaviour:
   AtkRange: 4
   MovingSpeed: 0
   JumpForce: 0
+  TotalJumps: 0
   Drops: []
   Hatred: []
   energyCost: 10
@@ -35,3 +36,4 @@ MonoBehaviour:
   _quantity: 0200000004000000
   _isCraftable: 1
   _isCoreNeeded: 1
+  _craftTime: 0

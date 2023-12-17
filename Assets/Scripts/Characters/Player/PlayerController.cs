@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.Universal;
 using UnityEditor.PackageManager;
 using Unity.VisualScripting;
+using TMPro;
 
 public class PlayerController : CharacterController, IDataPersistence
 {
@@ -17,12 +18,14 @@ public class PlayerController : CharacterController, IDataPersistence
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
+    //UI Elements
     Image healthBar;
     Image damagedHealthBar;
+    TextMeshProUGUI healthText;
     Color damagedColor;
     float damagedHealthFadeTimer;
-    float damaged_health_fade_timer_max = 2f; 
-
+    float damaged_health_fade_timer_max = 2f;
+     
     private int deathCount = 0;
     private int playerLevel = 0;
     private float playerExperience = 0f;
@@ -43,11 +46,10 @@ public class PlayerController : CharacterController, IDataPersistence
         damagedColor = damagedHealthBar.color;
         damagedColor.a = 0f;
         damagedHealthBar.color = damagedColor;
-        if (healthBar != null)
-        {
-            healthBar.fillAmount = (float) HP / characterStats.HP;
-        }
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
+        healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
+        UpdateHealthUI();
+        EvokeStatsChange();
     }
 
     public void LoadData(GameData data)
@@ -114,7 +116,8 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             death();
         }
-        StartCoroutine(FlashRed());
+        if (dmg <= 0)
+            StartCoroutine(FlashRed());
 
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible
@@ -124,10 +127,7 @@ public class PlayerController : CharacterController, IDataPersistence
         damagedHealthBar.color = damagedColor;
         damagedHealthFadeTimer = damaged_health_fade_timer_max;
 
-        if (healthBar != null)
-        {
-            healthBar.fillAmount = (float) HP / characterStats.HP;
-        }
+        UpdateHealthUI();
     }
 
     public void Heal(float amount)
@@ -137,10 +137,7 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             HP = characterStats.HP;
         }
-        if (healthBar != null)
-        {
-            healthBar.fillAmount = (float)HP / characterStats.HP;
-        }
+        UpdateHealthUI();
     }
 
     public void PlayerSurroundingLight()
@@ -172,10 +169,34 @@ public class PlayerController : CharacterController, IDataPersistence
             personalLight.intensity = 0f;
         }
     }
+    private void UpdateHealthUI()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float)HP / characterStats.HP;
+        }
+
+        if (healthText != null)
+        {
+            // Round HP to the nearest integer
+            int roundedHP = Mathf.RoundToInt(HP);
+            int maxHP = Mathf.RoundToInt(characterStats.HP); // Assuming max HP should also be an integer
+
+            healthText.text = roundedHP.ToString() + "/" + maxHP.ToString();
+        }
+    }
+
+    protected override void EvokeStatsChange()
+    {
+        playermovement_component.StatsChange(MovingSpeed, JumpForce, TotalJumps);
+    }
+
     public float GetPersonalLight() { return personalLight.intensity; }
 
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }
     public void SetLevel(int newLevel) { playerLevel = newLevel; }
     public void SetEXP(float newEXP) { playerExperience = newEXP; }
+
+    const string HPTEXT_UI_NAME = "HPText";
 }

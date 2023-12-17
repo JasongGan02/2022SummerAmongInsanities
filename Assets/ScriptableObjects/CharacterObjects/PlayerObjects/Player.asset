@@ -19,7 +19,9 @@ MonoBehaviour:
   AtkDamage: 1
   AtkInterval: 1
   AtkRange: 1
-  MovingSpeed: 1
-  JumpForce: 0
+  MovingSpeed: 4
+  JumpForce: 14
+  TotalJumps: 1
   Drops: []
+  Hatred: []
   RespwanTimeInterval: 4.99

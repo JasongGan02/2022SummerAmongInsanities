@@ -15,7 +15,8 @@ public class CharacterObject : BaseObject
     public float AtkRange;
     public float MovingSpeed;
     public float JumpForce;
-    
+    public int TotalJumps;
+
     public Drop[] Drops;
     public List<TextAsset> Hatred;
     protected string controllerName;

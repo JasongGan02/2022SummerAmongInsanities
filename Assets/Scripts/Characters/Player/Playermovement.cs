@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class Playermovement : MonoBehaviour
 {
-    public float runSpeed;
-    public float runSpeedmodifier=2f;
-    public float jumpHeight = 7f;
-    public float  excavateCoeff = 1f;
+    [SerializeField]
+    private float MS;
+    [SerializeField]
+    private float runningModifier = 2f;
+    [SerializeField]
+    private float jumpForce = 7f;
+    [SerializeField] 
+    public float excavateCoeff = 1f;
    
 
     public int totalJumps;
@@ -88,10 +92,10 @@ public class Playermovement : MonoBehaviour
 
     public void Movement()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal") * runSpeed *excavateCoeff;
+        float moveInput = Input.GetAxisRaw("Horizontal") * MS *excavateCoeff;
         
         if(isRunning)
-            moveInput*=runSpeedmodifier;
+            moveInput*=runningModifier;
         animator.SetFloat(Constants.Animator.SPEED, Mathf.Abs(moveInput));
         //speed: 0 idle, 3.5 walking, 7 running
 
@@ -110,7 +114,7 @@ public class Playermovement : MonoBehaviour
             multipleJump = true;
             availableJumps--;
 
-            rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
+            rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
             am.playAudio(am.jump);
 
 
@@ -123,7 +127,7 @@ public class Playermovement : MonoBehaviour
             {
                 availableJumps--;
                 
-                rb.velocity = new Vector2(rb.velocity.x, 1 * jumpHeight);
+                rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
                 animator.Play("playerDoubleJump");
                 am.playAudio(am.doublejump);
             }
@@ -164,6 +168,12 @@ public class Playermovement : MonoBehaviour
         transform.localScale = transformScale;
     }
 
+    public void StatsChange(float MS, float jumpForce, int totalJumps)
+    {
+        this.MS = MS;
+        this.jumpForce = jumpForce;
+        this.totalJumps = totalJumps;
+    }
    
 
 }

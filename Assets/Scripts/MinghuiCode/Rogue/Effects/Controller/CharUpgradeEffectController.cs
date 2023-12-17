@@ -10,13 +10,14 @@ public class CharUpgradeEffectController : EffectController
     protected float dAtkRange;
     protected float dMovingSpeed;
     protected float dJumpForce;
-    
+    protected int dTotalJumps;
+
     protected override void StartEffect()
     {
         // Start the effect or perform any necessary setup
         Type type = effectObject.GetApplyingControllerType();
         CharacterController characterController = this.gameObject.GetComponent(type) as CharacterController;
-        characterController.ChangeCharStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce);
+        characterController.ChangeCharStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce, dTotalJumps);
     }
 
     
