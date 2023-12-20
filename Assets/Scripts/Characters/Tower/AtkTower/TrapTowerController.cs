@@ -12,7 +12,7 @@ public class TrapTowerController : AttackTowerController
     void Start()
     {
         enemyLayer = LayerMask.GetMask("enemy");
-        InvokeRepeating("SenseEnemyAndShoot", 0.5f, AtkInterval);
+        InvokeRepeating("SenseEnemyAndShoot", 0.5f, _atkSpeed);
     }
 
     // Sense enemy and shoot if found
@@ -21,7 +21,7 @@ public class TrapTowerController : AttackTowerController
         Vector2 facingDirection = GetFacingDirection();
         //Debug.Log("Facing direction: " + facingDirection);
         // Check if there is an enemy in the facing direction
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, AtkRange, enemyLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, _atkRange, enemyLayer);
         if (hit)
         {
             //Debug.Log("Enemy spotted in direction " + facingDirection + " at distance " + hit.distance);

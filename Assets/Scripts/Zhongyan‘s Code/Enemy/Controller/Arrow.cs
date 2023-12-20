@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrow : EnemyController
+public class Arrow1 : EnemyController
 {
     private GameObject lady;
     private GameObject target;

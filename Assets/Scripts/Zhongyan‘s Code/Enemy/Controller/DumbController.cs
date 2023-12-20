@@ -36,7 +36,7 @@ public class DumbController : EnemyController
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        CurrentHP = HP;
+        CurrentHP = _HP;
         PrevHP = CurrentHP;
         animator = GetComponent<Animator>();
         ground_mask = LayerMask.GetMask("ground");
@@ -48,7 +48,7 @@ public class DumbController : EnemyController
 
     // Update is called once per frame
     protected override void EnemyLoop(){
-        CurrentHP = HP;
+        CurrentHP = _HP;
         SenseFrontBlock();
         if (PrevHP > CurrentHP)
         {
@@ -63,7 +63,7 @@ public class DumbController : EnemyController
         {
             flee();
         }
-        else if(HP <= maxHP/2){
+        else if(_HP <= maxHP/2){
             animator.SetBool("flee", true);
             Vector2 direction = (player.transform.position - transform.position);
             if (direction.x > 0)
@@ -74,7 +74,7 @@ public class DumbController : EnemyController
             {
                 transform.right = Vector2.right;
             }
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -MovingSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -_movingSpeed * Time.deltaTime);
                 //animator.SetFloat("movingSpeed", 1f);
             }
         else{
@@ -109,12 +109,12 @@ public class DumbController : EnemyController
             patrolTime -= Time.deltaTime;
             if (patrolDirection)
             {
-                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
                 if (!facingRight) { flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
                 if (facingRight) { flip(); }
             }
         }
@@ -142,12 +142,12 @@ public class DumbController : EnemyController
             fleeTime -= Time.deltaTime;
             if (player.transform.position.x > transform.position.x)
             {
-                rb.velocity = new Vector2(MovingSpeed * -2, rb.velocity.y);
+                rb.velocity = new Vector2(_movingSpeed * -2, rb.velocity.y);
                 if (facingRight) { flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(MovingSpeed * 2, rb.velocity.y);
+                rb.velocity = new Vector2(_movingSpeed * 2, rb.velocity.y);
                 if (!facingRight) { flip(); }
             }
         }
@@ -197,7 +197,7 @@ public class DumbController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
         rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
     

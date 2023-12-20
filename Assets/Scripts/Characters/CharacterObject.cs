@@ -9,13 +9,13 @@ using System.Collections.Generic;
 public class CharacterObject : BaseObject
 {
     [Header("Character Stats")]
-    public float HP;
-    public float AtkDamage;
-    public float AtkInterval;
-    public float AtkRange;
-    public float MovingSpeed;
-    public float JumpForce;
-    public int TotalJumps;
+    public float _HP;
+    public float _atkDamage;
+    public float _atkSpeed;
+    public float _atkRange;
+    public float _movingSpeed;
+    public float _jumpForce;
+    public int _totalJumps;
 
     public Drop[] Drops;
     public List<TextAsset> Hatred;

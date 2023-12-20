@@ -18,6 +18,7 @@ public class PlayerController : CharacterController, IDataPersistence
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
+    audioManager am;
     //UI Elements
     Image healthBar;
     Image damagedHealthBar;
@@ -48,6 +49,7 @@ public class PlayerController : CharacterController, IDataPersistence
         damagedHealthBar.color = damagedColor;
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
         healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         UpdateHealthUI();
         EvokeStatsChange();
     }
@@ -111,14 +113,11 @@ public class PlayerController : CharacterController, IDataPersistence
 
     public override void takenDamage(float dmg)
     {
-        HP -= dmg;
-        if (HP <= 0)
+        base.takenDamage(dmg);
+        if (dmg > 0)
         {
-            death();
+            am.playAudio(am.injured);
         }
-        if (dmg <= 0)
-            StartCoroutine(FlashRed());
-
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible
             damagedHealthBar.fillAmount = healthBar.fillAmount;
@@ -132,10 +131,10 @@ public class PlayerController : CharacterController, IDataPersistence
 
     public void Heal(float amount)
     {
-        HP += amount;
-        if (HP > characterStats.HP)
+        _HP += amount;
+        if (_HP > characterStats._HP)
         {
-            HP = characterStats.HP;
+            _HP = characterStats._HP;
         }
         UpdateHealthUI();
     }
@@ -173,14 +172,14 @@ public class PlayerController : CharacterController, IDataPersistence
     {
         if (healthBar != null)
         {
-            healthBar.fillAmount = (float)HP / characterStats.HP;
+            healthBar.fillAmount = (float)_HP / characterStats._HP;
         }
 
         if (healthText != null)
         {
             // Round HP to the nearest integer
-            int roundedHP = Mathf.RoundToInt(HP);
-            int maxHP = Mathf.RoundToInt(characterStats.HP); // Assuming max HP should also be an integer
+            int roundedHP = Mathf.RoundToInt(_HP);
+            int maxHP = Mathf.RoundToInt(characterStats._HP); // Assuming max HP should also be an integer
 
             healthText.text = roundedHP.ToString() + "/" + maxHP.ToString();
         }
@@ -188,7 +187,7 @@ public class PlayerController : CharacterController, IDataPersistence
 
     protected override void EvokeStatsChange()
     {
-        playermovement_component.StatsChange(MovingSpeed, JumpForce, TotalJumps);
+        playermovement_component.StatsChange(_movingSpeed, _jumpForce, _totalJumps);
     }
 
     public float GetPersonalLight() { return personalLight.intensity; }

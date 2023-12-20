@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2844561520478345546}
   - component: {fileID: 5669176044944987768}
   - component: {fileID: 4438776993460850766}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: TrapTower 1
   m_TagString: tower
   m_Icon: {fileID: 0}

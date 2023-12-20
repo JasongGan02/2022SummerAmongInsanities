@@ -15,21 +15,21 @@ MonoBehaviour:
   itemName: ArcherTower
   sizeRatio: 0.25
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
-  HP: 10
-  AtkDamage: 1
-  AtkInterval: 1
-  AtkRange: 5
-  MovingSpeed: 0
-  JumpForce: 0
-  TotalJumps: 0
+  _HP: 50
+  _atkDamage: 10
+  _atkSpeed: 1
+  _atkRange: 20
+  _movingSpeed: 0
+  _jumpForce: 0
+  _totalJumps: 0
   Drops: []
   Hatred:
   - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
   energyCost: 10
   rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   curAngle: {x: 0, y: 0, z: 0, w: 1}
-  bullet_speed: 4
-  bullet: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+  weaponObject: {fileID: 11400000, guid: 8879d58f671d69747a8dcfc53eefe47f, type: 2}
+  projectileSpeed: 10
   _maxStack: 5
   _recipe:
   - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}

@@ -15,12 +15,11 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        foreach(TowerObject each in testCase)
+        foreach (TowerObject each in testCase)
         {
             GameObject dropTower = each.GetDroppedGameObject(1);
             dropTower.transform.position = spawnPoint.transform.position;
         }
-        spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
         SpawnFrags(30);
     }
     // only a temporary solution
@@ -35,6 +34,13 @@ public class SpawnManager : MonoBehaviour
 
         GameObject dropTower = testCase[0].GetDroppedGameObject(1);
         dropTower.transform.position = spawnPoint.transform.position;
+
+        foreach (TowerObject each in testCase)
+        {
+            dropTower = each.GetDroppedGameObject(1);
+            dropTower.transform.position = spawnPoint.transform.position;
+        }
+        spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
     }
 
     public void SpawnFrags(int num) 

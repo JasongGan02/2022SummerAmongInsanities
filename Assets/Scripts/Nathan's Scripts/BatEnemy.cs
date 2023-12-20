@@ -45,10 +45,10 @@ public class BatEnemy : EnemyController
         Ps.Stop();
 
         this.SensingRange = 6;
-        this.HP = 10;
+        this._HP = 10;
         this.AtkDamage = 4;
-        this.AtkInterval = 3;
-        this.MovingSpeed = 3;
+        this._atkSpeed = 3;
+        this._movingSpeed = 3;
     }
 
     new void Awake()
@@ -130,7 +130,7 @@ public class BatEnemy : EnemyController
 
     new void ApproachingTarget(Transform target_transform)
     {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, MovingSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, _movingSpeed * Time.deltaTime);
         if (target_transform.position.x < transform.position.x && facingRight || target_transform.position.x > transform.position.x && !facingRight)
         {
             Flip();
@@ -161,7 +161,7 @@ public class BatEnemy : EnemyController
         else if (is_dashing)        // dash through the player and attack
         {
             Ps.Stop();
-            transform.position = Vector2.MoveTowards(transform.position, dash_end, MovingSpeed * 5 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, dash_end, _movingSpeed * 5 * Time.deltaTime);
             animator.SetBool("is_attacking", true); // being attack animation
             Tr.emitting = true;
             if (Vector2.Distance(transform.position, player.gameObject.transform.position) < 0.4f && !attacked)
@@ -187,7 +187,7 @@ public class BatEnemy : EnemyController
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, stop_point, MovingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, stop_point, _movingSpeed * Time.deltaTime);
             }
             if (player.gameObject.transform.position.x < transform.position.x && facingRight || player.gameObject.transform.position.x > transform.position.x && !facingRight)
             {

@@ -15,13 +15,13 @@ MonoBehaviour:
   itemName: Player
   sizeRatio: 1
   prefab: {fileID: 6647711791749533985, guid: 4a76d7ca108e6bb4dab533130174dc7e, type: 3}
-  HP: 100
-  AtkDamage: 1
-  AtkInterval: 1
-  AtkRange: 1
-  MovingSpeed: 4
-  JumpForce: 14
-  TotalJumps: 1
+  _HP: 100
+  _atkDamage: 1
+  _atkInterval: 1
+  _atkRange: 5
+  _movingSpeed: 4
+  _jumpForce: 14
+  _totalJumps: 1
   Drops: []
   Hatred: []
   RespwanTimeInterval: 4.99

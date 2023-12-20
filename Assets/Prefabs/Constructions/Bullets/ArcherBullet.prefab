@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3484577907003912250}
   - component: {fileID: 3484577907003912251}
   - component: {fileID: 3484577907003912252}
-  - component: {fileID: 3484577907003912248}
+  - component: {fileID: -1007765310788449054}
   m_Layer: 0
   m_Name: ArcherBullet
   m_TagString: Untagged
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.11
---- !u!114 &3484577907003912248
+--- !u!114 &-1007765310788449054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,9 +133,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3484577907003912249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6f578c9dabcae4895503c2434613ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d4a9bb99b8aa674f9f7073919a65404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liveTime: 10
-  isRotate: 0
-  damage: 1
+  firingAngle: 45
+  speed: 20
+  gravityScale: 0.1

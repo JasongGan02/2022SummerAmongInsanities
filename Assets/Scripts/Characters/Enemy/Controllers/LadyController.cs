@@ -95,7 +95,7 @@ public class LadyController : EnemyController
 
             SenseFrontBlock();
             distance = Mathf.Abs(transform.position.x - target.transform.position.x);
-            approach(MovingSpeed, target.transform, distance);
+            approach(_movingSpeed, target.transform, distance);
             
             // Target Taken Damage
             if (arrow != null)
@@ -107,7 +107,7 @@ public class LadyController : EnemyController
                 }
             }
 
-            if (Vector2.Distance(transform.position, target.transform.position) <= AtkRange && lady_sight())
+            if (Vector2.Distance(transform.position, target.transform.position) <= _atkRange && lady_sight())
             {
                 // Check if the archer can fire
                 if (canFire)
@@ -116,7 +116,7 @@ public class LadyController : EnemyController
                     FireArrow();
 
                     // Set the next fire time
-                    nextFire = Time.time + AtkInterval;
+                    nextFire = Time.time + _atkSpeed;
 
                     // Set the canFire flag to false
                     canFire = false;
@@ -163,12 +163,12 @@ public class LadyController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
                 if (!facingright) { flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
                 if (facingright) { flip(); }
             }
         }
@@ -259,12 +259,12 @@ public class LadyController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
     }
     void approach(float speed, Transform target, float distance)
     {
-        if (distance < 0.5f * AtkRange)
+        if (distance < 0.5f * _atkRange)
         {
             if (target.position.x > transform.position.x)
             {

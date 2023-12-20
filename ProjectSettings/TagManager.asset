@@ -12,6 +12,7 @@ TagManager:
   - tower
   - weapon
   - HoveringBuffUI
+  - audio
   layers:
   - Default
   - TransparentFX
@@ -27,8 +28,8 @@ TagManager:
   - weapon
   - flyenemy
   - background
-  - 
-  - 
+  - projectile_friendly
+  - projectile_enemy
   - 
   - 
   - 

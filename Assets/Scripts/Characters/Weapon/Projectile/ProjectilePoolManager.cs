@@ -3,53 +3,71 @@ using UnityEngine;
 
 public class ProjectilePoolManager : MonoBehaviour
 {
+    public static ProjectilePoolManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Optionally: Initialize pools here instead of Start if needed
+    }
+
+
     [System.Serializable]
     public class ProjectilePool
     {
-        public ProjectileController ProjectileControllerPrefab;
-        public int initialPoolSize = 20;
+        public GameObject prefab;
+        public int initialPoolSize;
     }
 
-    [SerializeField] private List<ProjectilePool> ProjectilePools;
-    private Dictionary<ProjectileController, Queue<ProjectileController>> pools = new Dictionary<ProjectileController, Queue<ProjectileController>>();
+    [SerializeField] private List<ProjectilePool> projectilePools;
+    private Dictionary<GameObject, Queue<GameObject>> pools = new Dictionary<GameObject, Queue<GameObject>>();
 
-    void Start()
+    private void Start()
     {
-        foreach (var pool in ProjectilePools)
+        foreach (var pool in projectilePools)
         {
-            CreatePool(pool.ProjectileControllerPrefab, pool.initialPoolSize);
+            CreatePool(pool.prefab, pool.initialPoolSize);
         }
     }
 
-    private void CreatePool(ProjectileController prefab, int initialPoolSize)
+    private void CreatePool(GameObject prefab, int size)
     {
-        Queue<ProjectileController> newPool = new Queue<ProjectileController>();
-        for (int i = 0; i < initialPoolSize; i++)
+        Queue<GameObject> newPool = new Queue<GameObject>();
+        for (int i = 0; i < size; i++)
         {
-            ProjectileController newProjectileController = Instantiate(prefab);
-            newProjectileController.gameObject.SetActive(false);
-            newPool.Enqueue(newProjectileController);
+            GameObject obj = Instantiate(prefab);
+            obj.transform.SetParent(transform, false);
+            obj.SetActive(false);
+            newPool.Enqueue(obj);
         }
         pools[prefab] = newPool;
     }
 
-    public ProjectileController GetProjectileController(ProjectileController prefab)
+    public GameObject GetProjectile(GameObject prefab)
     {
         if (pools.ContainsKey(prefab) && pools[prefab].Count > 0)
         {
-            ProjectileController ProjectileController = pools[prefab].Dequeue();
-            ProjectileController.gameObject.SetActive(true);
-            return ProjectileController;
+            GameObject projectile = pools[prefab].Dequeue();
+            projectile.SetActive(true);
+            return projectile;
         }
         else
         {
-            return Instantiate(prefab); // Optionally expand the pool
+            return Instantiate(prefab); // Optionally expand the pool here
         }
     }
 
-    public void ReturnProjectileController(ProjectileController ProjectileController)
+    public void ReturnProjectile(GameObject projectile, GameObject prefab)
     {
-        ProjectileController.gameObject.SetActive(false);
-        pools[ProjectileController.GetPrefab()].Enqueue(ProjectileController);
+        projectile.SetActive(false);
+        pools[prefab].Enqueue(projectile);
     }
 }

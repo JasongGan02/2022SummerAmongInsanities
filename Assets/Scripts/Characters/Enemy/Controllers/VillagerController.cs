@@ -69,13 +69,13 @@ public class VillagerController : EnemyController
             }
             else
             {
-                approachPlayer(2 * MovingSpeed);
+                approachPlayer(2 * _movingSpeed);
                 flip(player.transform);
             }
         }
         else
         {
-            if (IsTowerInAtkRange((int)AtkRange) && villager_sight())
+            if (IsTowerInAtkRange((int)_atkRange) && villager_sight())
             {
                 flip(target.transform);
                 attackTower(target.transform);
@@ -84,7 +84,7 @@ public class VillagerController : EnemyController
             {
                 animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
-                approach(MovingSpeed, target.transform);
+                approach(_movingSpeed, target.transform);
                 flip(target.transform);
             }
         }
@@ -116,7 +116,7 @@ public class VillagerController : EnemyController
                 animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("Attack", false);
-                if (cooldown > AtkInterval)
+                if (cooldown > _atkSpeed)
                 {
                     cooldown = 0f;
                     rest = false;
@@ -131,7 +131,7 @@ public class VillagerController : EnemyController
             animator.SetBool("IsStanding", true);
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", false);
-            approach(2 * MovingSpeed, target);
+            approach(2 * _movingSpeed, target);
         }
 
         else
@@ -156,7 +156,7 @@ public class VillagerController : EnemyController
                 animator.SetBool("IsStanding", true);
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("Attack", false);
-                if (cooldown > AtkInterval)
+                if (cooldown > _atkSpeed)
                 {
                     cooldown = 0f;
                     rest = false;
@@ -171,7 +171,7 @@ public class VillagerController : EnemyController
             animator.SetBool("IsStanding", true);
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", false);
-            approachPlayer(2 * MovingSpeed);
+            approachPlayer(2 * _movingSpeed);
         }
         
         else 
@@ -232,12 +232,12 @@ public class VillagerController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight) 
             { 
-                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
                 if (!facingright) { flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
                 if (facingright) { flip(); }
             }
         }
@@ -306,7 +306,7 @@ public class VillagerController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
         rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
     private bool villager_sight()

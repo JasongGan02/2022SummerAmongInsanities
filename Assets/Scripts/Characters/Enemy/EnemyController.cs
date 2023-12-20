@@ -83,7 +83,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsTowerInAtkRange()
     {
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
-        if(distance <= AtkRange)
+        if(distance <= _atkRange)
         {
             return true;
         }else
@@ -113,7 +113,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsPlayerInAtkRange()
     {
         float distance = CalculateDistanceToPlayer();
-        if(distance <= AtkRange)
+        if(distance <= _atkRange)
         {
             return true;
         }else
@@ -129,7 +129,7 @@ public abstract class EnemyController : CharacterController
 
     protected void ApproachingTarget(Transform target_transform)
     {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, MovingSpeed*Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, _movingSpeed*Time.deltaTime);
         SenseFrontBlock();
         // transform directiron change
         if(target_transform.position.x >= transform.position.x)
@@ -168,7 +168,7 @@ public abstract class EnemyController : CharacterController
                 bottomLeft.collider.gameObject.tag == "ground" &&
                 bottomRight.collider.gameObject.tag == "ground")
             {
-                Vector2 up_force = new Vector2(0, JumpForce);
+                Vector2 up_force = new Vector2(0, _jumpForce);
                 Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
                 rb.AddForce(up_force, ForceMode2D.Impulse);
                 //Debug.Log("up_force: " + up_force);
@@ -224,7 +224,7 @@ public abstract class EnemyController : CharacterController
     
     protected void attack()
     {
-        if(timer >= AtkInterval)
+        if(timer >= _atkSpeed)
         {
             player.GetComponent<PlayerController>().takenDamage(AtkDamage);
             timer = 0f;

@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Arrow
   sizeRatio: 2
-  prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
+  prefab: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
   level: 1
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 1
   _maxStack: 99
-  attack: 0
+  dmgCoef: 1
   farm: 0
   frequency: 0
+  projectileSpeedMultiplier: 2
   _recipe:
   - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
   - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}

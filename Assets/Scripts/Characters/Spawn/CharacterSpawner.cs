@@ -61,7 +61,7 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
                 SpawnBat();
                 break;
             case EnemyType.Lady:
-                SpawnLady();
+                //SpawnLady();
                 break;
             case EnemyType.Dumb:
                 SpawnDumb();

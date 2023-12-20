@@ -9,7 +9,7 @@ public class StatsEffectController : EffectController
     
     
 
-    protected override System.Collections.IEnumerator DestroyAfterDuration()
+    protected override IEnumerator DestroyAfterDuration()
     {
         float elapsedTime = 0f;
 
@@ -32,6 +32,6 @@ public class StatsEffectController : EffectController
     private void CharacterCurrentHPChange(float amount)
     {
         Type type = effectObject.GetApplyingControllerType();
-        (this.gameObject.GetComponent(type) as CharacterController).takenDamage(-amount);
+        this.gameObject.GetComponent<CharacterController>().takenDamage(-amount);
     }
 }
