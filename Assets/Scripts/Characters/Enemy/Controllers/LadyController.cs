@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LadyController : EnemyController
+public class LadyController : EnemyController, IRangedAttacker
 {
+    protected WeaponObject weaponObject;
+    public float AttackRange => _atkRange; // Implementing the IRangedAttacker interface
+    public WeaponObject WeaponObject => weaponObject;
+
+    private Transform startPosition;
+
+
+
 
     private GameObject arrow;
     public Animator animator;
     
-    private Transform arrowSpawnPoint; // reference to the point where the arrow will be instantiated
     private float nextFire; // the time at which the archer can fire again
     private float nextMove; // the time at which the archer can fire again
     private bool canFire = true; // flag to check if the archer can fire
     private bool canMove = true;
-    private GameObject arrowPrefab; // reference to the arrow prefab
 
 
-    private LayerMask wallLayer;
     private Rigidbody2D rb;
     private float nextJump;
     private bool canJump = true;
@@ -39,15 +44,9 @@ public class LadyController : EnemyController
 
     void Start()
     {
-        arrowSpawnPoint = transform;
+        startPosition = transform;
         animator = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        wallLayer = LayerMask.GetMask("ground");
-        //towerContainer = FindObjectOfType<TowerContainer>();
-        //Hatred.Add("PlayerController");
-        //Hatred.Add("CatapultTowerController");
-        //Hatred.Add("ArcherTowerController");
-        //Hatred.Add("TrapTowerController");
     }
 
     new void Awake()
@@ -60,12 +59,33 @@ public class LadyController : EnemyController
         backCheck = transform.Find("backCheck");
     }
 
-    void FireArrow(){
-     //Instantiate the arrow
-        arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
-        arrow.transform.parent = this.transform;
-    }
 
+    // Implement the FireProjectile method as specified by the IRangedAttacker interface
+    public void FireProjectile(GameObject target)
+    {
+        if (target == null)
+        {
+            Debug.LogError("Target is null.");
+            return;
+        }
+
+        // Instantiate the arrow
+        GameObject projectileObject = ProjectilePoolManager.Instance.GetProjectile(weaponObject.getPrefab());
+        projectileObject.transform.position = startPosition.position;
+        projectileObject.transform.SetParent(transform, true);
+        Projectile projectileComponent = projectileObject.GetComponent<Projectile>();
+
+        if (projectileComponent != null)
+        {
+            // Initialize and launch the projectile
+            projectileComponent.Initialize(this, WeaponObject);
+            projectileComponent.Launch(target, startPosition);
+        }
+        else
+        {
+            Debug.LogError("Projectile component not found on arrow prefab.");
+        }
+    }
 
 
     protected override void EnemyLoop() 
@@ -113,7 +133,7 @@ public class LadyController : EnemyController
                 if (canFire)
                 {
                     // Fire an arrow
-                    FireArrow();
+                    FireProjectile(target);
 
                     // Set the next fire time
                     nextFire = Time.time + _atkSpeed;

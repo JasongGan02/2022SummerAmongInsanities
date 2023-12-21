@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class RangedTowerController : AttackTowerController, IRangedAttacker
 {
-    [SerializeField] protected WeaponObject weaponObject;
+    protected WeaponObject weaponObject;
 
     public float AttackRange => _atkRange;
     public WeaponObject WeaponObject => weaponObject;

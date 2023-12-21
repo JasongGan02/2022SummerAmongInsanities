@@ -1653,7 +1653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1700,14 +1700,22 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.data[2].prefab
       value: 
       objectReference: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectilePools.Array.data[3].prefab
+      value: 
+      objectReference: {fileID: 2674270034793632360, guid: 586f732dab3b81748bd0e3cdf67b91d4, type: 3}
+    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.data[2].initialPoolSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectilePools.Array.data[3].initialPoolSize
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}

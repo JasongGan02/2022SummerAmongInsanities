@@ -16,8 +16,8 @@ MonoBehaviour:
   sizeRatio: 2
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
   _HP: 20
-  _atkDamage: 3
-  _atkSpeed: 2
+  _atkDamage: 8
+  _atkSpeed: 4
   _atkRange: 10
   _movingSpeed: 1
   _jumpForce: 10
@@ -29,4 +29,4 @@ MonoBehaviour:
   - {fileID: 11500000, guid: 5b889914607fafa4f87fd046a99656b8, type: 3}
   - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
   SensingRange: 10
-  arrowPrefab: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+  weaponObject: {fileID: 11400000, guid: 76c564b6bdd67774199b7fa3c9be56ee, type: 2}

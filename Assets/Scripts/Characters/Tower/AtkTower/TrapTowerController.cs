@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TrapTowerController : RangedTowerController
 {
-    [SerializeField] private LayerMask enemyLayer;
+    private LayerMask enemyLayer;
 
     protected override void Start()
     {
