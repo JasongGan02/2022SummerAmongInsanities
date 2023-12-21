@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shovel
   m_EditorClassIdentifier: 
   itemName: Shovel
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 8647004149643055617, guid: 892f0bcaa59dee74fb9367ee4700566c, type: 3}
   level: 1
   quality: {r: 0, g: 0, b: 0, a: 0}

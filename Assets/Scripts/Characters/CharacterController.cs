@@ -19,16 +19,17 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
 
     //You will obtain and maintain the run-tim variables here by calling HP straightly for example. HP -= dmg shown below. 
-    protected float HP;
-    protected float AtkDamage;
-    protected float AtkInterval;
-    protected float MovingSpeed;
+    protected float _HP;
+    protected float _atkDamage;
+    protected float _atkSpeed;
+    protected float _movingSpeed;
+    protected float _atkRange;
+    protected float _jumpForce;
+    protected int _totalJumps;
     protected Drop[] drops;
-    protected float AtkRange;
-    protected float JumpForce;
     protected List<TextAsset> Hatred;
 
-    audioManager am;
+    
 
     protected List<EffectObject> effects;
 
@@ -47,7 +48,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+
     }
 
     protected virtual void Update()
@@ -111,20 +112,22 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
     public virtual void takenDamage(float dmg)
     {
-        HP -= dmg;
-        am.playAudio(am.injured);
-        if (HP <= 0)
+
+        _HP -= dmg;
+
+        if (_HP <= 0)
         {
             death();
         }
-        if (HP > characterStats.HP)
+        if (_HP > characterStats._HP) //hp cap
         {
-            HP = characterStats.HP;
+            _HP = characterStats._HP;
         }
-        if(dmg > 0)
+        if (dmg > 0)
+        {
             StartCoroutine(FlashRed());
-
-
+        }
+        
     }
 
     public System.Collections.IEnumerator FlashRed()
@@ -139,27 +142,35 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
     }
 
-    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
     {
         this.takenDamage(-dHP);
-        this.AtkDamage += dAtkDamage;
-        this.AtkInterval += dAtkInterval;
-        this.MovingSpeed += dMovingSpeed;
-        this.AtkRange += dAtkRange;
-        this.JumpForce += dJumpForce;
+        this._atkDamage += dAtkDamage;
+        this._atkSpeed += dAtkInterval;
+        this._movingSpeed += dMovingSpeed;
+        this._atkRange += dAtkRange;
+        this._jumpForce += dJumpForce;
+        this._totalJumps += dTotalJumps;
+        EvokeStatsChange();
     }
 
-    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce)
+    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
     {
-        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce);
-        characterStats.HP += dHP;
-        characterStats.AtkDamage += dAtkDamage;
-        characterStats.AtkInterval += dAtkInterval;
-        characterStats.MovingSpeed += dMovingSpeed;
-        characterStats.AtkRange += dAtkRange;
-        characterStats.JumpForce += dJumpForce;
+        
+        characterStats._HP += dHP;
+        characterStats._atkDamage += dAtkDamage;
+        characterStats._atkSpeed += dAtkInterval;
+        characterStats._movingSpeed += dMovingSpeed;
+        characterStats._atkRange += dAtkRange;
+        characterStats._jumpForce += dJumpForce;
+        characterStats._totalJumps += dTotalJumps;
+        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce, dTotalJumps);
     }
 
+    protected virtual void EvokeStatsChange()
+    {
+
+    }
 
     public abstract void death();
 
@@ -182,5 +193,16 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
     }
 
+    public float AtkDamage
+    {
+        get { return _atkDamage; }
+        set { _atkDamage = value; }
+    }
+
+    public float AtkRange
+    {
+        get { return _atkRange; }
+        set { _atkRange = value; }
+    }
 }
 

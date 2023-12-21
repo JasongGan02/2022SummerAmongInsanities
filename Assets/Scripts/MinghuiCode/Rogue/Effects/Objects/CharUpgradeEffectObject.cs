@@ -12,6 +12,7 @@ public class CharUpgradeEffectObject : EffectObject
     public float dAtkRange;
     public float dMovingSpeed;
     public float dJumpForce;
+    public int dTotalJumps;
 
     public override void ExecuteEffect(IEffectableObject effectedGameObject) //Use this when you are unsure about what type of controller will be using.
     {

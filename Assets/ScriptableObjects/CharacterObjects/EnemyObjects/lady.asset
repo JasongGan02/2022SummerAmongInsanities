@@ -13,19 +13,20 @@ MonoBehaviour:
   m_Name: lady
   m_EditorClassIdentifier: 
   itemName: lady
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
-  HP: 10
-  AtkDamage: 3
-  AtkInterval: 5
-  AtkRange: 10
-  MovingSpeed: 3
-  JumpForce: 0.25
+  _HP: 20
+  _atkDamage: 8
+  _atkSpeed: 4
+  _atkRange: 10
+  _movingSpeed: 1
+  _jumpForce: 10
+  _totalJumps: 0
   Drops: []
-  SensingRange: 10
   Hatred:
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   - {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
   - {fileID: 11500000, guid: 5b889914607fafa4f87fd046a99656b8, type: 3}
   - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
-  arrowPrefab: {fileID: 2674270034793632360, guid: 155a51388b89c304ea0688b86461d282, type: 3}
+  SensingRange: 10
+  weaponObject: {fileID: 11400000, guid: 76c564b6bdd67774199b7fa3c9be56ee, type: 2}

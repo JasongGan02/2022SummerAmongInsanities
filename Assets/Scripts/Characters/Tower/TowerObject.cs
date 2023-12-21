@@ -14,8 +14,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
 
     [Header("Bullet Specification")]
-    public float bullet_speed;
-    public GameObject bullet;
+    [SerializeField] public WeaponObject weaponObject;
+    public float projectileSpeedMultiplier;
 
     
     [Header("Iventory Parameters")]

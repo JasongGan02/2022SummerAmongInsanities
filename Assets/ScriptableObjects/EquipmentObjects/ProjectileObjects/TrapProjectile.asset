@@ -10,22 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: Arrow
+  m_Name: TrapProjectile
   m_EditorClassIdentifier: 
-  itemName: Arrow
+  itemName: TrapProjectile
   sizeRatio: 1
-  prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
-  level: 1
+  prefab: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
+  level: 0
   quality: {r: 0, g: 0, b: 0, a: 0}
-  durability: 1
-  _maxStack: 99
-  attack: 0
+  durability: 0
+  _maxStack: 0
+  dmgCoef: 1
   farm: 0
   frequency: 0
-  _recipe:
-  - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
-  - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
-  _quantity: 0100000001000000
-  _isCraftable: 1
+  projectileSpeedMultiplier: 2
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0

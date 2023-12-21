@@ -13,25 +13,30 @@ MonoBehaviour:
   m_Name: TrapTower
   m_EditorClassIdentifier: 
   itemName: TrapTower
-  sizeRatio: 0.5
+  sizeRatio: 1
   prefab: {fileID: 2844561520478345549, guid: 4f96f8a328f0b924d8869dba2e24555d, type: 3}
-  HP: 10
-  AtkDamage: 2
-  AtkInterval: 2
-  AtkRange: 4
-  MovingSpeed: 0
-  JumpForce: 0
-  Drops: []
-  Hatred: []
+  _HP: 30
+  _atkDamage: 20
+  _atkSpeed: 2
+  _atkRange: 10
+  _movingSpeed: 0
+  _jumpForce: 0
+  _totalJumps: 0
+  Drops:
+  - droppedItem: {fileID: 0}
+    chance: 0
+  Hatred:
+  - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
   energyCost: 10
   rotateAngle: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   curAngle: {x: 0, y: 0, z: 0, w: 1}
-  bullet_speed: 3
-  bullet: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
-  _maxStack: 0
+  weaponObject: {fileID: 11400000, guid: 5235d283be36ad04b8a1b0dee576417f, type: 2}
+  projectileSpeedMultiplier: 0
+  _maxStack: 3
   _recipe:
   - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
   - {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
   _quantity: 0200000004000000
   _isCraftable: 1
   _isCoreNeeded: 1
+  _craftTime: 0

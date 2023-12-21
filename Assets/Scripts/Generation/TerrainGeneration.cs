@@ -406,7 +406,7 @@ public class TerrainGeneration : MonoBehaviour
 
                 if (generateCave)
                 {
-                    if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
+                    if (caveNoiseTexture.GetPixel(x, y).r > 0.5f || (x >= flatAreaStartX && x <= flatAreaEndX && y <= flatHeightStart && y >= flatHeightEnd))
                     {
                         PlaceTile(tileSprites, x, y);
                         

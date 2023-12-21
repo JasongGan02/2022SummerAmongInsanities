@@ -10,11 +10,14 @@ public class WeaponObject : EquipmentObject , ICraftableObject
 {
     [Header("Weapon Stats")]
     [SerializeField]
-    private float attack;
+    private float dmgCoef;
     [SerializeField]
     private float farm;
     [SerializeField]
     private float frequency;
+
+    [Header("Projectile Properties")]
+    [SerializeField] private float projectileSpeedMultiplier = 2f; 
 
     [Header("Craft")]
     [SerializeField]
@@ -30,7 +33,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
 
     public float getAttack()
     {
-        return attack;
+        return dmgCoef;
     }
 
 
@@ -45,7 +48,8 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         return frequency;
     }
 
-
+    public float ProjectileSpeedMultiplier
+    { get { return projectileSpeedMultiplier; } }
     public virtual GameObject GetSpawnedGameObject<T>() where T : MonoBehaviour //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -67,6 +71,20 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
         worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Type type = Type.GetType(itemName+"Controller");
+        var controller = worldGameObject.AddComponent(type);
+        (controller as Weapon).Initialize(this);
+        return worldGameObject;
+    }
+    public virtual GameObject GetProjectileGameObject()
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.layer = LayerMask.NameToLayer("weapon");
+        worldGameObject.tag = "weapon";
+        worldGameObject.name = itemName;
+        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
+        //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+        worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        Type type = Type.GetType(itemName + "Controller");
         var controller = worldGameObject.AddComponent(type);
         (controller as Weapon).Initialize(this);
         return worldGameObject;
