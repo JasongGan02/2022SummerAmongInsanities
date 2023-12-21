@@ -138,7 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2113706955}
   - component: {fileID: 2113706956}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ProjectilePoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,10 +173,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePools:
-  - prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
+  - prefab: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
     initialPoolSize: 20
-  - prefab: {fileID: 0}
-    initialPoolSize: 0
+  - prefab: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
+    initialPoolSize: 20
 --- !u!1 &8685695344788396459
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,6 +539,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 8685695344788396458}
     m_Modifications:
+    - target: {fileID: 814760531, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 104.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 814760531, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 62.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
       propertyPath: testCase.Array.size
       value: 5

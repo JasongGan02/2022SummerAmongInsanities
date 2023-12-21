@@ -30,6 +30,7 @@ public class CatapultProjectile : Projectile
 
         // Apply the calculated velocity to the Rigidbody2D
         rb.velocity = velocity;
+        rb.AddTorque(-5);
         rb.gravityScale = 3.5f;
     }
 
@@ -46,22 +47,6 @@ public class CatapultProjectile : Projectile
         }
     }
 
-    private bool IsInHatredList(Collider2D collider)
-    {
-        foreach (var hatedType in hatredList)
-        {
-            Type type = Type.GetType(hatedType.name);
-            if (type == null) continue;
-
-            var target = collider.GetComponent(type) as CharacterController;
-            if (target != null)
-            {
-                return true; // Target is in hatred list
-            }
-        }
-
-        return false; // Target not found in hatred list
-    }
 
     private void Explode()
     {

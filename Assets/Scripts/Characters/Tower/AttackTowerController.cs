@@ -7,20 +7,10 @@ using static UnityEngine.EventSystems.EventTrigger;
 public abstract class AttackTowerController : TowerController
 {
 
-    protected float bullet_speed;    // bullet flying speed
-    [SerializeField] protected GameObject bullet;
-
     //run-time variables
     protected bool isEnemySpotted;
     protected EnemyContainer enemyContainer;
-    protected float AtkTimer;        // Timer
 
-    public GameObject tempTarget;
-    public Collider2D[] colliders;
-
-    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10) | (1 << 12);
-
-    //protected abstract void TowerLoop(); 
 
     // Find nearest enemy in the enemy array
     protected virtual GameObject WhatToAttack()

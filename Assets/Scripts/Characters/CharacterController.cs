@@ -198,5 +198,11 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         get { return _atkDamage; }
         set { _atkDamage = value; }
     }
+
+    public float AtkRange
+    {
+        get { return _atkRange; }
+        set { _atkRange = value; }
+    }
 }
 

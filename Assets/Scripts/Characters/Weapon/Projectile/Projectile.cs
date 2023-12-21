@@ -22,13 +22,9 @@ public class Projectile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-    protected void Update()
+    protected virtual void Update()
     {
-        if (HasReachedLifespan())
-        {
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
-        }
-
+        HasReachedLifespan();
         // Constantly align the projectile to its velocity vector
         AlignToVelocity();
     }
@@ -65,34 +61,32 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
-        // Check if the collided object is in the hatred list
-        foreach (var hatedType in hatredList)
+        if (IsInHatredList(collider))
         {
-            Type type = Type.GetType(hatedType.name);
-            if (type == null) continue;
-
-            var target = collider.GetComponent(type) as CharacterController;
-            if (target != null)
+            CharacterController character = collider.GetComponent<CharacterController>();
+            if (character != null)
             {
-            
-                target.takenDamage(finalDamage);
-                ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
-
-                return; // Exit the method after dealing damage
+                character.takenDamage(finalDamage);
             }
-        }
 
-        if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
+            // Return the projectile to the pool
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
+        }
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
         {
             ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
         }
     }
-    private bool HasReachedLifespan()
+    protected virtual void HasReachedLifespan()
     {
-        return Time.time - timeOfLaunch > lifespanInSeconds;
+        if (Time.time - timeOfLaunch > lifespanInSeconds)
+        {
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
+        }
+            
     }
 
-    private void AlignToVelocity()
+    protected void AlignToVelocity()
     {
         if (rb.velocity != Vector2.zero)
         {
@@ -102,5 +96,27 @@ public class Projectile : MonoBehaviour
             // Align the arrow to 45 degrees from its velocity vector
             transform.rotation = Quaternion.AngleAxis(angle - 45, Vector3.forward);
         }
+    }
+    
+    protected virtual void ApplyDamage()
+    {
+
+    }
+
+    protected virtual bool IsInHatredList(Collider2D collider)
+    {
+        foreach (var hatedType in hatredList)
+        {
+            Type type = Type.GetType(hatedType.name);
+            if (type == null) continue;
+
+            var target = collider.GetComponent(type) as CharacterController;
+            if (target != null)
+            {
+                return true; // Target is in hatred list
+            }
+        }
+
+        return false; // Target not found in hatred list
     }
 }

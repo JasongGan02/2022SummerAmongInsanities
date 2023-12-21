@@ -5,28 +5,24 @@ using UnityEngine;
 // Trap tower can shoot horizontally and vertically
 // The bullet of trap tower have no gravity
 
-public class TrapTowerController : AttackTowerController
+public class TrapTowerController : RangedTowerController
 {
-    LayerMask enemyLayer;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private LayerMask enemyLayer;
+
+    protected override void Start()
     {
+        base.Start(); // Calls the Start method of RangedTowerController
         enemyLayer = LayerMask.GetMask("enemy");
-        InvokeRepeating("SenseEnemyAndShoot", 0.5f, _atkSpeed);
     }
 
-    // Sense enemy and shoot if found
-    protected void SenseEnemyAndShoot()
+    protected override void Attack()
     {
         Vector2 facingDirection = GetFacingDirection();
-        //Debug.Log("Facing direction: " + facingDirection);
-        // Check if there is an enemy in the facing direction
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, _atkRange, enemyLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, AttackRange, enemyLayer);
         if (hit)
         {
-            //Debug.Log("Enemy spotted in direction " + facingDirection + " at distance " + hit.distance);
-            // Shoot a bullet in the facing direction
-            Shoot(facingDirection);
+            // If enemy is spotted, fire a projectile
+            FireProjectile(hit.collider.gameObject);
         }
     }
 
@@ -40,16 +36,8 @@ public class TrapTowerController : AttackTowerController
 
         // Transform the direction to face using the quaternion representing the rotation
         Vector3 facingDirection = rotation * directionToFace;
-        //Debug.Log("Facing direction: " + facingDirection + "direction to face: " + directionToFace + "rotation: " + rotation);
+
         // Create a new Vector2 from the Vector3, discarding the z component
         return new Vector2(facingDirection.x, facingDirection.y);
     }
-
-    // Shoot one bullet into direction
-    private void Shoot(Vector2 direction)
-    {
-        GameObject bulletInstance = Instantiate(bullet, transform.position, transform.rotation);
-        bulletInstance.GetComponent<Rigidbody2D>().velocity = direction.normalized * bullet_speed;
-    }
-
 }

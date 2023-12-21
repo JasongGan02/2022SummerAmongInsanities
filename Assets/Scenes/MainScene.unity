@@ -1698,20 +1698,16 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2113706954, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: m_Layer
-      value: 14
+    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectilePools.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[0].prefab
+      propertyPath: projectilePools.Array.data[2].prefab
       value: 
-      objectReference: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+      objectReference: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[1].prefab
-      value: 
-      objectReference: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[1].initialPoolSize
+      propertyPath: projectilePools.Array.data[2].initialPoolSize
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
@@ -1778,14 +1774,6 @@ PrefabInstance:
       propertyPath: characterSpawner
       value: 
       objectReference: {fileID: 41518528}
-    - target: {fileID: 8685695345895630232, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 104.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8685695345895630232, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 62.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
