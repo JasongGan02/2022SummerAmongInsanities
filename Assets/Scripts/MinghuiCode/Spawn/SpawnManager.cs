@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     public DivinityFragObject divinityFrag;
     public MedicineObject[] medicineObjects;
     public TorchObject[] torchObjects;
+    public ProjectileObject[] projectileObjects;
     [SerializeField]
     private GameObject spawnPoint;
 
@@ -48,6 +49,16 @@ public class SpawnManager : MonoBehaviour
         spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
         GameObject drop = divinityFrag.GetDroppedGameObject(num);
         drop.transform.position = spawnPoint.transform.position;
+    }
+
+    public void SpawnProjectile(int num)
+    {
+        spawnPoint.transform.position = FindObjectOfType<CoreArchitecture>().transform.position;
+        foreach (ProjectileObject each in projectileObjects)
+        {
+            GameObject dropProjectile = each.GetDroppedGameObject(1);
+            dropProjectile.transform.position = spawnPoint.transform.position;
+        }
     }
 
     public void SpawnMedicine()
@@ -92,6 +103,10 @@ public class SpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn Torch"))
         {
             spawnManager.SpawnTorch();
+        }
+        if (GUILayout.Button("Spawn Projectile"))
+        {
+            spawnManager.SpawnProjectile(10);
         }
     }
 }

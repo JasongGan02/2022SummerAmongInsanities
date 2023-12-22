@@ -5,64 +5,65 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class BowController : Weapon
+public class BowController : RangedWeaponController
 {
-    private GameObject spawnArrow;
-    private float attackInterval = 0.5f; // the minimum time between attacks
-    private float timeSinceLastAttack = 0f; // the time since the last attack
+    private Camera mainCamera;
+    private float attackInterval = 0.5f;
+    private float timeSinceLastAttack = 0f;
+    private float chargeTime = 0f; // Time for which the button has been held
+    private const float maxChargeTime = 2.0f; // Max time for full charge
 
-
-
+    public override void Start()
+    {
+        base.Start();
+        startPosition = transform;
+        mainCamera = Camera.main;
+    }
 
     public override void Update()
     {
-
         Flip();
         Patrol();
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            chargeTime = 0f; // Start charging when the button is pressed
+        }
+
         if (Input.GetMouseButton(0))
         {
-            timeSinceLastAttack += Time.deltaTime;
-            if (timeSinceLastAttack >= attackInterval)
-            {
-                attack();
-                timeSinceLastAttack = 0f;
-            }
+            chargeTime += Time.deltaTime;
+            chargeTime = Mathf.Min(chargeTime, maxChargeTime); // Cap chargeTime at maxChargeTime
         }
 
-
-
-
-    }
-
-    public override void attack()
-    {
-        int arrowSlotIndex = inventory.findSlotIndex("Arrow");
-        InventorySlot arrowSlot = inventory.findSlot("Arrow");
-
-        if (arrowSlot.count > 0)
+        if (Input.GetMouseButtonUp(0) && timeSinceLastAttack >= attackInterval)
         {
+            FireProjectile(null);
+            timeSinceLastAttack = 0f;
+        }
 
-            if (playermovement.facingRight)
-            {
+        timeSinceLastAttack += Time.deltaTime;
+    }
 
-                spawnArrow = (arrowSlot.item as WeaponObject).GetSpawnedGameObject<Projectile>();
-                spawnArrow.transform.position = transform.position + Vector3.right * 0.5f;
-                arrowSlot.count--;
-                inventory.UpdateSlotUi(arrowSlotIndex);
-
-            }
-            else
-            {
-
-
-                spawnArrow = (arrowSlot.item as WeaponObject).GetSpawnedGameObject<Projectile>();
-                spawnArrow.transform.position = transform.position - Vector3.right * 0.5f;
-                arrowSlot.count--;
-                inventory.UpdateSlotUi(arrowSlotIndex);
-            }
+    public override void FireProjectile(GameObject target)
+    {
+        if (!inventory.ConsumeItem(projectileObject, 1))
+            return;
+        // Calculate the force and damage based on charge time
+        float chargePercent = chargeTime / maxChargeTime;
+        float force = chargePercent * AttackRange * 5;
+        float damage = chargePercent * characterController.AtkDamage;
+        GameObject arrow = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+        var playerBowArrow = arrow.GetComponent<PlayerBowProjectile>();
+        if (playerBowArrow != null)
+        {
+            arrow.transform.position = startPosition.transform.position;
+            Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            playerBowArrow.Initialize(characterController, projectileObject, force, damage);
+            playerBowArrow.Launch(mousePosition); // Launch without a specific target
         }
     }
+
     public override void Patrol()
     {
         if (playermovement.facingRight)
@@ -93,4 +94,6 @@ public class BowController : Weapon
 
 
     }
+
+ 
 }

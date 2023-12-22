@@ -10,14 +10,15 @@ public class WeaponObject : EquipmentObject , ICraftableObject
 {
     [Header("Weapon Stats")]
     [SerializeField]
-    private float dmgCoef;
+    private float damageCoef;
     [SerializeField]
     private float farm;
     [SerializeField]
     private float frequency;
 
-    [Header("Projectile Properties")]
-    [SerializeField] private float projectileSpeedMultiplier = 2f; 
+
+    [Header("Projectile Properties")] 
+    public ProjectileObject projectileObject;
 
     [Header("Craft")]
     [SerializeField]
@@ -33,7 +34,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
 
     public float getAttack()
     {
-        return dmgCoef;
+        return damageCoef;
     }
 
 
@@ -48,8 +49,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         return frequency;
     }
 
-    public float ProjectileSpeedMultiplier
-    { get { return projectileSpeedMultiplier; } }
+
     public virtual GameObject GetSpawnedGameObject<T>() where T : MonoBehaviour //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -61,7 +61,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         return worldGameObject;
     }
 
-    public virtual GameObject GetSpawnedGameObject() //Spawn the actual game object through calling this function. 
+    public virtual GameObject GetSpawnedGameObject(CharacterController character) //Spawn the actual game object through calling this function. 
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.layer = LayerMask.NameToLayer("weapon");
@@ -72,25 +72,9 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Type type = Type.GetType(itemName+"Controller");
         var controller = worldGameObject.AddComponent(type);
-        (controller as Weapon).Initialize(this);
+        (controller as Weapon).Initialize(this, character);
         return worldGameObject;
     }
-    public virtual GameObject GetProjectileGameObject()
-    {
-        GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.layer = LayerMask.NameToLayer("weapon");
-        worldGameObject.tag = "weapon";
-        worldGameObject.name = itemName;
-        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
-        //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
-        worldGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        Type type = Type.GetType(itemName + "Controller");
-        var controller = worldGameObject.AddComponent(type);
-        (controller as Weapon).Initialize(this);
-        return worldGameObject;
-    }
-
-
 
     /**
      * implementation of ICraftableObject
@@ -111,10 +95,6 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         inventory.CraftItems(this.Recipe, this.Quantity, this);
     }
 
-    public void CoreCraft(Inventory inventory)
-    {
-        inventory.CraftItemsCore(this.Recipe, this.Quantity, this);
-    }
 
     #endregion
 

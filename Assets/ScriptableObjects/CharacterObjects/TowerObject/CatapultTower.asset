@@ -31,8 +31,7 @@ MonoBehaviour:
   energyCost: 30
   rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   curAngle: {x: 0, y: 0, z: 0, w: 1}
-  weaponObject: {fileID: 11400000, guid: 390a6d3e672d6d64f80358cabc5977f7, type: 2}
-  projectileSpeedMultiplier: 2
+  projectileObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
   _maxStack: 2
   _recipe: []
   _quantity: 

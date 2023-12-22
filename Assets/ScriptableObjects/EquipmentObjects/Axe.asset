@@ -19,9 +19,10 @@ MonoBehaviour:
   quality: {r: 1, g: 1, b: 1, a: 0}
   durability: 0
   _maxStack: 1
-  attack: 0
+  dmgCoef: 0
   farm: 0
-  frequency: 0
+  frequency: 1
+  projectileSpeedMultiplier: 2
   _recipe:
   - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
   - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}

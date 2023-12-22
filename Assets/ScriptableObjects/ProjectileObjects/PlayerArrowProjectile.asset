@@ -9,23 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: Spear
+  m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
+  m_Name: PlayerArrowProjectile
   m_EditorClassIdentifier: 
-  itemName: Spear
-  sizeRatio: 2
-  prefab: {fileID: 3246375338820597191, guid: 20a952f4910043c46bc0a12cbba8667b, type: 3}
-  level: 3
-  quality: {r: 0, g: 0, b: 0, a: 0}
-  durability: 99
-  _maxStack: 1
-  dmgCoef: 0
-  farm: 0
-  frequency: 1
-  projectileSpeedMultiplier: 2
+  itemName: PlayerArrowProjectile
+  sizeRatio: 1
+  prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
+  damageCoef: 1
+  _maxStack: 99
   _recipe:
   - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
   _quantity: 02000000
   _isCraftable: 1
   _isCoreNeeded: 1
-  _craftTime: 3
+  _craftTime: 1

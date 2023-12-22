@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1248398407905336019}
   - component: {fileID: 547367055942381427}
   - component: {fileID: 8895854436292045573}
-  - component: {fileID: 2576043918350145435}
+  - component: {fileID: 8393815247215142659}
   m_Layer: 14
-  m_Name: Arrow
+  m_Name: PlayerBowArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +145,7 @@ PolygonCollider2D:
       - {x: 0.160779, y: 0.057802677}
       - {x: 0.15575485, y: 0.15455131}
   m_UseDelaunayMesh: 0
---- !u!114 &2576043918350145435
+--- !u!114 &8393815247215142659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 658926369847174377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d4a9bb99b8aa674f9f7073919a65404, type: 3}
+  m_Script: {fileID: 11500000, guid: 60c99deb66ec63042811c4e080d19cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   firingAngle: 45

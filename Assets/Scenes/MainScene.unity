@@ -778,6 +778,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4878420190821419895, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
   m_PrefabInstance: {fileID: 5022870085592352527}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &763498279 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8692318545455698221, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &831146460 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
@@ -1700,7 +1705,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.data[2].prefab
@@ -1711,11 +1716,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2674270034793632360, guid: 586f732dab3b81748bd0e3cdf67b91d4, type: 3}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectilePools.Array.data[4].prefab
+      value: 
+      objectReference: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
+    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.data[2].initialPoolSize
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: projectilePools.Array.data[3].initialPoolSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectilePools.Array.data[4].initialPoolSize
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
@@ -1730,6 +1743,22 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 831146460}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: equipments.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 93aa2cd2c31b0c54a94d779394a2c6eb, type: 2}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectileObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: projectileObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
+    - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: content
+      value: 
+      objectReference: {fileID: 763498279}
     - target: {fileID: 8685695344788396458, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_RootOrder
       value: 9

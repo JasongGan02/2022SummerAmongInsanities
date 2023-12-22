@@ -7,7 +7,7 @@ public class DroppedObjectController : MonoBehaviour
     public IInventoryObject item;
     public string testName;
     public float speed = 0.2f;
-    public float distanceThreshold = 0.1f;
+    public float distanceThreshold = 3f;
     public int amount = 1;
 
     private bool shouldFlyToPlayer = false;
@@ -49,8 +49,8 @@ public class DroppedObjectController : MonoBehaviour
 
     public void PickingUp()
     {
-        Destroy(GetComponent<Rigidbody2D>());
-        Destroy(GetComponent<BoxCollider2D>());
+        GetComponent<Rigidbody2D>().simulated = false;
+        GetComponent<Collider2D>().enabled = false;
         shouldFlyToPlayer = true;
     }
 
@@ -59,6 +59,23 @@ public class DroppedObjectController : MonoBehaviour
         shouldFlyToPlayer = false;
 
         inventory.AddItem(item, amount);
-        Destroy(gameObject);
+        if (item is ProjectileObject)
+        {
+            Projectile projectileComponent = GetComponent<Projectile>();
+            GetComponent<Rigidbody2D>().simulated = true;
+            GetComponent<Collider2D>().enabled = true;
+            GetComponent<Collider2D>().isTrigger = true;
+            if (projectileComponent != null)
+            {
+                projectileComponent.enabled = true;
+            }
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, (item as BaseObject).getPrefab());
+            this.enabled = false;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
     }
 }

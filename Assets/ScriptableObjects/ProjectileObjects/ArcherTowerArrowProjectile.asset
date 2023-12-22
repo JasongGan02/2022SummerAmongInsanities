@@ -9,20 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: TrapProjectile
+  m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
+  m_Name: ArcherTowerArrowProjectile
   m_EditorClassIdentifier: 
-  itemName: TrapProjectile
+  itemName: ArcherTowerArrowProjectile
   sizeRatio: 1
-  prefab: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
-  level: 0
-  quality: {r: 0, g: 0, b: 0, a: 0}
-  durability: 0
+  prefab: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
+  damageCoef: 1
   _maxStack: 0
-  dmgCoef: 1
-  farm: 0
-  frequency: 0
-  projectileSpeedMultiplier: 2
   _recipe: []
   _quantity: 
   _isCraftable: 0

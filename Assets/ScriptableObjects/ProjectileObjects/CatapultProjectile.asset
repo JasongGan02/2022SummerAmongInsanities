@@ -9,20 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: LadyProjectile
+  m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
+  m_Name: CatapultProjectile
   m_EditorClassIdentifier: 
-  itemName: LadyProjectile
+  itemName: CatapultProjectile 1
   sizeRatio: 1
-  prefab: {fileID: 2674270034793632360, guid: 586f732dab3b81748bd0e3cdf67b91d4, type: 3}
-  level: 0
-  quality: {r: 0, g: 0, b: 0, a: 0}
-  durability: 0
+  prefab: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
+  damageCoef: 1
   _maxStack: 0
-  dmgCoef: 1
-  farm: 0
-  frequency: 0
-  projectileSpeedMultiplier: 2
   _recipe: []
   _quantity: 
   _isCraftable: 0

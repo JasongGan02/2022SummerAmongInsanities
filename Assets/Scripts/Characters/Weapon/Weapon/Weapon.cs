@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Rendering;
 
 public class Weapon : MonoBehaviour
 {
@@ -20,12 +21,14 @@ public class Weapon : MonoBehaviour
     protected Playermovement playermovement;
     protected PlayerInteraction playerinteraction;
     protected Inventory inventory;
-    
+    protected CharacterController characterController;
 
+    
     protected WeaponObject weaponStats;
     protected float AtkInterval = 1f;
     protected float farm;
     protected float AttackDamage;
+    protected float weaponRange;
 
     protected float speed;
     protected float magnitude = 0.1f;
@@ -72,12 +75,12 @@ public class Weapon : MonoBehaviour
 
 
 
-    public virtual void Initialize(WeaponObject weaponObject)
+    public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
+        this.characterController = characterController;
         this.weaponStats = weaponObject;
         Type controllerType = GetType();
         Type objectType = weaponObject.GetType();
-
         // Get all the fields of the controller type
         FieldInfo[] controllerFields = controllerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
         // Iterate over the fields and set their values from the object

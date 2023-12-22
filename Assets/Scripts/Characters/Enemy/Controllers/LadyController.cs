@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LadyController : EnemyController, IRangedAttacker
 {
-    protected WeaponObject weaponObject;
+    protected ProjectileObject projectileObject;
     public float AttackRange => _atkRange; // Implementing the IRangedAttacker interface
-    public WeaponObject WeaponObject => weaponObject;
+    public ProjectileObject ProjectileObject => projectileObject;
 
     private Transform startPosition;
 
@@ -70,15 +70,15 @@ public class LadyController : EnemyController, IRangedAttacker
         }
 
         // Instantiate the arrow
-        GameObject projectileObject = ProjectilePoolManager.Instance.GetProjectile(weaponObject.getPrefab());
-        projectileObject.transform.position = startPosition.position;
-        projectileObject.transform.SetParent(transform, true);
-        Projectile projectileComponent = projectileObject.GetComponent<Projectile>();
+        GameObject projectileGameObject = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+        projectileGameObject.transform.position = startPosition.position;
+        projectileGameObject.transform.SetParent(transform, true);
+        Projectile projectileComponent = projectileGameObject.GetComponent<Projectile>();
 
         if (projectileComponent != null)
         {
             // Initialize and launch the projectile
-            projectileComponent.Initialize(this, WeaponObject);
+            projectileComponent.Initialize(this, ProjectileObject);
             projectileComponent.Launch(target, startPosition);
         }
         else
