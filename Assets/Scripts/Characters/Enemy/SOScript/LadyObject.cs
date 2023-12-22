@@ -4,5 +4,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Lady Object")]
 public class LadyObject : EnemyObject
 {
-    public WeaponObject weaponObject;
+    public ProjectileObject projectileObject;
 }

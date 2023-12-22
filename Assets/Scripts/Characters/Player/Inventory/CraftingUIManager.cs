@@ -63,6 +63,8 @@ public class CraftingUIManager : MonoBehaviour
 
     void Awake()
     {
+        //TODO: ProjectileObject
+
         // 使用 AssetDatabase 来查找所有的 WeaponObject
         string[] weaponguids = AssetDatabase.FindAssets("t:WeaponObject");
         string[] towerguids = AssetDatabase.FindAssets("t:TowerObject");
@@ -282,50 +284,32 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftButtonClicked()
     {
-        ICraftableObject Object = selectedBaseObject as ICraftableObject;
-        if (Object.getIsCoreNeeded())
-        {
-            if (selectedBaseObject is ICraftableObject craftableObject)
-            {
-
-                craftableObject.CoreCraft(inventory);
-
-            }
-
-        }
-        else
-        {
-            if (selectedBaseObject is ICraftableObject craftableObject)
-            {
-
-                craftableObject.Craft(inventory);
-
-            }
-        }
+        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+        craftableObject.Craft(inventory);
         UpdateUi();
     }
 
-        private void ItemButtonClicked(Sprite itemSprite,Button n)
-        {
-            outputItem.sprite = itemSprite;
-            outputItem.color = new Color(outputItem.color.r, outputItem.color.g, outputItem.color.b, 1);
-            selectedBaseObject = itemButtonToBaseObjectMapping[n];
-            time.text = (selectedBaseObject as ICraftableObject).getCraftTime().ToString() + "'s";
-            time.color = new Color(time.color.r, time.color.g, time.color.b, 1);
+    private void ItemButtonClicked(Sprite itemSprite,Button n)
+    {
+        outputItem.sprite = itemSprite;
+        outputItem.color = new Color(outputItem.color.r, outputItem.color.g, outputItem.color.b, 1);
+        selectedBaseObject = itemButtonToBaseObjectMapping[n];
+        time.text = (selectedBaseObject as ICraftableObject).getCraftTime().ToString() + "'s";
+        time.color = new Color(time.color.r, time.color.g, time.color.b, 1);
 
-            CraftButton.gameObject.SetActive(true);
+        CraftButton.gameObject.SetActive(true);
 
             
-            UpdateUi();
+        UpdateUi();
 
-        }
+    }
         
 
     private void UpdateUi()
     {
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
-
-
+        if (coreArchitecture == null)
+            coreArchitecture = CoreArchitecture.Instance;
         if (craftableObject.getIsCraftable())
         {
             if (craftableObject.getIsCoreNeeded())

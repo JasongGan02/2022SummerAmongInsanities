@@ -2,10 +2,10 @@ using UnityEngine;
 
 public abstract class RangedTowerController : AttackTowerController, IRangedAttacker
 {
-    protected WeaponObject weaponObject;
+    protected ProjectileObject projectileObject;
 
     public float AttackRange => _atkRange;
-    public WeaponObject WeaponObject => weaponObject;
+    public ProjectileObject ProjectileObject => projectileObject;
 
     protected GameObject target;
     protected Transform startPosition;
@@ -23,13 +23,13 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
 
     public virtual void FireProjectile(GameObject target)
     {
-        if (weaponObject != null)
+        if (projectileObject != null)
         {
-            GameObject projectileObject = ProjectilePoolManager.Instance.GetProjectile(weaponObject.getPrefab());
-            projectileObject.transform.position = startPosition.position;
-            projectileObject.transform.SetParent(transform, true);
-            Projectile projectileComponent = projectileObject.GetComponent<Projectile>();
-            projectileComponent.Initialize(this, WeaponObject);
+            GameObject projectileGameObject = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+            projectileGameObject.transform.position = startPosition.position;
+            projectileGameObject.transform.SetParent(transform, true);
+            Projectile projectileComponent = projectileGameObject.GetComponent<Projectile>();
+            projectileComponent.Initialize(this, ProjectileObject);
             projectileComponent.Launch(target, startPosition);
         }
     }

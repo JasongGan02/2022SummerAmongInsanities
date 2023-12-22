@@ -43,7 +43,7 @@ public class CatapultProjectile : Projectile
             Explode();
 
             // Return the projectile to the pool
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
         }
     }
 

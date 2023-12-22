@@ -5,10 +5,10 @@ using static UnityEngine.Rendering.DebugUI;
 using System;
 public class Projectile : MonoBehaviour
 {
-    protected WeaponObject weaponObject;
+    protected ProjectileObject projectileObject;
     protected CharacterObject characterObject;
     protected CharacterController firingCharacter;
-    protected int finalDamage;
+    protected float finalDamage;
     protected float lifespanInSeconds = 8.0f; // Maximum lifespan of the projectile in seconds
     protected float timeOfLaunch;
     protected Rigidbody2D rb;
@@ -29,12 +29,12 @@ public class Projectile : MonoBehaviour
         AlignToVelocity();
     }
 
-    public void Initialize(CharacterController firingCharacter, WeaponObject weaponObject)
+    public void Initialize(CharacterController firingCharacter, ProjectileObject projectileObject)
     {
-        this.weaponObject = weaponObject;
+        this.projectileObject = projectileObject;
         this.firingCharacter = firingCharacter;
         hatredList = firingCharacter.GetCharacterObject().Hatred;
-        finalDamage = Mathf.RoundToInt(firingCharacter.AtkDamage * weaponObject.getAttack());
+        finalDamage = firingCharacter.AtkDamage * projectileObject.DamageCoef;
         timeOfLaunch = Time.time;
     }
 
@@ -70,18 +70,18 @@ public class Projectile : MonoBehaviour
             }
 
             // Return the projectile to the pool
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
         }
         else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
         {
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
         }
     }
     protected virtual void HasReachedLifespan()
     {
         if (Time.time - timeOfLaunch > lifespanInSeconds)
         {
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, weaponObject.getPrefab());
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
         }
             
     }

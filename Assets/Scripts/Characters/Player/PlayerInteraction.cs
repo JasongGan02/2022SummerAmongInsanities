@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
     private Playermovement playerMovement;
+    private PlayerController playerController;
     private ConstructionMode constructionMode;
     private Inventory inventory;
     private RectTransform hotbarFirstRow;
@@ -191,8 +192,9 @@ public class PlayerInteraction : MonoBehaviour
 
         if (currentSlotInUse.item is WeaponObject && currentSlotInUse.item.GetItemName() != "Shovel")
         {
-            weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject();
-            waitTime = 1 / currentWeapon.getfrequency();
+            playerController = GetComponent<PlayerController>();
+            weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject(playerController);
+            waitTime = 1 / currentWeapon?.getfrequency() ?? 1;
         }
 
         if (currentSlotInUse.item is MedicineObject)

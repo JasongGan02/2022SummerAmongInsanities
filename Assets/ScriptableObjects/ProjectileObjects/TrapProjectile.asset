@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
+  m_Name: TrapProjectile
+  m_EditorClassIdentifier: 
+  itemName: TrapProjectile
+  sizeRatio: 1
+  prefab: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
+  damageCoef: 1
+  _maxStack: 0
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

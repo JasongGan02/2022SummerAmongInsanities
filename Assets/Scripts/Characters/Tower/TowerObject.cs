@@ -14,8 +14,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
 
     [Header("Bullet Specification")]
-    [SerializeField] public WeaponObject weaponObject;
-    public float projectileSpeedMultiplier;
+    [SerializeField] public ProjectileObject projectileObject;
 
     
     [Header("Iventory Parameters")]
@@ -158,11 +157,6 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     public void Craft(Inventory inventory)
     {
         inventory.CraftItems(this.Recipe, this.Quantity, this);
-    }
-
-    public void CoreCraft(Inventory inventory)
-    {
-        inventory.CraftItemsCore(this.Recipe, this.Quantity, this);
     }
 
     public BaseObject[] getRecipe()

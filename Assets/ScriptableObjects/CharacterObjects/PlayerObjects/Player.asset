@@ -16,12 +16,13 @@ MonoBehaviour:
   sizeRatio: 1
   prefab: {fileID: 6647711791749533985, guid: 4a76d7ca108e6bb4dab533130174dc7e, type: 3}
   _HP: 100
-  _atkDamage: 1
-  _atkInterval: 1
+  _atkDamage: 5
+  _atkSpeed: 3
   _atkRange: 5
   _movingSpeed: 4
   _jumpForce: 14
   _totalJumps: 1
   Drops: []
-  Hatred: []
+  Hatred:
+  - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
   RespwanTimeInterval: 4.99
