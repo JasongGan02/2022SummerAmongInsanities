@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Gold
   sizeRatio: 0.5
   prefab: {fileID: 5481595800395744475, guid: f4aea43a44866dd4ba8565affa9f5946, type: 3}
+  tileID: 5
   _maxStack: 99
   _healthPoint: 1
   _drops:

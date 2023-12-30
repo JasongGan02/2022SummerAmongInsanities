@@ -425,9 +425,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse.item is TileObject)
         {
-            GameObject newTile = (currentSlotInUse.item as TileObject).GetPlacedGameObject();
-            newTile.transform.position = position;
-            terrainGeneration.PlaceTileGameObject(newTile, position);
+            Vector2Int worldPostion = new Vector2Int((int)position.x, (int)position.y);
+            Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);
+            WorldGenerator.WorldData[chunkCoord][(int) (worldPostion.x - chunkCoord.x * WorldGenerator.ChunkSize.x), (int)worldPostion.y] = 0;
+            WorldGenerator.PlaceTile((TileObject)currentSlotInUse.item, worldPostion.x, worldPostion.y, chunkCoord, false, true);
             inventory.RemoveItemByOne(indexInUse);
         } 
         else if(currentSlotInUse.item is TowerObject)
