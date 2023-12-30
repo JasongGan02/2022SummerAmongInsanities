@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: StoneWall
   m_EditorClassIdentifier: 
   itemName: StoneWall
-  sizeRatio: 0.25
+  sizeRatio: 0.5
   prefab: {fileID: 2428287790915297841, guid: 292f7e07e0f609143bfec8555f92a6b6, type: 3}
-  HP: 20
-  AtkDamage: 0
-  AtkInterval: 0
-  AtkRange: 0
-  MovingSpeed: 0
-  JumpForce: 0
-  TotalJumps: 0
+  _HP: 0
+  _atkDamage: 0
+  _atkSpeed: 0
+  _atkRange: 0
+  _movingSpeed: 0
+  _jumpForce: 0
+  _totalJumps: 0
   Drops:
   - droppedItem: {fileID: 11400000}
     chance: 1
@@ -29,8 +29,7 @@ MonoBehaviour:
   energyCost: 5
   rotateAngle: {x: 0, y: 0, z: 0, w: 0}
   curAngle: {x: 0, y: 0, z: 0, w: 1}
-  bullet_speed: 0
-  bullet: {fileID: 0}
+  projectileObject: {fileID: 0}
   _maxStack: 0
   _recipe:
   - {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
