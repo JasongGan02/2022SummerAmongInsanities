@@ -9,6 +9,15 @@ using Random = UnityEngine.Random;
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
     [SerializeField]
+    private int tileID; // The new ID field
+
+    public int TileID
+    {
+        get => tileID;
+        set => tileID = value;
+    }
+
+    [SerializeField]
     private int _maxStack;
 
 
