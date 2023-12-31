@@ -50,6 +50,11 @@ public class audioManager : MonoBehaviour
         playerAudio.loop = false;
     }
     // Update is called once per frame
+
+    public AudioClip clip()
+    {
+        return playerAudio.clip;
+    }
     void Update()
     {
         

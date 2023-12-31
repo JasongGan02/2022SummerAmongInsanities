@@ -146,17 +146,23 @@ public class CraftingUIManager : MonoBehaviour
         CraftUI = GameObject.Find(NAME_CRAFT_UI);
         weapons = MenuUI.transform.Find(NAME_BUTTON_0).GetComponent<Button>();
         towers = MenuUI.transform.Find(NAME_BUTTON_1).GetComponent<Button>();
+
+        CraftButton = CraftUI.transform.Find(NAME_Craft_BUTTON).GetComponent<Button>();
+        CraftButton.onClick.AddListener(CraftButtonClicked);
+        CraftButton.gameObject.SetActive(false);
+
         weapons.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(weaponObjects)));
         towers.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(towerObjects)));
         MenuUI.SetActive(false);
         CraftUI.SetActive(false);
+        
     }
 
 
     private void SetupCraftUI(BaseObject[] list)
     {
         CraftUI.SetActive(true);
-        CraftButton = CraftUI.transform.Find(NAME_Craft_BUTTON).GetComponent<Button>();
+      
         
         outputItem = CraftUI.transform.Find(NAME_OUTPUT_IMAGE).GetComponent<Image>();
         inputItem0 = CraftUI.transform.Find(NAME_IMAGE_0).GetComponent<Image>();
@@ -175,7 +181,8 @@ public class CraftingUIManager : MonoBehaviour
         num5 = CraftUI.transform.Find(NAME_NUM_5).GetComponent<TMP_Text>();
         time = CraftUI.transform.Find("time").GetComponent<TMP_Text>();
 
-        CraftButton.onClick.AddListener(CraftButtonClicked);
+        
+        
 
         foreach (Transform child in content.transform)
         {
@@ -231,7 +238,7 @@ public class CraftingUIManager : MonoBehaviour
 
 
         //set them to not be visible
-        CraftButton.gameObject.SetActive(false);
+        
 
         outputItem.color = new Color(outputItem.color.r, outputItem.color.g, outputItem.color.b, 0);
         inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 0);
@@ -284,9 +291,11 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftButtonClicked()
     {
-        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
-        craftableObject.Craft(inventory);
-        UpdateUi();
+        
+            ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+            craftableObject.Craft(inventory);
+            UpdateUi();
+        
     }
 
     private void ItemButtonClicked(Sprite itemSprite,Button n)
