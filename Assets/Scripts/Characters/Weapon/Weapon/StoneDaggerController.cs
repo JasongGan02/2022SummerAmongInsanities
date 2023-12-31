@@ -8,7 +8,20 @@ public class StoneDaggerController : Weapon
   
     public override void attack()
     {
-     
+        if (Input.GetMouseButtonDown(0))
+        {
+            am.playAudio(am.attack);
+            am.looponAudio();
+        }
+        else
+        {
+            am.loopoffAudio();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            am.StopPlayerAudio();
+        }
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
         transform.Rotate(Vector3.forward * 2000f * Time.deltaTime);
