@@ -71,7 +71,7 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool TileObjectCheck(float x, float y)
     {
-        return WorldGenerator.GetDataFromWorldPos(new Vector2Int((int) x, (int)y)) == 0 && CheckAdjcentPos(new Vector2Int((int) x, (int) y))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
+        return WorldGenerator.GetDataFromWorldPos(new Vector2Int((int) x, (int)y)) <=0 && CheckAdjcentPos(new Vector2Int((int) x, (int) y))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
     }
 
     private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)
