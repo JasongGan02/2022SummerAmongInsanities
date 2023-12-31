@@ -24,7 +24,7 @@ public class BowController : RangedWeaponController
     {
         Flip();
         Patrol();
-
+        am.loopoffAudio();
         if (Input.GetMouseButtonDown(0))
         {
             chargeTime = 0f; // Start charging when the button is pressed

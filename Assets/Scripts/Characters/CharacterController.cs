@@ -29,7 +29,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected Drop[] drops;
     protected List<TextAsset> Hatred;
 
-    
+    protected audioManager am;
 
     protected List<EffectObject> effects;
 
@@ -48,6 +48,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();
+        
 
     }
 
@@ -112,7 +113,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
     public virtual void takenDamage(float dmg)
     {
-
+       
         _HP -= dmg;
 
         if (_HP <= 0)

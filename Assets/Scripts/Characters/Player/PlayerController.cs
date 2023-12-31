@@ -18,7 +18,9 @@ public class PlayerController : CharacterController, IDataPersistence
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
-    audioManager am;
+
+    
+
     //UI Elements
     Image healthBar;
     Image damagedHealthBar;
@@ -49,9 +51,9 @@ public class PlayerController : CharacterController, IDataPersistence
         damagedHealthBar.color = damagedColor;
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
         healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         UpdateHealthUI();
         EvokeStatsChange();
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
 
     public void LoadData(GameData data)
@@ -93,6 +95,7 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     public override void death()
     {
+        am.playAudio(am.death);
         healthBar.fillAmount = 0;
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
@@ -114,9 +117,10 @@ public class PlayerController : CharacterController, IDataPersistence
     public override void takenDamage(float dmg)
     {
         base.takenDamage(dmg);
+        
         if (dmg > 0)
         {
-            am.playAudio(am.injured);
+            am.playAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
         }
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible
