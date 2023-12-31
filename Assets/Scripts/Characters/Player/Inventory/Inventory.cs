@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Lumin;
+using UnityEngine.Experimental.Rendering;
 
 public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 {
@@ -163,65 +164,74 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
 
 
 
-    public void CraftItems(BaseObject[] items,int[] quantity, BaseObject outputItem)
+    public void CraftItems(BaseObject[] items, int[] quantity, BaseObject outputItem)
     {
-       
-        // Check if we have the required quantity of each item in the inventory
-        for (int i = 0; i < items.Length; i++)
-        {
-            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
-            if (targetSlot.count < quantity[i])
-            {
-
-                Debug.Log("Not enough of item in the inventory: " + items[i]);
-                return;
-            }
-
-        }
-        // If we have all the required items in the necessary quantity, remove them
-        for (int i = 0; i < items.Length; i++)
-        {
-            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
-            int index = findSLOTINDEX(items[i] as IInventoryObject);
-            targetSlot.count = targetSlot.count - quantity[i];
-            UpdateSlotUi(index);
-        }
-
-        AddItem(outputItem as IInventoryObject, 1);
-
-    }
-
-
-    public void CraftItemsCore(BaseObject[] items, int[] quantity, BaseObject outputItem)
-    {
-        if(queueManager.sizeCraftQueue() == 4)
+        if (queueManager.sizeCraftQueue() >= 4)
         {
             return;
         }
-        Debug.Log("CraftItemsCore called");
-        // Check if we have the required quantity of each item in the inventory
+
+        // First, check if all items are available in required quantities
         for (int i = 0; i < items.Length; i++)
         {
-            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
-            if (targetSlot.count < quantity[i])
+            if (!HasEnoughItem(items[i] as IInventoryObject, quantity[i]))
             {
-
-                Debug.Log("Not enough of item in the inventory: " + items[i]);
+                // If any item is not available in required quantity, exit the method
                 return;
             }
-
         }
-        // If we have all the required items in the necessary quantity, remove them
+
+        // Since all items are available, consume them
         for (int i = 0; i < items.Length; i++)
         {
-            InventorySlot targetSlot = findSLOT(items[i] as IInventoryObject);
-            int index = findSLOTINDEX(items[i] as IInventoryObject);
-          
-            database.RemoveItemByOne(index, quantity[i]);
-            UpdateSlotUi(index);
+            ConsumeItem(items[i] as IInventoryObject, quantity[i]);
         }
-        queueManager.AddToQueue(outputItem);
 
+        // Add the output item to the crafting queue
+        queueManager.AddToQueue(outputItem);
+    }
+
+    public void CraftItemsCore(BaseObject[] items, int[] quantity, BaseObject outputItem)
+    {
+        if (queueManager.sizeCraftQueue() >= 4)
+        {
+            return;
+        }
+
+        // First, check if all items are available in required quantities
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (!HasEnoughItem(items[i] as IInventoryObject, quantity[i]))
+            {
+                // If any item is not available in required quantity, exit the method
+                return;
+            }
+        }
+
+        // Since all items are available, consume them
+        for (int i = 0; i < items.Length; i++)
+        {
+            ConsumeItem(items[i] as IInventoryObject, quantity[i]);
+        }
+
+        // Add the output item to the crafting queue
+        queueManager.AddToQueue(outputItem);
+    }
+    private bool HasEnoughItem(IInventoryObject inventoryObject, int requiredQuantity)
+    {
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+            if (!slot.IsEmpty && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
+            {
+                if (requiredQuantity > slot.count)
+                {
+                    Debug.Log("Not Enough: " + slot.item.GetItemName());
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
@@ -334,7 +344,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
    
-            if (slot != null && slot.item is DivinityFragObject)
+            if (!slot.IsEmpty && slot.item is DivinityFragObject)
             {
                 
                 if (cost > slot.count)
@@ -352,6 +362,30 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             }
         }
         
+        return false;
+    }
+
+    public bool ConsumeItem(IInventoryObject inventoryObject, int num)
+    {
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+            if (!slot.IsEmpty && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
+            {
+                if (num > slot.count)
+                {
+                    Debug.Log("Not Enough: " + slot.item.GetItemName());
+                    return false;
+                }
+                else
+                {
+                    database.RemoveItemByOne(i, num);
+                    UpdateSlotUi(i);
+                    return true;
+                }
+
+            }
+        }
         return false;
     }
 

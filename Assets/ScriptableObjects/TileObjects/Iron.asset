@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Iron
   sizeRatio: 0.5
   prefab: {fileID: 3631478615819504709, guid: bdac988d219e3794485f111dd134dbc6, type: 3}
+  tileID: 6
   _maxStack: 99
   _healthPoint: 1
   _drops:

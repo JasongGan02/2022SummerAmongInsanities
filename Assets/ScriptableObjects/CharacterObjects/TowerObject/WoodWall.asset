@@ -13,22 +13,23 @@ MonoBehaviour:
   m_Name: WoodWall
   m_EditorClassIdentifier: 
   itemName: WoodWall
-  sizeRatio: 1
+  sizeRatio: 0.5
   prefab: {fileID: 3397657003104583585, guid: e8b0da03e9b2e7b4c92dfeb7de975321, type: 3}
-  HP: 10
-  AtkDamage: 0
-  AtkInterval: 0
-  AtkRange: 0
-  MovingSpeed: 0
-  JumpForce: 0
+  _HP: 0
+  _atkDamage: 0
+  _atkSpeed: 0
+  _atkRange: 0
+  _movingSpeed: 0
+  _jumpForce: 0
+  _totalJumps: 0
   Drops:
   - droppedItem: {fileID: 11400000}
     chance: 1
+  Hatred: []
   energyCost: 5
   rotateAngle: {x: 0, y: 0, z: 0, w: 0}
   curAngle: {x: 0, y: 0, z: 0, w: 1}
-  bullet_speed: 0
-  bullet: {fileID: 0}
+  projectileObject: {fileID: 0}
   _maxStack: 0
   _recipe:
   - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
@@ -36,3 +37,4 @@ MonoBehaviour:
   _quantity: 0200000004000000
   _isCraftable: 1
   _isCoreNeeded: 1
+  _craftTime: 0

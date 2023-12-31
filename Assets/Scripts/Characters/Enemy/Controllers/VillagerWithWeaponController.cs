@@ -48,7 +48,7 @@ public class VillagerWithWeaponController : EnemyController
         rb = GetComponent<Rigidbody2D>();
         horizontal_speed = rb.velocity.x;
 
-        if (horizontal_speed > MovingSpeed) { animator.SetBool("walk", true); animator.SetBool("run", true); }
+        if (horizontal_speed > _movingSpeed) { animator.SetBool("walk", true); animator.SetBool("run", true); }
         else if (horizontal_speed > 0f) { animator.SetBool("walk", true); animator.SetBool("run", false); }
 
         target = WhatToAttack();
@@ -61,20 +61,20 @@ public class VillagerWithWeaponController : EnemyController
             }
             else
             {
-                approachPlayer(1.3f * MovingSpeed);
+                approachPlayer(1.3f * _movingSpeed);
                 flip(player.transform);
             }
         }
         else
         {
-            if (IsTowerInAtkRange((int)AtkRange) && villager_sight())
+            if (IsTowerInAtkRange((int)_atkRange) && villager_sight())
             {
                 flip(target.transform);
                 attackTower(target.transform);
             }
             else
             {
-                approach(MovingSpeed, target.transform);
+                approach(_movingSpeed, target.transform);
                 flip(target.transform);
             }
         }
@@ -104,7 +104,7 @@ public class VillagerWithWeaponController : EnemyController
             else
             {
                 animator.SetBool("attack", false);
-                if (cooldown > AtkInterval)
+                if (cooldown > _atkSpeed)
                 {
                     cooldown = 0f;
                     rest = false;
@@ -117,7 +117,7 @@ public class VillagerWithWeaponController : EnemyController
         else if (Vector2.Distance(transform.position, target.position) > 1f)
         {
             animator.SetBool("attack", false);
-            approach(2 * MovingSpeed, target);
+            approach(2 * _movingSpeed, target);
         }
 
         else
@@ -138,7 +138,7 @@ public class VillagerWithWeaponController : EnemyController
             else
             {
                 animator.SetBool("attack", false);
-                if (cooldown > AtkInterval)
+                if (cooldown > _atkSpeed)
                 {
                     cooldown = 0f;
                     rest = false;
@@ -151,7 +151,7 @@ public class VillagerWithWeaponController : EnemyController
         else if (Vector2.Distance(transform.position, player.transform.position) > 0.7f)
         {
             animator.SetBool("attack", false);
-            approachPlayer(2 * MovingSpeed);
+            approachPlayer(2 * _movingSpeed);
         }
 
         else
@@ -200,12 +200,12 @@ public class VillagerWithWeaponController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
                 if (!facingright) { flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-MovingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
                 if (facingright) { flip(); }
             }
         }
@@ -274,7 +274,7 @@ public class VillagerWithWeaponController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, JumpForce);
+        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
         rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
     }
     private bool villager_sight()

@@ -30,8 +30,8 @@ public class TowerController : CharacterController
 
     public override void takenDamage(float dmg)
     {
-        HP -= dmg;
-        if (HP <= 0)
+        _HP -= dmg;
+        if (_HP <= 0)
         {
             death();
         }

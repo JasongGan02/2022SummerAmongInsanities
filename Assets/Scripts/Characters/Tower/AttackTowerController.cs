@@ -2,100 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static UnityEngine.EventSystems.EventTrigger;
+
 public abstract class AttackTowerController : TowerController
 {
-
-    protected float bullet_speed;    // bullet flying speed
-    [SerializeField] protected GameObject bullet;
 
     //run-time variables
     protected bool isEnemySpotted;
     protected EnemyContainer enemyContainer;
-    protected float AtkTimer;        // Timer
 
-    public GameObject tempTarget;
-    public Collider2D[] colliders;
-
-    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10) | (1 << 12);
-
-    //protected abstract void TowerLoop(); 
 
     // Find nearest enemy in the enemy array
-    protected virtual Transform SenseNearestEnemyTransform()
+    protected virtual GameObject WhatToAttack()
     {
-        var enemyTransforms = enemyContainer.GetComponentsInChildren<Transform>();
-
-        var minDistance = float.MaxValue;
-        Transform nearestTarget = transform;
-
-        // find nearest enemy transform
-        foreach (var enemyTransform in enemyTransforms)
+        if (Hatred.Count == 0)
         {
-            if (enemyTransform == enemyContainer)
-            {
-                continue;
-            }
-
-            var currentDistance = Vector3.Distance(transform.position, enemyTransform.position);
-
-            if (currentDistance < minDistance)
-            {
-                minDistance = currentDistance;
-                nearestTarget = enemyTransform;
-            }
+            Debug.Log("Hatred List is empty");
+            isEnemySpotted = false;
+            return null; // No enemy types to target
         }
 
-        isEnemySpotted = minDistance < AtkRange;
+        float minDistance = float.MaxValue;
+        GameObject nearestTarget = null;
 
-        return nearestTarget;
-    }
+        // Get all enemies from the container
+        var enemies = enemyContainer.GetComponentsInChildren<EnemyController>(); // Assuming 'Enemy' is your enemy script
 
-    protected bool CheckIfEnemyInRange()
-    {
-        return Vector3.Distance(transform.position, SenseNearestEnemyTransform().position) < AtkRange;
-    }
-
-    public GameObject WhatToAttack()
-    {
-        GameObject target = null;
-        if (Hatred.Count > 0)
+        // Iterate over each hated type
+        foreach (var hatedType in Hatred)
         {
-            //Debug.Log(Hatred.Count);
-            for (int i = 0; i < Hatred.Count; i++)
-            {
-                if (CouldSense(Hatred[i].name, AtkRange))
-                {
-                    return tempTarget;
-                }
-            }
-        }
-        else { Debug.Log("Hatred is less than 0"); }
-        return target;
-    }
+            Type type = Type.GetType(hatedType.name);
+            if (type == null) continue;
 
-    public bool CouldSense(string name, float range)
-    {
-        Type type = Type.GetType(name);
-        colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
-        //Debug.Log(colliders.Length);
-        foreach (Collider2D collider in colliders)
-        {
-            MonoBehaviour[] components = collider.gameObject.GetComponents<MonoBehaviour>();
-            foreach (MonoBehaviour component in components)
+            // Check each enemy against the hated types
+            foreach (var enemy in enemies)
             {
-                if (component != null )
+                if (type.IsAssignableFrom(enemy.GetType()) || type.Equals(enemy.GetType()))
                 {
-                    if (type.IsAssignableFrom(component.GetType()) || type.Equals(component.GetType()))
+                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                    if (distance < minDistance && distance < _atkRange)
                     {
-                        tempTarget = collider.gameObject;
-                        return true;
+                        minDistance = distance;
+                        nearestTarget = enemy.gameObject;
                     }
                 }
             }
-
         }
-        //Debug.Log("didn't find target");
-        return false; 
+
+        isEnemySpotted = nearestTarget != null;
+        return nearestTarget; // Returns null if no hated enemy type is found within range
     }
 
 }

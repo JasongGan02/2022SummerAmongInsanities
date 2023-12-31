@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Rendering;
 
 public class Weapon : MonoBehaviour
 {
@@ -20,12 +21,14 @@ public class Weapon : MonoBehaviour
     protected Playermovement playermovement;
     protected PlayerInteraction playerinteraction;
     protected Inventory inventory;
-    
+    protected CharacterController characterController;
 
+    
     protected WeaponObject weaponStats;
     protected float AtkInterval = 1f;
     protected float farm;
     protected float AttackDamage;
+    protected float weaponRange;
 
     protected float speed;
     protected float magnitude = 0.1f;
@@ -33,7 +36,7 @@ public class Weapon : MonoBehaviour
     protected float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
     protected float frequency = 10f;
 
-    audioManager am;
+    protected audioManager am;
 
     public virtual void Start()
     {
@@ -42,7 +45,7 @@ public class Weapon : MonoBehaviour
         playerinteraction = player.GetComponent<PlayerInteraction>();
         inventory = FindObjectOfType<Inventory>();
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
-
+        
     }
 
 
@@ -71,12 +74,12 @@ public class Weapon : MonoBehaviour
 
 
 
-    public virtual void Initialize(WeaponObject weaponObject)
+    public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
+        this.characterController = characterController;
         this.weaponStats = weaponObject;
         Type controllerType = GetType();
         Type objectType = weaponObject.GetType();
-
         // Get all the fields of the controller type
         FieldInfo[] controllerFields = controllerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
         // Iterate over the fields and set their values from the object
@@ -113,11 +116,27 @@ public class Weapon : MonoBehaviour
     public virtual void attack()
     {
 
-        am.playAudio(am.attack);
+        
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
 
-        if (playermovement.facingRight)
+        if (Input.GetMouseButtonDown(0))
+        {
+            am.playAudio(am.attack);
+            am.looponAudio();
+        }
+        else
+        {
+            am.loopoffAudio();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            am.StopPlayerAudio();
+        }
+
+
+            if (playermovement.facingRight)
         {
             if (transform.position.x > player.transform.position.x + slowDownDistance)
             {

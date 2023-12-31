@@ -40,13 +40,23 @@ public class ConstructionMode : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void FixedUpdate()
+    {
+        if (coreArchitecture == null)
+        {
+            coreArchitecture = CoreArchitecture.Instance;
+        }
+    }
     void Update()
     {
-        if(isInConstructionMode)
+        
+        if (isInConstructionMode)
         {
             EnterConstruction();
         }else
         {
+            if (coreArchitecture == null)
+                Debug.Log("cant");
             ExitConstruction();
         }
     }

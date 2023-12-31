@@ -15,12 +15,13 @@ MonoBehaviour:
   itemName: CatapultTower
   sizeRatio: 0.25
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
-  HP: 30
-  AtkDamage: 4
-  AtkInterval: 4
-  AtkRange: 15
-  MovingSpeed: 0
-  JumpForce: 0
+  _HP: 200
+  _atkDamage: 20
+  _atkSpeed: 4
+  _atkRange: 30
+  _movingSpeed: 0
+  _jumpForce: 0
+  _totalJumps: 0
   Drops: []
   Hatred:
   - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
@@ -30,10 +31,10 @@ MonoBehaviour:
   energyCost: 30
   rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   curAngle: {x: 0, y: 0, z: 0, w: 1}
-  bullet_speed: 3
-  bullet: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
+  projectileObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
   _maxStack: 2
   _recipe: []
   _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
+  _craftTime: 0

@@ -8,7 +8,7 @@ public class ShadowGenerator : MonoBehaviour
 {
     // in world space, the width of a block is 0.25. The first block's x is 0.13
     // position to x index should be => (position.x - 0.13) / 0.25
-    
+
     // in parent object's space, the width of a block is 1. The first block's x is 0.5
     // position to x index should be => position.x - 0.5 or (int) position.x
     public int lightRadius;
@@ -33,7 +33,7 @@ public class ShadowGenerator : MonoBehaviour
     [Tooltip("between 0 & 15")][SerializeField] private float sunlightBrightness;
     [SerializeField] private float LightFade;
     [SerializeField] private Transform lightMapOverlay;
-    private int dirtHeight; 
+    private int dirtHeight;
 
     private void Start()
     {
@@ -329,7 +329,7 @@ public class ShadowGenerator : MonoBehaviour
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -360,9 +360,9 @@ public class ShadowGenerator : MonoBehaviour
         float propX = a * 4f;
         float propY = b * 4f;
 
-        for (int x = (int) (propX - cleanRadius); x <= propX + cleanRadius; x++)
+        for (int x = (int)(propX - cleanRadius); x <= propX + cleanRadius; x++)
         {
-            for (int y = (int) (propY - cleanRadius); y <= propY + cleanRadius; y++)
+            for (int y = (int)(propY - cleanRadius); y <= propY + cleanRadius; y++)
             {
                 if (x >= 0 && x < worldWidthInBlock && y >= 0 && y < worldHeightInBlock)
                 {
@@ -381,11 +381,11 @@ public class ShadowGenerator : MonoBehaviour
 
     public void ShadowAutoRecover()
     {
-        for (int x = 2; x < worldWidthInBlock-2; x++)
+        for (int x = 2; x < worldWidthInBlock - 2; x++)
         {
             for (int y = skyLightHeight; y > 0; y--)
             {
-                if (IsUnderGround(x, y) && !IsLightCovered(x,y))
+                if (IsUnderGround(x, y) && !IsLightCovered(x, y))
                 {
                     lightMap.SetPixel(x, y, Color.black);
                 }

@@ -9,6 +9,15 @@ using Random = UnityEngine.Random;
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
     [SerializeField]
+    private int tileID; // The new ID field
+
+    public int TileID
+    {
+        get => tileID;
+        set => tileID = value;
+    }
+
+    [SerializeField]
     private int _maxStack;
 
 
@@ -222,10 +231,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         inventory.CraftItems(this.Recipe,this.Quantity,this);
     }
-    public void CoreCraft(Inventory inventory)
-    {
-        inventory.CraftItemsCore(this.Recipe, this.Quantity, this);
-    }
+
     public BaseObject[] getRecipe()
     {
         return Recipe;

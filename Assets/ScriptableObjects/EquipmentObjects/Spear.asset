@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   itemName: Spear
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 3246375338820597191, guid: 20a952f4910043c46bc0a12cbba8667b, type: 3}
   level: 3
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
-  attack: 0
+  dmgCoef: 0
   farm: 0
-  frequency: 0
+  frequency: 1
+  projectileSpeedMultiplier: 2
   _recipe:
   - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
   _quantity: 02000000

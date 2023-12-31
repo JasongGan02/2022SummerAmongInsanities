@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
     private Playermovement playerMovement;
+    private PlayerController playerController;
     private ConstructionMode constructionMode;
     private Inventory inventory;
     private RectTransform hotbarFirstRow;
@@ -43,6 +44,8 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject prop;
     public MedicineObject currentMedicine;
     public TorchObject currentTorch;
+
+    private audioManager am;
 
   
 
@@ -73,6 +76,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
         hotbarFirstRow = GameObject.Find("InventoryUI").transform.Find("Hotbar").Find("Row(Clone)").GetComponent<RectTransform>();
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
 
     private void OnEnable()
@@ -191,8 +195,9 @@ public class PlayerInteraction : MonoBehaviour
 
         if (currentSlotInUse.item is WeaponObject && currentSlotInUse.item.GetItemName() != "Shovel")
         {
-            weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject();
-            waitTime = 1 / currentWeapon.getfrequency();
+            playerController = GetComponent<PlayerController>();
+            weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject(playerController);
+            waitTime = 1 / currentWeapon?.getfrequency() ?? 1;
         }
 
         if (currentSlotInUse.item is MedicineObject)
@@ -285,15 +290,19 @@ public class PlayerInteraction : MonoBehaviour
             Vector2 mouseDownPosition = GetMousePosition2D();
             if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)
             {
+               
                 RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
                 if (clickHit.transform != null)
                 {
+                   
                     GameObject tempTargetObject = clickHit.transform.gameObject;
                     if (tempTargetObject.GetComponent<BreakableObjectController>() != null && CanInteractWith(tempTargetObject, mouseDownPosition))
                     {
+                        
                         animator.SetBool(Constants.Animator.MELEE_TOOL, true);
                         if (clickHit.transform.gameObject != targetObject)
                         {
+                            am.playAudio(am.tile_duringbreak);
                             targetObject = tempTargetObject;
                             playerMovement.excavateCoeff = 0.1f;
                             StartTimer();
@@ -323,6 +332,7 @@ public class PlayerInteraction : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             ResetMeleeAnimationAndTimer();
+            am.StopPlayerAudio();
         }
 
         if (IsTimerCompleted())
@@ -423,9 +433,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse.item is TileObject)
         {
-            GameObject newTile = (currentSlotInUse.item as TileObject).GetPlacedGameObject();
-            newTile.transform.position = position;
-            terrainGeneration.PlaceTileGameObject(newTile, position);
+            Vector2Int worldPostion = new Vector2Int((int)position.x, (int)position.y);
+            Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);
+            WorldGenerator.WorldData[chunkCoord][(int) (worldPostion.x - chunkCoord.x * WorldGenerator.ChunkSize.x), (int)worldPostion.y] = 0;
+            WorldGenerator.PlaceTile((TileObject)currentSlotInUse.item, worldPostion.x, worldPostion.y, chunkCoord, false, true);
             inventory.RemoveItemByOne(indexInUse);
         } 
         else if(currentSlotInUse.item is TowerObject)

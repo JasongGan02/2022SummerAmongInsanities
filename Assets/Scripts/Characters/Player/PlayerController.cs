@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.Universal;
 using UnityEditor.PackageManager;
 using Unity.VisualScripting;
+using TMPro;
 
 public class PlayerController : CharacterController, IDataPersistence
 {
@@ -17,12 +18,17 @@ public class PlayerController : CharacterController, IDataPersistence
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
+
+    
+
+    //UI Elements
     Image healthBar;
     Image damagedHealthBar;
+    TextMeshProUGUI healthText;
     Color damagedColor;
     float damagedHealthFadeTimer;
-    float damaged_health_fade_timer_max = 2f; 
-
+    float damaged_health_fade_timer_max = 2f;
+     
     private int deathCount = 0;
     private int playerLevel = 0;
     private float playerExperience = 0f;
@@ -43,11 +49,11 @@ public class PlayerController : CharacterController, IDataPersistence
         damagedColor = damagedHealthBar.color;
         damagedColor.a = 0f;
         damagedHealthBar.color = damagedColor;
-        if (healthBar != null)
-        {
-            healthBar.fillAmount = (float) HP / characterStats.HP;
-        }
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
+        healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
+        UpdateHealthUI();
+        EvokeStatsChange();
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
 
     public void LoadData(GameData data)
@@ -89,6 +95,7 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     public override void death()
     {
+        am.playAudio(am.death);
         healthBar.fillAmount = 0;
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
@@ -109,13 +116,12 @@ public class PlayerController : CharacterController, IDataPersistence
 
     public override void takenDamage(float dmg)
     {
-        HP -= dmg;
-        if (HP <= 0)
+        base.takenDamage(dmg);
+        
+        if (dmg > 0)
         {
-            death();
+            am.playAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
         }
-        StartCoroutine(FlashRed());
-
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible
             damagedHealthBar.fillAmount = healthBar.fillAmount;
@@ -124,23 +130,17 @@ public class PlayerController : CharacterController, IDataPersistence
         damagedHealthBar.color = damagedColor;
         damagedHealthFadeTimer = damaged_health_fade_timer_max;
 
-        if (healthBar != null)
-        {
-            healthBar.fillAmount = (float) HP / characterStats.HP;
-        }
+        UpdateHealthUI();
     }
 
     public void Heal(float amount)
     {
-        HP += amount;
-        if (HP > characterStats.HP)
+        _HP += amount;
+        if (_HP > characterStats._HP)
         {
-            HP = characterStats.HP;
+            _HP = characterStats._HP;
         }
-        if (healthBar != null)
-        {
-            healthBar.fillAmount = (float)HP / characterStats.HP;
-        }
+        UpdateHealthUI();
     }
 
     public void PlayerSurroundingLight()
@@ -172,10 +172,34 @@ public class PlayerController : CharacterController, IDataPersistence
             personalLight.intensity = 0f;
         }
     }
+    private void UpdateHealthUI()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float)_HP / characterStats._HP;
+        }
+
+        if (healthText != null)
+        {
+            // Round HP to the nearest integer
+            int roundedHP = Mathf.RoundToInt(_HP);
+            int maxHP = Mathf.RoundToInt(characterStats._HP); // Assuming max HP should also be an integer
+
+            healthText.text = roundedHP.ToString() + "/" + maxHP.ToString();
+        }
+    }
+
+    protected override void EvokeStatsChange()
+    {
+        playermovement_component.StatsChange(_movingSpeed, _jumpForce, _totalJumps);
+    }
+
     public float GetPersonalLight() { return personalLight.intensity; }
 
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }
     public void SetLevel(int newLevel) { playerLevel = newLevel; }
     public void SetEXP(float newEXP) { playerExperience = newEXP; }
+
+    const string HPTEXT_UI_NAME = "HPText";
 }

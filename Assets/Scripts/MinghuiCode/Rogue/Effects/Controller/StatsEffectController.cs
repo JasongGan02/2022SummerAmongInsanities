@@ -8,21 +8,8 @@ public class StatsEffectController : EffectController
     protected float dHP;
     
     
-    public override void Initialize(EffectObject effectObject)
-    {
-        base.Initialize(effectObject);
-        StartEffect();
-    }
 
-    protected override void StartEffect()
-    {
-        // Start the effect or perform any necessary setup
-
-        // Start a coroutine to wait for the specified duration and then destroy the component
-        StartCoroutine(DestroyAfterDuration());
-    }
-
-    protected override System.Collections.IEnumerator DestroyAfterDuration()
+    protected override IEnumerator DestroyAfterDuration()
     {
         float elapsedTime = 0f;
 
@@ -45,6 +32,6 @@ public class StatsEffectController : EffectController
     private void CharacterCurrentHPChange(float amount)
     {
         Type type = effectObject.GetApplyingControllerType();
-        (GetComponent(type) as CharacterController).takenDamage(-amount);
+        this.gameObject.GetComponent<CharacterController>().takenDamage(-amount);
     }
 }

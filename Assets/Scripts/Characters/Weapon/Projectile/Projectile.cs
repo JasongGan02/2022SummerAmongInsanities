@@ -1,89 +1,122 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
-
+using static UnityEngine.Rendering.DebugUI;
+using System;
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] public GameObject player;
+    protected ProjectileObject projectileObject;
+    protected CharacterObject characterObject;
+    protected CharacterController firingCharacter;
+    protected float finalDamage;
+    protected float lifespanInSeconds = 8.0f; // Maximum lifespan of the projectile in seconds
+    protected float timeOfLaunch;
+    protected Rigidbody2D rb;
+    protected List<TextAsset> hatredList;
+    public float firingAngle = 45.0f; // Angle of firing
+    public float speed = 20f; // Speed of the projectile
+    public float gravityScale = 0.1f; // Scaled down gravity effect
 
-    public Playermovement playermovement;
-    private Inventory inventory;
 
-    [SerializeField]
-    private float speed = 18f;
-    [SerializeField]
-    private int damage = 1;
-
-    public virtual void Start()
+    private void Awake()
     {
-        player = GameObject.Find("Player");
-        playermovement = player.GetComponent<Playermovement>();
-        Launch();
-        inventory = FindObjectOfType<Inventory>();
+        rb = GetComponent<Rigidbody2D>();
+    }
+    protected virtual void Update()
+    {
+        HasReachedLifespan();
+        // Constantly align the projectile to its velocity vector
+        AlignToVelocity();
     }
 
-    public virtual void Update()
+    public void Initialize(CharacterController firingCharacter, ProjectileObject projectileObject)
     {
-        Flip();
-
-
-    }
-     
-
-
-
-
-    // Called when the projectile collides with another object
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "enemy")
-        {
-            collision.gameObject.GetComponent<CharacterController>().takenDamage(damage);
-            Destroy(gameObject);
-        }
-        else
-        {
-            Destroy(this);
-            gameObject.layer = LayerMask.NameToLayer("resource");
-            var controller = gameObject.AddComponent<DroppedObjectController>();
-            controller.Initialize(inventory.findSlot("Arrow").item, 1);
-
-
-        }
-
+        this.projectileObject = projectileObject;
+        this.firingCharacter = firingCharacter;
+        hatredList = firingCharacter.GetCharacterObject().Hatred;
+        finalDamage = firingCharacter.AtkDamage * projectileObject.DamageCoef;
+        timeOfLaunch = Time.time;
     }
 
 
-
-    // Launches the projectile in the specified direction
-    public virtual void Launch()
+    public virtual void Launch(GameObject target, Transform startPosition)
     {
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-
-        if (playermovement.facingRight)
+        if (target == null)
         {
-            rb.AddForce(Vector3.right * speed, ForceMode2D.Impulse);
+            Debug.LogError("Launch target is null.");
+            return;
         }
-        else
+
+        // Calculate the direction to the target
+        Vector2 directionToTarget = (target.transform.position - startPosition.position).normalized;
+
+        // Set the projectile's velocity towards the target
+        rb.velocity = directionToTarget * speed;
+
+        // Adjust the gravity scale for minor gravity effect
+        rb.gravityScale = gravityScale;
+
+    }
+
+
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (IsInHatredList(collider))
         {
+            CharacterController character = collider.GetComponent<CharacterController>();
+            if (character != null)
+            {
+                character.takenDamage(finalDamage);
+            }
+
+            // Return the projectile to the pool
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
+        }
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
+        {
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
+        }
+    }
+    protected virtual void HasReachedLifespan()
+    {
+        if (Time.time - timeOfLaunch > lifespanInSeconds)
+        {
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
+        }
             
-            rb.AddForce(Vector3.left * speed, ForceMode2D.Impulse);
-        }
-            
-            
     }
 
-    public virtual void Flip()
+    protected void AlignToVelocity()
     {
-        if (playermovement.facingRight)
+        if (rb.velocity != Vector2.zero)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 315));
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 135));
+            // Calculate the angle from velocity
+            float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+
+            // Align the arrow to 45 degrees from its velocity vector
+            transform.rotation = Quaternion.AngleAxis(angle - 45, Vector3.forward);
         }
     }
+    
+    protected virtual void ApplyDamage()
+    {
 
+    }
+
+    protected virtual bool IsInHatredList(Collider2D collider)
+    {
+        foreach (var hatedType in hatredList)
+        {
+            Type type = Type.GetType(hatedType.name);
+            if (type == null) continue;
+
+            var target = collider.GetComponent(type) as CharacterController;
+            if (target != null)
+            {
+                return true; // Target is in hatred list
+            }
+        }
+
+        return false; // Target not found in hatred list
+    }
 }
-
