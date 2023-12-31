@@ -329,7 +329,7 @@ public class PlayerInteraction : MonoBehaviour
             
         }
         
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && am.clip() == am.tile_duringbreak)
         {
             ResetMeleeAnimationAndTimer();
             am.StopPlayerAudio();

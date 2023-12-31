@@ -53,7 +53,8 @@ public class ConstructionMode : MonoBehaviour
         if (isInConstructionMode)
         {
             EnterConstruction();
-        }else
+        }
+        else
         {
             if (coreArchitecture == null)
                 Debug.Log("cant");

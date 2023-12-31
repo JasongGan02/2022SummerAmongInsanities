@@ -103,9 +103,10 @@ public class CraftingQueueManager : MonoBehaviour
                 remainingCraftingTime -= 1; // adjust this value as needed
                 ProgressText.text = remainingCraftingTime.ToString() + "'s";
 
-                if (remainingCraftingTime <= 0)
+                if (remainingCraftingTime == 0)
                 {
                     // Item crafting is complete; you can handle item creation here
+                    if (coreArchitecture != null)
                     spawn(itemToCraft);
 
                     // Remove the item from the queue
@@ -128,10 +129,13 @@ public class CraftingQueueManager : MonoBehaviour
 
     private void spawn(BaseObject itemToCraft)
     {
-        GameObject spawnObject = Instantiate(itemToCraft.getPrefab(), coreArchitecture.transform.position + new Vector3(1, 0, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
-        spawnObject.layer = LayerMask.NameToLayer("resource");
-        var controller = spawnObject.AddComponent<DroppedObjectController>();
-        controller.Initialize(itemToCraft as IInventoryObject, 1);
+        
+            GameObject spawnObject = Instantiate(itemToCraft.getPrefab(), coreArchitecture.transform.position + new Vector3(1, 0, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+            spawnObject.layer = LayerMask.NameToLayer("resource");
+            var controller = spawnObject.AddComponent<DroppedObjectController>();
+            controller.Initialize(itemToCraft as IInventoryObject, 1);
+        
+            
     }
 
 
