@@ -72,8 +72,12 @@ public class WorldGenerator : MonoBehaviour
                     TileObject tileObject = TileObjectRegistry.GetTileObjectByID(Mathf.Abs(currentBlockID));//Background Wall would be negative ID
                     if (tileObject != null)
                     {
-
+                        
                         PlaceTile(tileObject, x + (offset.x * ChunkSize.x), y, offset, currentBlockID < 0, false);
+                    }
+                    else
+                    {
+                        Debug.Log("no world");
                     }
                 }
             }

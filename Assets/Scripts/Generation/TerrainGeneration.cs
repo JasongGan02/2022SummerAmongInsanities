@@ -76,7 +76,7 @@ public class TerrainGeneration : MonoBehaviour
         DrawCavesAndOres();
         CreateChunks();
         GenerateTerrain();
-        AddCore();
+        //AddCore();
 
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         if (shadowGenerator != null)
