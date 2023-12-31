@@ -9,6 +9,15 @@ public class BreakableObjectController : MonoBehaviour
     private IBreakableObject tile;
     private float healthPoint;
     private WorldGenerator terrainGeneration;
+
+    private audioManager am;
+
+    
+    private void Awake()
+    {
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+    }
+
     [HideInInspector] public bool isPlacedByPlayer;
     public void Initialize(TileObject tile, int hp, bool isPlacedByPlayer)
     {
@@ -19,9 +28,14 @@ public class BreakableObjectController : MonoBehaviour
 
     public void OnClicked(float damage)
     {
+        
+        
+
         healthPoint -= damage;
+    
         if (healthPoint <= 0)
         {
+            
             Debug.Log("Destroy by Clicking");
             Destroy(gameObject);
             OnObjectDestroyed();
@@ -30,6 +44,7 @@ public class BreakableObjectController : MonoBehaviour
   
     private void OnObjectDestroyed()
     {
+        am.playAudio(am.tile_endbreak);
         var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);
         Vector2Int worldPostion = new Vector2Int((int) transform.position.x, (int)transform.position.y);
         Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);

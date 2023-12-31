@@ -21,14 +21,19 @@ public class TileObjectRegistry : ScriptableObject
 
     public static TileObject GetTileObjectByID(int id)
     {
-        if (tileObjectMap.TryGetValue(id, out TileObject tileObject))
+        if (tileObjectMap != null)
         {
-            return tileObject;
+            if (tileObjectMap.TryGetValue(id, out TileObject tileObject))
+            {
+                return tileObject;
+            }
+            else
+            {
+                Debug.LogWarning($"TileObject with ID {id} not found.");
+                return null;
+            }
         }
-        else
-        {
-            Debug.LogWarning($"TileObject with ID {id} not found.");
-            return null;
-        }
+        return null;
+
     }
 }
