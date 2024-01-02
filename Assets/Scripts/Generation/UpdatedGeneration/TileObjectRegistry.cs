@@ -33,6 +33,7 @@ public class TileObjectRegistry : ScriptableObject
                 return null;
             }
         }
+        Debug.LogWarning($"TileObjectMap not found.");
         return null;
 
     }

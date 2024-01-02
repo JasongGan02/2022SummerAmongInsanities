@@ -49,7 +49,11 @@ public class ConstructionMode : MonoBehaviour
     }
     void Update()
     {
-        
+        if (coreArchitecture == null)
+        {
+            coreArchitecture = CoreArchitecture.Instance;
+            return;
+        }
         if (isInConstructionMode)
         {
             EnterConstruction();

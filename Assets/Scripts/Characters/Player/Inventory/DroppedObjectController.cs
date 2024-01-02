@@ -5,7 +5,6 @@ using UnityEngine;
 public class DroppedObjectController : MonoBehaviour
 {
     public IInventoryObject item;
-    public string testName;
     public float speed = 0.2f;
     public float distanceThreshold = 3f;
     public int amount = 1;
@@ -18,7 +17,8 @@ public class DroppedObjectController : MonoBehaviour
     {
         this.amount = amount;
         this.item = item;
-        testName = item.GetItemName();
+        GameObject currentChunk = WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
+        transform.SetParent(currentChunk.transform, true);
     }
 
     private void Start()
@@ -27,9 +27,9 @@ public class DroppedObjectController : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if(player==null)
+        if (player==null)
         {
             player = GameObject.FindWithTag("Player");
         }
@@ -44,7 +44,7 @@ public class DroppedObjectController : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     public void PickingUp()

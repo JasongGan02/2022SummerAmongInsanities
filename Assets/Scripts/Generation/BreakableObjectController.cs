@@ -56,6 +56,7 @@ public class BreakableObjectController : MonoBehaviour
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
         {
+            WorldGenerator.WorldData[chunkCoord][(int)transform.localPosition.x, (int)transform.localPosition.y] = -((TileObject)tile).TileID;
             WorldGenerator.PlaceTile(((TileObject)tile), worldPostion.x, worldPostion.y, chunkCoord, true, false);
         }
         foreach (GameObject droppedItem in drops)

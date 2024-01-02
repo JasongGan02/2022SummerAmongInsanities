@@ -134,6 +134,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             // TODO refactor collectible object to set the amount when getting the dropped item
             GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
             droppedItem.transform.position = dropPosition;
+            droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
         }
 
         UpdateSlotUi(index);

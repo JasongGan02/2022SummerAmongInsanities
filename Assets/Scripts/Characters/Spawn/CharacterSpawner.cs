@@ -13,13 +13,8 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
 
     private void Start()
     {
-        coreArchitecture = CoreArchitecture.Instance;
         RespawnTimeInterval = (characterAtlas.player as PlayerObject).RespwanTimeInterval;
-        SpawnPlayer();
-        this.transform.position = coreArchitecture.transform.position;
-        //SpawnBat();
-        //SpawnVillager();
-        //SpawnLady();
+        StartCoroutine(WaitForCoreArchitectureAndDoSomething());
 
     }
 
@@ -121,4 +116,19 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
 
         return false;
     }
+
+    IEnumerator WaitForCoreArchitectureAndDoSomething()
+    {
+        // Wait until CoreArchitecture is available
+        while (CoreArchitecture.Instance == null)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        // Now that CoreArchitecture is available, set it and proceed with the function call
+        coreArchitecture = CoreArchitecture.Instance;
+        this.transform.position = coreArchitecture.transform.position;
+        SpawnPlayer();
+    }
+
 }

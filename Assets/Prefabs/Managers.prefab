@@ -49,6 +49,12 @@ MonoBehaviour:
     initialPoolSize: 20
   - prefab: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
     initialPoolSize: 20
+  - prefab: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
+    initialPoolSize: 20
+  - prefab: {fileID: 2674270034793632360, guid: 586f732dab3b81748bd0e3cdf67b91d4, type: 3}
+    initialPoolSize: 20
+  - prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
+    initialPoolSize: 20
 --- !u!1 &8685695344788396459
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +93,7 @@ Transform:
   - {fileID: 2113706955}
   - {fileID: 5139273599847005184}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8685695345270950379
 GameObject:
@@ -457,7 +463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8366817067291334112, guid: d69934c998a4f6f4290b0dd04a855707, type: 3}
       propertyPath: isDebugDayTime
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -495,6 +501,18 @@ PrefabInstance:
       propertyPath: testCase.Array.data[5]
       value: 
       objectReference: {fileID: 11400000, guid: 2bd86e018903322459d05e4329c4abf7, type: 2}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: equipments.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 93aa2cd2c31b0c54a94d779394a2c6eb, type: 2}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: projectileObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: projectileObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
     - target: {fileID: 7022060688360506794, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
       propertyPath: m_Name
       value: SpawnManager

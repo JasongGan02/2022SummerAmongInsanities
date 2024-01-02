@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 11400000, guid: fb209134005257f439dfdb6818f1ae41, type: 2}
+  - {fileID: 11400000, guid: 2e9081444ebb9e6438948a2fde97acd8, type: 2}
 --- !u!114 &4677015888933098900
 MonoBehaviour:
   m_ObjectHideFlags: 0
