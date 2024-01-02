@@ -82,7 +82,6 @@ public class TorchController : MonoBehaviour
         if (TorchLight == null) { TorchLight = GetComponent<Light2D>(); }
         if (GlobalLight == null) { GlobalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>(); }
         if (shadowGenerator == null) { shadowGenerator = GameObject.Find("ShadowOverlay").GetComponent<ShadowGenerator>(); }
-        if (skyLightHeight == -1) { skyLightHeight = shadowGenerator.skyLightHeight; }
         if (lightRadius == -1) { lightRadius = shadowGenerator.lightRadius; }
 
         if (player.GetComponent<PlayerInteraction>() != null)
