@@ -135,14 +135,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldGenerator
       objectReference: {fileID: 0}
-    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: seed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: coreArchitecturePrefab
-      value: 
-      objectReference: {fileID: 2767627944182598563, guid: 881ea817df899664cb502686f5086589, type: 3}
     - target: {fileID: 4677015888933098899, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -186,10 +178,6 @@ PrefabInstance:
     - target: {fileID: 4677015888933098899, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677015888933098900, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: RenderDistance
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1047,6 +1035,55 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1946579799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1946579801}
+  - component: {fileID: 1946579800}
+  m_Layer: 0
+  m_Name: PoolingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1946579800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946579799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be2d401e65a46d4f9441391db858bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IPoolableObjectPools:
+  - poolableObject: {fileID: 11400000, guid: c4c1a86a209c6a14d89731a37a92f48d, type: 2}
+    initialPoolSize: 1
+  - poolableObject: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
+    initialPoolSize: 20
+--- !u!4 &1946579801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946579799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 110.34989, y: 31.776787, z: -0.46256262}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2071106404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1217,6 +1254,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3674070578105115404, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674070578105115404, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5022870085557637275, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}

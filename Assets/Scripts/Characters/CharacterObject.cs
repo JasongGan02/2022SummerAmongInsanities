@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 
-public class CharacterObject : BaseObject
+public class CharacterObject : BaseObject, IPoolableObject
 {
     [Header("Character Stats")]
     public float _HP;
@@ -53,5 +53,14 @@ public class CharacterObject : BaseObject
 
     }
 
-   
+    public GameObject GetPoolGameObject()
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.name = itemName;
+        controllerName = itemName + "Controller";
+        Type type = Type.GetType(controllerName);
+        var controller = worldGameObject.AddComponent(type);
+        (controller as CharacterController).Initialize(this);
+        return worldGameObject;
+    }
 }

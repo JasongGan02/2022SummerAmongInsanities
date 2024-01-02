@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "projectile", menuName = "Objects/Projectile Object")]
-public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject
+public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, IPoolableObject
 {
 
     [SerializeField]
@@ -135,5 +135,10 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject
     {
         return _craftTime;
     }
+
     #endregion
+    public GameObject GetPoolGameObject()
+    {
+        return getPrefab();
+    }
 }
