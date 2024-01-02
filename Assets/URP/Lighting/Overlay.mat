@@ -56,9 +56,9 @@ Material:
     - _OverlayHeight: 10
     - _OverlaySize: 10
     - _OverlayWidth: 10
-    - _WorldHeight: 27
+    - _WorldHeight: 110
     - _WorldSize: 61
-    - _WorldWidth: 50
+    - _WorldWidth: 200
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &8433655201952268314
