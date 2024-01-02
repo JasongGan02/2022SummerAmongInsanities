@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4677015888933098898
 MonoBehaviour:
@@ -45,12 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f19d554f19e6bf4a920185980120291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 0
-  coreArchitecturePrefab: {fileID: 2767627944182598563, guid: 881ea817df899664cb502686f5086589, type: 3}
   settings:
   - {fileID: 11400000, guid: fb209134005257f439dfdb6818f1ae41, type: 2}
   - {fileID: 11400000, guid: 2e9081444ebb9e6438948a2fde97acd8, type: 2}
-  tileObjectRegistry: {fileID: 11400000, guid: f449edb2de25cf94eb3a461afadc9544, type: 2}
 --- !u!114 &4677015888933098900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,4 +61,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  RenderDistance: 3
+  RenderDistance: 5

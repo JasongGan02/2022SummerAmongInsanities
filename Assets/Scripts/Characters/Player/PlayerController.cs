@@ -71,14 +71,6 @@ public class PlayerController : CharacterController, IDataPersistence
         if(GetComponent<Transform>().position.y < -100)
             death();
     }
-
-    void OnEnable()
-    {
-        if (characterStats == null)
-            return;
-        _HP = characterStats._HP;
-        UpdateHealthUI();
-    }
     protected override void Update()
     {
         base.Update();
@@ -104,12 +96,11 @@ public class PlayerController : CharacterController, IDataPersistence
     public override void death()
     {
         am.playAudio(am.death);
-        _HP = 0;
-        UpdateHealthUI();
+        healthBar.fillAmount = 0;
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
         deathCount++;
-        PoolManager.Instance.Return(this.gameObject, characterStats);
+        Destroy(this.gameObject);
 
         GameObject WeaponInUse = GameObject.FindWithTag("weapon");
         if (WeaponInUse != null)

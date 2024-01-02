@@ -52,10 +52,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
     }
 
-    void OnEnabled()
-    {
-        //ChangeCharStats();
-    }
     protected virtual void Update()
     {
         ExecuteEffects();

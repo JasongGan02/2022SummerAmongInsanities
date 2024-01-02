@@ -9,13 +9,11 @@ public class PlayerBowProjectile : Projectile
         base.Initialize(firingCharacter, projectileObject);
         this.speed = force;
         this.finalDamage = damage * (projectileObject?.DamageCoef ?? 1);
-        this.GetComponent<Collider2D>().isTrigger = true; 
     }
     public void Launch(Vector2 startPosition)
     {
         // Set the projectile's velocity
         Vector2 launchDirection = ((Vector3)startPosition - transform.position ).normalized;
-        Debug.Log(rb);
         rb.velocity = launchDirection * speed;
         
     }
@@ -31,13 +29,11 @@ public class PlayerBowProjectile : Projectile
             }
 
             // Return the projectile to the pool
-            //ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
-            PoolManager.Instance.Return(this.gameObject, projectileObject);
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
         }
         else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
         {
-            //ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
-            PoolManager.Instance.Return(this.gameObject, projectileObject);
+            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
         }
     }
 }
