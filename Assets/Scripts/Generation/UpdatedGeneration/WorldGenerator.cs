@@ -17,9 +17,18 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     [SerializeField] private GameObject coreArchitecturePrefab;
     private DataGenerator dataCreator;
     public TerrainSettings[] settings;
+    public TileObjectRegistry tileObjectRegistry;
     // Start is called before the first frame update
     void Awake()
     {
+        if (tileObjectRegistry != null)
+        {
+            tileObjectRegistry.Initialize();
+        }
+        else
+        {
+            Debug.LogError("TileObjectRegistry is not assigned in WorldGenerator");
+        }
         WorldData = new Dictionary<Vector2Int, int[,]>();
         ActiveChunks = new Dictionary<int, GameObject>();
         TotalChunks = new Dictionary<int, GameObject>();

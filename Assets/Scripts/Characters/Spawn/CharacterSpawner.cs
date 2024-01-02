@@ -76,7 +76,7 @@ public class CharacterSpawner : MonoBehaviour, IDataPersistence
 
     public void SpawnPlayer()
     {
-        GameObject playerGameObject = characterAtlas.player.GetSpawnedGameObject<PlayerController>();
+        GameObject playerGameObject = PoolManager.Instance.Get(characterAtlas.player);
         playerGameObject.transform.position = coreArchitecture.GetComponent<Transform>().position;
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
     }
