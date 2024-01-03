@@ -89,11 +89,19 @@ public class ShadowGenerator : MonoBehaviour
                 float lightLevel = sunlightBrightness;
                 for (int y = worldHeightInBlock - 1; y >= 0; y--)
                 {
-                    if (x < 60 || x > 120 || y < 2) lightLevel = sunlightBrightness;
+                    if (x < 60 || x > 119 || y < 2) lightLevel = sunlightBrightness;
                     else if (IsBackground(x, y) && !IsUnderGround(x, y)) //if illuminate block
                     //if (!IsCovered(x, y))
                     {
-                        lightLevel = sunlightBrightness;
+                        if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
+                        {
+                            lightLevel = sunlightBrightness;
+                        }
+                        else
+                        {
+                            //Debug.Log(worldTilesDictionary[new Vector2Int(x, y)]);
+                            lightLevel = sunlightBrightness;
+                        }
                     }
                     else
                     {
@@ -122,7 +130,7 @@ public class ShadowGenerator : MonoBehaviour
                 float lightLevel = sunlightBrightness;
                 for (int y = 0; y < worldHeightInBlock; y++)
                 {
-                    if (x < 60 || x > 120 || y < 2) lightLevel = sunlightBrightness;
+                    if (x < 60 || x > 119 || y < 2) lightLevel = sunlightBrightness;
                     if (IsBackground(x, y) && !IsUnderGround(x, y)) //if illuminate block
                     {
                         lightLevel = sunlightBrightness;
