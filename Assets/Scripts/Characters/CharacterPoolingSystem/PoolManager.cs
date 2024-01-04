@@ -14,7 +14,6 @@ public class PoolManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         // Optionally: Initialize pools here instead of Start if needed
     }
@@ -44,10 +43,12 @@ public class PoolManager : MonoBehaviour
     private void CreatePool(BaseObject poolableObject, int size)
     {
         Queue<GameObject> newPool = new Queue<GameObject>();
+        Debug.Log(poolableObject.itemName);
         for (int i = 0; i < size; i++)
         {
             GameObject obj = ((IPoolableObject)poolableObject).GetPoolGameObject();
             obj.SetActive(false);
+            obj.transform.SetParent(transform, true);
             newPool.Enqueue(obj);
         }
         pools[poolableObject] = newPool;
@@ -69,6 +70,7 @@ public class PoolManager : MonoBehaviour
 
     public void Return(GameObject poolableGameObject, BaseObject poolableObject)
     {
+        poolableGameObject.transform.SetParent(transform, true);
         poolableGameObject.SetActive(false);
         pools[poolableObject].Enqueue(poolableGameObject);
     }

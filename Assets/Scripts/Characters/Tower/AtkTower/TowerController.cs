@@ -25,7 +25,7 @@ public class TowerController : CharacterController
         constructionMode = FindObjectOfType<ConstructionMode>();
         constructionMode.EnergyConsumption(energyCost*-1);
         Destroy(gameObject);
-        OnObjectDestroyed(isDestroyedByPlayer);
+        OnObjectReturned(isDestroyedByPlayer);
     }
 
     public override void takenDamage(float dmg)

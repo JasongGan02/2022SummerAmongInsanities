@@ -110,8 +110,8 @@ public class PlayerController : CharacterController, IDataPersistence
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
         deathCount++;
         PoolManager.Instance.Return(this.gameObject, characterStats);
-
-        GameObject WeaponInUse = GameObject.FindWithTag("weapon");
+        OnObjectReturned(true);
+         GameObject WeaponInUse = GameObject.FindWithTag("weapon");
         if (WeaponInUse != null)
         {
             Destroy(WeaponInUse);
@@ -122,6 +122,16 @@ public class PlayerController : CharacterController, IDataPersistence
             Destroy(TowerInUse);
         }
     }
+
+    protected override void OnObjectReturned(bool playerDropItemsOnDeath)
+    {
+        if (playerDropItemsOnDeath)
+        {
+            Inventory inventory = FindObjectOfType<Inventory>();
+            inventory.RemoveAllItemsAndDrops();
+        }
+    }
+
 
     public override void takenDamage(float dmg)
     {

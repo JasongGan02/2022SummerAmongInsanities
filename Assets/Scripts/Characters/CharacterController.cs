@@ -130,7 +130,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
         if (dmg > 0)
         {
-            StartCoroutine(FlashRed());
+            if (gameObject.activeSelf)
+                StartCoroutine(FlashRed());
         }
         
     }
@@ -177,7 +178,11 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
     }
 
-    public abstract void death();
+    public virtual void death()
+    {
+        PoolManager.Instance.Return(this.gameObject, characterStats);
+        OnObjectReturned(false);
+    }
 
 
 
@@ -185,7 +190,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         return characterStats;
     }
 
-    protected void OnObjectDestroyed(bool isDestroyedByPlayer)
+    protected virtual void OnObjectReturned(bool isDestroyedByPlayer)
     {
         var drops = characterStats.GetDroppedGameObjects(isDestroyedByPlayer);
         if (drops != null)

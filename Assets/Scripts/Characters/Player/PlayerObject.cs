@@ -8,6 +8,11 @@ public class PlayerObject : CharacterObject
 {
     public float RespwanTimeInterval;
 
+    public override List<GameObject> GetDroppedGameObjects(bool playerDropItemsOnDeath)
+    {
+        List<GameObject> droppedItems = new();
+        return droppedItems;
+    }
     /*
     public override GameObject GetSpawnedGameObject() //Spawn the actual game object through calling this function. 
     {

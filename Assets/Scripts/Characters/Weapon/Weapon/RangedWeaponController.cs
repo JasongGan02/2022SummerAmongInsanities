@@ -22,7 +22,7 @@ public class RangedWeaponController : Weapon, IRangedAttacker
     {
         if (ProjectileObject != null)
         {
-            GameObject projectileObject = ProjectilePoolManager.Instance.GetProjectile(ProjectileObject.getPrefab());
+            GameObject projectileObject = PoolManager.Instance.Get(ProjectileObject);
             projectileObject.transform.position = startPosition.position;
             projectileObject.transform.SetParent(transform, true);
             Projectile projectileComponent = projectileObject.GetComponent<Projectile>();

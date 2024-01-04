@@ -233,8 +233,8 @@ public abstract class EnemyController : CharacterController
 
     public override void death()
     {
-        Destroy(this.gameObject);
-        OnObjectDestroyed(false);
+        PoolManager.Instance.Return(this.gameObject, characterStats);
+        OnObjectReturned(false);
     }
 
     public GameObject WhatToAttack()

@@ -15,7 +15,6 @@ public class PlayerBowProjectile : Projectile
     {
         // Set the projectile's velocity
         Vector2 launchDirection = ((Vector3)startPosition - transform.position ).normalized;
-        Debug.Log(rb);
         rb.velocity = launchDirection * speed;
         
     }

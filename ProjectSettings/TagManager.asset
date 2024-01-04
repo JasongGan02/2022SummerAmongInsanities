@@ -53,3 +53,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: DroppedObject
+    uniqueID: 250587171
+    locked: 0

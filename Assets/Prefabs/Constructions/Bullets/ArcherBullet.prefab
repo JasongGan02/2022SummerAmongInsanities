@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3484577907003912250}
   - component: {fileID: 3484577907003912251}
   - component: {fileID: 3484577907003912252}
-  - component: {fileID: -1007765310788449054}
+  - component: {fileID: -146126881319355203}
   m_Layer: 0
   m_Name: ArcherBullet
   m_TagString: Untagged
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.11
---- !u!114 &-1007765310788449054
+--- !u!114 &-146126881319355203
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

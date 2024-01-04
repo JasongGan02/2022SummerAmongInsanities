@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
-  m_Name: PlayerArrowProjectile
+  m_Name: PlayerBowProjectile
   m_EditorClassIdentifier: 
   itemName: PlayerArrowProjectile
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
   damageCoef: 1
   _maxStack: 99

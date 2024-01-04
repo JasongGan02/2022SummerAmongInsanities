@@ -19,6 +19,7 @@ public class DroppedObjectController : MonoBehaviour
         this.item = item;
         GameObject currentChunk = WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
         transform.SetParent(currentChunk.transform, true);
+        //GetComponent<SpriteRenderer>().sor 
     }
 
     private void Start()
@@ -59,7 +60,7 @@ public class DroppedObjectController : MonoBehaviour
         shouldFlyToPlayer = false;
 
         inventory.AddItem(item, amount);
-        if (item is ProjectileObject)
+        if (item is IPoolableObject)
         {
             Projectile projectileComponent = GetComponent<Projectile>();
             GetComponent<Rigidbody2D>().simulated = true;
@@ -69,8 +70,8 @@ public class DroppedObjectController : MonoBehaviour
             {
                 projectileComponent.enabled = true;
             }
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, (item as BaseObject).getPrefab());
-            this.enabled = false;
+            PoolManager.Instance.Return(gameObject, item as BaseObject);
+            Destroy(this);
         }
         else
         {

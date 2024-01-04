@@ -441,7 +441,7 @@ public class PlayerInteraction : MonoBehaviour
         } 
         else if(currentSlotInUse.item is TowerObject)
         {
-            GameObject newTower = (currentSlotInUse.item as TowerObject).GetSpawnedGameObject();
+            GameObject newTower = PoolManager.Instance.Get(currentSlotInUse.item as BaseObject);
             newTower.transform.position = position;
             constructionMode.EnergyConsumption((currentSlotInUse.item as TowerObject).energyCost);
             inventory.RemoveItemByOne(indexInUse);
