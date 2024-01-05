@@ -45,7 +45,26 @@ public class DroppedObjectController : MonoBehaviour
                 }
             }
         }
-
+        if (GetComponent<Transform>().position.y < -100)
+        {
+            if (item is IPoolableObject)
+            {
+                Projectile projectileComponent = GetComponent<Projectile>();
+                GetComponent<Rigidbody2D>().simulated = true;
+                GetComponent<Collider2D>().enabled = true;
+                GetComponent<Collider2D>().isTrigger = true;
+                if (projectileComponent != null)
+                {
+                    projectileComponent.enabled = true;
+                }
+                PoolManager.Instance.Return(gameObject, item as BaseObject);
+                Destroy(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     public void PickingUp()

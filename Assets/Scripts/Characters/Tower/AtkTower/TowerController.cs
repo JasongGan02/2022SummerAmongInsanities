@@ -6,7 +6,7 @@ public class TowerController : CharacterController
 {
     //SO variables
     protected int energyCost;
-    protected Quaternion curAngle;
+    protected Quaternion rotateAngle;
     
     //run-time variables
     protected ConstructionMode constructionMode;
@@ -19,7 +19,11 @@ public class TowerController : CharacterController
     }
     //protected abstract void TowerLoop(); 
 
+    public override void Reinitialize()
+    {
+        base.Reinitialize();
 
+    }
     public override void death()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();

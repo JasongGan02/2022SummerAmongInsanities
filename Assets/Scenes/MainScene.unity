@@ -931,69 +931,6 @@ Transform:
   m_Father: {fileID: 41518529}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1927551329
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1927551331}
-  - component: {fileID: 1927551330}
-  m_Layer: 0
-  m_Name: PoolManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1927551330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927551329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be2d401e65a46d4f9441391db858bdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IPoolableObjectPools:
-  - poolableObject: {fileID: 11400000, guid: c4c1a86a209c6a14d89731a37a92f48d, type: 2}
-    initialPoolSize: 1
-  - poolableObject: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: 923b64dd2880121489b1f446a8da6b66, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: 31e148de31d4a6f4f88b70a8eeabb213, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: 5235d283be36ad04b8a1b0dee576417f, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: 7be5f48d4bc1dff4c9fe38be91989716, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: 78165116cb45e304c82f0459b5f4f95e, type: 2}
-    initialPoolSize: 20
-  - poolableObject: {fileID: 11400000, guid: 9bd39ab47b83ac941bea94049a86b30e, type: 2}
-    initialPoolSize: 20
---- !u!4 &1927551331
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927551329}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.101835, y: 65.22839, z: -0.346755}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1932654635
 GameObject:
   m_ObjectHideFlags: 0
@@ -1380,7 +1317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1425,45 +1362,25 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2113706954, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.size
+      value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[2].prefab
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[9].poolableObject
       value: 
-      objectReference: {fileID: 3484577907003912249, guid: 4a3d40e1b0f976d4bb88a88f2886895e, type: 3}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[3].prefab
+      objectReference: {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[10].poolableObject
       value: 
-      objectReference: {fileID: 2674270034793632360, guid: 586f732dab3b81748bd0e3cdf67b91d4, type: 3}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[4].prefab
-      value: 
-      objectReference: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[2].initialPoolSize
+      objectReference: {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[9].initialPoolSize
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[3].initialPoolSize
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[10].initialPoolSize
       value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2113706956, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectilePools.Array.data[4].initialPoolSize
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: isDebugDayTime
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
@@ -1477,22 +1394,6 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 831146460}
-    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: equipments.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: equipments.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 93aa2cd2c31b0c54a94d779394a2c6eb, type: 2}
-    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectileObjects.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: projectileObjects.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
     - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: content
       value: 

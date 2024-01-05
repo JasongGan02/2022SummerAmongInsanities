@@ -103,6 +103,7 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     public override void death()
     {
+        Debug.Log(am.death);    
         am.playAudio(am.death);
         _HP = 0;
         UpdateHealthUI();

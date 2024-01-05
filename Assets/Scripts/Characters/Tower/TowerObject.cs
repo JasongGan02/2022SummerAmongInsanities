@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
-public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject
+public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject, IPoolableObject
 {   
     [Header("Construction Parameter")]
     public int energyCost;
@@ -72,6 +72,27 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         return drop;
     }
     #endregion
+
+    public override GameObject GetPoolGameObject()
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.name = itemName;
+        if (itemName.Contains("Wall"))
+        {
+            controllerName = "TowerController";
+        }
+        else
+        {
+            controllerName = itemName + "Controller";
+        }
+        Type type = Type.GetType(controllerName);
+        var controller = worldGameObject.AddComponent(type);
+        (controller as CharacterController).Initialize(this);
+        controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
+        worldGameObject.transform.rotation = curAngle;
+        curAngle = Quaternion.Euler(0, 0, 0);
+        return worldGameObject;
+    }
 
     public override List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer) //need to consider the case if it is placed by User.
     {

@@ -53,7 +53,7 @@ public class CharacterObject : BaseObject, IPoolableObject
 
     }
 
-    public GameObject GetPoolGameObject()
+    public virtual GameObject GetPoolGameObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;

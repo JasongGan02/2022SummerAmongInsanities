@@ -43,7 +43,6 @@ public class PoolManager : MonoBehaviour
     private void CreatePool(BaseObject poolableObject, int size)
     {
         Queue<GameObject> newPool = new Queue<GameObject>();
-        Debug.Log(poolableObject.itemName);
         for (int i = 0; i < size; i++)
         {
             GameObject obj = ((IPoolableObject)poolableObject).GetPoolGameObject();

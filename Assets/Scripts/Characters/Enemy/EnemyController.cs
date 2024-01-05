@@ -231,12 +231,6 @@ public abstract class EnemyController : CharacterController
         }
     }
 
-    public override void death()
-    {
-        PoolManager.Instance.Return(this.gameObject, characterStats);
-        OnObjectReturned(false);
-    }
-
     public GameObject WhatToAttack()
     {
         GameObject target = null;
