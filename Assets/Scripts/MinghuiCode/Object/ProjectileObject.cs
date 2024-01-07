@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "projectile", menuName = "Objects/Projectile Object")]
-public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject
+public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, IPoolableObject
 {
 
     [SerializeField]
@@ -26,7 +26,7 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject
 
     public GameObject GetDroppedGameObject(int amount)
     {
-        GameObject drop = ProjectilePoolManager.Instance.GetProjectile(prefab);
+        GameObject drop = PoolManager.Instance.Get(this);
         drop.layer = Constants.Layer.RESOURCE;
 
         drop.GetComponent<Collider2D>().isTrigger = false;
@@ -135,5 +135,24 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject
     {
         return _craftTime;
     }
+
     #endregion
+    public GameObject GetPoolGameObject()
+    {
+        GameObject worldGameObject = Instantiate(prefab);
+        worldGameObject.name = itemName;
+        if (worldGameObject.GetComponent<Projectile>() == null)
+        {
+
+            Type type = Type.GetType(itemName);
+            worldGameObject.AddComponent(type);
+        }
+        var controller = worldGameObject.GetComponent<DroppedObjectController>();
+        if (controller != null)
+        {
+            controller.enabled = false;
+
+        }
+        return worldGameObject;
+    }
 }

@@ -70,7 +70,7 @@ public class LadyController : EnemyController, IRangedAttacker
         }
 
         // Instantiate the arrow
-        GameObject projectileGameObject = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+        GameObject projectileGameObject = PoolManager.Instance.Get(projectileObject);
         projectileGameObject.transform.position = startPosition.position;
         projectileGameObject.transform.SetParent(transform, true);
         Projectile projectileComponent = projectileGameObject.GetComponent<Projectile>();

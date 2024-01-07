@@ -25,7 +25,7 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
     {
         if (projectileObject != null)
         {
-            GameObject projectileGameObject = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+            GameObject projectileGameObject = PoolManager.Instance.Get(projectileObject);
             projectileGameObject.transform.position = startPosition.position;
             projectileGameObject.transform.SetParent(transform, true);
             Projectile projectileComponent = projectileGameObject.GetComponent<Projectile>();

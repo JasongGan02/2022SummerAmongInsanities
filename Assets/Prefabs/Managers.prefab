@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2113706954
+--- !u!1 &1927551329
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,90 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2113706955}
-  - component: {fileID: 2113706956}
-  m_Layer: 14
-  m_Name: ProjectilePoolManager
+  - component: {fileID: 1927551331}
+  - component: {fileID: 1927551330}
+  m_Layer: 0
+  m_Name: PoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2113706955
+--- !u!4 &1927551331
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2113706954}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1927551329}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.9282475, y: 45.927933, z: -0.25110853}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8685695344788396458}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1927551330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927551329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be2d401e65a46d4f9441391db858bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IPoolableObjectPools:
+  - poolableObject: {fileID: 11400000, guid: c4c1a86a209c6a14d89731a37a92f48d, type: 2}
+    initialPoolSize: 1
+  - poolableObject: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 923b64dd2880121489b1f446a8da6b66, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 31e148de31d4a6f4f88b70a8eeabb213, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 5235d283be36ad04b8a1b0dee576417f, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 7be5f48d4bc1dff4c9fe38be91989716, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 78165116cb45e304c82f0459b5f4f95e, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 9bd39ab47b83ac941bea94049a86b30e, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
+    initialPoolSize: 20
+--- !u!1 &4285884787739671943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9145199968869873101}
+  - component: {fileID: 1527045367632481217}
+  m_Layer: 0
+  m_Name: CharacterSpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9145199968869873101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4285884787739671943}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,23 +99,25 @@ Transform:
   m_Father: {fileID: 8685695344788396458}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2113706956
+--- !u!114 &1527045367632481217
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2113706954}
+  m_GameObject: {fileID: 4285884787739671943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f0bfcd9f1ca0cb4a953d55de1894247, type: 3}
+  m_Script: {fileID: 11500000, guid: 190f212c3cbd5fd40a5aa226888c108f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePools:
-  - prefab: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
-    initialPoolSize: 20
-  - prefab: {fileID: 3484577907003912249, guid: c0d7029422dded24ea35c5169d17a8db, type: 3}
-    initialPoolSize: 20
+  characterAtlas: {fileID: 11400000, guid: ae8ba59eab07a6e408f778f4841d15df, type: 2}
+  enemyTypes:
+  - {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
+  - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
+  - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+  - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
+  - {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
 --- !u!1 &8685695344788396459
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,58 +152,12 @@ Transform:
   - {fileID: 8881862257406899498}
   - {fileID: 7466181227057819277}
   - {fileID: 3502352435770587956}
-  - {fileID: 8685695345270950378}
-  - {fileID: 2113706955}
+  - {fileID: 1927551331}
   - {fileID: 5139273599847005184}
+  - {fileID: 9145199968869873101}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8685695345270950379
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8685695345270950378}
-  - component: {fileID: 8685695345270950377}
-  m_Layer: 0
-  m_Name: CharacterSpawnerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8685695345270950378
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8685695345270950379}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8685695344788396458}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8685695345270950377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8685695345270950379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807018f70856ba846a21cd103014ac99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterSpawner: {fileID: 0}
-  numberOfEnemiesToSpawn: 1
 --- !u!1001 &7132367815537210312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -488,6 +511,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: equipments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
       propertyPath: testCase.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 78165116cb45e304c82f0459b5f4f95e, type: 2}
@@ -495,6 +522,18 @@ PrefabInstance:
       propertyPath: testCase.Array.data[5]
       value: 
       objectReference: {fileID: 11400000, guid: 2bd86e018903322459d05e4329c4abf7, type: 2}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: equipments.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 93aa2cd2c31b0c54a94d779394a2c6eb, type: 2}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: projectileObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582701435173347104, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
+      propertyPath: projectileObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
     - target: {fileID: 7022060688360506794, guid: 2f1601949ab49c84ca2841cbeda2bbc2, type: 3}
       propertyPath: m_Name
       value: SpawnManager

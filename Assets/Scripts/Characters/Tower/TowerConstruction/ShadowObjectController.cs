@@ -51,9 +51,10 @@ public class ShadowObjectController : MonoBehaviour
         Vector2 mousePosition = GetMousePosition2D();
         float x = GetSnappedCoordinate(mousePosition.x);
         float y = GetSnappedCoordinate(mousePosition.y);
+        transform.position = new Vector2(x, y);
         if (objectType is TileObject) 
         {    
-            return new TileGhostPlacementResult(new Vector2(x, y), TileObjectCheck(x, y));
+            return new TileGhostPlacementResult(transform, TileObjectCheck(x, y));
         } 
         else if(objectType is TowerObject)
         {
@@ -61,7 +62,7 @@ public class ShadowObjectController : MonoBehaviour
             {
                 // Rotate the object
                 
-                transform.rotation *= (objectType as TowerObject).SetDirection();
+                transform.rotation *= (objectType as TowerObject).rotateAngle;
             }
             return TowerObjectCheck(objectType);
         }
@@ -82,7 +83,8 @@ public class ShadowObjectController : MonoBehaviour
         RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
         float x = GetSnappedCoordinate(mousePosition.x);
         float y = GetComponent<BoxCollider2D>().bounds.size.y/0.9f/2 + 0.03f + downRay.point.y;
-        return new TileGhostPlacementResult(new Vector2(x, y), CollisionCount==0 && IsConstructionShadowInRange(coreArchitecture) && downRay && constructionMode.CheckEnergyAvailableForConstruction((objectType as TowerObject).energyCost));
+        transform.position = new Vector2(x, y);
+        return new TileGhostPlacementResult(transform, CollisionCount==0 && IsConstructionShadowInRange(coreArchitecture) && downRay && constructionMode.CheckEnergyAvailableForConstruction((objectType as TowerObject).energyCost));
     }
 
     bool IsConstructionShadowInRange(CoreArchitecture coreArchitecture)

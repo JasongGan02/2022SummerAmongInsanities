@@ -23,7 +23,6 @@ public class EquipmentObject : BaseObject, IInventoryObject
         {
             drop.AddComponent<Rigidbody2D>();
         }
-        Debug.Log("GetDroppedGameObject");
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);

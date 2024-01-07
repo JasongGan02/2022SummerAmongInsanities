@@ -53,7 +53,8 @@ public class BowController : RangedWeaponController
         float chargePercent = chargeTime / maxChargeTime;
         float force = chargePercent * AttackRange * 5;
         float damage = chargePercent * characterController.AtkDamage;
-        GameObject arrow = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+        //GameObject arrow = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+        GameObject arrow = PoolManager.Instance.Get(projectileObject);
         var playerBowArrow = arrow.GetComponent<PlayerBowProjectile>();
         if (playerBowArrow != null)
         {

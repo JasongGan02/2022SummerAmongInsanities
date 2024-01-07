@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff5c77fc65ce11a47bd8974f9f0f4e97, type: 3}
-  m_Name: lady
+  m_Name: Lady
   m_EditorClassIdentifier: 
   itemName: lady
   sizeRatio: 2

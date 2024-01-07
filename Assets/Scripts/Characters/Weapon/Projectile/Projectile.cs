@@ -70,18 +70,18 @@ public class Projectile : MonoBehaviour
             }
 
             // Return the projectile to the pool
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
+            PoolManager.Instance.Return(gameObject, projectileObject);
         }
         else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
         {
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
+            PoolManager.Instance.Return(gameObject, projectileObject);
         }
     }
     protected virtual void HasReachedLifespan()
     {
         if (Time.time - timeOfLaunch > lifespanInSeconds)
         {
-            ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
+            PoolManager.Instance.Return(gameObject, projectileObject);
         }
             
     }
@@ -105,7 +105,9 @@ public class Projectile : MonoBehaviour
 
     protected virtual bool IsInHatredList(Collider2D collider)
     {
-        foreach (var hatedType in hatredList)
+        if (hatredList == null)
+            return false;
+        foreach (var hatedType in hatredList)   
         {
             Type type = Type.GetType(hatedType.name);
             if (type == null) continue;

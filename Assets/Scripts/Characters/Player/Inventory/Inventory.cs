@@ -134,9 +134,36 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             // TODO refactor collectible object to set the amount when getting the dropped item
             GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
             droppedItem.transform.position = dropPosition;
+            droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
         }
 
         UpdateSlotUi(index);
+    }
+
+    public void RemoveAllItemsAndDrops()
+    {
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot removedItem = database.RemoveItem(i);
+            if (removedItem != null)
+            {
+                Vector3 dropPosition;
+                if (player.GetComponent<Playermovement>().facingRight)
+                {
+                    dropPosition = player.transform.position + new Vector3(1, 0, 0);
+                }
+                else
+                {
+                    dropPosition = player.transform.position + new Vector3(-1, 0, 0);
+                }
+                // TODO refactor collectible object to set the amount when getting the dropped item
+                GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
+                droppedItem.transform.position = dropPosition;
+                droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
+            }
+
+            UpdateSlotUi(i);
+        }
     }
 
     public void SwapItems(int index1, int index2)

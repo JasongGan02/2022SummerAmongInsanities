@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using UnityEngine.Rendering.Universal;
+using static UnityEngine.Experimental.Rendering.RayTracingAccelerationStructure;
 
 public class DataGenerator
 {   
@@ -20,7 +21,7 @@ public class DataGenerator
     float noiseOffsetX; 
     float noiseOffsetY; 
     public bool Terminate;
-
+    System.Random sysRandom;
     private StructureGenerator structureGen;
     public DataGenerator(WorldGenerator worldGen,  TerrainSettings[] terrainSettings, StructureGenerator structureGen = null)
     {
@@ -28,9 +29,10 @@ public class DataGenerator
         DataToGenerate = new Queue<GenData>();
         this.structureGen = structureGen;
         this.terrainSettings = terrainSettings;
-        seed = WorldGenerator.seed;
+        seed = GeneratorInstance.seed;
         noiseOffsetX = seed + 12345.6789f; // Use an arbitrary constant to offset the noise
         noiseOffsetY = seed + 98765.4321f; // Different arbitrary constant for Y
+        sysRandom = new System.Random(seed.GetHashCode());
         worldGen.StartCoroutine(DataGenLoop());
     }
 
@@ -63,7 +65,7 @@ public class DataGenerator
             TempData = addedData;
             WorldGenerator.AdditiveWorldData.Remove(offset.x);
         }*/
-        System.Random sysRandom = new System.Random(seed.GetHashCode());
+       
 
         //Biome Determination Logic base on offset
         TerrainSettings curBiomeSettings = GetCurBiome(offset.x);
@@ -168,8 +170,16 @@ public class DataGenerator
 
     private TerrainSettings GetCurBiome(int chunkCoord)
     {
-        TerrainSettings curBiomeSettings = terrainSettings[0];
-        return curBiomeSettings;
+        if (chunkCoord >= -2 && chunkCoord <= 2)
+        {
+            return terrainSettings[1]; // Return base settings for this range
+        }
+        else
+        {
+            // Return default terrain settings otherwise
+            TerrainSettings curBiomeSettings = terrainSettings[0];
+            return curBiomeSettings;
+        }
     }
 
     public int GetHeight(float x, TerrainSettings curBiomeSettings)

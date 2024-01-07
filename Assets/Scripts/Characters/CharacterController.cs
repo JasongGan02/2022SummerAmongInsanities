@@ -7,7 +7,7 @@ using System.Threading;
 using UnityEditor.Build;
 using System.Linq;
 
-public abstract class CharacterController : MonoBehaviour, IEffectableObject
+public abstract class CharacterController : MonoBehaviour, IEffectableObject, IPoolableObjectController
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
     in the scriptable objects by directly calling them. e.g. characterStats.HP +=1; this is not allowed as this HP is the MaxHP of a character. They should only be modified through other 
@@ -52,6 +52,10 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
     }
 
+    protected virtual void OnEnabled()
+    {
+
+    }
     protected virtual void Update()
     {
         ExecuteEffects();
@@ -126,7 +130,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         }
         if (dmg > 0)
         {
-            StartCoroutine(FlashRed());
+            if (gameObject.activeSelf)
+                StartCoroutine(FlashRed());
         }
         
     }
@@ -173,7 +178,11 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
 
     }
 
-    public abstract void death();
+    public virtual void death()
+    {
+        PoolManager.Instance.Return(this.gameObject, characterStats);
+        OnObjectReturned(false);
+    }
 
 
 
@@ -181,7 +190,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
         return characterStats;
     }
 
-    protected void OnObjectDestroyed(bool isDestroyedByPlayer)
+    protected virtual void OnObjectReturned(bool isDestroyedByPlayer)
     {
         var drops = characterStats.GetDroppedGameObjects(isDestroyedByPlayer);
         if (drops != null)
@@ -189,9 +198,13 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject
             foreach (GameObject droppedItem in drops)
             {
                 droppedItem.transform.position = gameObject.transform.position;
-                droppedItem.GetComponent<Rigidbody2D>().AddTorque(10f);
             }
         }
+    }
+
+    public virtual void Reinitialize()
+    {
+        Initialize(characterStats);
     }
 
     public float AtkDamage

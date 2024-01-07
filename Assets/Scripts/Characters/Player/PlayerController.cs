@@ -18,8 +18,8 @@ public class PlayerController : CharacterController, IDataPersistence
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
+    private CharacterSpawnManager characterSpawnManager;
 
-    
 
     //UI Elements
     Image healthBar;
@@ -41,6 +41,7 @@ public class PlayerController : CharacterController, IDataPersistence
     void Start()
     {
         timer = 0f;
+        characterSpawnManager = FindObjectOfType<CharacterSpawnManager>();
         spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
@@ -71,6 +72,14 @@ public class PlayerController : CharacterController, IDataPersistence
         if(GetComponent<Transform>().position.y < -100)
             death();
     }
+
+    void OnEnable()
+    {
+        if (characterStats == null)
+            return;
+        _HP = characterStats._HP;
+        UpdateHealthUI();
+    }
     protected override void Update()
     {
         base.Update();
@@ -95,14 +104,16 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     public override void death()
     {
+        Debug.Log(am.death);    
         am.playAudio(am.death);
-        healthBar.fillAmount = 0;
+        _HP = 0;
+        UpdateHealthUI();
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
         deathCount++;
-        Destroy(this.gameObject);
-
-        GameObject WeaponInUse = GameObject.FindWithTag("weapon");
+        PoolManager.Instance.Return(this.gameObject, characterStats);
+        OnObjectReturned(true);
+         GameObject WeaponInUse = GameObject.FindWithTag("weapon");
         if (WeaponInUse != null)
         {
             Destroy(WeaponInUse);
@@ -112,7 +123,28 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             Destroy(TowerInUse);
         }
+        if (characterSpawnManager != null)
+        {
+            characterSpawnManager.StartRespawnCoroutine();
+        }
     }
+ 
+    public override void Reinitialize()
+    {
+        base.Reinitialize(); //Reset Stats
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
+        // Update the UI
+        UpdateHealthUI();
+    }
+    protected override void OnObjectReturned(bool playerDropItemsOnDeath)
+    {
+        if (playerDropItemsOnDeath)
+        {
+            Inventory inventory = FindObjectOfType<Inventory>();
+            inventory.RemoveAllItemsAndDrops();
+        }
+    }
+
 
     public override void takenDamage(float dmg)
     {
@@ -193,7 +225,7 @@ public class PlayerController : CharacterController, IDataPersistence
     {
         playermovement_component.StatsChange(_movingSpeed, _jumpForce, _totalJumps);
     }
-
+    
     public float GetPersonalLight() { return personalLight.intensity; }
 
     public int GetLevel() { return playerLevel; }

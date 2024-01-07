@@ -9,16 +9,17 @@ public class TileObjectRegistry : ScriptableObject
 
     private static Dictionary<int, TileObject> tileObjectMap;
 
-    public void OnEnable()
+    public void Initialize()
     {
         tileObjectMap = new Dictionary<int, TileObject>();
         foreach (var tileObject in tileObjects)
         {
-            if (tileObject != null) 
+            if (tileObject != null)
+            {
                 tileObjectMap[tileObject.TileID] = tileObject;
+            }
         }
     }
-
     public static TileObject GetTileObjectByID(int id)
     {
         if (tileObjectMap != null)
@@ -32,6 +33,10 @@ public class TileObjectRegistry : ScriptableObject
                 Debug.LogWarning($"TileObject with ID {id} not found.");
                 return null;
             }
+        }
+        else
+        {
+            Debug.LogError("tileObjectMap is null");
         }
         return null;
 

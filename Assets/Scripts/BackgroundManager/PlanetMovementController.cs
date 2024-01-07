@@ -12,17 +12,20 @@ public class PlanetMovementController : MonoBehaviour
 
     private Camera mainCamera;
     private TimeSystemManager timeSystemManager;
+    private WorldGenerator worldGenerator;
 
     private float timeCounter = -Mathf.PI / 2;
     private void Awake()
     {
         mainCamera = Camera.main;
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
-        
+        worldGenerator = FindObjectOfType<WorldGenerator>();
+        heightOffset = worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f;
     }
 
     private void OnEnable()
     {
+        
         timeCounter = -Mathf.PI / 2 + Mathf.PI * timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();
         if (timeSystemManager.IsInDaytime())
         {
@@ -41,6 +44,6 @@ public class PlanetMovementController : MonoBehaviour
         timeCounter += Time.deltaTime * speed;
         var x = Mathf.Sin(timeCounter) * radius;
         var y = Mathf.Cos(timeCounter) * height;
-        transform.localPosition = new Vector2(x + mainCamera.transform.position.x, y + heightOffset);
+        transform.position = new Vector2(x + mainCamera.transform.position.x, y + heightOffset);
     }
 }

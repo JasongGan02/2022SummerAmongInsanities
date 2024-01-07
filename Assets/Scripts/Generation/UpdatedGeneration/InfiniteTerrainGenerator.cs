@@ -17,7 +17,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour
         CoordsToRemove = new List<int>();
         if (Player == null)
         {
-            //InitializeTerrainAtDefaultPosition();
+            InitializeTerrainAtDefaultPosition();
         }
     }
 
@@ -60,15 +60,35 @@ public class InfiniteTerrainGenerator : MonoBehaviour
 
     void InitializeTerrainAtDefaultPosition()
     {
+        // Start by generating chunk 0
+        if (!WorldGenerator.ActiveChunks.ContainsKey(0))
+        {
+            GenerateChunkWithCallback(0);
+        }
         // Assuming chunk 0 as the starting point
         int startChunk = 0;
         for (int x = startChunk - RenderDistance; x <= startChunk + RenderDistance; x++)
         {
+            // Skip chunk 0 since it's already been handled
+            if (x == 0) continue;
+
             int chunkCoord = x;
             if (!WorldGenerator.ActiveChunks.ContainsKey(chunkCoord))
             {
-                StartCoroutine(GeneratorInstance.CreateChunk(chunkCoord));
+                GenerateChunkWithCallback(chunkCoord);
             }
         }
     }
+
+    void GenerateChunkWithCallback(int chunkCoord)
+    {
+        StartCoroutine(GeneratorInstance.CreateChunk(chunkCoord, () =>
+        {
+            if (chunkCoord == 0)
+            {
+                GeneratorInstance.AddCoreArchitectureToChunk(chunkCoord);
+            }
+        }));
+    }
+
 }

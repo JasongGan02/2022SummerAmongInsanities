@@ -231,12 +231,6 @@ public abstract class EnemyController : CharacterController
         }
     }
 
-    public override void death()
-    {
-        Destroy(this.gameObject);
-        OnObjectDestroyed(false);
-    }
-
     public GameObject WhatToAttack()
     {
         GameObject target = null;

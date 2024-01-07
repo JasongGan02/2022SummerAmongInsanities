@@ -406,13 +406,13 @@ public class PlayerInteraction : MonoBehaviour
         if (currentTileGhost != null && currentSlotInUse != null)
         {
             TileGhostPlacementResult result = currentTileGhost.GetComponent<ShadowObjectController>().GetTileGhostPlacementResult(currentSlotInUse.item as BaseObject);
-            currentTileGhost.transform.position = result.position;
+            currentTileGhost.transform.position = result.transform.position;
             if (CanPlaceTile(result))
             {
                 currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
                 if (Input.GetMouseButtonDown(0) )
                 {
-                    PlaceTile(result.position);
+                    PlaceTile(result.transform);
                 }
             }
             else
@@ -429,11 +429,11 @@ public class PlayerInteraction : MonoBehaviour
     // TODO: inventory should have a map of CollectibleObject -> list of indices
     // and pass this entry to this PlayerInteraction class,
     // so that when the current slot is running out, it can automatically use the next available slot
-    private void PlaceTile(Vector2 position)
+    private void PlaceTile(Transform transform)
     {
         if (currentSlotInUse.item is TileObject)
         {
-            Vector2Int worldPostion = new Vector2Int((int)position.x, (int)position.y);
+            Vector2Int worldPostion = new Vector2Int((int)transform.position.x, (int)transform.position.y);
             Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);
             WorldGenerator.WorldData[chunkCoord][(int) (worldPostion.x - chunkCoord.x * WorldGenerator.ChunkSize.x), (int)worldPostion.y] = ((TileObject)currentSlotInUse.item).TileID;
             WorldGenerator.PlaceTile((TileObject)currentSlotInUse.item, worldPostion.x, worldPostion.y, chunkCoord, false, true);
@@ -441,8 +441,9 @@ public class PlayerInteraction : MonoBehaviour
         } 
         else if(currentSlotInUse.item is TowerObject)
         {
-            GameObject newTower = (currentSlotInUse.item as TowerObject).GetSpawnedGameObject();
-            newTower.transform.position = position;
+            GameObject newTower = PoolManager.Instance.Get(currentSlotInUse.item as BaseObject);
+            newTower.transform.position = transform.position;
+            newTower.transform.rotation = transform.rotation;
             constructionMode.EnergyConsumption((currentSlotInUse.item as TowerObject).energyCost);
             inventory.RemoveItemByOne(indexInUse);
            
@@ -451,7 +452,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private bool CanPlaceTile(TileGhostPlacementResult result)
     {
-        return result.canPlaceTile && Vector2.Distance(transform.position, result.position) < placeTileRange;
+        return result.canPlaceTile && Vector2.Distance(transform.position, result.transform.position) < placeTileRange;
     }
 
 
@@ -492,12 +493,12 @@ public class PlayerInteraction : MonoBehaviour
 
 public class TileGhostPlacementResult
 {
-    public Vector2 position;
+    public Transform transform;
     public bool canPlaceTile;
 
-    public TileGhostPlacementResult(Vector2 position, bool canPlaceTile)
+    public TileGhostPlacementResult(Transform transform, bool canPlaceTile)
     {
-        this.position = position;
+        this.transform = transform;
         this.canPlaceTile = canPlaceTile;
     }
 }
