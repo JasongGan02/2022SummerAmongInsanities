@@ -57,9 +57,12 @@ public class PoolManager : MonoBehaviour
     {
         if (pools.ContainsKey(poolableObject) && pools[poolableObject].Count > 0)
         {
-            GameObject projectile = pools[poolableObject].Dequeue();
-            projectile.SetActive(true);
-            return projectile;
+            GameObject obj = pools[poolableObject].Dequeue();
+            obj.SetActive(true);
+            var controller = obj.GetComponent<IPoolableObjectController>();
+            if (controller != null)
+                controller.Reinitialize();
+            return obj;
         }
         else
         {

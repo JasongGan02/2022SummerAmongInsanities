@@ -18,8 +18,8 @@ public class PlayerController : CharacterController, IDataPersistence
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
     CoreArchitecture coreArchitecture;
+    private CharacterSpawnManager characterSpawnManager;
 
-    
 
     //UI Elements
     Image healthBar;
@@ -41,6 +41,7 @@ public class PlayerController : CharacterController, IDataPersistence
     void Start()
     {
         timer = 0f;
+        characterSpawnManager = FindObjectOfType<CharacterSpawnManager>();
         spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
@@ -122,8 +123,19 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             Destroy(TowerInUse);
         }
+        if (characterSpawnManager != null)
+        {
+            characterSpawnManager.StartRespawnCoroutine();
+        }
     }
-
+ 
+    public override void Reinitialize()
+    {
+        base.Reinitialize(); //Reset Stats
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = true;
+        // Update the UI
+        UpdateHealthUI();
+    }
     protected override void OnObjectReturned(bool playerDropItemsOnDeath)
     {
         if (playerDropItemsOnDeath)
@@ -213,7 +225,7 @@ public class PlayerController : CharacterController, IDataPersistence
     {
         playermovement_component.StatsChange(_movingSpeed, _jumpForce, _totalJumps);
     }
-
+    
     public float GetPersonalLight() { return personalLight.intensity; }
 
     public int GetLevel() { return playerLevel; }

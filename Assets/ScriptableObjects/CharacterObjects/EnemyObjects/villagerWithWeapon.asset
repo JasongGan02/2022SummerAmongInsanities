@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34b80aff767a32a48b33e96c301de720, type: 3}
-  m_Name: villagerWithWeapon
+  m_Name: VillagerWithWeapon
   m_EditorClassIdentifier: 
   itemName: villagerWithWeapon
   sizeRatio: 1.6
