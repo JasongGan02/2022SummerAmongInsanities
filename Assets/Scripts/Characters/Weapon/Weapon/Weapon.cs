@@ -122,8 +122,9 @@ public class Weapon : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            am.playAudio(am.attack);
             am.looponAudio();
+            am.playAudio(am.attack);
+            
         }
         else
         {

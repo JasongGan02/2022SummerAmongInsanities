@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86;
 
 public class audioManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class audioManager : MonoBehaviour
     [Header("----Audio Clip-----")]
     public AudioClip[] injured = { injured0, injured1, injured2, injured3 };
 
+    public AudioClip[] step = { step0, step1, step2, step3, step4, step5 };
+    private int lastPlayedClipIndex = -1;
     private static AudioClip injured0;
     private static AudioClip injured1;
     private static AudioClip injured2;
@@ -18,7 +21,16 @@ public class audioManager : MonoBehaviour
 
     public AudioClip jump;
     public AudioClip doublejump;
-    public AudioClip step;
+
+    
+
+    private static AudioClip step0;
+    private static AudioClip step1;
+    private static AudioClip step2;
+    private static AudioClip step3;
+    private static AudioClip step4;
+    private static AudioClip step5;
+
     public AudioClip attack;
     public AudioClip death;
     public AudioClip tile_duringbreak;
@@ -54,6 +66,28 @@ public class audioManager : MonoBehaviour
     public AudioClip clip()
     {
         return playerAudio.clip;
+    }
+
+
+    public void PlayFootstep()
+    {
+        if (step.Length > 0)
+        {
+            int index;
+            do
+            {
+                index = Random.Range(0, step.Length);
+            } while (index == lastPlayedClipIndex && step.Length > 1); // Ensure a different clip is selected if there are multiple clips
+
+            lastPlayedClipIndex = index; // Remember the last played clip index
+            playerAudio.clip = step[index];
+            playerAudio.Play();
+        }
+    }
+
+    public bool IsClipPlaying(AudioClip clip)
+    {
+        return playerAudio.isPlaying && playerAudio.clip == clip;
     }
     void Update()
     {

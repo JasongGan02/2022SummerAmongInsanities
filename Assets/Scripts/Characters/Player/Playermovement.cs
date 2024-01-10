@@ -27,6 +27,9 @@ public class Playermovement : MonoBehaviour
     public LayerMask groundLayer;
 
     public bool facingRight = true;
+    private bool isInvokingFootsteps = false;
+    private float walkFootstepInterval = 0.75f; 
+    private float runFootstepInterval = 0.4f; 
 
     private bool isRunning = false;
     private bool isGrounded = true;
@@ -101,11 +104,33 @@ public class Playermovement : MonoBehaviour
 
         rb.velocity = new Vector2(moveInput, rb.velocity.y);
 
-       
-            
-        if(moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
+        if ((moveInput > 0 && !facingRight || moveInput < 0 && facingRight))
             Flip();
+
+        if (Mathf.Abs(moveInput) > 0 && !am.IsClipPlaying(am.jump))
+        {
+            if (!isInvokingFootsteps)
+            {
+                float interval = isRunning ? runFootstepInterval : walkFootstepInterval;
+                InvokeRepeating("PlayFootstep", 0.3f, interval);
+                isInvokingFootsteps = true;
+            }
+        }
+        else
+        {
+            if (isInvokingFootsteps)
+            {
+                CancelInvoke("PlayFootstep");
+                isInvokingFootsteps = false;
+            }
+        }
     }
+
+    void PlayFootstep()
+    {
+        am.PlayFootstep();
+    }
+
     private void Jump()
     {
         if (isGrounded)
