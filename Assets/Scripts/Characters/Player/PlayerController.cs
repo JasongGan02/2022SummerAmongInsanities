@@ -104,12 +104,12 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     public override void death()
     {
-        Debug.Log(am.death);    
-        am.playAudio(am.death);
+            
+        
         _HP = 0;
         UpdateHealthUI();
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
-        GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;
+        GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;  
         deathCount++;
         PoolManager.Instance.Return(this.gameObject, characterStats);
         OnObjectReturned(true);
@@ -152,7 +152,15 @@ public class PlayerController : CharacterController, IDataPersistence
         
         if (dmg > 0)
         {
-            am.playAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
+            if(dmg > _HP)
+            {
+                am.playAudio(am.death);
+            }
+            else
+            {
+                am.playAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
+            }
+            
         }
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible

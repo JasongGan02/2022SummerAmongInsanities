@@ -28,6 +28,7 @@ public class CraftingQueueManager : MonoBehaviour
 
     void Start()
     {
+        StartCoroutine(WaitForCoreArchitectureAndInitialize());
         QueueUI = GameObject.Find("QueueUI");
         coreArchitecture = FindObjectOfType<CoreArchitecture>();
         ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
@@ -138,7 +139,15 @@ public class CraftingQueueManager : MonoBehaviour
             
     }
 
+    IEnumerator WaitForCoreArchitectureAndInitialize()
+    {
+        while (CoreArchitecture.Instance == null)
+        {
+            yield return null;
+        }
 
+        coreArchitecture = CoreArchitecture.Instance;
+    }
 
 
 }
