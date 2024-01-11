@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
   _HP: 100
   _atkDamage: 0
-  _atkInterval: 0
+  _atkSpeed: 0
   _atkRange: 0
   _movingSpeed: 1
   _jumpForce: 10
