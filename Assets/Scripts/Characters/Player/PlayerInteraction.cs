@@ -181,6 +181,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         if (weaponInUse != null)
         {
+           
            Destroy(weaponInUse);
         }         
         if (prop != null)
@@ -251,16 +252,21 @@ public class PlayerInteraction : MonoBehaviour
            //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
         }
 
+        if (weaponInUse != null)
+        {
+
+            Destroy(weaponInUse);
+        }
+
         indexInUse = EMPTY;
         currentSlotInUse = null;
-        currentWeapon = null;
-
-
+        currentWeapon= null;
 
         for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
         {
             
             Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
+
         }
 
         

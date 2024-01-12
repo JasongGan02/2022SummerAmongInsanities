@@ -7,7 +7,7 @@ public class audioManager : MonoBehaviour
 {
     [Header("----Audio Source-----")]
     [SerializeField] AudioSource playerAudio;
-
+    [SerializeField] AudioSource weaponAudio;
 
     [Header("----Audio Clip-----")]
     public AudioClip[] injured = { injured0, injured1, injured2, injured3 };
@@ -46,6 +46,12 @@ public class audioManager : MonoBehaviour
     {
         playerAudio.clip = clip;
         playerAudio.Play();
+    }
+
+    public void playWeaponAudio(AudioClip clip) 
+    {
+        weaponAudio.clip = clip;
+        weaponAudio.Play();
     }
 
     public void StopPlayerAudio()

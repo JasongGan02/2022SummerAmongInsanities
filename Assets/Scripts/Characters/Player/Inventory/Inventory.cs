@@ -201,8 +201,10 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         // First, check if all items are available in required quantities
         for (int i = 0; i < items.Length; i++)
         {
-            if (!HasEnoughItem(items[i] as IInventoryObject, quantity[i]))
+            
+            if ((HasEnoughItem(items[i] as IInventoryObject, quantity[i]) == false))
             {
+                
                 // If any item is not available in required quantity, exit the method
                 return;
             }
@@ -218,39 +220,19 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         queueManager.AddToQueue(outputItem);
     }
 
-    public void CraftItemsCore(BaseObject[] items, int[] quantity, BaseObject outputItem)
-    {
-        if (queueManager.sizeCraftQueue() >= 4)
-        {
-            return;
-        }
 
-        // First, check if all items are available in required quantities
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (!HasEnoughItem(items[i] as IInventoryObject, quantity[i]))
-            {
-                // If any item is not available in required quantity, exit the method
-                return;
-            }
-        }
-
-        // Since all items are available, consume them
-        for (int i = 0; i < items.Length; i++)
-        {
-            ConsumeItem(items[i] as IInventoryObject, quantity[i]);
-        }
-
-        // Add the output item to the crafting queue
-        queueManager.AddToQueue(outputItem);
-    }
     private bool HasEnoughItem(IInventoryObject inventoryObject, int requiredQuantity)
     {
+        bool foundItem = false;
+
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (!slot.IsEmpty && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
+
+            if (!slot.IsEmpty && (slot.item as BaseObject) == (inventoryObject as BaseObject))
             {
+                foundItem = true;
+
                 if (requiredQuantity > slot.count)
                 {
                     Debug.Log("Not Enough: " + slot.item.GetItemName());
@@ -258,7 +240,8 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
                 }
             }
         }
-        return true;
+
+        return foundItem;
     }
 
 
