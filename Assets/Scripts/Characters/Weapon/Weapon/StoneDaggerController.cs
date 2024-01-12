@@ -10,8 +10,9 @@ public class StoneDaggerController : Weapon
     {
         if (Input.GetMouseButtonDown(0))
         {
-            am.playAudio(am.attack);
             am.looponAudio();
+            am.playAudio(am.attack);
+            
         }
         else
         {

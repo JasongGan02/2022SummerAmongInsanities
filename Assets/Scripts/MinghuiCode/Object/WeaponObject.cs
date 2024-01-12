@@ -11,6 +11,12 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     [Header("Weapon Stats")]
     [SerializeField]
     private float damageCoef;
+
+    public float DamageCoef
+    {
+        get => damageCoef;
+    }
+
     [SerializeField]
     private float farm;
     [SerializeField]
@@ -32,10 +38,6 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     [SerializeField]
     private int _craftTime;
 
-    public float getAttack()
-    {
-        return damageCoef;
-    }
 
 
     public float getfarm()

@@ -13,22 +13,16 @@ using UnityEngine.Rendering;
 
 public class Weapon : MonoBehaviour
 {
-
-
     
+    protected CharacterController characterController;
+    protected WeaponObject weaponStats;
+    protected float finalDamage;
 
     protected GameObject player;
     protected Playermovement playermovement;
     protected PlayerInteraction playerinteraction;
     protected Inventory inventory;
-    protected CharacterController characterController;
-
     
-    protected WeaponObject weaponStats;
-    protected float AtkInterval = 1f;
-    protected float farm;
-    protected float AttackDamage;
-    protected float weaponRange;
 
     protected float speed;
     protected float magnitude = 0.1f;
@@ -54,7 +48,6 @@ public class Weapon : MonoBehaviour
         
         Flip();
 
-
         if (Input.GetMouseButton(0))
         {
             //InvokeRepeating("attack", 0.5f, AtkInterval);
@@ -66,75 +59,29 @@ public class Weapon : MonoBehaviour
 
         }
 
-
-
     }
-
-
-
-
 
     public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
-        Type controllerType = GetType();
-        Type objectType = weaponObject.GetType();
-        // Get all the fields of the controller type
-        FieldInfo[] controllerFields = controllerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
-        // Iterate over the fields and set their values from the object
-        foreach (FieldInfo controllerField in controllerFields)
-        {
-            // Try to find a matching field in the object
-            FieldInfo objectField = objectType.GetField(controllerField.Name);
-            // If there's a matching field, set the value
-            if (objectField != null && objectField.FieldType == controllerField.FieldType)
-            {
-                controllerField.SetValue(this, objectField.GetValue(weaponObject));
-            }
-        }
+        finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
 
-        // Get all the properties of the controller type
-        PropertyInfo[] controllerProperties = controllerType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance);
-
-        // Iterate over the properties and set their values from the object
-        foreach (PropertyInfo controllerProperty in controllerProperties)
-        {
-            // Try to find a matching property in the object
-            PropertyInfo objectProperty = objectType.GetProperty(controllerProperty.Name);
-
-            // If there's a matching property, set the value
-            if (objectProperty != null && objectProperty.PropertyType == controllerProperty.PropertyType && objectProperty.CanRead)
-            {
-                controllerProperty.SetValue(this, objectProperty.GetValue(weaponObject));
-            }
-        }
     }
 
 
-
+    void PlayAttack()
+    {
+        am.playWeaponAudio(am.attack);
+    }
     public virtual void attack()
     {
+        if(Input.GetMouseButtonDown(0))
+        InvokeRepeating("PlayAttack", 0.1f, 1f);
 
-        
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float speed = maxSpeed; // Set the default speed to the maximum speed
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            am.looponAudio();
-            am.playAudio(am.attack);
-            
-        }
-        else
-        {
-            am.loopoffAudio();
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            am.StopPlayerAudio();
-        }
+        
 
 
             if (playermovement.facingRight)
@@ -170,7 +117,7 @@ public class Weapon : MonoBehaviour
     // patrol around
     public virtual void Patrol()
     {
-
+        CancelInvoke("PlayAttack");
         transform.position = player.transform.position;
        
     }
@@ -181,7 +128,7 @@ public class Weapon : MonoBehaviour
         if (collision.gameObject.tag == "enemy")
         {
             
-            collision.gameObject.GetComponent<CharacterController>().takenDamage(1);
+            collision.gameObject.GetComponent<CharacterController>().takenDamage(finalDamage);
 
         }
            
