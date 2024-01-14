@@ -8,6 +8,7 @@ public class audioManager : MonoBehaviour
     [Header("----Audio Source-----")]
     [SerializeField] AudioSource playerAudio;
     [SerializeField] AudioSource weaponAudio;
+    [SerializeField] AudioSource towerAudio;
 
     [Header("----Audio Clip-----")]
     public AudioClip[] injured = { injured0, injured1, injured2, injured3 };
@@ -36,6 +37,8 @@ public class audioManager : MonoBehaviour
     public AudioClip tile_duringbreak;
     public AudioClip tile_endbreak;
 
+    public AudioClip catapult_shootRock;
+
     void Start()
     {
         playerAudio.enabled = true;
@@ -52,6 +55,12 @@ public class audioManager : MonoBehaviour
     {
         weaponAudio.clip = clip;
         weaponAudio.Play();
+    }
+
+    public void playTowerAudio(AudioClip clip)
+    {
+        towerAudio.clip = clip;
+        towerAudio.Play();
     }
 
     public void StopPlayerAudio()
