@@ -5,6 +5,7 @@ using UnityEngine;
 public class CatapultTowerController : RangedTowerController
 {
     private Animator animator;
+    
 
     // Start is called before the first frame update
     protected override void Start()
@@ -12,13 +13,16 @@ public class CatapultTowerController : RangedTowerController
         base.Start(); // Call the base start to initialize common features
         animator = GetComponent<Animator>();
         startPosition = transform.GetChild(0);
+        am = am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
 
     protected override void Attack()
     {
+        
         target = WhatToAttack(); // Method from the base class to determine what to attack
         if (target != null && Math.Abs(target.transform.position.x - startPosition.position.x) > NON_DETECTABLE_RANGE)
         {
+            am.playTowerAudio(am.catapult_shootRock);
             animator.Play("Catapult_Attack", -1, 0f); // Play the attack animation
             FireProjectile(target); // Fire a projectile at the target
         }
