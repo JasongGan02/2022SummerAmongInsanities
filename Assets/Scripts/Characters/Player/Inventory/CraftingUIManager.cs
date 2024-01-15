@@ -26,10 +26,12 @@ public class CraftingUIManager : MonoBehaviour
 
     private Button weapons;
     private Button towers;
+    private Button projectiles;
 
     
     private BaseObject[] weaponObjects;
     private BaseObject[] towerObjects;
+    private BaseObject[] projectileObjects;
     public GameObject buttonPrefab;
     public RectTransform content;
 
@@ -68,11 +70,12 @@ public class CraftingUIManager : MonoBehaviour
         // 使用 AssetDatabase 来查找所有的 WeaponObject
         string[] weaponguids = AssetDatabase.FindAssets("t:WeaponObject");
         string[] towerguids = AssetDatabase.FindAssets("t:TowerObject");
-
+        string[] projectileguids = AssetDatabase.FindAssets("t:ProjectileObject");
 
         // 根据 GUID 获取对应的路径，并加载 ScriptableObject
         weaponObjects = new WeaponObject[weaponguids.Length];
         towerObjects = new TowerObject[towerguids.Length];
+        projectileObjects = new ProjectileObject[towerguids.Length];
 
         for (int i = 0; i < weaponguids.Length; i++)
         {
@@ -84,6 +87,12 @@ public class CraftingUIManager : MonoBehaviour
             string path = AssetDatabase.GUIDToAssetPath(towerguids[i]);
             towerObjects[i] = AssetDatabase.LoadAssetAtPath<TowerObject>(path);
         }
+        for (int i = 0; i < projectileguids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(projectileguids[i]);
+            projectileObjects[i] = AssetDatabase.LoadAssetAtPath<ProjectileObject>(path);
+        }
+
 
 
     }
@@ -146,6 +155,7 @@ public class CraftingUIManager : MonoBehaviour
         CraftUI = GameObject.Find(NAME_CRAFT_UI);
         weapons = MenuUI.transform.Find(NAME_BUTTON_0).GetComponent<Button>();
         towers = MenuUI.transform.Find(NAME_BUTTON_1).GetComponent<Button>();
+        projectiles = MenuUI.transform.Find(NAME_BUTTON_2).GetComponent<Button>();
 
         CraftButton = CraftUI.transform.Find(NAME_Craft_BUTTON).GetComponent<Button>();
         CraftButton.onClick.AddListener(CraftButtonClicked);
@@ -153,6 +163,7 @@ public class CraftingUIManager : MonoBehaviour
 
         weapons.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(weaponObjects)));
         towers.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(towerObjects)));
+        projectiles.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(projectileObjects)));
         MenuUI.SetActive(false);
         CraftUI.SetActive(false);
         
@@ -458,6 +469,7 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_CRAFT_MENU = "CraftMenu";
     private const string NAME_BUTTON_0 = "type0";
     private const string NAME_BUTTON_1 = "type1";
+    private const string NAME_BUTTON_2 = "type2";
 
 
 

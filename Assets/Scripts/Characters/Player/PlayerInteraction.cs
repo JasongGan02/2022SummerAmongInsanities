@@ -308,7 +308,7 @@ public class PlayerInteraction : MonoBehaviour
                         animator.SetBool(Constants.Animator.MELEE_TOOL, true);
                         if (clickHit.transform.gameObject != targetObject)
                         {
-                            am.playAudio(am.tile_duringbreak);
+                            am.playWeaponAudio(am.tile_duringbreak);
                             targetObject = tempTargetObject;
                             playerMovement.excavateCoeff = 0.1f;
                             StartTimer();
@@ -335,10 +335,10 @@ public class PlayerInteraction : MonoBehaviour
             
         }
         
-        if (Input.GetMouseButtonUp(0) && am.clip() == am.tile_duringbreak)
+        if (Input.GetMouseButtonUp(0) && am.weaponclip() == am.tile_duringbreak)
         {
             ResetMeleeAnimationAndTimer();
-            am.StopPlayerAudio();
+            am.StopWeaponAudio();
         }
 
         if (IsTimerCompleted())

@@ -154,11 +154,11 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             if(dmg > _HP)
             {
-                am.playAudio(am.death);
+                am.playReactAudio(am.death);
             }
             else
             {
-                am.playAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
+                am.playReactAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
             }
             
         }

@@ -9,22 +9,16 @@ public class audioManager : MonoBehaviour
     [SerializeField] AudioSource playerAudio;
     [SerializeField] AudioSource weaponAudio;
     [SerializeField] AudioSource towerAudio;
+    [SerializeField] AudioSource playerReactAudio;
+    [SerializeField] AudioSource enemyAudio;
 
     [Header("----Audio Clip-----")]
-    public AudioClip[] injured = { injured0, injured1, injured2, injured3 };
-
-    public AudioClip[] step = { step0, step1, step2, step3, step4, step5 };
+    public AudioClip[] injured = { injured0, injured1};
     private int lastPlayedClipIndex = -1;
     private static AudioClip injured0;
     private static AudioClip injured1;
-    private static AudioClip injured2;
-    private static AudioClip injured3;
 
-    public AudioClip jump;
-    public AudioClip doublejump;
-
-    
-
+    public AudioClip[] step = { step0, step1, step2, step3, step4, step5 };
     private static AudioClip step0;
     private static AudioClip step1;
     private static AudioClip step2;
@@ -32,12 +26,22 @@ public class audioManager : MonoBehaviour
     private static AudioClip step4;
     private static AudioClip step5;
 
+    public AudioClip jump;
+    public AudioClip doublejump;
+
+  
+
     public AudioClip attack;
+    public AudioClip bow;
+    public AudioClip shoot;
+
     public AudioClip death;
     public AudioClip tile_duringbreak;
     public AudioClip tile_endbreak;
 
     public AudioClip catapult_shootRock;
+
+    public AudioClip villager_attack;
 
     void Start()
     {
@@ -63,9 +67,15 @@ public class audioManager : MonoBehaviour
         towerAudio.Play();
     }
 
-    public void StopPlayerAudio()
+    public void playReactAudio(AudioClip clip)
     {
-        playerAudio.Stop();
+        playerReactAudio.clip = clip;
+        playerReactAudio.Play();
+    }
+
+    public void StopWeaponAudio()
+    {
+        weaponAudio.Stop();
     }
 
     public void looponAudio()
@@ -78,9 +88,9 @@ public class audioManager : MonoBehaviour
     }
     // Update is called once per frame
 
-    public AudioClip clip()
+    public AudioClip weaponclip()
     {
-        return playerAudio.clip;
+        return weaponAudio.clip;
     }
 
 

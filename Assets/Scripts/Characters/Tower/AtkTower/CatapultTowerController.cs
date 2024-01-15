@@ -13,7 +13,7 @@ public class CatapultTowerController : RangedTowerController
         base.Start(); // Call the base start to initialize common features
         animator = GetComponent<Animator>();
         startPosition = transform.GetChild(0);
-        am = am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
 
     protected override void Attack()
