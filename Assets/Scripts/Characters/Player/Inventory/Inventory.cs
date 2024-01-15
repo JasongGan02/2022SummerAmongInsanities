@@ -380,8 +380,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            Debug.Log(slot);
-            Debug.Log(inventoryObject);
             if (!slot.IsEmpty && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
             {
                 if (num > slot.count)

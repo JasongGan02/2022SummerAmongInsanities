@@ -16,6 +16,7 @@ public class RangedWeaponController : Weapon, IRangedAttacker
     {
         base.Start();
         startPosition = transform;
+        projectileObject = weaponStats.projectileObject;
     }
 
     public virtual void FireProjectile(GameObject target)
