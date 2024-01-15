@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
   m_Name: LadyProjectile
   m_EditorClassIdentifier: 
-  itemName: LadyProjectile 1
+  itemName: LadyProjectile
   sizeRatio: 1
   prefab: {fileID: 2674270034793632360, guid: 586f732dab3b81748bd0e3cdf67b91d4, type: 3}
   damageCoef: 2

@@ -19,13 +19,14 @@ MonoBehaviour:
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
-  attack: 1
+  damageCoef: 0
   farm: 5
   frequency: 1
+  projectileObject: {fileID: 0}
   _recipe:
   - {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
   - {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
   _quantity: 0200000003000000
   _isCraftable: 1
   _isCoreNeeded: 0
-  _craftTime: 0
+  _craftTime: 3

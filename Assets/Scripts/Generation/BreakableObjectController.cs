@@ -44,7 +44,7 @@ public class BreakableObjectController : MonoBehaviour
   
     private void OnObjectDestroyed()
     {
-        am.playAudio(am.tile_endbreak);
+        am.playWeaponAudio(am.tile_endbreak);
         var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);
         Vector2Int worldPostion = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         Vector2Int localPosition = new Vector2Int(Mathf.FloorToInt(transform.localPosition.x), Mathf.FloorToInt(transform.localPosition.y));

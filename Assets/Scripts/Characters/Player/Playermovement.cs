@@ -112,7 +112,7 @@ public class Playermovement : MonoBehaviour
             if (!isInvokingFootsteps)
             {
                 float interval = isRunning ? runFootstepInterval : walkFootstepInterval;
-                InvokeRepeating("PlayFootstep", 0.3f, interval);
+                InvokeRepeating("PlayFootstep", 0.1f, interval);
                 isInvokingFootsteps = true;
             }
         }
