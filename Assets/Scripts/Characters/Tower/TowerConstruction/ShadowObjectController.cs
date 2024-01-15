@@ -7,14 +7,14 @@ using System;
 
 public class ShadowObjectController : MonoBehaviour
 {
-    CoreArchitecture coreArchitecture;
+    CoreArchitectureController coreArchitecture;
     IShadowObject curShadow; 
     private uint CollisionCount = 0;
     
    
     private void Awake()
     {
-        coreArchitecture = CoreArchitecture.Instance;
+        coreArchitecture = CoreArchitectureController.Instance;
     }
     /***
     Place Tile Implementations
@@ -72,7 +72,8 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool TileObjectCheck(float x, float y)
     {
-        return WorldGenerator.GetDataFromWorldPos(new Vector2Int((int) x, (int)y)) <=0 && CheckAdjcentPos(new Vector2Int((int) x, (int) y))  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
+        Vector2Int worldPosition = new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
+        return WorldGenerator.GetDataFromWorldPos(worldPosition) <=0 && CheckAdjcentPos(worldPosition)  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
     }
 
     private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)
@@ -87,7 +88,7 @@ public class ShadowObjectController : MonoBehaviour
         return new TileGhostPlacementResult(transform, CollisionCount==0 && IsConstructionShadowInRange(coreArchitecture) && downRay && constructionMode.CheckEnergyAvailableForConstruction((objectType as TowerObject).energyCost));
     }
 
-    bool IsConstructionShadowInRange(CoreArchitecture coreArchitecture)
+    bool IsConstructionShadowInRange(CoreArchitectureController coreArchitecture)
     {
         float Constructable_Distance = coreArchitecture.GetConstructableDistance();
         float Mouse_Distance = CalculateDistanceBetweenCoreAndMouse(coreArchitecture);
@@ -98,7 +99,7 @@ public class ShadowObjectController : MonoBehaviour
         return false;
     }
 
-    float CalculateDistanceBetweenCoreAndMouse(CoreArchitecture coreArchitecture)
+    float CalculateDistanceBetweenCoreAndMouse(CoreArchitectureController coreArchitecture)
     {
         Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);    // get mouse world poistion (x,y)
         Vector3 corePosition = coreArchitecture.GetComponent<Transform>().position;

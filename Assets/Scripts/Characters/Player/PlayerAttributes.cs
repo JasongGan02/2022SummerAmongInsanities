@@ -34,7 +34,7 @@ public class PlayerAttributes : MonoBehaviour
 
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
-    CoreArchitecture coreArchitecture;
+    CoreArchitectureController coreArchitecture;
     Image healthBar;
     
     void Start()
@@ -44,7 +44,7 @@ public class PlayerAttributes : MonoBehaviour
         isPlayerDead = false;
         spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
     }
 

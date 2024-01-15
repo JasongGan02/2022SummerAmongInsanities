@@ -161,6 +161,11 @@ public class DataPersistenceManager : MonoBehaviour
         SaveGame();
     }
 
+    public void GameOver()
+    {
+        DeleteProfileData(selectedProfileId);
+    }
+
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IDataPersistence>();

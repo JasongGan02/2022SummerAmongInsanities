@@ -9,7 +9,7 @@ public class CharacterSpawnManager : MonoBehaviour
     public EnemyObject[] enemyTypes;
     private float timer;
     private int deathCount = 0;
-    private CoreArchitecture coreArchitecture;
+    private CoreArchitectureController coreArchitecture;
     private GameObject player;
 
     private void Start()
@@ -74,12 +74,12 @@ public class CharacterSpawnManager : MonoBehaviour
 
     IEnumerator WaitForCoreArchitectureAndInitialize()
     {
-        while (CoreArchitecture.Instance == null)
+        while (CoreArchitectureController.Instance == null)
         {
             yield return null;
         }
 
-        coreArchitecture = CoreArchitecture.Instance;
+        coreArchitecture = CoreArchitectureController.Instance;
         transform.position = coreArchitecture.transform.position;
         SpawnPlayer();
     }

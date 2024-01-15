@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5c77fc65ce11a47bd8974f9f0f4e97, type: 3}
   m_Name: Lady
   m_EditorClassIdentifier: 
-  itemName: lady
+  itemName: Lady
   sizeRatio: 2
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
   _HP: 20
@@ -29,5 +29,6 @@ MonoBehaviour:
   - {fileID: 11500000, guid: 5b889914607fafa4f87fd046a99656b8, type: 3}
   - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
   - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
+  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   SensingRange: 10
   projectileObject: {fileID: 11400000, guid: 31e148de31d4a6f4f88b70a8eeabb213, type: 2}

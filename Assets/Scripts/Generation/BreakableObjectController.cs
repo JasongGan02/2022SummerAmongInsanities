@@ -46,17 +46,18 @@ public class BreakableObjectController : MonoBehaviour
     {
         am.playWeaponAudio(am.tile_endbreak);
         var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);
-        Vector2Int worldPostion = new Vector2Int((int) transform.position.x, (int)transform.position.y);
-        Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);
+        Vector2Int worldPostion = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+        Vector2Int localPosition = new Vector2Int(Mathf.FloorToInt(transform.localPosition.x), Mathf.FloorToInt(transform.localPosition.y));
+        Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(transform.position), 0);
         if (WorldGenerator.WorldData.ContainsKey(chunkCoord))
         {
 
             // Remove the tile entry from the dictionary
-            WorldGenerator.WorldData[chunkCoord][(int)transform.localPosition.x, (int)transform.localPosition.y] = 0;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y] = 0;
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
         {
-            WorldGenerator.WorldData[chunkCoord][(int)transform.localPosition.x, (int)transform.localPosition.y] = -((TileObject)tile).TileID;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y] = -((TileObject)tile).TileID;
             WorldGenerator.PlaceTile(((TileObject)tile), worldPostion.x, worldPostion.y, chunkCoord, true, false);
         }
         foreach (GameObject droppedItem in drops)

@@ -9,7 +9,7 @@ public class ConstructionShadows : MonoBehaviour
     private float PlaceDistance = 0;
     private SpriteRenderer ShadowSpriteRenderer;
     
-    private CoreArchitecture coreArchitecture;
+    private CoreArchitectureController coreArchitecture;
     private TowerContainer towerContainer;
     private Color OriginalColor;
     private bool isPlaceAble = false;
@@ -19,7 +19,7 @@ public class ConstructionShadows : MonoBehaviour
         ShadowSpriteRenderer = GetComponent<SpriteRenderer>();
         OriginalColor = ShadowSpriteRenderer.color;
         towerContainer = FindObjectOfType<TowerContainer>();
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
 
     }
 
@@ -40,7 +40,7 @@ public class ConstructionShadows : MonoBehaviour
     // Check whether construction shadow is placeable
     private void UpdatePlaceStatus(){
 
-        if(GameObject.FindWithTag("Player") == null || FindObjectOfType<CoreArchitecture>() == null)
+        if(GameObject.FindWithTag("Player") == null || FindObjectOfType<CoreArchitectureController>() == null)
         {
             isPlaceAble = false;
         }

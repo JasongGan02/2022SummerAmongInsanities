@@ -17,7 +17,7 @@ public class PlayerController : CharacterController, IDataPersistence
     bool isPlayerDead = false; 
     SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
-    CoreArchitecture coreArchitecture;
+    CoreArchitectureController coreArchitecture;
     private CharacterSpawnManager characterSpawnManager;
 
 
@@ -44,7 +44,7 @@ public class PlayerController : CharacterController, IDataPersistence
         characterSpawnManager = FindObjectOfType<CharacterSpawnManager>();
         spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(2).GetComponent<Image>();
         damagedHealthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
         damagedColor = damagedHealthBar.color;
@@ -102,7 +102,7 @@ public class PlayerController : CharacterController, IDataPersistence
 
         PlayerSurroundingLight();
     }
-    public override void death()
+    protected override void death()
     {
             
         

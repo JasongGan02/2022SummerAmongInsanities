@@ -20,7 +20,7 @@ public class CraftingUIManager : MonoBehaviour
 
     private UIViewStateManager uiViewStateManager;
     private Inventory inventory;
-    private CoreArchitecture coreArchitecture;
+    private CoreArchitectureController coreArchitecture;
 
     private GameObject MenuUI;
 
@@ -98,7 +98,7 @@ public class CraftingUIManager : MonoBehaviour
     }
     void Start()
     {
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         inventory = FindObjectOfType<Inventory>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleCraftUi;
@@ -223,7 +223,7 @@ public class CraftingUIManager : MonoBehaviour
 
             image.sprite = list[i].getPrefabSprite();
 
-            CoreArchitecture coreArchitecture = FindObjectOfType<CoreArchitecture>();
+            CoreArchitectureController coreArchitecture = FindObjectOfType<CoreArchitectureController>();
 
             ICraftableObject isCraftable = list[i] as ICraftableObject;
             if (isCraftable.getIsCraftable()) 
@@ -329,7 +329,7 @@ public class CraftingUIManager : MonoBehaviour
     {
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
         if (coreArchitecture == null)
-            coreArchitecture = CoreArchitecture.Instance;
+            coreArchitecture = CoreArchitectureController.Instance;
         if (craftableObject.getIsCraftable())
         {
             if (craftableObject.getIsCoreNeeded())

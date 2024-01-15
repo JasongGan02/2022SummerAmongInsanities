@@ -14,7 +14,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public static Dictionary<int, int[,]> AdditiveWorldData;
     public static readonly Vector2Int ChunkSize = new Vector2Int(16, 256);
     public float seed;
-    [SerializeField] private GameObject coreArchitecturePrefab;
+    [SerializeField] private TowerObject coreArchitectureSO;
     private DataGenerator dataCreator;
     public TerrainSettings[] settings;
     public TileObjectRegistry tileObjectRegistry;
@@ -177,7 +177,8 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             int highestY = FindHighestBlockInColumn(chunkData, middleX);
             // Calculate the world position for the top of the chunk
             Vector3 topPosition = new Vector3(chunkCoord * ChunkSize.x + middleX, highestY + 1.73f, 0); // +1 to place it above the highest block
-            Instantiate(coreArchitecturePrefab, topPosition, Quaternion.identity);
+            GameObject CAgameObject = coreArchitectureSO.GetSpawnedGameObject();
+            CAgameObject.transform.position = topPosition;
         }
         else
         {
@@ -201,15 +202,22 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         // Load WorldData and other relevant fields from the GameData object
-        if (data.serializableWorldData != null)
+        if (data.serializableWorldData?.pairs.Count != 0)
         {
             WorldData = data.GetWorldData();
-            foreach(var dataToApply in WorldData)
+
+            foreach (var dataToApply in WorldData)
             {
                 int chunkCoord = dataToApply.Key.x;
                 if (!ActiveChunks.ContainsKey(chunkCoord))
                 {
-                    StartCoroutine(CreateChunk(chunkCoord));
+                    StartCoroutine(CreateChunk(chunkCoord,() =>
+                    {
+                        if (chunkCoord == 0)
+                        {
+                            AddCoreArchitectureToChunk(chunkCoord);
+                        }
+                    }));
                 }
             }
         }

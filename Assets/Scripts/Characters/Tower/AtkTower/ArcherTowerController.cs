@@ -12,7 +12,6 @@ public class ArcherTowerController : RangedTowerController
         if (target != null)
         {
             //Vector2 direction = (target.transform.position - transform.position).normalized;
-            Debug.Log(target);
             FireProjectile(target);
         }
     }
