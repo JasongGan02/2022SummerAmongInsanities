@@ -190,8 +190,11 @@ public abstract class EnemyController : CharacterController
         float min_distance = Vector2.Distance(towerTransforms[0].position, transform.position);
         foreach(Transform e in towerTransforms)
         {
+            Debug.Log(e);
             if (e.transform.gameObject.CompareTag("tower"))
             {
+                Debug.Log(e);
+
                 if ((Vector2.Distance(e.position, transform.position) < min_distance) && (e.name != "FiringPoint"))
                 {
                     nearest_Transform = e;

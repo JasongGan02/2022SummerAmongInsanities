@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
     // only a temporary solution
     public void SpawnRamdonWeapon() 
     {
-        spawnPoint.transform.position = CoreArchitecture.Instance.transform.transform.position;
+        spawnPoint.transform.position = CoreArchitectureController.Instance.transform.transform.position;
         if (equipments.Length == 0) return;
 
         int index = Random.Range(0, equipments.Length);
@@ -37,19 +37,19 @@ public class SpawnManager : MonoBehaviour
             dropTower = each.GetDroppedGameObject(1);
             dropTower.transform.position = spawnPoint.transform.position;
         }
-        spawnPoint.transform.position = CoreArchitecture.Instance.transform.transform.position;
+        spawnPoint.transform.position = CoreArchitectureController.Instance.transform.transform.position;
     }
 
     public void SpawnFrags(int num) 
     {
-        spawnPoint.transform.position = CoreArchitecture.Instance.transform.position;
+        spawnPoint.transform.position = CoreArchitectureController.Instance.transform.position;
         GameObject drop = divinityFrag.GetDroppedGameObject(num);
         drop.transform.position = spawnPoint.transform.position;
     }
 
     public void SpawnProjectile(int num)
     {
-        spawnPoint.transform.position = CoreArchitecture.Instance.transform.transform.position;
+        spawnPoint.transform.position = CoreArchitectureController.Instance.transform.transform.position;
         foreach (ProjectileObject each in projectileObjects)
         {
             GameObject dropProjectile = each.GetDroppedGameObject(1);
@@ -78,11 +78,11 @@ public class SpawnManager : MonoBehaviour
     IEnumerator WaitForCoreArchitectureAndDoSomething()
     {
         // Wait until CoreArchitecture is available
-        while (CoreArchitecture.Instance == null)
+        while (CoreArchitectureController.Instance == null)
         {
             yield return null; // Wait for the next frame
         }
-        spawnPoint.transform.position = CoreArchitecture.Instance.transform.position;
+        spawnPoint.transform.position = CoreArchitectureController.Instance.transform.position;
         foreach (TowerObject each in testCase)
         {
             GameObject dropTower = each.GetDroppedGameObject(1);

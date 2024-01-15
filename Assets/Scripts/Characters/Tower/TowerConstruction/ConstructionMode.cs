@@ -9,7 +9,7 @@ public class ConstructionMode : MonoBehaviour
 {
     private bool isInConstructionMode = false;
 
-    private CoreArchitecture coreArchitecture;
+    private CoreArchitectureController coreArchitecture;
     private UIViewStateManager uiViewStateManager;
     private PlayerInteraction playerInteraction;
     private TowerContainer towerContainer;
@@ -24,7 +24,7 @@ public class ConstructionMode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         towerContainer = FindObjectOfType<TowerContainer>();
         MaxEnergy = 100;
@@ -44,14 +44,14 @@ public class ConstructionMode : MonoBehaviour
     {
         if (coreArchitecture == null)
         {
-            coreArchitecture = CoreArchitecture.Instance;
+            coreArchitecture = CoreArchitectureController.Instance;
         }
     }
     void Update()
     {
         if (coreArchitecture == null)
         {
-            coreArchitecture = CoreArchitecture.Instance;
+            coreArchitecture = CoreArchitectureController.Instance;
             return;
         }
         if (isInConstructionMode)

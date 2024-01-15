@@ -24,7 +24,7 @@ public class TowerController : CharacterController
         base.Reinitialize();
 
     }
-    public override void death()
+    protected override void death()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
         constructionMode.EnergyConsumption(energyCost*-1);

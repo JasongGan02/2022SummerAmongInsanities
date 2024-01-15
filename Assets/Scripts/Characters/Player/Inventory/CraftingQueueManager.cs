@@ -17,7 +17,7 @@ public class CraftingQueueManager : MonoBehaviour
     private TextMeshProUGUI ProgressText;
     private GameObject QueueUI;
 
-    private CoreArchitecture coreArchitecture;
+    private CoreArchitectureController coreArchitecture;
     private TimeSystemManager timeSystemManager;
 
     public int sizeCraftQueue()
@@ -30,7 +30,7 @@ public class CraftingQueueManager : MonoBehaviour
     {
         StartCoroutine(WaitForCoreArchitectureAndInitialize());
         QueueUI = GameObject.Find("QueueUI");
-        coreArchitecture = FindObjectOfType<CoreArchitecture>();
+        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
 
@@ -141,12 +141,12 @@ public class CraftingQueueManager : MonoBehaviour
 
     IEnumerator WaitForCoreArchitectureAndInitialize()
     {
-        while (CoreArchitecture.Instance == null)
+        while (CoreArchitectureController.Instance == null)
         {
             yield return null;
         }
 
-        coreArchitecture = CoreArchitecture.Instance;
+        coreArchitecture = CoreArchitectureController.Instance;
     }
 
 

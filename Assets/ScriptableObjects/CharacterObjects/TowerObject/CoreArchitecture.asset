@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
+  m_Name: CoreArchitecture
+  m_EditorClassIdentifier: 
+  itemName: CoreArchitecture
+  sizeRatio: 1
+  prefab: {fileID: 2767627944182598563, guid: 881ea817df899664cb502686f5086589, type: 3}
+  _HP: 100
+  _atkDamage: 0
+  _atkSpeed: 0
+  _atkRange: 0
+  _movingSpeed: 0
+  _jumpForce: 0
+  _totalJumps: 0
+  Drops: []
+  Hatred: []
+  energyCost: 0
+  rotateAngle: {x: 0, y: 0, z: 0, w: 0}
+  curAngle: {x: 0, y: 0, z: 0, w: 1}
+  projectileObject: {fileID: 0}
+  _maxStack: 0
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

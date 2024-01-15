@@ -439,9 +439,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentSlotInUse.item is TileObject)
         {
-            Vector2Int worldPostion = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+            Vector2Int worldPostion = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
             Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);
-            WorldGenerator.WorldData[chunkCoord][(int) (worldPostion.x - chunkCoord.x * WorldGenerator.ChunkSize.x), (int)worldPostion.y] = ((TileObject)currentSlotInUse.item).TileID;
+            WorldGenerator.WorldData[chunkCoord][Mathf.FloorToInt(worldPostion.x - chunkCoord.x * WorldGenerator.ChunkSize.x), Mathf.FloorToInt(worldPostion.y)] = ((TileObject)currentSlotInUse.item).TileID;
             WorldGenerator.PlaceTile((TileObject)currentSlotInUse.item, worldPostion.x, worldPostion.y, chunkCoord, false, true);
             inventory.RemoveItemByOne(indexInUse);
         } 

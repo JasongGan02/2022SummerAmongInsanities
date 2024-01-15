@@ -67,6 +67,12 @@ MonoBehaviour:
     initialPoolSize: 20
   - poolableObject: {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
     initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
+    initialPoolSize: 20
+  - poolableObject: {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+    initialPoolSize: 20
 --- !u!1 &4285884787739671943
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +123,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
   - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
   - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
-  - {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
 --- !u!1 &8685695344788396459
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +161,7 @@ Transform:
   - {fileID: 5139273599847005184}
   - {fileID: 9145199968869873101}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7132367815537210312
 PrefabInstance:
@@ -480,7 +485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8366817067291334112, guid: d69934c998a4f6f4290b0dd04a855707, type: 3}
       propertyPath: isDebugDayTime
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

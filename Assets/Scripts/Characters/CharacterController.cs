@@ -178,7 +178,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
 
     }
 
-    public virtual void death()
+    protected virtual void death()
     {
         PoolManager.Instance.Return(this.gameObject, characterStats);
         OnObjectReturned(false);

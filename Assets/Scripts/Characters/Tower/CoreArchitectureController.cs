@@ -2,19 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 //using static UnityEditor.Progress;
 
-public class CoreArchitecture : MonoBehaviour
+public class CoreArchitectureController : CharacterController
 {
-    [SerializeField] float Constructable_Distance;
-    [SerializeField] GameObject Constructable_Circle;
+    float Constructable_Distance;
+    GameObject Constructable_Circle;
 
     GameObject player;
 
-    public static CoreArchitecture Instance;
+    public static CoreArchitectureController Instance;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (Instance == null)
         {
             Instance = this;
@@ -28,13 +30,16 @@ public class CoreArchitecture : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        Constructable_Circle = transform.Find("Circle").gameObject;
+        Constructable_Distance = 15;
         InitConstructableCircle();
 
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if(player == null)
             player = GameObject.FindWithTag("Player");
     }
@@ -81,6 +86,15 @@ public class CoreArchitecture : MonoBehaviour
     public float GetConstructableDistance()
     {
         return Constructable_Distance;
+    }
+
+    protected override void death()
+    {
+        if (DataPersistenceManager.instance != null)
+        {
+            DataPersistenceManager.instance.GameOver();
+        }
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 
 }

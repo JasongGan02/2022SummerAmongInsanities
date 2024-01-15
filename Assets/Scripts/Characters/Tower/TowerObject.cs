@@ -150,7 +150,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         }
         Type type = Type.GetType(controllerName);
         var controller = worldGameObject.AddComponent(type);
-        (controller as CharacterController).Initialize(this);
+        if (controller is CharacterController)
+            (controller as CharacterController).Initialize(this);
         controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
         worldGameObject.transform.rotation = curAngle;
         curAngle =  Quaternion.Euler(0,0,0);
