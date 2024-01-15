@@ -51,8 +51,6 @@ public class BowController : RangedWeaponController
 
     public override void FireProjectile(GameObject target)
     {
-        Debug.Log(projectileObject);
-
         if (!inventory.ConsumeItem(projectileObject, 1))
             return;
         // Calculate the force and damage based on charge time
