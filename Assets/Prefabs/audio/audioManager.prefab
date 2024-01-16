@@ -451,10 +451,13 @@ MonoBehaviour:
   jump: {fileID: 8300000, guid: 1639865149a1807498e1ae2c1997cbbb, type: 3}
   doublejump: {fileID: 8300000, guid: 76010af760980fa47b7e748cb591284f, type: 3}
   attack: {fileID: 8300000, guid: 5cb2c14aad95c8b4a95648638446a280, type: 3}
+  bow: {fileID: 8300000, guid: a2779712364e3f34a86f5a29ab61b299, type: 3}
+  shoot: {fileID: 8300000, guid: 87a11c0d9c62dee449151e1c5bc740e2, type: 3}
   death: {fileID: 8300000, guid: 389012295b904e944a887a007742e11d, type: 3}
   tile_duringbreak: {fileID: 8300000, guid: 19739120be46fc24eb1ee5038b945793, type: 3}
   tile_endbreak: {fileID: 8300000, guid: 5ae1c9fcd6b41c74d976f7e7abef2cf9, type: 3}
   catapult_shootRock: {fileID: 8300000, guid: 9c223879965912e44a98270e5a003851, type: 3}
+  villager_attack: {fileID: 0}
 --- !u!1 &9124790888883618192
 GameObject:
   m_ObjectHideFlags: 0

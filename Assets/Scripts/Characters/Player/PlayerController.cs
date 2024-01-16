@@ -148,11 +148,9 @@ public class PlayerController : CharacterController, IDataPersistence
 
     public override void takenDamage(float dmg)
     {
-        base.takenDamage(dmg);
-        
         if (dmg > 0)
         {
-            if(dmg > _HP)
+            if (dmg >= _HP)
             {
                 am.playReactAudio(am.death);
             }
@@ -160,8 +158,11 @@ public class PlayerController : CharacterController, IDataPersistence
             {
                 am.playReactAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
             }
-            
+
         }
+        base.takenDamage(dmg);
+        
+        
         if (damagedColor.a <= 0)
         {   // Damaged Bar is invisible
             damagedHealthBar.fillAmount = healthBar.fillAmount;
