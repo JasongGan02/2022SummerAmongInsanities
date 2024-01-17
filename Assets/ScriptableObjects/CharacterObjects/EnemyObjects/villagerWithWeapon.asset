@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b80aff767a32a48b33e96c301de720, type: 3}
   m_Name: VillagerWithWeapon
   m_EditorClassIdentifier: 
-  itemName: VillagerWithWeapon
+  itemName: villagerWithWeapon
   sizeRatio: 1.6
   prefab: {fileID: 5469098318322386293, guid: a5061e01c5ca21f4fb2f7b8ad582b6a7, type: 3}
   _HP: 0
