@@ -11,8 +11,10 @@ public class ArcherTowerController : RangedTowerController
         target = WhatToAttack();
         if (target != null)
         {
+            am.playTowerAudio(am.shoot);
             //Vector2 direction = (target.transform.position - transform.position).normalized;
             FireProjectile(target);
+            
         }
     }
 

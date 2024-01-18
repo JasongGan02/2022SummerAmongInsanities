@@ -16,7 +16,7 @@ public interface ICraftableObject
 
     int CraftTime { get; set; }
 
-   
+    GameObject GetDroppedGameObject(int index);
     public void Craft(Inventory inventory);
 
     public BaseObject[] getRecipe();
