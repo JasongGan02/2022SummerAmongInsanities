@@ -78,13 +78,13 @@ public class audioManager : MonoBehaviour
         weaponAudio.Stop();
     }
 
-    public void looponAudio()
+    public void looponWeaponAudio()
     {
-        playerAudio.loop = true;
+        weaponAudio.loop = true;
     }
-    public void loopoffAudio()
+    public void loopoffWeaponAudio()
     {
-        playerAudio.loop = false;
+        weaponAudio.loop = false;
     }
     // Update is called once per frame
 
