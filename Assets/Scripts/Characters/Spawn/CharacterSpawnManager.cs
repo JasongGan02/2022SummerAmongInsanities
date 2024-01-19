@@ -52,7 +52,7 @@ public class CharacterSpawnManager : MonoBehaviour
         // this is for test
         Vector3 target = Vector3.zero;
         player = GameObject.Find("Player");
-        target = player.transform.position + new Vector3(5, 3, 0);
+        target = player.transform.position + new Vector3(10, 2, 0);
         return target;
     }
 
@@ -92,7 +92,7 @@ public class CharacterSpawnManager : MonoBehaviour
     {
         // Assuming you have a list or array of enemy types
         int randomIndex = UnityEngine.Random.Range(0, enemyTypes.Length);
-        CharacterObject randomEnemyType = enemyTypes[randomIndex];
+        CharacterObject randomEnemyType = enemyTypes[2];
         SpawnCharacter(randomEnemyType);
     }
 }
