@@ -130,13 +130,11 @@ public class CraftingQueueManager : MonoBehaviour
 
     private void spawn(BaseObject itemToCraft)
     {
-        
-            GameObject spawnObject = Instantiate(itemToCraft.getPrefab(), coreArchitecture.transform.position + new Vector3(1, 0, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
-            spawnObject.layer = LayerMask.NameToLayer("resource");
-            var controller = spawnObject.AddComponent<DroppedObjectController>();
-            controller.Initialize(itemToCraft as IInventoryObject, 1);
-        
-            
+
+        GameObject drop = (itemToCraft as ICraftableObject).GetDroppedGameObject(1);
+        drop.transform.position = CoreArchitectureController.Instance.transform.transform.position;
+
+
     }
 
     IEnumerator WaitForCoreArchitectureAndInitialize()
