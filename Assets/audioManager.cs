@@ -110,9 +110,11 @@ public class audioManager : MonoBehaviour
         }
     }
 
-    public bool IsClipPlaying(AudioClip clip)
+   
+
+    public bool IsWeaponPlaying(AudioClip clip)
     {
-        return playerAudio.isPlaying && playerAudio.clip == clip;
+        return weaponAudio.isPlaying && weaponAudio.clip == clip;
     }
     void Update()
     {

@@ -28,6 +28,8 @@ public class Playermovement : MonoBehaviour
 
     public bool facingRight = true;
     private bool isInvokingFootsteps = false;
+    float tolerance = 0.01f;
+    float interval = 0;
     private float walkFootstepInterval = 0.75f; 
     private float runFootstepInterval = 0.4f; 
 
@@ -107,13 +109,19 @@ public class Playermovement : MonoBehaviour
         if ((moveInput > 0 && !facingRight || moveInput < 0 && facingRight))
             Flip();
 
-        if (Mathf.Abs(moveInput) > 0 && !am.IsClipPlaying(am.jump))
+        if (Mathf.Abs(moveInput) > 0 && rb.velocity.y == 0)
         {
-            if (!isInvokingFootsteps)
+            float newInterval = isRunning ? runFootstepInterval : walkFootstepInterval;
+
+            // Check if footstep interval needs to be updated
+            if (!isInvokingFootsteps || Mathf.Abs(interval - newInterval) > tolerance)
             {
-                float interval = isRunning ? runFootstepInterval : walkFootstepInterval;
+                CancelInvoke("PlayFootstep");
+                interval = newInterval;
                 InvokeRepeating("PlayFootstep", 0.1f, interval);
                 isInvokingFootsteps = true;
+
+                
             }
         }
         else
@@ -122,6 +130,7 @@ public class Playermovement : MonoBehaviour
             {
                 CancelInvoke("PlayFootstep");
                 isInvokingFootsteps = false;
+                
             }
         }
     }
@@ -140,7 +149,8 @@ public class Playermovement : MonoBehaviour
             availableJumps--;
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
-            am.playAudio(am.jump);
+            animator.Play("playerJump");
+           am.playAudio(am.jump);
 
 
         }
@@ -178,7 +188,7 @@ public class Playermovement : MonoBehaviour
 
             }        
         }
-        animator.SetBool("Jump", !isGrounded);
+       
         
 
 
