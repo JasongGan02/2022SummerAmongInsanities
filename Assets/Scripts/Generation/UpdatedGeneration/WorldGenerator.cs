@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
@@ -9,15 +10,23 @@ using UnityEngine.Tilemaps;
 public class WorldGenerator : MonoBehaviour, IDataPersistence
 {
     public static Dictionary<Vector2Int, int[,]> WorldData;
+    public static Dictionary<Vector2Int, float[,]> WorldLightData;
     public static Dictionary<int, GameObject> ActiveChunks;
     public static Dictionary<int, GameObject> TotalChunks;
     public static Dictionary<int, int[,]> AdditiveWorldData;
     public static readonly Vector2Int ChunkSize = new Vector2Int(16, 256);
     public float seed;
-    [SerializeField] private TowerObject coreArchitectureSO;
-    private DataGenerator dataCreator;
     public TerrainSettings[] settings;
     public TileObjectRegistry tileObjectRegistry;
+
+    [SerializeField] private TowerObject coreArchitectureSO;
+    private DataGenerator dataCreator;
+    private LightGenerator lightGenerator;
+
+    [Header("Lighting")]
+    //Light
+    public Material lightShader;
+    [SerializeField] private GameObject lightOverlayPrefab;
     // Start is called before the first frame update
     void Awake()
     {
@@ -30,9 +39,13 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             Debug.LogError("TileObjectRegistry is not assigned in WorldGenerator");
         }
         WorldData = new Dictionary<Vector2Int, int[,]>();
+        WorldLightData = new Dictionary<Vector2Int, float[,]>();
         ActiveChunks = new Dictionary<int, GameObject>();
         TotalChunks = new Dictionary<int, GameObject>();
         dataCreator = new DataGenerator(this, settings, GetComponent<StructureGenerator>());
+        lightGenerator = new LightGenerator(this);
+
+
         RecalculateSeed();
     }
     private void RecalculateSeed() { if (seed == 0) seed = UnityEngine.Random.Range(-10000, 10000); }
@@ -67,13 +80,42 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             yield return new WaitUntil(() => dataToApply != null);
         }
 
-        if(!TotalChunks.ContainsKey(ChunkCoord))
+        if (!TotalChunks.ContainsKey(ChunkCoord))
             TotalChunks.Add(ChunkCoord, newChunk);
 
         StartCoroutine(DrawChunk(dataToApply, pos, () =>
         {
             onChunkCreated?.Invoke(); // Call the callback after drawing is complete
         }));
+
+        //Process Light; Propogate Light Map Data
+        
+
+        float[,] lightDataToApply = WorldLightData.ContainsKey(pos) ? WorldLightData[pos] : null;
+        
+        if (lightDataToApply == null)
+        {
+            lightGenerator.QueueDataToGenerate(new LightGenerator.GenData
+            {
+                GenerationPoint = pos,
+                OnComplete = x => lightDataToApply = x
+            });
+
+            yield return new WaitUntil(() => lightDataToApply != null);
+        }
+        string lightOverlayName = $"Light Overlay {ChunkCoord}";
+        GameObject lightMapOverlay = Instantiate(lightOverlayPrefab);
+        lightMapOverlay.name = lightOverlayName;
+        lightMapOverlay.transform.SetParent(newChunk.transform, true);
+        lightMapOverlay.transform.localScale = new Vector3(ChunkSize.x, ChunkSize.y, 1);
+        lightMapOverlay.transform.position = new Vector2(ChunkCoord * ChunkSize.x + ChunkSize.x / 2f, ChunkSize.y / 2f);
+        Texture2D lightMap = new Texture2D(ChunkSize.x, ChunkSize.y);
+        Material lightMaterial = new Material(lightShader);
+        lightMaterial.SetTexture("_LightMap", lightMap);
+        lightMapOverlay.GetComponent<SpriteRenderer>().material = lightMaterial;
+        lightMap.filterMode = FilterMode.Point; //< remove this line for smooth lighting, keep it for tiled lighting
+
+        StartCoroutine(ApplyLightToChunk(lightMap, lightDataToApply, pos));
     }
 
     public IEnumerator DrawChunk(int[,] Data, Vector2Int offset, Action onDrawingComplete = null)
@@ -97,13 +139,32 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
                 }
 
                 // Yield return null will wait for the next frame before continuing the loop
-                if (y % 30 == 0) // Adjust this value as needed for performance
+                if (y % 70 == 0) // Adjust this value as needed for performance
                 {
                     yield return null;
                 }
             }
         }
 
+        onDrawingComplete?.Invoke();
+    }
+
+    public IEnumerator ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Vector2Int offset, Action onDrawingComplete = null)
+    {
+        for (int x = 0; x < ChunkSize.x; x++)
+        {
+            for (int y = 0; y < ChunkSize.y; y++)
+            {
+                chunkTexture.SetPixel(x, y, new Color(0, 0, 0, LightData[x, y]));
+
+                // Yield return null will wait for the next frame before continuing the loop
+                if (y % 200 == 0) // Adjust this value as needed for performance
+                {
+                    yield return null;
+                }
+            }
+        }
+        chunkTexture.Apply();
         onDrawingComplete?.Invoke();
     }
 
