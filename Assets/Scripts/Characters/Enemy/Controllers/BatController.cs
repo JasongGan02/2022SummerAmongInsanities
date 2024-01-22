@@ -23,6 +23,9 @@ public class BatController : EnemyController
 
     private GameObject target;
 
+    private float startX;
+    private float startY;
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -35,7 +38,9 @@ public class BatController : EnemyController
 
         waitTime = 3;
         BatTimer = 0;
-        moveTo.position = new Vector2(Random.Range(30, 60), Random.Range(16, 23));
+        startX = this.transform.position.x;
+        startY = this.transform.position.y;
+        moveTo.position = new Vector2(Random.Range(startX-3, startX+3), Random.Range(startY-3, startY+3));
 
         planned = false;
         prepare_dash = true;
@@ -120,7 +125,7 @@ public class BatController : EnemyController
         {
             if (waitTime <= 0)
             {
-                moveTo.position = new Vector2(Random.Range(30, 60), Random.Range(16, 23));
+                moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));
                 waitTime = 3;
             }
             else

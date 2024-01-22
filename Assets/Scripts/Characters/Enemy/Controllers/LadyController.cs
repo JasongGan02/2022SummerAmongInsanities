@@ -96,6 +96,7 @@ public class LadyController : EnemyController, IRangedAttacker
         // Approaches and escapes from the player
 
         target = WhatToAttack();
+        if (rb.velocity.x != 0) SenseFrontBlock();
         if (target == null)
         {
             patrol();
@@ -113,9 +114,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 transform.right = Vector2.right;
             }
 
-            SenseFrontBlock();
-            distance = Mathf.Abs(transform.position.x - target.transform.position.x);
-            approach(_movingSpeed, target.transform, distance);
+            approach(_movingSpeed, target.transform, AtkRange);
             
             // Target Taken Damage
             if (arrow != null)
@@ -246,23 +245,32 @@ public class LadyController : EnemyController, IRangedAttacker
         Debug.DrawRay(frontCheck.position, Vector2.left * 0.05f, Color.red); // Debug statement to display the raycast
         Debug.DrawRay(backCheck.position, Vector2.right * 0.05f, Color.red); // Debug statement to display the raycast
 
-        if (hitLeft.transform != null
-            || hitRight.transform != null
-            || hitCenter.transform != null)
+        if (hitCenter.transform != null)
         {
-            if (hitFront.transform != null || hitBack.transform != null)
+            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
             {
-                if (headCheck())
+                if (hitFront.transform != null)
                 {
-                    Jump();
-                    Debug.Log("jumping.");
+                    if (headCheck())
+                    {
+                        Jump();
+                        Debug.Log("jumping.");
+                    }
                 }
-                //else { Debug.Log("front or back obstacle too high!"); }
             }
-            //else { Debug.Log("no obstacle in front or back"); }
+            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
+            {
+                if (hitBack.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                        Debug.Log("jumping.");
+                    }
+                }
+            }
         }
         //else { Debug.Log("foot in the air"); }
-
     }
     public bool headCheck()
     {
@@ -279,22 +287,23 @@ public class LadyController : EnemyController, IRangedAttacker
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
-        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
     }
     void approach(float speed, Transform target, float distance)
     {
-        if (distance < 0.5f * _atkRange)
+        float currentDistance = Mathf.Abs(transform.position.x - target.position.x);
+        Debug.Log("currentDistance" + currentDistance);
+        if (currentDistance < distance)
         {
             if (target.position.x > transform.position.x)
             {
                 rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                //Debug.Log("going Left");
+                Debug.Log("going Left");
             }
             else
             {
                 rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                //Debug.Log("going Right");
+                Debug.Log("going Right");
             }
         }
         else { animator.SetFloat("movingSpeed", 0f); }

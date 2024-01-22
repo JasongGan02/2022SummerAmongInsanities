@@ -19,8 +19,8 @@ MonoBehaviour:
   _atkDamage: 8
   _atkSpeed: 4
   _atkRange: 10
-  _movingSpeed: 1
-  _jumpForce: 10
+  _movingSpeed: 1.5
+  _jumpForce: 14
   _totalJumps: 0
   Drops: []
   Hatred:
