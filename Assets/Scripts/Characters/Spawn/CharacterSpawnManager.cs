@@ -30,6 +30,7 @@ public class CharacterSpawnManager : MonoBehaviour
     public void SpawnCharacter(CharacterObject characterType)
     {
         GameObject character = PoolManager.Instance.Get(characterType);
+
         if (character != null)
         {
             if (characterType is EnemyObject)
@@ -48,8 +49,11 @@ public class CharacterSpawnManager : MonoBehaviour
 
     private Vector3 GetSpawnPosition()
     {
-        // Implement your logic to determine the spawn position
-        return transform.position;
+        // this is for test
+        Vector3 target = Vector3.zero;
+        player = GameObject.Find("Player");
+        target = player.transform.position + new Vector3(10, 2, 0);
+        return target;
     }
 
     public void StartRespawnCoroutine()
@@ -88,7 +92,7 @@ public class CharacterSpawnManager : MonoBehaviour
     {
         // Assuming you have a list or array of enemy types
         int randomIndex = UnityEngine.Random.Range(0, enemyTypes.Length);
-        CharacterObject randomEnemyType = enemyTypes[randomIndex];
+        CharacterObject randomEnemyType = enemyTypes[2];
         SpawnCharacter(randomEnemyType);
     }
 }

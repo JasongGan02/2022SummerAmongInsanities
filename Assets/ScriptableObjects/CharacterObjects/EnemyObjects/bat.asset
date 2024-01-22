@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eaecfe4630d5f54c86cf7f9a8bb2ec0, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: 
-  itemName: Bat
+  itemName: bat
   sizeRatio: 2
   prefab: {fileID: 5572140884625632519, guid: d55593716ae05bb438fc113cba10a4d6, type: 3}
   _HP: 50

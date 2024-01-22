@@ -23,6 +23,8 @@ public class VillagerController : EnemyController
     public Transform groundCheckRight;
     public Transform frontCheck;
     public Transform backCheck;
+    public Transform attackStart;
+    public Transform attackEnd;
     LayerMask ground_mask;
 
     private BoxCollider2D boxCollider;
@@ -40,6 +42,8 @@ public class VillagerController : EnemyController
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
+        attackStart = transform.Find("attackStart");
+        attackEnd = transform.Find("attackEnd");
         boxCollider = GetComponent<BoxCollider2D>();
         edgeCollider = GetComponent<EdgeCollider2D>();
 
@@ -146,6 +150,7 @@ public class VillagerController : EnemyController
 
         flip(target);
     }
+
     new void attack()
     {
         if (rest)
@@ -180,13 +185,20 @@ public class VillagerController : EnemyController
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", true);
             //Debug.Log("hit");
-            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
-            rest = true;
-            Wait = 0.3f;
+
+            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+            Debug.Log("distance: " + checkD);
+            if (checkD < 0.15f)
+            {
+                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+                rest = true;
+                Wait = 0.3f;
+            }
         }
 
         flip(player.transform);
     }
+
     void approachPlayer(float speed)
     {
         animator.SetBool("IsStanding", true);
@@ -277,18 +289,29 @@ public class VillagerController : EnemyController
         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
         RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
 
-        if (hitLeft.transform != null
-            || hitRight.transform != null
-            || hitCenter.transform != null)
+        if (hitCenter.transform != null)
         {
-            if (hitFront.transform != null || hitBack.transform != null)
+            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
             {
-                if (headCheck()) { Jump(); /*Debug.Log("jumping."); */ }
-                else { /*Debug.Log("front obstacle too high!");*/ }
+                if (hitFront.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
             }
-            else { /*Debug.Log("no obstacle in front");*/ }
+            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
+            {
+                if (hitBack.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
+            }
         }
-        else { /*Debug.Log("foot in the air");*/ }
 
     }
     bool headCheck()
@@ -306,8 +329,7 @@ public class VillagerController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
-        rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
     }
     private bool villager_sight()
     {
