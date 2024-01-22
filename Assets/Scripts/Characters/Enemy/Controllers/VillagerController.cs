@@ -23,6 +23,8 @@ public class VillagerController : EnemyController
     public Transform groundCheckRight;
     public Transform frontCheck;
     public Transform backCheck;
+    public Transform attackStart;
+    public Transform attackEnd;
     LayerMask ground_mask;
 
     private BoxCollider2D boxCollider;
@@ -40,6 +42,8 @@ public class VillagerController : EnemyController
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
+        attackStart = transform.Find("attackStart");
+        attackEnd = transform.Find("attackEnd");
         boxCollider = GetComponent<BoxCollider2D>();
         edgeCollider = GetComponent<EdgeCollider2D>();
 
@@ -146,6 +150,7 @@ public class VillagerController : EnemyController
 
         flip(target);
     }
+
     new void attack()
     {
         if (rest)
@@ -180,13 +185,20 @@ public class VillagerController : EnemyController
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", true);
             //Debug.Log("hit");
-            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
-            rest = true;
-            Wait = 0.3f;
+
+            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+            Debug.Log("distance: " + checkD);
+            if (checkD < 0.15f)
+            {
+                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+                rest = true;
+                Wait = 0.3f;
+            }
         }
 
         flip(player.transform);
     }
+
     void approachPlayer(float speed)
     {
         animator.SetBool("IsStanding", true);
