@@ -140,9 +140,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+      propertyPath: lightShader
+      value: 
+      objectReference: {fileID: 2100000, guid: dd8922b4327b5354aa4e22162a778da3, type: 2}
+    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
       propertyPath: coreArchitectureSO
       value: 
       objectReference: {fileID: 11400000, guid: f0c7faabb5db2d24b967f8e0319d6e47, type: 2}
+    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+      propertyPath: lightOverlayPrefab
+      value: 
+      objectReference: {fileID: 7325007939855369766, guid: 44c402f0ecdb61d47a800e538bf62e8a, type: 3}
     - target: {fileID: 4677015888933098899, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -1249,7 +1257,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: isDebugDayTime
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText

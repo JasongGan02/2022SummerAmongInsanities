@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,11 +8,12 @@ public class TileObjectRegistry : ScriptableObject
     [SerializeField]
     private List<TileObject> tileObjects;
 
-    private static Dictionary<int, TileObject> tileObjectMap;
+    private static ConcurrentDictionary<int, TileObject> tileObjectMap;
+
 
     public void Initialize()
     {
-        tileObjectMap = new Dictionary<int, TileObject>();
+        tileObjectMap = new ConcurrentDictionary<int, TileObject>();
         foreach (var tileObject in tileObjects)
         {
             if (tileObject != null)
