@@ -19,7 +19,7 @@ MonoBehaviour:
   quality: {r: 1, g: 1, b: 1, a: 0}
   durability: 0
   _maxStack: 1
-  damageCoef: 0
+  damageCoef: 1
   farm: 0
   frequency: 1
   projectileObject: {fileID: 0}

@@ -306,7 +306,7 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         
                         animator.SetBool(Constants.Animator.MELEE_TOOL, true);
-                        if (clickHit.transform.gameObject != targetObject)
+                        if (clickHit.transform.gameObject != targetObject && !am.IsWeaponPlaying(am.tile_endbreak))
                         {
                             am.looponWeaponAudio();
                             am.playWeaponAudio(am.tile_duringbreak);

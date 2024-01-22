@@ -129,6 +129,7 @@ public class Weapon : MonoBehaviour
         {
             
             collision.gameObject.GetComponent<CharacterController>().takenDamage(finalDamage);
+            Debug.Log("damaging"); 
 
         }
            

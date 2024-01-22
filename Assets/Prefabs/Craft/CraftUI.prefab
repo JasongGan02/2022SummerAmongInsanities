@@ -1503,9 +1503,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 17}
   m_SizeDelta: {x: 20, y: -17}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 1, y: 0}
 --- !u!222 &1303042661061274848
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1586,7 +1586,7 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 729193333535340158}
   m_HandleRect: {fileID: 8595183673023288175}
-  m_Direction: 2
+  m_Direction: 3
   m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
@@ -1763,8 +1763,8 @@ MonoBehaviour:
   m_Content: {fileID: 576765077651311287}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 0
-  m_Elasticity: 2
+  m_MovementType: 1
+  m_Elasticity: 1.5
   m_Inertia: 0
   m_DecelerationRate: 0.135
   m_ScrollSensitivity: 35

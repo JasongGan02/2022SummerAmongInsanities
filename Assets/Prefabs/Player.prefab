@@ -342,9 +342,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be6f15fb708d6e44860c1a3ccb633df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 4
-  runSpeedmodifier: 2
-  jumpHeight: 13
+  MS: 3.5
+  runningModifier: 2
+  jumpForce: 7
   excavateCoeff: 1
   totalJumps: 2
   groundCheckLeft: {fileID: 6647711790814027598}
