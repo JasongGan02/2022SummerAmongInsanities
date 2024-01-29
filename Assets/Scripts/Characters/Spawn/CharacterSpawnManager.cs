@@ -24,6 +24,7 @@ public class CharacterSpawnManager : MonoBehaviour
         {
             SpawnRandomEnemy();
         }
+
         
     }
 
@@ -92,8 +93,34 @@ public class CharacterSpawnManager : MonoBehaviour
     {
         // Assuming you have a list or array of enemy types
         int randomIndex = UnityEngine.Random.Range(0, enemyTypes.Length);
-        CharacterObject randomEnemyType = enemyTypes[2];
+        CharacterObject randomEnemyType = enemyTypes[randomIndex];
         SpawnCharacter(randomEnemyType);
+    }
+
+    public void SpawnBat()
+    {
+        CharacterObject enemy = enemyTypes[0];
+        SpawnCharacter(enemy);
+    }
+    public void SpawnVillager()
+    {
+        CharacterObject enemy = enemyTypes[2];
+        SpawnCharacter(enemy);
+    }
+    public void SpawnLady()
+    {
+        CharacterObject enemy = enemyTypes[1];
+        SpawnCharacter(enemy);
+    }
+    public void SpawnDumb()
+    {
+        CharacterObject enemy = enemyTypes[3];
+        SpawnCharacter(enemy);
+    }
+    public void SpawnVillagerWithWeapon()
+    {
+        CharacterObject enemy = enemyTypes[4];
+        SpawnCharacter(enemy);
     }
 }
 
@@ -108,6 +135,26 @@ public class CharacterSpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn Random Enemy"))
         {
             spawnManager.SpawnRandomEnemy();
+        }
+        if (GUILayout.Button("Spawn Bat"))
+        {
+            spawnManager.SpawnBat();
+        }
+        if (GUILayout.Button("Spawn Villager"))
+        {
+            spawnManager.SpawnVillager();
+        }
+        if (GUILayout.Button("Spawn Lady"))
+        {
+            spawnManager.SpawnLady();
+        }
+        if (GUILayout.Button("Spawn Dumb"))
+        {
+            spawnManager.SpawnDumb();
+        }
+        if (GUILayout.Button("Spawn VillagerWithWeapon"))
+        {
+            spawnManager.SpawnVillagerWithWeapon();
         }
     }
 }
