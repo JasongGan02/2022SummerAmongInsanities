@@ -28,7 +28,6 @@ public class VillagerController : EnemyController
     LayerMask ground_mask;
 
     private BoxCollider2D boxCollider;
-    private EdgeCollider2D edgeCollider;
 
     private float Wait = 0.3f;
 
@@ -45,7 +44,6 @@ public class VillagerController : EnemyController
         attackStart = transform.Find("attackStart");
         attackEnd = transform.Find("attackEnd");
         boxCollider = GetComponent<BoxCollider2D>();
-        edgeCollider = GetComponent<EdgeCollider2D>();
 
         //Hatred.Add("PlayerController");
         //Hatred.Add("ArcherTowerController");
@@ -58,9 +56,9 @@ public class VillagerController : EnemyController
         
         //UpdateNearestTower();
         rb = GetComponent<Rigidbody2D>();
-
-        if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider(true); }
-        else { ChangeCollider(false); }
+        Debug.Log("velocity:" + rb.velocity.x + ", " + rb.velocity.y);
+        if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider("Stand"); }
+        else { ChangeCollider("Sit"); }
         
 
         target = WhatToAttack();
@@ -357,10 +355,17 @@ public class VillagerController : EnemyController
         }
         return true;
     }
-    public void ChangeCollider(bool isSitting)
+    public void ChangeCollider(string status)
     {
         // Enable or disable the colliders based on the state
-        boxCollider.enabled = !isSitting;
-        edgeCollider.enabled = isSitting;
+        // boxCollider.enabled = !isSitting;
+        if (status == "Stand")
+        {
+            boxCollider.size = new Vector2(0.1875544f, 1.0f);
+        }
+        else
+        {
+            boxCollider.size = new Vector2(0.1875544f, 0.718245f);
+        }
     }
 }
