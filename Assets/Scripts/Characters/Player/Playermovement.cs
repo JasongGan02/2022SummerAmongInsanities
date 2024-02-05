@@ -13,7 +13,7 @@ public class Playermovement : MonoBehaviour
     private float jumpForce = 7f;
     [SerializeField] 
     public float excavateCoeff = 1f;
-   
+    [SerializeField] private float slowDownFactor = 0.1f;
 
     public int totalJumps;
     int availableJumps;
@@ -73,7 +73,7 @@ public class Playermovement : MonoBehaviour
                 Jump();
             }
         }
-
+        
         animator.SetFloat("yVelocity", rb.velocity.y);
     }
 
@@ -209,6 +209,4 @@ public class Playermovement : MonoBehaviour
         this.jumpForce = jumpForce;
         this.totalJumps = totalJumps;
     }
-   
-
 }

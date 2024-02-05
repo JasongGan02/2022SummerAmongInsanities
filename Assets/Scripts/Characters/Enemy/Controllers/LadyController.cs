@@ -298,12 +298,12 @@ public class LadyController : EnemyController, IRangedAttacker
             if (target.position.x > transform.position.x)
             {
                 rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                Debug.Log("going Left");
+                //Debug.Log("going Left");
             }
             else
             {
                 rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                Debug.Log("going Right");
+                //Debug.Log("going Right");
             }
         }
         else { animator.SetFloat("movingSpeed", 0f); }
