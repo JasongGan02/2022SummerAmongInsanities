@@ -186,12 +186,22 @@ public class VillagerController : EnemyController
 
             float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
             Debug.Log("distance: " + checkD);
-            if (checkD < 0.15f)
+            if (checkD < 0.25f)
             {
                 player.GetComponent<PlayerController>().takenDamage(AtkDamage);
                 rest = true;
                 Wait = 0.3f;
             }
+            if (Wait > 0 && rest == false)
+            {
+                Wait -= Time.deltaTime;
+            }
+            else
+            {
+                rest = true;
+                Wait = 0.3f;
+            }
+            
         }
 
         flip(player.transform);

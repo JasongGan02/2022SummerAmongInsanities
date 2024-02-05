@@ -121,7 +121,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!212 &-1323644387312248681
 SpriteRenderer:
@@ -220,7 +220,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.55023193, y: 3.777275}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.01
 --- !u!1 &4985672977949795190
 GameObject:
   m_ObjectHideFlags: 0
