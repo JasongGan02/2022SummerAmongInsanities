@@ -97,7 +97,15 @@ public class Playermovement : MonoBehaviour
 
     public void Movement()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal") * MS *excavateCoeff;
+        float moveInput = Input.GetAxisRaw("Horizontal") * MS * excavateCoeff;
+        Vector2 direction = facingRight == true ? Vector2.right : Vector2.left;
+        RaycastHit2D frontEnemyCheck = Physics2D.Raycast(transform.position, direction, 0.7f, LayerMask.GetMask("enemy"));
+        Debug.DrawLine(transform.position, transform.position + (Vector3)direction * 0.7f, Color.red);
+
+        if (frontEnemyCheck.collider != null)
+        {
+            moveInput *= 0.1f;   
+        }
         
         if(isRunning)
             moveInput*=runningModifier;
