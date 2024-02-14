@@ -6,14 +6,16 @@ public class InfiniteTerrainGenerator : MonoBehaviour
 {
 
     [SerializeField] private Transform Player;
-    [SerializeField] private int RenderDistance;
+    public static int RenderDistance = 3;
+    private LightOverlayManager lightOverlayManager;
     private WorldGenerator GeneratorInstance;
     private List<int> CoordsToRemove;
-
+    private int lastFrameChunkX = 0;
     // Start is called before the first frame update
     void Start()
     {
         GeneratorInstance = GetComponent<WorldGenerator>();
+        lightOverlayManager = GetComponent<LightOverlayManager>();
         CoordsToRemove = new List<int>();
         if (Player == null)
         {
@@ -30,6 +32,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour
             return;
         }
         int plrChunkX = (int)Player.position.x / WorldGenerator.ChunkSize.x;
+        
         CoordsToRemove.Clear();
 
         foreach (KeyValuePair<int, GameObject> activeChunk in WorldGenerator.ActiveChunks)
@@ -50,12 +53,18 @@ public class InfiniteTerrainGenerator : MonoBehaviour
            
         }
 
+       
+
         foreach (int coord in CoordsToRemove)
         {
             GameObject chunkToDisable = WorldGenerator.ActiveChunks[coord];
             WorldGenerator.ActiveChunks.Remove(coord);
             chunkToDisable.SetActive(false);
         }
+        //Refresh Lightmap if a new chunk is added
+        if (lastFrameChunkX == 0 || lastFrameChunkX != plrChunkX)
+            lightOverlayManager.UpdateLightOverlayBoundsAndPosition();
+        lastFrameChunkX = plrChunkX;
     }
 
     void InitializeTerrainAtDefaultPosition()

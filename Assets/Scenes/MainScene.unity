@@ -198,6 +198,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+--- !u!1 &37289465 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4677015888933098897, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+  m_PrefabInstance: {fileID: 37289464}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &37289466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37289465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79930f2897aec1547964fc7cbb207a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightMapOverlayPrefab: {fileID: 7325007939855369766, guid: 44c402f0ecdb61d47a800e538bf62e8a, type: 3}
+  lightMapTexture: {fileID: 0}
+  lightMapMaterial: {fileID: 2100000, guid: dd8922b4327b5354aa4e22162a778da3, type: 2}
 --- !u!1 &162735417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,7 +1230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000768752
+      value: 0.00021461988
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1255,6 +1275,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[14].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[14].initialPoolSize
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: isDebugDayTime
       value: 1

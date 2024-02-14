@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
@@ -10,7 +11,7 @@ using UnityEngine.Tilemaps;
 public class WorldGenerator : MonoBehaviour, IDataPersistence
 {
     public static Dictionary<Vector2Int, int[,]> WorldData;
-    public static Dictionary<Vector2Int, float[,]> WorldLightData;
+    public static float[,] ActiveWorldLightData;
     public static Dictionary<int, GameObject> ActiveChunks;
     public static Dictionary<int, GameObject> TotalChunks;
     public static Dictionary<int, int[,]> AdditiveWorldData;
@@ -27,7 +28,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     //Light
     public Material lightShader;
     [SerializeField] private GameObject lightOverlayPrefab;
-    // Start is called before the first frame update
+
     void Awake()
     {
         if (tileObjectRegistry != null)
@@ -39,11 +40,11 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             Debug.LogError("TileObjectRegistry is not assigned in WorldGenerator");
         }
         WorldData = new Dictionary<Vector2Int, int[,]>();
-        WorldLightData = new Dictionary<Vector2Int, float[,]>();
+        ActiveWorldLightData = new float[(InfiniteTerrainGenerator.RenderDistance * 2 + 1), ChunkSize.y];
         ActiveChunks = new Dictionary<int, GameObject>();
         TotalChunks = new Dictionary<int, GameObject>();
         dataCreator = new DataGenerator(this, settings, GetComponent<StructureGenerator>());
-        lightGenerator = new LightGenerator(this);
+        
 
 
         RecalculateSeed();
@@ -90,7 +91,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         //Process Light; Propogate Light Map Data
         
-
+        /*
         float[,] lightDataToApply = WorldLightData.ContainsKey(pos) ? WorldLightData[pos] : null;
         
         if (lightDataToApply == null)
@@ -115,7 +116,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         lightMapOverlay.GetComponent<SpriteRenderer>().material = lightMaterial;
         lightMap.filterMode = FilterMode.Point; //< remove this line for smooth lighting, keep it for tiled lighting
 
-        StartCoroutine(ApplyLightToChunk(lightMap, lightDataToApply, pos));
+        StartCoroutine(ApplyLightToChunk(lightMap, lightDataToApply, pos));*/
     }
 
     public IEnumerator DrawChunk(int[,] Data, Vector2Int offset, Action onDrawingComplete = null)

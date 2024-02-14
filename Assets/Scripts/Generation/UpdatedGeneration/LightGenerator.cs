@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using System.Diagnostics;
 public class LightGenerator : MonoBehaviour
 {
     //Process the data in multithreading here, and return the OnComplete to apply to the Material 
@@ -12,11 +13,11 @@ public class LightGenerator : MonoBehaviour
         public Vector2Int GenerationPoint;
     }
 
-    public LightGenerator(WorldGenerator worldGen)
+    public LightGenerator(LightOverlayManager lightOverlayManager)
     {
-        GeneratorInstance = worldGen;
+        this.lightOverlayManager = lightOverlayManager;
         DataToGenerate = new Queue<GenData>();
-        worldGen.StartCoroutine(DataGenLoop());
+        lightOverlayManager.StartCoroutine(DataGenLoop());
     }
     public void QueueDataToGenerate(GenData data)
     {
@@ -30,7 +31,7 @@ public class LightGenerator : MonoBehaviour
             if (DataToGenerate.Count > 0)
             {
                 GenData gen = DataToGenerate.Dequeue();
-                yield return GeneratorInstance.StartCoroutine(GenerateLightData(gen.GenerationPoint, gen.OnComplete));
+                yield return lightOverlayManager.StartCoroutine(GenerateLightData(gen.GenerationPoint, gen.OnComplete));
             }
 
             yield return null;
@@ -38,18 +39,45 @@ public class LightGenerator : MonoBehaviour
     }
 
     [Tooltip("between 0 & 15")][SerializeField] private float sunlightBrightness = 15f;
-    [SerializeField] private int iterations = 7;
+    [SerializeField] private int iterations = 2;
     private Queue<GenData> DataToGenerate;
-    private WorldGenerator GeneratorInstance;
+    private LightOverlayManager lightOverlayManager;
     public bool Terminate;
 
     public IEnumerator GenerateLightData(Vector2Int offset, System.Action<float[,]> callback)
     {
+        int minX = WorldGenerator.ActiveChunks.Keys.Min();
+        int maxX = WorldGenerator.ActiveChunks.Keys.Max();
+
+        int sizeX = (maxX - minX + 1) * WorldGenerator.ChunkSize.x;
         Vector2Int ChunkSize = WorldGenerator.ChunkSize;
+        ChunkSize.x = sizeX;
+
         float[,] lightData = new float[ChunkSize.x, ChunkSize.y];
-        int[,] chunkData = WorldGenerator.WorldData[offset];
+        
         Task t = Task.Factory.StartNew(delegate
         {
+            //Aggregate
+            int[,] aggregatedWorldData  = new int[ChunkSize.x, ChunkSize.y];
+            foreach (var chunkEntry in WorldGenerator.ActiveChunks)
+            {
+                Vector2Int chunkOffset = new Vector2Int(chunkEntry.Key, 0);
+                int[,] chunkData  = WorldGenerator.WorldData[chunkOffset];
+
+                // Calculate the start position in the aggregated array for this chunk
+                int startX = (chunkOffset.x - minX) * WorldGenerator.ChunkSize.x;
+
+                // Copy chunk data into the aggregated world data array
+                for (int x = 0; x < WorldGenerator.ChunkSize.x; x++)
+                {
+                    for (int y = 0; y < WorldGenerator.ChunkSize.y; y++)
+                    {
+                        aggregatedWorldData[startX + x, y] = chunkData[x, y];
+                    }
+                }
+            }
+
+
             for (int i = 0; i < iterations; i++)
             {
                 for (int x = 0; x < ChunkSize.x; x++)
@@ -57,8 +85,8 @@ public class LightGenerator : MonoBehaviour
                     float lightLevel = sunlightBrightness;
                     for (int y = ChunkSize.y - 1; y >= 0; y--)
                     {
-                        TileObject tileObject = TileObjectRegistry.GetTileObjectByID(chunkData[x, y]);
-                        if ((tileObject != null && tileObject.IsLit) || chunkData[x, y] == 0) //if illuminate block
+                        TileObject tileObject = TileObjectRegistry.GetTileObjectByID(aggregatedWorldData[x, y]);
+                        if ((tileObject != null && tileObject.IsLit) || aggregatedWorldData[x, y] == 0) //if illuminate block
 
                             lightLevel = sunlightBrightness;
                         else
@@ -75,7 +103,7 @@ public class LightGenerator : MonoBehaviour
                                 lightData[x, ny1],
                                 lightData[x, ny2]);
 
-                            if (chunkData[x, y] <= 0)
+                            if (aggregatedWorldData[x, y] <= 0)
                                 lightLevel -= 0.75f;
                             else
                                 lightLevel -= 2.5f;
@@ -103,7 +131,7 @@ public class LightGenerator : MonoBehaviour
                             lightData[x, ny1],
                             lightData[x, ny2]);
 
-                        if (chunkData[x, y] <= 0) //wall should also be considered as air but they are not lit
+                        if (aggregatedWorldData[x, y] <= 0) //wall should also be considered as air but they are not lit
                             lightLevel -= 0.75f;
                         else
                             lightLevel -= 2.5f;
@@ -129,9 +157,9 @@ public class LightGenerator : MonoBehaviour
         });
 
         if (t.Exception != null)
-            Debug.LogError(t.Exception);
+            UnityEngine.Debug.LogError(t.Exception);
 
-        WorldGenerator.WorldLightData.Add(offset, lightData);
+        WorldGenerator.ActiveWorldLightData = lightData;
         callback(lightData);
     }
 
