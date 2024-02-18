@@ -112,6 +112,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         return droppedItems;
 
     }
+    
+    
     /**
      * implementation of ConstructionMode
      */

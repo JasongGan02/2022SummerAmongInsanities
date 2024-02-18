@@ -14,6 +14,7 @@ public class InventoryUiController
     private GameObject inventoryGrid;
     private GameObject template;
     private Inventory.InventoryButtonClickedCallback buttonClickedCallback;
+    private BaseInventory.InventoryButtonClickedCallback BaseButtonClickedCallback;
 
     private GameObject hotbarContainer;
     private GameObject inventoryContainer;
@@ -46,6 +47,34 @@ public class InventoryUiController
 
         this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateInventoryUi;
     }
+
+
+    public InventoryUiController(
+        int defaultNumberOfRow,
+        GameObject defaultRow,
+        GameObject inventoryGrid,
+        GameObject template,
+        BaseInventory.InventoryButtonClickedCallback BasebuttonClickedCallback,
+        UIViewStateManager uiViewStateManager
+        )
+    {
+        this.defaultNumberOfRow = defaultNumberOfRow;
+        this.defaultRow = defaultRow;
+        this.inventoryGrid = inventoryGrid;
+        this.template = template;
+        this.BaseButtonClickedCallback = BasebuttonClickedCallback;
+
+        this.hotbarContainer = this.inventoryGrid.transform.Find("Hotbar").gameObject;
+        this.inventoryContainer = this.inventoryGrid.transform.Find("Inventory").gameObject;
+        this.actionsContainer = this.inventoryGrid.transform.Find("Actions").gameObject;
+
+        this.uiViewStateManager = uiViewStateManager;
+
+        this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateInventoryUi;
+    }
+
+
+
 
     ~InventoryUiController()
     {

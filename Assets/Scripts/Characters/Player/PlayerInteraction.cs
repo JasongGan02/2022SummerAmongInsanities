@@ -47,7 +47,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private audioManager am;
 
-  
+    private ChestController currentChest;
+
 
     private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
     private Dictionary<Vector2Int, GameObject> worldTilesDictionary
@@ -99,6 +100,10 @@ public class PlayerInteraction : MonoBehaviour
         }
         PickUpItemCheck();
 
+        if(IsChestOpen())
+        {
+            currentChest.OpenChest();
+        }
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
             BreakTileCheck();
@@ -106,6 +111,8 @@ public class PlayerInteraction : MonoBehaviour
         PlaceTileCheck();
         PlaceTileCancelCheck();
         playAnim();
+
+        
 
     }
     
@@ -149,6 +156,11 @@ public class PlayerInteraction : MonoBehaviour
         return isOverUI;
     }
     
+    private bool IsChestOpen()
+    {
+        bool IsChestOpen = (Input.GetKeyDown(KeyCode.E) && currentChest != null && ConstructionMode.isInConstructionMode == false);
+        return IsChestOpen;
+    }
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
@@ -210,6 +222,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             prop = (currentSlotInUse.item as TorchObject).GetSpawnedGameObject();
         }
+
 
         else
         {
@@ -432,7 +445,21 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Chest"))
+        {
+            currentChest = other.gameObject.GetComponent<ChestController>();
+        }
+    }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Chest") && currentChest == other.gameObject.GetComponent<ChestController>())
+        {
+            currentChest = null;
+        }
+    }
 
     // TODO: inventory should have a map of CollectibleObject -> list of indices
     // and pass this entry to this PlayerInteraction class,
@@ -456,6 +483,13 @@ public class PlayerInteraction : MonoBehaviour
             inventory.RemoveItemByOne(indexInUse);
            
         } 
+        else if(currentSlotInUse.item is ChestObject)
+        {
+            GameObject newTower = PoolManager.Instance.Get(currentSlotInUse.item as BaseObject);
+            newTower.transform.position = transform.position;
+            newTower.transform.rotation = transform.rotation;
+            inventory.RemoveItemByOne(indexInUse);
+        }
     }
 
     private bool CanPlaceTile(TileGhostPlacementResult result)
@@ -495,7 +529,11 @@ public class PlayerInteraction : MonoBehaviour
     }
 
 
+
+
     private const int EMPTY = -1;
+
+
 }
 
 

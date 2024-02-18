@@ -27,11 +27,14 @@ public class CraftingUIManager : MonoBehaviour
     private Button weapons;
     private Button towers;
     private Button projectiles;
+    private Button chests;
 
     
     private BaseObject[] weaponObjects;
     private BaseObject[] towerObjects;
     private BaseObject[] projectileObjects;
+    private BaseObject[] chestObjects;
+
     public GameObject buttonPrefab;
     public RectTransform content;
 
@@ -71,11 +74,15 @@ public class CraftingUIManager : MonoBehaviour
         string[] weaponguids = AssetDatabase.FindAssets("t:WeaponObject");
         string[] towerguids = AssetDatabase.FindAssets("t:TowerObject");
         string[] projectileguids = AssetDatabase.FindAssets("t:ProjectileObject");
+        string[] chestguids = AssetDatabase.FindAssets("t:ChestObject");
 
         // 根据 GUID 获取对应的路径，并加载 ScriptableObject
         weaponObjects = new WeaponObject[weaponguids.Length];
         towerObjects = new TowerObject[towerguids.Length];
-        projectileObjects = new ProjectileObject[towerguids.Length];
+        projectileObjects = new ProjectileObject[projectileguids.Length];
+        chestObjects = new ChestObject[chestguids.Length];
+
+
 
         for (int i = 0; i < weaponguids.Length; i++)
         {
@@ -91,6 +98,11 @@ public class CraftingUIManager : MonoBehaviour
         {
             string path = AssetDatabase.GUIDToAssetPath(projectileguids[i]);
             projectileObjects[i] = AssetDatabase.LoadAssetAtPath<ProjectileObject>(path);
+        }
+        for (int i = 0; i < chestguids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(chestguids[i]);
+            chestObjects[i] = AssetDatabase.LoadAssetAtPath<ChestObject>(path);
         }
 
 
@@ -156,6 +168,7 @@ public class CraftingUIManager : MonoBehaviour
         weapons = MenuUI.transform.Find(NAME_BUTTON_0).GetComponent<Button>();
         towers = MenuUI.transform.Find(NAME_BUTTON_1).GetComponent<Button>();
         projectiles = MenuUI.transform.Find(NAME_BUTTON_2).GetComponent<Button>();
+        chests = MenuUI.transform.Find(NAME_BUTTON_3).GetComponent<Button>();
 
         CraftButton = CraftUI.transform.Find(NAME_Craft_BUTTON).GetComponent<Button>();
         CraftButton.onClick.AddListener(CraftButtonClicked);
@@ -164,6 +177,8 @@ public class CraftingUIManager : MonoBehaviour
         weapons.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(weaponObjects)));
         towers.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(towerObjects)));
         projectiles.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(projectileObjects)));
+        chests.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(chestObjects)));
+
         MenuUI.SetActive(false);
         CraftUI.SetActive(false);
         
@@ -470,6 +485,7 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_BUTTON_0 = "type0";
     private const string NAME_BUTTON_1 = "type1";
     private const string NAME_BUTTON_2 = "type2";
+    private const string NAME_BUTTON_3 = "type3";
 
 
 

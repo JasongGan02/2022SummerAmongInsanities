@@ -7,26 +7,19 @@ using TMPro;
 using UnityEngine.Lumin;
 using UnityEngine.Experimental.Rendering;
 
-public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
+public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 {
-    public GameObject defaultRow;
-    public GameObject extraRow;
-    public GameObject template;
-    public GameObject background;
 
-    public int defaultNumberOfRow = 2;
+    public GameObject extraRow;
     public int maxExtraRow = 4;
-    
+
     private GameObject player;
-    private GameObject inventoryGrid;
     private GameObject hotbar;
     private CraftingQueueManager queueManager;
 
-    private InventoryEventBus eventBus;
-    private InventoryUiController uiController;
-    private InventoryDatabase database;
+    
 
-    void Awake()
+    protected override void Awake()
     {
         inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
         database = new InventoryDatabase(defaultNumberOfRow, maxExtraRow);
@@ -53,48 +46,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         HandleHotbarKeyPress();
     }
 
-    // Event system
-    public void OnSlotRightClicked(int index, bool isShiftDown)
-    {
-        eventBus.OnSlotRightClicked(index, isShiftDown);
-    }
-
-    public void OnSlotLeftClicked(int index)
-    {
-        eventBus.OnSlotLeftClicked(index);
-    }
-
-    public void AddSlotRightClickedHandler(EventHandler<InventoryEventBus.OnSlotRightClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotRightClickedEvent += action;
-        }
-    }
-
-    public void RemoveSlotRightClickedHandler(EventHandler<InventoryEventBus.OnSlotRightClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotRightClickedEvent -= action;
-        }
-    }
-
-    public void AddSlotLeftClickedHandler(EventHandler<InventoryEventBus.OnSlotLeftClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotLeftClickedEvent += action;
-        }
-    }
-
-    public void RemoveSlotLeftClickedHandler(EventHandler<InventoryEventBus.OnSlotLeftClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotLeftClickedEvent -= action;
-        }
-    }
+   
 
     // Inventory operation
     public InventorySlot GetInventorySlotAtIndex(int index)
@@ -102,14 +54,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return database.GetInventorySlotAtIndex(index);
     }
 
-    public void AddItem(IInventoryObject item, int amount)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            int indexToUpdate = database.AddItem(item);
-            UpdateSlotUi(indexToUpdate);
-        }
-    }
 
     public void RemoveItemByOne(int index)
     {
@@ -252,10 +196,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return database.HasEmptySlot();
     }
 
-    public void UpdateSlotUi(int index)
-    {
-        uiController.UpdateSlotUi(index, database.GetInventorySlotAtIndex(index));
-    }
+    
 
     private void HandleHotbarKeyPress() 
     {
@@ -313,16 +254,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
     }
 
-    public void Sort()
-    {
-        database.Sort();
-        int size = database.GetSize();
-        for (int i = 0; i < size; i++)
-        {
-            UpdateSlotUi(i);
-        }
-        
-    }
+    
 
     public void Upgrade()
     {
@@ -398,6 +330,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
         return false;
     }
+
 
     public InventorySlot findSLOT (IInventoryObject inventoryObject)
     {   
@@ -518,7 +451,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public interface InventoryButtonClickedCallback
+    public new interface InventoryButtonClickedCallback
     {
         void Sort();
         void Upgrade();
