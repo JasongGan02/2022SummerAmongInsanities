@@ -6,21 +6,21 @@ using TMPro;
 
 public class InventoryUiController
 {
-    private int slotIndex = 0;
+    protected int slotIndex = 0;
 
-    private int defaultNumberOfRow;
-    private GameObject defaultRow;
+    protected int defaultNumberOfRow;
+    protected GameObject defaultRow;
+    protected GameObject inventoryGrid;
+    protected GameObject template;
+    protected Inventory.InventoryButtonClickedCallback buttonClickedCallback;
+
+
     private GameObject extraRow;
-    private GameObject inventoryGrid;
-    private GameObject template;
-    private Inventory.InventoryButtonClickedCallback buttonClickedCallback;
-    private BaseInventory.InventoryButtonClickedCallback BaseButtonClickedCallback;
-
     private GameObject hotbarContainer;
-    private GameObject inventoryContainer;
-    private GameObject actionsContainer;
 
-    private UIViewStateManager uiViewStateManager;
+    protected GameObject inventoryContainer;
+    protected GameObject actionsContainer;
+    protected UIViewStateManager uiViewStateManager;
 
     public InventoryUiController(
         int defaultNumberOfRow, 
@@ -49,31 +49,6 @@ public class InventoryUiController
     }
 
 
-    public InventoryUiController(
-        int defaultNumberOfRow,
-        GameObject defaultRow,
-        GameObject inventoryGrid,
-        GameObject template,
-        BaseInventory.InventoryButtonClickedCallback BasebuttonClickedCallback,
-        UIViewStateManager uiViewStateManager
-        )
-    {
-        this.defaultNumberOfRow = defaultNumberOfRow;
-        this.defaultRow = defaultRow;
-        this.inventoryGrid = inventoryGrid;
-        this.template = template;
-        this.BaseButtonClickedCallback = BasebuttonClickedCallback;
-
-        this.hotbarContainer = this.inventoryGrid.transform.Find("Hotbar").gameObject;
-        this.inventoryContainer = this.inventoryGrid.transform.Find("Inventory").gameObject;
-        this.actionsContainer = this.inventoryGrid.transform.Find("Actions").gameObject;
-
-        this.uiViewStateManager = uiViewStateManager;
-
-        this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateInventoryUi;
-    }
-
-
 
 
     ~InventoryUiController()
@@ -81,7 +56,7 @@ public class InventoryUiController
         this.uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateInventoryUi;
     }
 
-    public void SetupUi()
+    public virtual void SetupUi()
     {
         {
             GameObject hotbar = GameObject.Instantiate(defaultRow);
@@ -91,7 +66,7 @@ public class InventoryUiController
             }
             hotbar.transform.SetParent(hotbarContainer.transform);
             RectTransform rowRectTransform = hotbar.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(600, -50);
+            rowRectTransform.anchoredPosition = new Vector2(500, -50);
         }
 
         for (int i = 0; i < defaultNumberOfRow - 1; i++)
@@ -103,7 +78,7 @@ public class InventoryUiController
             }
             row.transform.SetParent(inventoryContainer.transform);
             RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(600, -50 + 120 * i);
+            rowRectTransform.anchoredPosition = new Vector2(500, -20 + 90 * i);
         }
 
         Button sortButton = actionsContainer.transform.Find("Sort").GetComponent<Button>();
@@ -162,7 +137,7 @@ public class InventoryUiController
         }
         row.transform.SetParent(inventoryContainer.transform);
         RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-        rowRectTransform.anchoredPosition = new Vector2(600, -50 - 120 * (inventoryContainer.transform.childCount - 1));
+        rowRectTransform.anchoredPosition = new Vector2(500, -20 - 90 * (inventoryContainer.transform.childCount - 1));
     }
 
     private GameObject GetInventorySlotUiByIndex(int index)
@@ -177,12 +152,12 @@ public class InventoryUiController
         }
     }
 
-    private void OnSortButtonClicked()
+    protected void OnSortButtonClicked()
     {
         buttonClickedCallback.Sort();
     }
 
-    private void OnUpgradeButtonClicked()
+    protected void OnUpgradeButtonClicked()
     {
         buttonClickedCallback.Upgrade();
     }

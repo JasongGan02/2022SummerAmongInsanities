@@ -1,6 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using UnityEditor;
+using System;
+using System.Reflection;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Chest", menuName = "Objects/Chest Object")]
 public class ChestObject : BaseObject, IInventoryObject, ICraftableObject, IShadowObject, IPoolableObject
@@ -135,7 +138,8 @@ public class ChestObject : BaseObject, IInventoryObject, ICraftableObject, IShad
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
-        worldGameObject.AddComponent<ChestController>();
+        Type type = Type.GetType("ChestController");
+        var controller = worldGameObject.AddComponent(type);
         worldGameObject.tag = "Chest";
         return worldGameObject;
     }

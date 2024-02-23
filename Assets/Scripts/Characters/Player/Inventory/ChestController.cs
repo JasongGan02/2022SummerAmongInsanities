@@ -6,6 +6,7 @@ public class ChestController : MonoBehaviour
 {
     public InventoryDatabase ChestInventory { get; private set; }
 
+    private UIViewStateManager uiViewStateManager;
     void Awake()
     {
         // Initialize the inventory for this chest
@@ -15,6 +16,7 @@ public class ChestController : MonoBehaviour
 
     public void OpenChest()
     {
+       
         Debug.Log("chest open");
     }
 

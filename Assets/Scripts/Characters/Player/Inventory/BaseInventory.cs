@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseInventory : MonoBehaviour,BaseInventory.InventoryButtonClickedCallback
+public class BaseInventory : MonoBehaviour
 {
     public GameObject defaultRow;
     public GameObject template;
@@ -20,12 +20,12 @@ public class BaseInventory : MonoBehaviour,BaseInventory.InventoryButtonClickedC
     {
         inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
         database = new InventoryDatabase(defaultNumberOfRow, 0);
-        uiController = new InventoryUiController(
+        uiController = new ChestinventoryUiController(
             defaultNumberOfRow,
             defaultRow,
             inventoryGrid,
             template,
-            this,
+            (Inventory.InventoryButtonClickedCallback)this,
             FindObjectOfType<UIViewStateManager>()
             );
         inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
@@ -103,15 +103,6 @@ public class BaseInventory : MonoBehaviour,BaseInventory.InventoryButtonClickedC
         }
 
     }
-
-
-
-
-    public interface InventoryButtonClickedCallback
-    {
-        void Sort();
-    }
-
 
 
 

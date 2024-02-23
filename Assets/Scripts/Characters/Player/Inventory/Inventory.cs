@@ -451,7 +451,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public new interface InventoryButtonClickedCallback
+    public interface InventoryButtonClickedCallback
     {
         void Sort();
         void Upgrade();

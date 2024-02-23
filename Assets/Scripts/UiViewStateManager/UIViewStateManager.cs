@@ -55,6 +55,12 @@ public class UIViewStateManager : MonoBehaviour
     {
         ToggleUI(UIBeingViewed.Null);
     }
+
+    public void ViewInventory()
+    {
+        ToggleUI(UIBeingViewed.Inventory);
+    }
+
 }
 
 public enum UIBeingViewed {
