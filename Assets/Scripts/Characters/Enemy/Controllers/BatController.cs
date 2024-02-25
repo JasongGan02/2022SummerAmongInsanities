@@ -178,7 +178,7 @@ public class BatController : EnemyController
             Tr.emitting = true;
             if (Vector2.Distance(transform.position, destination.position) < 0.4f && !attacked)
             {
-                target.GetComponent<CharacterController>().takenDamage(AtkDamage);
+                ApplyDamage(target.GetComponent<CharacterController>());
                 attacked = true;
             }
             if (CloseEnough(transform.position, dash_end))
