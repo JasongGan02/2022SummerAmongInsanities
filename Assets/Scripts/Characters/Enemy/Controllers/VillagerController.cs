@@ -56,7 +56,6 @@ public class VillagerController : EnemyController
         
         //UpdateNearestTower();
         rb = GetComponent<Rigidbody2D>();
-        Debug.Log("velocity:" + rb.velocity.x + ", " + rb.velocity.y);
         if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider("Stand"); }
         else { ChangeCollider("Sit"); }
         
@@ -141,7 +140,7 @@ public class VillagerController : EnemyController
             animator.SetBool("IsStanding", true);
             animator.SetBool("IsRunning", true);
             animator.SetBool("Attack", true);
-            target.gameObject.GetComponent<TowerController>().takenDamage(AtkDamage);
+            ApplyDamage(target.GetComponent<CharacterController>());
             rest = true;
             Wait = 0.3f;
         }
@@ -188,7 +187,7 @@ public class VillagerController : EnemyController
             Debug.Log("distance: " + checkD);
             if (checkD < 0.15f)
             {
-                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+                ApplyDamage(player.GetComponent<CharacterController>());
                 rest = true;
                 Wait = 0.3f;
             }

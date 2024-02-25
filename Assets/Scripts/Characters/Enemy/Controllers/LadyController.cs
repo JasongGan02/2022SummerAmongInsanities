@@ -121,7 +121,7 @@ public class LadyController : EnemyController, IRangedAttacker
             {
                 if (Vector2.Distance(arrow.transform.position, target.transform.position) < 0.3)
                 {
-                    target.GetComponent<CharacterController>().takenDamage(AtkDamage);
+                    ApplyDamage(target.GetComponent<CharacterController>());
                     Destroy(arrow);
                 }
             }

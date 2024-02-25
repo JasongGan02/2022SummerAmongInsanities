@@ -7,7 +7,7 @@ using System.Threading;
 using UnityEditor.Build;
 using System.Linq;
 
-public abstract class CharacterController : MonoBehaviour, IEffectableObject, IPoolableObjectController
+public abstract class CharacterController : MonoBehaviour, IEffectableObject, IPoolableObjectController, IDamageable, IDamageSource
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
     in the scriptable objects by directly calling them. e.g. characterStats.HP +=1; this is not allowed as this HP is the MaxHP of a character. They should only be modified through other 
@@ -20,14 +20,18 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
 
     //You will obtain and maintain the run-tim variables here by calling HP straightly for example. HP -= dmg shown below. 
     protected float _HP;
+    protected float _armor;
     protected float _atkDamage;
     protected float _atkSpeed;
     protected float _movingSpeed;
     protected float _atkRange;
+    protected float _criticalMultiplier;
+    protected float _criticalChance;
     protected float _jumpForce;
     protected int _totalJumps;
     protected Drop[] drops;
     protected List<TextAsset> Hatred;
+    
 
     protected audioManager am;
 
@@ -115,9 +119,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
         }
     }
 
-    public virtual void takenDamage(float dmg)
+    public virtual void ApplyHPChange(float dmg)
     {
-       
         _HP -= dmg;
 
         if (_HP <= 0)
@@ -136,7 +139,45 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
         
     }
 
-    public System.Collections.IEnumerator FlashRed()
+    //Implementation of IDamageSource
+    #region
+    public float DamageAmount => _atkDamage;
+    public float CriticalChance => _criticalChance;
+    public float CriticalMultiplier => _criticalMultiplier;
+    public virtual void ApplyDamage(IDamageable target)
+    {
+        float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
+        target.TakeDamage(damageDealt, this);
+    }
+    #endregion
+
+    //----------------------------------------------------------------------------------------------------------
+
+    // Implementation of IDamageable
+    #region
+    public virtual void TakeDamage(float amount, IDamageSource damageSource)
+    {
+        // Apply damage taking logic here
+        ApplyHPChange(amount);
+    }
+
+    public virtual float CalculateDamage(float incomingAtkDamage, float attackerCritChance, float attackerCritDmgCoef)
+    {
+        // Determine if this is a critical hit
+        bool isCritical = UnityEngine.Random.value < attackerCritChance;
+
+        // Calculate base damage with critical hit consideration
+        float baseDamage = isCritical ? incomingAtkDamage * attackerCritDmgCoef : incomingAtkDamage;
+
+        // Calculate damage reduction from armor
+        float damageReduction = _armor / (_armor + 100);
+        float finalDamage = baseDamage * (1 - damageReduction);
+
+        return finalDamage;
+    }
+    #endregion
+
+    public IEnumerator FlashRed()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         for (int i = 0; i < 5; i++)
@@ -150,7 +191,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
 
     public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
     {
-        this.takenDamage(-dHP);
+        this.ApplyHPChange(-dHP);
         this._atkDamage += dAtkDamage;
         this._atkSpeed += dAtkInterval;
         this._movingSpeed += dMovingSpeed;

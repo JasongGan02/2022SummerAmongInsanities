@@ -32,12 +32,17 @@ public class TowerController : CharacterController
         OnObjectReturned(isDestroyedByPlayer);
     }
 
-    public override void takenDamage(float dmg)
+    public override void ApplyHPChange(float dmg)
     {
         _HP -= dmg;
+
         if (_HP <= 0)
         {
             death();
+        }
+        if (_HP > characterStats._HP) //hp cap
+        {
+            _HP = characterStats._HP;
         }
     }
 

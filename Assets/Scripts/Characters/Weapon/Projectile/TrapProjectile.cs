@@ -44,7 +44,7 @@ public class TrapProjectile : Projectile
             CharacterController character = collider.GetComponent<CharacterController>();
             if (character != null)
             {
-                character.takenDamage(finalDamage);
+                ApplyDamage(character);
             }
         }
     }

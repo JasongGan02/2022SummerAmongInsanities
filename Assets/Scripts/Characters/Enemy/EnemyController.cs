@@ -229,7 +229,7 @@ public abstract class EnemyController : CharacterController
     {
         if(timer >= _atkSpeed)
         {
-            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+            ApplyDamage(player.GetComponent<CharacterController>());
             timer = 0f;
         }
     }

@@ -58,7 +58,7 @@ public class CatapultProjectile : Projectile
             CharacterController character = hitCollider.GetComponent<CharacterController>();
             if (character != null)
             {
-                character.takenDamage(finalDamage);
+                ApplyDamage(character);
             }
         }
     }

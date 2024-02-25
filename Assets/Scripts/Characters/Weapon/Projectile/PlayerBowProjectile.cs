@@ -26,7 +26,7 @@ public class PlayerBowProjectile : Projectile
             CharacterController character = collider.GetComponent<CharacterController>();
             if (character != null)
             {
-                character.takenDamage(finalDamage);
+                ApplyDamage(character);
             }
 
             // Return the projectile to the pool
