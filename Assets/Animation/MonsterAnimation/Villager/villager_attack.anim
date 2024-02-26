@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: run
+  m_Name: villager_attack
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -20,11 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 2076739284, guid: a2cd6162cf3fd5849ae5c895fb5d6c27, type: 3}
-    - time: 0.3
-      value: {fileID: 374997959, guid: a2cd6162cf3fd5849ae5c895fb5d6c27, type: 3}
-    - time: 0.6
-      value: {fileID: -1486346218, guid: a2cd6162cf3fd5849ae5c895fb5d6c27, type: 3}
+      value: {fileID: 955637760, guid: 9566d2f60ea56534caa7b46e29f22e48, type: 3}
+    - time: 0.28333333
+      value: {fileID: -1181551079, guid: 9566d2f60ea56534caa7b46e29f22e48, type: 3}
+    - time: 0.5833333
+      value: {fileID: -1181551079, guid: 9566d2f60ea56534caa7b46e29f22e48, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -45,15 +45,15 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
     pptrCurveMapping:
-    - {fileID: 2076739284, guid: a2cd6162cf3fd5849ae5c895fb5d6c27, type: 3}
-    - {fileID: 374997959, guid: a2cd6162cf3fd5849ae5c895fb5d6c27, type: 3}
-    - {fileID: -1486346218, guid: a2cd6162cf3fd5849ae5c895fb5d6c27, type: 3}
+    - {fileID: 955637760, guid: 9566d2f60ea56534caa7b46e29f22e48, type: 3}
+    - {fileID: -1181551079, guid: 9566d2f60ea56534caa7b46e29f22e48, type: 3}
+    - {fileID: -1181551079, guid: 9566d2f60ea56534caa7b46e29f22e48, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6166667
+    m_StopTime: 0.59999996
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

@@ -25,25 +25,23 @@ public class DumbController : EnemyController
     private Animator animator;
 
 
-    public Transform groundCheckLeft;
-    public Transform groundCheckCenter;
-    public Transform groundCheckRight;
     public Transform frontCheck;
+    public Transform groundCheckCenter;
+    public Transform backCheck;
     LayerMask ground_mask;
 
 
     // Start is called before the first frame update
-    void Start()
+    new void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         CurrentHP = _HP;
         PrevHP = CurrentHP;
         animator = GetComponent<Animator>();
         ground_mask = LayerMask.GetMask("ground");
-        groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");
-        groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
+        backCheck = transform.Find("backCheck");
     }
 
     // Update is called once per frame
@@ -52,9 +50,10 @@ public class DumbController : EnemyController
         SenseFrontBlock();
         if (PrevHP > CurrentHP)
         {
-            animator.SetBool("walk", false);
-            animator.SetBool("flee", false);
-            animator.SetBool("knockback", true);
+            //animator.SetBool("walk", false);
+            //animator.SetBool("flee", false);
+            //animator.SetBool("knockback", true);
+            ChangeAnimation("dumb_knockback");
             hittingback = 0.3f;
             isFleeing = true;
             PrevHP = CurrentHP;
@@ -64,7 +63,8 @@ public class DumbController : EnemyController
             flee();
         }
         else if(_HP <= maxHP/2){
-            animator.SetBool("flee", true);
+            //animator.SetBool("flee", true);
+            ChangeAnimation("dumb_flee");
             Vector2 direction = (player.transform.position - transform.position);
             if (direction.x > 0)
             {
@@ -83,14 +83,12 @@ public class DumbController : EnemyController
     }
 
     void idle(){
-        //Vector3 movePosition = new Vector3(transform.position.x + 5, transform.position.y, 0);
-        //transform.position = Vector2.MoveTowards(transform.position, movePosition, -MovingSpeed * Time.deltaTime);
-        
 
         if (patrolTime <= 0f)
         {
-            animator.SetBool("knockback", false);
-            animator.SetBool("walk", false);
+            //animator.SetBool("knockback", false);
+            //animator.SetBool("walk", false);
+            ChangeAnimation("dumb_idle");
             patrolRest = 2f;
             patrolTime = UnityEngine.Random.Range(1f, 3f);
             if (UnityEngine.Random.Range(0f,1f) > 0.5f)
@@ -105,7 +103,8 @@ public class DumbController : EnemyController
         }
         else
         {
-            animator.SetBool("walk", true);
+            //animator.SetBool("walk", true);
+            ChangeAnimation("dumb_walk");
             patrolTime -= Time.deltaTime;
             if (patrolDirection)
             {
@@ -137,8 +136,9 @@ public class DumbController : EnemyController
         if (hittingback > 0f) { hittingback -= Time.deltaTime; }
         else if (fleeTime > 0f)
         {
-            animator.SetBool("knockback", false);
-            animator.SetBool("flee", true);
+            //animator.SetBool("knockback", false);
+            //animator.SetBool("flee", true);
+            ChangeAnimation("dumb_flee");
             fleeTime -= Time.deltaTime;
             if (player.transform.position.x > transform.position.x)
             {
@@ -152,7 +152,8 @@ public class DumbController : EnemyController
             }
         }
         else {
-            animator.SetBool("flee", false);
+            //animator.SetBool("flee", false);
+            ChangeAnimation("dumb_walk");
             hittingback = 0.3f;
             fleeTime = 5f;
             isFleeing = false;
@@ -162,32 +163,41 @@ public class DumbController : EnemyController
     new void SenseFrontBlock()
     {
         headCheck();
-        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.05f, ground_mask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
 
-
-        if (hitLeft.transform != null
-            || hitRight.transform != null
-            || hitCenter.transform != null)
+        if (hitCenter.transform != null)
         {
-            if (hitFront.transform != null)
+            if ((facingRight && rb.velocity.x > 0) || (!facingRight && rb.velocity.x < 0))
             {
-                if (headCheck()) { Jump(); Debug.Log("jumping."); }
-                else { /*Debug.Log("front obstacle too high!");*/ }
+                if (hitFront.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
             }
-            else { /*Debug.Log("no obstacle in front");*/ }
+            else if ((facingRight && rb.velocity.x < 0) || (!facingRight && rb.velocity.x > 0))
+            {
+                if (hitBack.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
+            }
         }
-        else { /*Debug.Log("foot in the air");*/ }
 
     }
     bool headCheck()
     {
         Vector3 direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position + new Vector3(0, -0.4f, 0);
-        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.45f, ground_mask);
-        Debug.DrawRay(origin, direction * 0.45f, Color.red);        // bottom right
+        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
+        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
+        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
         if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
         {
             return false;
@@ -197,8 +207,13 @@ public class DumbController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
-        rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
     }
-    
+    public void ChangeAnimation(string movement)
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(movement))
+        {
+            animator.Play(movement);
+        }
+    }
 }

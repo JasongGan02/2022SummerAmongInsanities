@@ -16,9 +16,12 @@ MonoBehaviour:
   sizeRatio: 2
   prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
   _HP: 80
+  _armor: 0
   _atkDamage: 5
   _atkSpeed: 2
   _atkRange: 1
+  _criticalMultiplier: 0
+  _criticalChance: 0
   _movingSpeed: 1
   _jumpForce: 14
   _totalJumps: 0
