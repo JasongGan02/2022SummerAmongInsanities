@@ -36,7 +36,6 @@ public abstract class EnemyController : CharacterController
         //towerContainer = FindObjectOfType<TowerContainer>();
         base.Awake();
         timer = 0;
- 
     }
 
     void FixedUpdate()
@@ -210,6 +209,14 @@ public abstract class EnemyController : CharacterController
         Vector3 enemyPosition = transform.position;
         Vector3 towerPosition = towerTransform.position;
         float distance = Mathf.Sqrt(Mathf.Pow((towerPosition.x - enemyPosition.x),2) + Mathf.Pow((towerPosition.y - enemyPosition.y),2));
+        return distance;
+    }
+
+    protected float DistanceToTarget(Transform target)
+    {
+        Vector2 targetPosition = target.position;
+        Vector2 transformPosition = transform.position;
+        float distance = Mathf.Sqrt(Mathf.Pow((targetPosition.x - transformPosition.x), 2) + Mathf.Pow((targetPosition.y - transformPosition.y), 2));
         return distance;
     }
 
