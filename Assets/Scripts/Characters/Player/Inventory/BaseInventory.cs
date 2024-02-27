@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseInventory : MonoBehaviour
+public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClickedCallback
 {
     public GameObject defaultRow;
     public GameObject template;
     public GameObject background;
 
-    public int defaultNumberOfRow = 4;
+    public int defaultNumberOfRow = 6;
 
     protected InventoryEventBus eventBus;
     protected InventoryUiController uiController;
@@ -18,19 +18,19 @@ public class BaseInventory : MonoBehaviour
 
     protected virtual void Awake()
     {
-        inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
+        inventoryGrid = GameObject.Find(Constants.Name.CHESTINVENTORY_GRID);
         database = new InventoryDatabase(defaultNumberOfRow, 0);
-        uiController = new ChestinventoryUiController(
+        uiController = new InventoryUiController(
             defaultNumberOfRow,
             defaultRow,
             inventoryGrid,
             template,
-            (Inventory.InventoryButtonClickedCallback)this,
+            this,
             FindObjectOfType<UIViewStateManager>()
             );
-        inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
         
-        uiController.SetupUi();
+        
+        uiController.SetupChestUi();
 
 
     }
@@ -102,6 +102,11 @@ public class BaseInventory : MonoBehaviour
             UpdateSlotUi(i);
         }
 
+    }
+
+    public interface InventoryButtonClickedCallback
+    {
+        void Sort();
     }
 
 

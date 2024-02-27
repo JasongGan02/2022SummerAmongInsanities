@@ -16,8 +16,8 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     private GameObject player;
     private GameObject hotbar;
     private CraftingQueueManager queueManager;
-
     
+
 
     protected override void Awake()
     {
@@ -451,7 +451,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public interface InventoryButtonClickedCallback
+    public new interface InventoryButtonClickedCallback
     {
         void Sort();
         void Upgrade();

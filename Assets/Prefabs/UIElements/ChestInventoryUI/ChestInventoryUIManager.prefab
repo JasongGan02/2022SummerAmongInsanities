@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-1488191304831216420
 MonoBehaviour:
@@ -47,4 +47,4 @@ MonoBehaviour:
   defaultRow: {fileID: 961959249126568429, guid: 078ce2dc6c11c14458210a03ea5dcf98, type: 3}
   template: {fileID: 169284352082792497, guid: b583c376e1af08c40999234b4045c02f, type: 3}
   background: {fileID: 1265524727952192137, guid: 1d1465e905d234046827ff1ee68778bc, type: 3}
-  defaultNumberOfRow: 4
+  defaultNumberOfRow: 6

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4183867079217491464}
   m_Layer: 5
-  m_Name: Inventory
+  m_Name: ChestInventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3190268529243169165}
   m_Layer: 5
-  m_Name: Actions
+  m_Name: ChestActions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 4726375929505857086}
   - component: {fileID: 6486748826028313655}
   m_Layer: 5
-  m_Name: InventoryUI
+  m_Name: ChestInventoryUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +368,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1435.1423, y: -800.61957}
+  m_AnchoredPosition: {x: 1434, y: -612}
   m_SizeDelta: {x: 969.7153, y: 558.7609}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4726375929505857086

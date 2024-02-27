@@ -6,21 +6,21 @@ using TMPro;
 
 public class InventoryUiController
 {
-    protected int slotIndex = 0;
+    public int slotIndex = 0;
 
-    protected int defaultNumberOfRow;
-    protected GameObject defaultRow;
-    protected GameObject inventoryGrid;
-    protected GameObject template;
-    protected Inventory.InventoryButtonClickedCallback buttonClickedCallback;
-
+    private int defaultNumberOfRow;
+    private GameObject defaultRow;
+    private GameObject inventoryGrid;
+    private GameObject template;
+    private Inventory.InventoryButtonClickedCallback buttonClickedCallback;
+    private BaseInventory.InventoryButtonClickedCallback BasebuttonClickedCallback;
 
     private GameObject extraRow;
     private GameObject hotbarContainer;
 
-    protected GameObject inventoryContainer;
-    protected GameObject actionsContainer;
-    protected UIViewStateManager uiViewStateManager;
+    private GameObject inventoryContainer;
+    private GameObject actionsContainer;
+    private UIViewStateManager uiViewStateManager;
 
     public InventoryUiController(
         int defaultNumberOfRow, 
@@ -48,12 +48,34 @@ public class InventoryUiController
         this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateInventoryUi;
     }
 
+    public InventoryUiController(
+        int defaultNumberOfRow,
+        GameObject defaultRow,
+        GameObject inventoryGrid,
+        GameObject template,
+        BaseInventory.InventoryButtonClickedCallback BasebuttonClickedCallback,
+        UIViewStateManager uiViewStateManager
+        )
+    {
+        this.defaultNumberOfRow = defaultNumberOfRow;
+        this.defaultRow = defaultRow;
+        this.inventoryGrid = inventoryGrid;
+        this.template = template;
+        this.BasebuttonClickedCallback = BasebuttonClickedCallback;
 
+        this.inventoryContainer = this.inventoryGrid.transform.Find("ChestInventory").gameObject;
+        this.actionsContainer = this.inventoryGrid.transform.Find("ChestActions").gameObject;
+
+        this.uiViewStateManager = uiViewStateManager;
+
+        this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateChestInventoryUi;
+    }
 
 
     ~InventoryUiController()
     {
         this.uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateInventoryUi;
+        this.uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateChestInventoryUi;
     }
 
     public virtual void SetupUi()
@@ -66,7 +88,7 @@ public class InventoryUiController
             }
             hotbar.transform.SetParent(hotbarContainer.transform);
             RectTransform rowRectTransform = hotbar.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(500, -50);
+            rowRectTransform.anchoredPosition = new Vector2(450,-30);
         }
 
         for (int i = 0; i < defaultNumberOfRow - 1; i++)
@@ -78,7 +100,7 @@ public class InventoryUiController
             }
             row.transform.SetParent(inventoryContainer.transform);
             RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(500, -20 + 90 * i);
+            rowRectTransform.anchoredPosition = new Vector2(450, 90 * i);
         }
 
         Button sortButton = actionsContainer.transform.Find("Sort").GetComponent<Button>();
@@ -89,6 +111,25 @@ public class InventoryUiController
 
         SetUiActive(false);
     }
+
+    public void SetupChestUi()
+    {
+        for (int i = 0; i < defaultNumberOfRow - 1; i++)
+        {
+            GameObject row = GameObject.Instantiate(defaultRow);
+            for (int j = 0; j < row.transform.childCount; j++)
+            {
+                row.transform.GetChild(j).gameObject.name = "slot" + slotIndex++;
+            }
+            row.transform.SetParent(inventoryContainer.transform);
+            RectTransform rowRectTransform = row.GetComponent<RectTransform>();
+            rowRectTransform.anchoredPosition = new Vector2(500, -400 + 90 * i);
+        }
+        Button sortButton = actionsContainer.transform.Find("ChestSort").GetComponent<Button>();
+        sortButton.onClick.AddListener(OnSortButtonClicked);
+        SetChestUiActive(false);
+    }
+
 
     public void UpdateSlotUi(int index, InventorySlot slot)
     {
@@ -118,7 +159,15 @@ public class InventoryUiController
         SetUiActive(isActive, ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Null);
     }
 
-    public void SetUiActive(bool isInventoryActive, bool isHotbarActive = true)
+    private void UpdateChestInventoryUi(object sender, UIBeingViewed ui)
+    {
+        bool isActive = ui == UIBeingViewed.Chest;
+
+        SetChestUiActive(isActive);
+    }
+
+
+    public virtual void SetUiActive(bool isInventoryActive, bool isHotbarActive = true)
     {
         inventoryContainer.SetActive(isInventoryActive);
         actionsContainer.SetActive(isInventoryActive);
@@ -127,6 +176,14 @@ public class InventoryUiController
 
         hotbarContainer.SetActive(true);
     }
+
+
+    public virtual void SetChestUiActive(bool isChestInventoryActive)
+    {
+        inventoryContainer.SetActive(isChestInventoryActive);
+        actionsContainer.SetActive(isChestInventoryActive);
+    }
+
 
     public void Upgrade()
     {
@@ -137,7 +194,7 @@ public class InventoryUiController
         }
         row.transform.SetParent(inventoryContainer.transform);
         RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-        rowRectTransform.anchoredPosition = new Vector2(500, -20 - 90 * (inventoryContainer.transform.childCount - 1));
+        rowRectTransform.anchoredPosition = new Vector2(450, - 90 * (inventoryContainer.transform.childCount - 1));
     }
 
     private GameObject GetInventorySlotUiByIndex(int index)

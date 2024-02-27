@@ -11,13 +11,12 @@ public class ChestController : MonoBehaviour
     {
         // Initialize the inventory for this chest
         ChestInventory = new InventoryDatabase(defaultNumberOfRow: 4, maxExtraRow: 0);
-        // Load existing items into the inventory if needed
+        uiViewStateManager = FindObjectOfType<UIViewStateManager>();
     }
 
     public void OpenChest()
     {
-       
-        Debug.Log("chest open");
+        uiViewStateManager.DisplayChestUI();
     }
 
 }
