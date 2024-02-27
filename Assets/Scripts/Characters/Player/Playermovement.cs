@@ -196,9 +196,6 @@ public class Playermovement : MonoBehaviour
 
             }        
         }
-       
-        
-
 
     }
 

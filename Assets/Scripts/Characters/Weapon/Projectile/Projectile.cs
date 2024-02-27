@@ -3,7 +3,7 @@ using System.Net;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using System;
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IDamageSource
 {
     protected ProjectileObject projectileObject;
     protected CharacterObject characterObject;
@@ -17,6 +17,11 @@ public class Projectile : MonoBehaviour
     public float speed = 20f; // Speed of the projectile
     public float gravityScale = 0.1f; // Scaled down gravity effect
 
+    public float DamageAmount => finalDamage;
+
+    public float CriticalChance => firingCharacter.CriticalChance;
+
+    public float CriticalMultiplier => firingCharacter.CriticalMultiplier;
 
     private void Awake()
     {
@@ -66,7 +71,7 @@ public class Projectile : MonoBehaviour
             CharacterController character = collider.GetComponent<CharacterController>();
             if (character != null)
             {
-                character.takenDamage(finalDamage);
+                ApplyDamage(character);
             }
 
             // Return the projectile to the pool
@@ -98,9 +103,10 @@ public class Projectile : MonoBehaviour
         }
     }
     
-    protected virtual void ApplyDamage()
+    public virtual void ApplyDamage(IDamageable target)
     {
-
+        float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
+        target.TakeDamage(damageDealt, this);
     }
 
     protected virtual bool IsInHatredList(Collider2D collider)
@@ -121,4 +127,5 @@ public class Projectile : MonoBehaviour
 
         return false; // Target not found in hatred list
     }
+
 }

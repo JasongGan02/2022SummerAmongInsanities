@@ -11,7 +11,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.Rendering;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IDamageSource
 {
     
     protected CharacterController characterController;
@@ -31,6 +31,12 @@ public class Weapon : MonoBehaviour
     protected float frequency = 10f;
 
     protected audioManager am;
+
+    public float DamageAmount => finalDamage;
+
+    public float CriticalChance => characterController.CriticalChance;
+
+    public float CriticalMultiplier => characterController.CriticalMultiplier;
 
     public virtual void Start()
     {
@@ -127,13 +133,16 @@ public class Weapon : MonoBehaviour
     {
         if (collision.gameObject.tag == "enemy")
         {
-            
-            collision.gameObject.GetComponent<CharacterController>().takenDamage(finalDamage);
+            ApplyDamage(collision.gameObject.GetComponent<CharacterController>());
             Debug.Log("damaging"); 
 
         }
            
     }
 
-
+    public void ApplyDamage(IDamageable target)
+    {
+        float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
+        target.TakeDamage(damageDealt, this);
+    }
 }

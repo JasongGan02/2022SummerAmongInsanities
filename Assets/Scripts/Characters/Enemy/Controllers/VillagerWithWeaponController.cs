@@ -123,7 +123,7 @@ public class VillagerWithWeaponController : EnemyController
         else
         {
             animator.SetBool("attack", true);
-            target.gameObject.GetComponent<TowerController>().takenDamage(AtkDamage);
+            ApplyDamage(target.GetComponent<CharacterController>());
             rest = true;
             Wait = 0.2f;
         }
@@ -158,7 +158,7 @@ public class VillagerWithWeaponController : EnemyController
         {
             animator.SetBool("attack", true);
             //Debug.Log("hit");
-            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+            ApplyDamage(player.GetComponent<CharacterController>());
             rest = true;
             Wait = 0.2f;
         }

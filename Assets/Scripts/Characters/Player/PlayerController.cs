@@ -145,7 +145,7 @@ public class PlayerController : CharacterController, IDataPersistence
     }
 
 
-    public override void takenDamage(float dmg)
+    public override void ApplyHPChange(float dmg)
     {
         if (dmg > 0)
         {
@@ -159,7 +159,7 @@ public class PlayerController : CharacterController, IDataPersistence
             }
 
         }
-        base.takenDamage(dmg);
+        base.ApplyHPChange(dmg);
         
         
         if (damagedColor.a <= 0)

@@ -32,6 +32,6 @@ public class StatsEffectController : EffectController
     private void CharacterCurrentHPChange(float amount)
     {
         Type type = effectObject.GetApplyingControllerType();
-        this.gameObject.GetComponent<CharacterController>().takenDamage(-amount);
+        this.gameObject.GetComponent<CharacterController>().ApplyHPChange(-amount);
     }
 }

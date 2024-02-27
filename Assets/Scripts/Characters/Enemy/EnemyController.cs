@@ -36,7 +36,6 @@ public abstract class EnemyController : CharacterController
         //towerContainer = FindObjectOfType<TowerContainer>();
         base.Awake();
         timer = 0;
- 
     }
 
     void FixedUpdate()
@@ -213,6 +212,14 @@ public abstract class EnemyController : CharacterController
         return distance;
     }
 
+    protected float DistanceToTarget(Transform target)
+    {
+        Vector2 targetPosition = target.position;
+        Vector2 transformPosition = transform.position;
+        float distance = Mathf.Sqrt(Mathf.Pow((targetPosition.x - transformPosition.x), 2) + Mathf.Pow((targetPosition.y - transformPosition.y), 2));
+        return distance;
+    }
+
     protected float CalculateDistanceToPlayer()
     {
         Vector3 player_position = player.gameObject.transform.position;
@@ -229,7 +236,7 @@ public abstract class EnemyController : CharacterController
     {
         if(timer >= _atkSpeed)
         {
-            player.GetComponent<PlayerController>().takenDamage(AtkDamage);
+            ApplyDamage(player.GetComponent<CharacterController>());
             timer = 0f;
         }
     }

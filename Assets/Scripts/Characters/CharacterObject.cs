@@ -10,9 +10,12 @@ public class CharacterObject : BaseObject, IPoolableObject
 {
     [Header("Character Stats")]
     public float _HP;
+    public float _armor;
     public float _atkDamage;
     public float _atkSpeed;
     public float _atkRange;
+    public float _criticalMultiplier;
+    public float _criticalChance;
     public float _movingSpeed;
     public float _jumpForce;
     public int _totalJumps;

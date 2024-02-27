@@ -9,7 +9,6 @@ using UnityEngine.UIElements;
 public class VillagerController : EnemyController
 {
     bool rest = false;
-    float cooldown = 0f;
     bool facingright = false;
     private Rigidbody2D rb;
     float patroltime = 0f;
@@ -44,193 +43,88 @@ public class VillagerController : EnemyController
         attackStart = transform.Find("attackStart");
         attackEnd = transform.Find("attackEnd");
         boxCollider = GetComponent<BoxCollider2D>();
-
-        //Hatred.Add("PlayerController");
-        //Hatred.Add("ArcherTowerController");
-        //Hatred.Add("CatapultTowerController");
-        //Hatred.Add("TrapTowerController");
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void EnemyLoop()
     {
-        
-        //UpdateNearestTower();
-        rb = GetComponent<Rigidbody2D>();
-        Debug.Log("velocity:" + rb.velocity.x + ", " + rb.velocity.y);
         if (animator.GetBool("IsStanding") == true) { SenseFrontBlock(); ChangeCollider("Stand"); }
         else { ChangeCollider("Sit"); }
         
 
         target = WhatToAttack();
         if (target == null) { patrol(); }
-        else if (target.CompareTag("Player") && IsPlayerSensed() && villager_sight())
-        {
-            if (IsPlayerInAtkRange())
-            {
-                attack();
-            }
-            else
-            {
-                approachPlayer(2 * _movingSpeed);
-                flip(player.transform);
-            }
-        }
         else
         {
-            if (IsTowerInAtkRange((int)_atkRange) && villager_sight())
+            if (villager_sight())
             {
-                flip(target.transform);
-                attackTower(target.transform);
-            }
-            else
-            {
-                animator.SetBool("IsStanding", true);
-                animator.SetBool("IsRunning", false);
-                approach(_movingSpeed, target.transform);
-                flip(target.transform);
+                if (DistanceToTarget(target.transform) < _atkRange)
+                {
+                    attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
+                }
+                else
+                {
+                    approach(2.0f * _movingSpeed, target.transform);
+                    flip(target.transform);
+                }
             }
         }
     }
 
-    bool IsTowerInAtkRange(int AtkRange)
+    void attack(Transform target, float frequency)
     {
-        if (target != null)
-        {
-            float distance = CalculateDistanceFromEnemyToTower(target.transform);
-            if (distance <= AtkRange)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
-    }
-    void attackTower(Transform target)
-    {
+        animator.SetBool("IsStanding", true);
         if (rest)
         {
             if (Wait > 0) { Wait -= Time.deltaTime; }
             else
             {
-                animator.SetBool("IsStanding", true);
-                animator.SetBool("IsRunning", false);
-                animator.SetBool("Attack", false);
-                if (cooldown > _atkSpeed)
-                {
-                    cooldown = 0f;
-                    rest = false;
-                }
-                else { cooldown += Time.deltaTime; }
-                //Debug.Log("rest");
+                ChangeAnimation("villager_run");
+                rest = false;
             }
-        }
-
-        else if (Vector2.Distance(transform.position, target.position) > 1f)
-        {
-            animator.SetBool("IsStanding", true);
-            animator.SetBool("IsRunning", true);
-            animator.SetBool("Attack", false);
-            approach(2 * _movingSpeed, target);
         }
 
         else
         {
-            animator.SetBool("IsStanding", true);
-            animator.SetBool("IsRunning", true);
-            animator.SetBool("Attack", true);
-            target.gameObject.GetComponent<TowerController>().takenDamage(AtkDamage);
-            rest = true;
-            Wait = 0.3f;
+            ChangeAnimation("villager_attack");
+            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+            if (checkD < 0.75f) // hurt target successfully
+            {
+                ApplyDamage(target.GetComponent<CharacterController>());
+
+                rest = true;
+                Wait = 2f * (1.0f / frequency);
+            }
+            else // didn't hurt target
+            {
+                rest = true;
+                Wait = 2f * (1.0f / frequency);
+            }
+
         }
 
         flip(target);
     }
-
-    new void attack()
-    {
-        if (rest)
-        {
-            if (Wait > 0) { Wait -= Time.deltaTime; }
-            else
-            {
-                animator.SetBool("IsStanding", true);
-                animator.SetBool("IsRunning", false);
-                animator.SetBool("Attack", false);
-                if (cooldown > _atkSpeed)
-                {
-                    cooldown = 0f;
-                    rest = false;
-                }
-                else { cooldown += Time.deltaTime; }
-                //Debug.Log("rest");
-            }
-        }
-
-        else if (Vector2.Distance(transform.position, player.transform.position) > 0.7f)
-        {
-            animator.SetBool("IsStanding", true);
-            animator.SetBool("IsRunning", true);
-            animator.SetBool("Attack", false);
-            approachPlayer(2 * _movingSpeed);
-        }
-        
-        else 
-        {
-            animator.SetBool("IsStanding", true);
-            animator.SetBool("IsRunning", true);
-            animator.SetBool("Attack", true);
-            //Debug.Log("hit");
-
-            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
-            Debug.Log("distance: " + checkD);
-            if (checkD < 0.25f)
-            {
-                player.GetComponent<PlayerController>().takenDamage(AtkDamage);
-                rest = true;
-                Wait = 0.3f;
-            }
-            if (Wait > 0 && rest == false)
-            {
-                Wait -= Time.deltaTime;
-            }
-            else
-            {
-                rest = true;
-                Wait = 0.3f;
-            }
-            
-        }
-
-        flip(player.transform);
-    }
-
-    void approachPlayer(float speed)
-    {
-        animator.SetBool("IsStanding", true);
-        if (speed > 1f) { animator.SetBool("IsRunning", true); }
-        else { animator.SetBool("IsRunning", false); }
-        if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
-    }
     void approach(float speed, Transform target)
     {
-        animator.SetBool("IsStanding", true);
-        if (speed > 1f) { animator.SetBool("IsRunning", true); }
-        else { animator.SetBool("IsRunning", false); }
+        if (speed > _movingSpeed)
+        {
+            ChangeAnimation("villager_run");
+        }
+        else
+        {
+            ChangeAnimation("villager_walk");
+        }
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
     void patrol()
     {
-        animator.SetBool("Attack", false);
         if (patroltime <= 0f)
         {
             patrolRest = 2f;
             animator.SetBool("IsStanding", false);
-            animator.SetBool("IsRunning", false);
+            ChangeAnimation("villager_idle");
             patroltime = Random.Range(1f, 3f);
             if (Random.Range(0f, 1f) < 0.5) // go left
             {
@@ -248,7 +142,7 @@ public class VillagerController : EnemyController
         else
         {
             animator.SetBool("IsStanding", true);
-            animator.SetBool("IsRunning", false);
+            ChangeAnimation("villager_walk");
             patroltime -= Time.deltaTime;
             if (patrolToRight) 
             { 
@@ -376,6 +270,14 @@ public class VillagerController : EnemyController
         else
         {
             boxCollider.size = new Vector2(0.1875544f, 0.718245f);
+        }
+    }
+
+    public void ChangeAnimation(string movement)
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(movement))
+        {
+            animator.Play(movement);
         }
     }
 }
