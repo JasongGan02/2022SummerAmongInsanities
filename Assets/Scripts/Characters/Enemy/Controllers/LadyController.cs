@@ -292,7 +292,7 @@ public class LadyController : EnemyController, IRangedAttacker
     void approach(float speed, Transform target, float distance)
     {
         float currentDistance = Mathf.Abs(transform.position.x - target.position.x);
-        Debug.Log("currentDistance" + currentDistance);
+        //Debug.Log("currentDistance" + currentDistance);
         if (currentDistance < distance)
         {
             if (target.position.x > transform.position.x)

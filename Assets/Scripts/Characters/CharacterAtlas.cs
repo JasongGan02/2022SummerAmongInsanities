@@ -12,5 +12,4 @@ public class CharacterAtlas : ScriptableObject
     public CharacterObject dumb;
     public CharacterObject villagerWithWeapon;
 
-    public List<CharacterObject> towerList;
 }

@@ -4,21 +4,36 @@ using UnityEngine;
 using System;
 public class CharUpgradeEffectController : EffectController
 {
-    protected float dHP;
-    protected float dAtkDamage;
-    protected float dAtkInterval;
-    protected float dAtkRange;
-    protected float dMovingSpeed;
-    protected float dJumpForce;
-    protected int dTotalJumps;
+    private CharUpgradeEffectObject upgradeEffect;
 
     protected override void StartEffect()
     {
-        // Start the effect or perform any necessary setup
-        Type type = effectObject.GetApplyingControllerType();
-        CharacterController characterController = this.gameObject.GetComponent(type) as CharacterController;
-        characterController.ChangeCharStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce, dTotalJumps);
+        upgradeEffect = effectObject as CharUpgradeEffectObject;
+        if (upgradeEffect == null) return;
+
+        ApplyUpgrades();
     }
 
-    
+    private void ApplyUpgrades()
+    {
+        CharacterController characterController = GetComponent<CharacterController>();
+        if (characterController != null)
+        {
+            StatModifications mods = new StatModifications(
+                upgradeEffect.dHP,
+                upgradeEffect.dAtkDamage,
+                upgradeEffect.dAtkInterval,
+                upgradeEffect.dMovingSpeed,
+                upgradeEffect.dAtkRange,
+                upgradeEffect.dJumpForce,
+                upgradeEffect.dTotalJumps,
+                upgradeEffect.dArmor,
+                upgradeEffect.dCriticalMultiplier,
+                upgradeEffect.dCriticalChance
+            );
+
+            characterController.ChangeCharStats(mods);
+        }
+    }
 }
+

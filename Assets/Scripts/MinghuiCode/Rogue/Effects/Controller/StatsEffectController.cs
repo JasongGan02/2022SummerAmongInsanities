@@ -13,7 +13,7 @@ public class StatsEffectController : EffectController
     {
         float elapsedTime = 0f;
 
-        while (elapsedTime < duration)
+        while (elapsedTime < effectObject.duration)
         {
             // Perform any necessary updates here if the effect is not a one-time effect
             CharacterCurrentHPChange(dHP*Time.deltaTime);
