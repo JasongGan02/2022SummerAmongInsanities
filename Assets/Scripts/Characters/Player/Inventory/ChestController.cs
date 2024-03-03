@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChestController : MonoBehaviour
 {
-    public InventoryDatabase ChestInventory { get; private set; }
+    public InventoryDatabase ChestInventory;
 
     private UIViewStateManager uiViewStateManager;
-    void Awake()
+    private BaseInventory baseInventory; // Reference to BaseInventory
+
+    void Start()
     {
-        // Initialize the inventory for this chest
-        ChestInventory = new InventoryDatabase(defaultNumberOfRow: 4, maxExtraRow: 0);
+        ChestInventory = new InventoryDatabase(defaultNumberOfRow: 2, maxExtraRow: 0);
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
+        baseInventory = FindObjectOfType<BaseInventory>(); // Find the BaseInventory instance
     }
 
     public void OpenChest()
     {
+        baseInventory.SetCurrentInventory(ChestInventory); // Update the BaseInventory
         uiViewStateManager.DisplayChestUI();
     }
-
 }
-

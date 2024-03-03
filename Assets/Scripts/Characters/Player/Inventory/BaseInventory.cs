@@ -8,11 +8,11 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
     public GameObject defaultRow;
     public GameObject template;
     public GameObject background;
-
-    public int defaultNumberOfRow = 6;
+    protected GameObject player;
+    public int defaultNumberOfRow = 2;
 
     protected InventoryEventBus eventBus;
-    protected InventoryUiController uiController;
+    public InventoryUiController uiController;
     protected GameObject inventoryGrid;
     protected InventoryDatabase database;
 
@@ -28,12 +28,23 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
             this,
             FindObjectOfType<UIViewStateManager>()
             );
-        
-        
         uiController.SetupChestUi();
-
-
     }
+
+    protected virtual void Update()
+    {
+        if (player == null) player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    public void SetCurrentInventory(InventoryDatabase newDatabase)
+    {
+        if (this.database != newDatabase)
+        {
+            this.database = newDatabase; // Update the internal database reference
+            UpdateWholeInventory();
+        }
+    }
+
     // Event system
     public void OnSlotRightClicked(int index, bool isShiftDown)
     {
@@ -77,16 +88,71 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
         }
     }
 
-    public void AddItem(IInventoryObject item, int amount)
+
+
+
+    public void RemoveItemAndDrop(int index)
     {
-        for (int i = 0; i < amount; i++)
+        InventorySlot removedItem = database.RemoveItem(index);
+        if (removedItem != null)
         {
-            int indexToUpdate = database.AddItem(item);
-            UpdateSlotUi(indexToUpdate);
+            Vector3 dropPosition;
+            if (player.GetComponent<Playermovement>().facingRight)
+            {
+                dropPosition = player.transform.position + new Vector3(1, 0, 0);
+            }
+            else
+            {
+                dropPosition = player.transform.position + new Vector3(-1, 0, 0);
+            }
+            // TODO refactor collectible object to set the amount when getting the dropped item
+            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
+            droppedItem.transform.position = dropPosition;
+            droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
         }
+
+        UpdateSlotUi(index);
     }
 
-    
+
+
+    // Inventory operation
+    public InventorySlot GetInventorySlotAtIndex(int index)
+    {
+        return database.GetInventorySlotAtIndex(index);
+    }
+
+    public void SwapItems(int index1, int index2)
+    {
+        database.SwapItems(index1, index2);
+
+        UpdateSlotUi(index1);
+        UpdateSlotUi(index2);
+    }
+
+    public void SwapItemsbetweenInventory(BaseInventory targetInventory,int index1, int index2)
+    {
+        this.database.TransferItemToOtherInventory(targetInventory.database,index1, index2);
+        UpdateSlotUi(index1);
+        targetInventory.UpdateSlotUi(index2);
+    }
+
+
+    public int MoveItems(int fromIndex, int toIndex, int amount, bool shouldUpdateFromSlot)
+    {
+        int remainingItemCount = database.MoveItems(fromIndex, toIndex, amount);
+        if (remainingItemCount >= 0)
+        {
+            if (shouldUpdateFromSlot)
+            {
+                UpdateSlotUi(fromIndex);
+            }
+            
+            UpdateSlotUi(toIndex);
+        }
+        return remainingItemCount;
+    }
+
 
     public void UpdateSlotUi(int index)
     {
@@ -95,13 +161,18 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
 
     public void Sort()
     {
-        database.Sort();
-        int size = database.GetSize();
+        this.database.Sort();
+        UpdateWholeInventory();
+
+    }
+
+    private void UpdateWholeInventory()
+    {
+        int size = this.database.GetSize();
         for (int i = 0; i < size; i++)
         {
             UpdateSlotUi(i);
         }
-
     }
 
     public interface InventoryButtonClickedCallback

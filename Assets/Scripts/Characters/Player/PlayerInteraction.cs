@@ -183,8 +183,6 @@ public class PlayerInteraction : MonoBehaviour
 
         UpdateCurrentInUseItemUI();
 
-        Debug.Log("PlayerInteraction: using " + currentSlotInUse.item.GetItemName());
-
 
       
         if (currentTileGhost != null)

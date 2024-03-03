@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     [HideInInspector]
     public IInventoryObject item;
-    private Inventory inventory;
+    
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private GameObject canvas;
 
+    
+    public Transform originalParent { get; private set; }
+    public BaseInventory originatingInventory { get; private set; }
+
     private bool isInSlot = true;
     // no need to update currentSlotIndex, because when the item is moved to another slot
     // the slot template gets recreated. So the index is updated automatically onStart
-    private int currentSlotIndex;
+    public int currentSlotIndex;
     private bool shouldListenForRightClick = false;
 
     private void Start()
     {
-        inventory = FindObjectOfType<Inventory>();
+      
 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
@@ -40,12 +45,12 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         {
             if (args.isShiftDown)
             {
-                int currentCount = inventory.GetInventorySlotAtIndex(currentSlotIndex).count;
-                PartiallyMoveToAnotherSlot(args.slotIndex, currentCount == 1 ? 1 : currentCount / 2, false);
+                int currentCount = originatingInventory.GetInventorySlotAtIndex(currentSlotIndex).count;
+                PartiallyMoveToAnotherSlot(originatingInventory, args.slotIndex, currentCount == 1 ? 1 : currentCount / 2, false);
             }
             else
             {
-                PartiallyMoveToAnotherSlot(args.slotIndex, 1, false);
+                PartiallyMoveToAnotherSlot(originatingInventory, args.slotIndex, 1, false);
             }
         }
     }
@@ -66,7 +71,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         canvasGroup.blocksRaycasts = true;
         shouldListenForRightClick = false;
         PlayerStatusRepository.SetIsViewingUi(false);
-        inventory.RemoveSlotRightClickedHandler(HandleSlotRightClickEvent);
+        originatingInventory.RemoveSlotRightClickedHandler(HandleSlotRightClickEvent);
         Invoke("RemoveItemFromInventoryIfNotInSlot", 0.01f);
     }
 
@@ -74,41 +79,58 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
     {
         if (!isInSlot)
         {
-            inventory.RemoveItemAndDrop(currentSlotIndex);
+            originatingInventory.RemoveItemAndDrop(currentSlotIndex);
             Destroy(gameObject);
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        originalParent = transform.parent;
+        originatingInventory = FindDirectInventory(transform, canvas.transform);
+
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
         PlayerStatusRepository.SetIsViewingUi(true);
         isInSlot = false;
         shouldListenForRightClick = true;
         gameObject.transform.SetParent(canvas.transform);
-        inventory.AddSlotRightClickedHandler(HandleSlotRightClickEvent);
+        originatingInventory.AddSlotRightClickedHandler(HandleSlotRightClickEvent);
     }
 
     public void OnMovedToAnotherSlot(int anotherSlotIndex)
     {
         isInSlot = true;
 
-        InventorySlot fromSlot = inventory.GetInventorySlotAtIndex(currentSlotIndex);
-        InventorySlot toSlot = inventory.GetInventorySlotAtIndex(anotherSlotIndex);
-        if (toSlot.IsEmpty || fromSlot.item.GetItemName() == toSlot.item.GetItemName())
-        {
-            PartiallyMoveToAnotherSlot(anotherSlotIndex, fromSlot.count, true);
-        }
-        else
-        {
-            inventory.SwapItems(currentSlotIndex, anotherSlotIndex);
-        }
+        
+            InventorySlot fromSlot = originatingInventory.GetInventorySlotAtIndex(currentSlotIndex);
+            InventorySlot toSlot = originatingInventory.GetInventorySlotAtIndex(anotherSlotIndex);
+            if (toSlot.IsEmpty || fromSlot.item.GetItemName() == toSlot.item.GetItemName())
+            {
+                PartiallyMoveToAnotherSlot(originatingInventory, anotherSlotIndex, fromSlot.count, true);
+            }
+            else
+            {
+            originatingInventory.SwapItems(currentSlotIndex, anotherSlotIndex);
+            }
+       
     }
 
-    private void PartiallyMoveToAnotherSlot(int anotherSlotIndex, int amount, bool shouldUpdateCurrentIndex)
+    public void OnMovedToAntherInventorySlot(Transform dropTargetInventory,int anotherSlotIndex)
     {
-        int remainingItemCount = inventory.MoveItems(currentSlotIndex, anotherSlotIndex, amount, shouldUpdateCurrentIndex);
+
+        isInSlot = true;
+
+        BaseInventory ToInventory = dropTargetInventory.GetComponentInChildren<BaseInventory>();
+        originatingInventory.SwapItemsbetweenInventory(ToInventory, currentSlotIndex, anotherSlotIndex);
+
+    }
+
+
+
+    private void PartiallyMoveToAnotherSlot(BaseInventory invenotry,int anotherSlotIndex, int amount, bool shouldUpdateCurrentIndex)
+    {
+        int remainingItemCount = invenotry.MoveItems(currentSlotIndex, anotherSlotIndex, amount, shouldUpdateCurrentIndex);
         if (remainingItemCount >= 0)
         {
             TMP_Text countText = gameObject.transform.Find("Count").GetComponent<TMP_Text>();
@@ -120,5 +142,19 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
                 // no need to destroy the game object here since it will be handle is OnEndDrag
             }
         }
+    }
+
+
+
+    private BaseInventory FindDirectInventory(Transform child, Transform parent)
+    {
+        Transform current = child;
+        // Climb up the hierarchy until we find the direct child of the specified parent
+        while (current.parent != null && current.parent != parent)
+        {
+            current = current.parent;
+        }
+        
+        return current.GetComponentInChildren<BaseInventory>();
     }
 }
