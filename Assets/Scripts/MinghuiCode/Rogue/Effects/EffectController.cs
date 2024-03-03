@@ -8,50 +8,11 @@ using UnityEditor.Build;
 
 public class EffectController : MonoBehaviour
 {
-
-    protected int cost;
-    protected int level;
-    protected float duration; // The duration of the effect in seconds
-    protected bool stackable;
-    protected string description;
     protected EffectObject effectObject;
 
     public virtual void Initialize(EffectObject effectObject)
     {
-        Type controllerType = GetType();
-        Type objectType = effectObject.GetType();
         this.effectObject = effectObject;
-
-        // Get all the fields of the controller type
-        FieldInfo[] controllerFields = controllerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
-        // Iterate over the fields and set their values from the object
-        foreach (FieldInfo controllerField in controllerFields)
-        {
-            // Try to find a matching field in the object
-            FieldInfo objectField = objectType.GetField(controllerField.Name);
-            // If there's a matching field, set the value
-            if (objectField != null && objectField.FieldType == controllerField.FieldType)
-            {
-                controllerField.SetValue(this, objectField.GetValue(effectObject));
-            }
-        }
-
-        // Get all the properties of the controller type
-        PropertyInfo[] controllerProperties = controllerType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance);
-
-        // Iterate over the properties and set their values from the object
-        foreach (PropertyInfo controllerProperty in controllerProperties)
-        {
-            // Try to find a matching property in the object
-            PropertyInfo objectProperty = objectType.GetProperty(controllerProperty.Name);
-
-            // If there's a matching property, set the value
-            if (objectProperty != null && objectProperty.PropertyType == controllerProperty.PropertyType && objectProperty.CanRead)
-            {
-                controllerProperty.SetValue(this, objectProperty.GetValue(effectObject));
-            }
-        }
-
         StartEffect();
     }
 
@@ -67,7 +28,7 @@ public class EffectController : MonoBehaviour
     {
         float elapsedTime = 0f;
 
-        while (elapsedTime < duration)
+        while (elapsedTime < effectObject.duration)
         {
             // Perform any necessary updates here if the effect is not a one-time effect
  
@@ -79,7 +40,8 @@ public class EffectController : MonoBehaviour
 
         // Reset any temporary effect-related stats or variables here
 
-        // Destroy the component after the duration has elapsed
-        Destroy(this);
+        // Destroy the component from the effected controller after the duration has elapsed
+        if (!effectObject.isPermanent)
+            Destroy(this);
     }
 }

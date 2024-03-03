@@ -84,7 +84,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
 
     public virtual void Initialize(CharacterObject characterObject)
     {
-        this.characterStats = characterObject;
+        characterStats = characterObject;
         Type controllerType = GetType();
         Type objectType = characterObject.GetType();
 
@@ -189,29 +189,34 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
         }
     }
 
-    public void ChangeCurStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
+    public void ChangeCurStats(StatModifications mods)
     {
-        this.ApplyHPChange(-dHP);
-        this._atkDamage += dAtkDamage;
-        this._atkSpeed += dAtkInterval;
-        this._movingSpeed += dMovingSpeed;
-        this._atkRange += dAtkRange;
-        this._jumpForce += dJumpForce;
-        this._totalJumps += dTotalJumps;
+        ApplyHPChange(-mods.HP);
+        _atkDamage += mods.AtkDamage;
+        _atkSpeed += mods.AtkInterval;
+        _movingSpeed += mods.MovingSpeed;
+        _atkRange += mods.AtkRange;
+        _jumpForce += mods.JumpForce;
+        _totalJumps += mods.TotalJumps;
+        _armor += mods.Armor;
+        _criticalMultiplier += mods.CriticalMultiplier;
+        _criticalChance += mods.CriticalChance;
         EvokeStatsChange();
     }
 
-    public void ChangeCharStats(float dHP, float dAtkDamage, float dAtkInterval, float dMovingSpeed, float dAtkRange, float dJumpForce, int dTotalJumps)
+    public void ChangeCharStats(StatModifications mods)
     {
-        
-        characterStats._HP += dHP;
-        characterStats._atkDamage += dAtkDamage;
-        characterStats._atkSpeed += dAtkInterval;
-        characterStats._movingSpeed += dMovingSpeed;
-        characterStats._atkRange += dAtkRange;
-        characterStats._jumpForce += dJumpForce;
-        characterStats._totalJumps += dTotalJumps;
-        ChangeCurStats(dHP, dAtkDamage, dAtkInterval, dMovingSpeed, dAtkRange, dJumpForce, dTotalJumps);
+        characterStats._HP += mods.HP;
+        characterStats._atkDamage += mods.AtkDamage;
+        characterStats._atkSpeed += mods.AtkInterval;
+        characterStats._movingSpeed += mods.MovingSpeed;
+        characterStats._atkRange += mods.AtkRange;
+        characterStats._jumpForce += mods.JumpForce;
+        characterStats._totalJumps += mods.TotalJumps;
+        characterStats._armor += mods.Armor;
+        characterStats._criticalMultiplier += mods.CriticalMultiplier;
+        characterStats._criticalChance += mods.CriticalChance;
+        //ChangeCurStats(mods);
     }
 
     protected virtual void EvokeStatsChange()

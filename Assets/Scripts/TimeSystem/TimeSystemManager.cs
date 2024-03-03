@@ -22,7 +22,7 @@ public class TimeSystemManager : MonoBehaviour
     private int currentHour = 0;
     private int currentDay = 1;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         timeText = GameObject.Find(Constants.Name.TIME_TEXT);
 

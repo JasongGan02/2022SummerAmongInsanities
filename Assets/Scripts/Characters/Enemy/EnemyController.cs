@@ -10,8 +10,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public abstract class EnemyController : CharacterController
 {
-
     protected float SensingRange;
+
+    protected static int globalEnemyLevel = 1;
     public GameObject tempTarget;
     public Collider2D[] colliders;
 
@@ -38,10 +39,20 @@ public abstract class EnemyController : CharacterController
         timer = 0;
     }
 
+
+    public void LevelUp()
+    {
+        Reinitialize();
+        Debug.Log(this.name + " " + _HP);
+    }
+
+
+
     void FixedUpdate()
     {
         timer += Time.fixedDeltaTime;
     }
+
 
     protected override void Update()
     {
@@ -255,7 +266,8 @@ public abstract class EnemyController : CharacterController
                 }
             }
         }
-        else { Debug.Log("Hatred is empty"); }
+        else { //Debug.Log("Hatred is empty");
+               }
         return target;
     }
 
