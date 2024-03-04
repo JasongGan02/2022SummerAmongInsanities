@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.VolumeComponent;
 
 public class InventoryDatabase
 {
@@ -238,6 +239,59 @@ public class InventoryDatabase
         }
         return -1;
     }
+
+    public void TransferItemToOtherInventory(InventoryDatabase otherInventory, int fromIndex, int toIndex)
+    {
+        InventorySlot sourceSlot = GetInventorySlotAtIndex(fromIndex);
+        InventorySlot targetSlot = otherInventory.GetInventorySlotAtIndex(toIndex);
+
+        // Ensure there is an item to transfer.
+        if (sourceSlot.item == null || sourceSlot.count == 0)
+        {
+            return; // Nothing to transfer.
+        }
+
+        // If the target slot is empty, move the item directly.
+        if (targetSlot.IsEmpty)
+        {
+            otherInventory.inventory[toIndex] = new InventorySlot(sourceSlot.item, sourceSlot.count);
+            this.inventory[fromIndex].item = null;
+            this.inventory[fromIndex].count = 0;
+        }
+        else if (targetSlot.item.GetItemName() == sourceSlot.item.GetItemName())
+        {
+            // If the items are the same, stack them, respecting the max stack size.
+            int availableSpace = targetSlot.item.MaxStack - targetSlot.count;
+            int transferAmount = Math.Min(sourceSlot.count, availableSpace);
+
+            otherInventory.inventory[toIndex].count += transferAmount;
+            this.inventory[fromIndex].count -= transferAmount;
+
+            // If all items are transferred, clear the source slot.
+            if (this.inventory[fromIndex].count == 0)
+            {
+                this.inventory[fromIndex].item = null;
+            }
+        }
+        else
+        {
+            
+            //swap the items between the two slots.
+            int tempCount = otherInventory.inventory[toIndex].count;
+            IInventoryObject tempItem = otherInventory.inventory[toIndex].item;
+
+            otherInventory.inventory[toIndex].item = inventory[fromIndex].item;
+            otherInventory.inventory[toIndex].count = inventory[fromIndex].count;
+
+            inventory[fromIndex].item = tempItem;
+            inventory[fromIndex].count = tempCount;
+        }
+        UpdateNextEmptySlot();
+
+    }
+
+
+
 }
 
 public class InventorySlot : IComparable

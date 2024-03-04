@@ -7,26 +7,18 @@ using TMPro;
 using UnityEngine.Lumin;
 using UnityEngine.Experimental.Rendering;
 
-public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
+public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 {
-    public GameObject defaultRow;
-    public GameObject extraRow;
-    public GameObject template;
-    public GameObject background;
 
-    public int defaultNumberOfRow = 2;
+    public GameObject extraRow;
     public int maxExtraRow = 4;
     
-    private GameObject player;
-    private GameObject inventoryGrid;
     private GameObject hotbar;
     private CraftingQueueManager queueManager;
+    
 
-    private InventoryEventBus eventBus;
-    private InventoryUiController uiController;
-    private InventoryDatabase database;
 
-    void Awake()
+    protected override void Awake()
     {
         inventoryGrid = GameObject.Find(Constants.Name.INVENTORY_GRID);
         database = new InventoryDatabase(defaultNumberOfRow, maxExtraRow);
@@ -47,59 +39,10 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         queueManager = FindObjectOfType<CraftingQueueManager>();
     }
 
-    void Update()
+    protected override void Update()
     {
-        if(player==null) player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) player = GameObject.FindGameObjectWithTag("Player");
         HandleHotbarKeyPress();
-    }
-
-    // Event system
-    public void OnSlotRightClicked(int index, bool isShiftDown)
-    {
-        eventBus.OnSlotRightClicked(index, isShiftDown);
-    }
-
-    public void OnSlotLeftClicked(int index)
-    {
-        eventBus.OnSlotLeftClicked(index);
-    }
-
-    public void AddSlotRightClickedHandler(EventHandler<InventoryEventBus.OnSlotRightClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotRightClickedEvent += action;
-        }
-    }
-
-    public void RemoveSlotRightClickedHandler(EventHandler<InventoryEventBus.OnSlotRightClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotRightClickedEvent -= action;
-        }
-    }
-
-    public void AddSlotLeftClickedHandler(EventHandler<InventoryEventBus.OnSlotLeftClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotLeftClickedEvent += action;
-        }
-    }
-
-    public void RemoveSlotLeftClickedHandler(EventHandler<InventoryEventBus.OnSlotLeftClickedEventArgs> action)
-    {
-        if (eventBus != null)
-        {
-            eventBus.OnSlotLeftClickedEvent -= action;
-        }
-    }
-
-    // Inventory operation
-    public InventorySlot GetInventorySlotAtIndex(int index)
-    {
-        return database.GetInventorySlotAtIndex(index);
     }
 
     public void AddItem(IInventoryObject item, int amount)
@@ -111,34 +54,15 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
     }
 
+
+
     public void RemoveItemByOne(int index)
     {
         database.RemoveItemByOne(index);
         UpdateSlotUi(index);
     }
 
-    public void RemoveItemAndDrop(int index)
-    {
-        InventorySlot removedItem = database.RemoveItem(index);
-        if (removedItem != null)
-        {
-            Vector3 dropPosition;
-            if (player.GetComponent<Playermovement>().facingRight)
-            {
-                dropPosition = player.transform.position + new Vector3(1, 0, 0);
-            }
-            else
-            {
-                dropPosition = player.transform.position + new Vector3(-1, 0, 0);
-            }
-            // TODO refactor collectible object to set the amount when getting the dropped item
-            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
-            droppedItem.transform.position = dropPosition;
-            droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
-        }
-
-        UpdateSlotUi(index);
-    }
+ 
 
     public void RemoveAllItemsAndDrops()
     {
@@ -165,30 +89,6 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
             UpdateSlotUi(i);
         }
     }
-
-    public void SwapItems(int index1, int index2)
-    {
-        database.SwapItems(index1, index2);
-
-        UpdateSlotUi(index1);
-        UpdateSlotUi(index2);
-    }
-
-    public int MoveItems(int fromIndex, int toIndex, int amount, bool shouldUpdateFromSlot)
-    {
-        int remainingItemCount = database.MoveItems(fromIndex, toIndex, amount);
-        if (remainingItemCount >= 0)
-        {
-            if (shouldUpdateFromSlot)
-            {
-                UpdateSlotUi(fromIndex);
-            }
-            
-            UpdateSlotUi(toIndex);
-        }
-        return remainingItemCount;
-    }
-
 
 
     public void CraftItems(BaseObject[] items, int[] quantity, BaseObject outputItem)
@@ -252,10 +152,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         return database.HasEmptySlot();
     }
 
-    public void UpdateSlotUi(int index)
-    {
-        uiController.UpdateSlotUi(index, database.GetInventorySlotAtIndex(index));
-    }
+    
 
     private void HandleHotbarKeyPress() 
     {
@@ -313,16 +210,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
     }
 
-    public void Sort()
-    {
-        database.Sort();
-        int size = database.GetSize();
-        for (int i = 0; i < size; i++)
-        {
-            UpdateSlotUi(i);
-        }
-        
-    }
+    
 
     public void Upgrade()
     {
@@ -398,6 +286,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
         }
         return false;
     }
+
 
     public InventorySlot findSLOT (IInventoryObject inventoryObject)
     {   
@@ -518,7 +407,7 @@ public class Inventory : MonoBehaviour, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public interface InventoryButtonClickedCallback
+    public new interface InventoryButtonClickedCallback
     {
         void Sort();
         void Upgrade();

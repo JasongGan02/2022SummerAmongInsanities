@@ -13,18 +13,39 @@ public class InventoryDropOnSlotHandler : MonoBehaviour, IDropHandler, IPointerC
         inventory =  FindObjectOfType<Inventory>();
     }
 
+
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag != null)
-        {
+        { 
+
+            Canvas canvas = FindObjectOfType<Canvas>();
+            ItemInteractionHandler handler = eventData.pointerDrag.GetComponent<ItemInteractionHandler>();
+            
+            Transform draggedItemInventory = FindDirectChildOfParent(handler.originalParent, canvas.transform);
+            Transform dropTargetInventory = FindDirectChildOfParent(gameObject.transform, canvas.transform);
+
+           
+            bool isSameInventory = draggedItemInventory == dropTargetInventory;
             eventData.pointerDrag.transform.SetParent(gameObject.transform);
             eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            ItemInteractionHandler handler = eventData.pointerDrag.GetComponent<ItemInteractionHandler>();
-            handler.OnMovedToAnotherSlot(GetSlotIndex(gameObject.name));
+            if (isSameInventory)
+            {
+
+                handler.OnMovedToAnotherSlot(GetSlotIndex(gameObject.name));
+              
+            }
+            else
+            {
+
+                handler.OnMovedToAntherInventorySlot(dropTargetInventory, GetSlotIndex(gameObject.name));
+         
+
+            }
             handler.OnEndDrag(eventData);
+
         }
     }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         int slotIndex = GetSlotIndex(gameObject.name);
@@ -47,4 +68,16 @@ public class InventoryDropOnSlotHandler : MonoBehaviour, IDropHandler, IPointerC
     {
         return int.Parse(name.Remove(0, 4));
     }
+
+    private Transform FindDirectChildOfParent(Transform child, Transform parent)
+    {
+        Transform current = child;
+        // Climb up the hierarchy until we find the direct child of the specified parent
+        while (current.parent != null && current.parent != parent)
+        {
+            current = current.parent;
+        }   
+        return current;
+    }
+
 }

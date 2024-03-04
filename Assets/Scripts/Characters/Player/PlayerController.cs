@@ -20,7 +20,6 @@ public class PlayerController : CharacterController, IDataPersistence
     CoreArchitectureController coreArchitecture;
     private CharacterSpawnManager characterSpawnManager;
 
-
     //UI Elements
     Image healthBar;
     Image damagedHealthBar;
@@ -236,6 +235,9 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     
     public float GetPersonalLight() { return personalLight.intensity; }
+
+
+
 
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }

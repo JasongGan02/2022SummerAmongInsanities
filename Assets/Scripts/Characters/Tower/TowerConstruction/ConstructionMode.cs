@@ -7,7 +7,7 @@ using TMPro;
 // Press KeyCode.C to enter construction mode. Players can place different towers in this mode
 public class ConstructionMode : MonoBehaviour
 {
-    private bool isInConstructionMode = false;
+    public static bool isInConstructionMode = false;
 
     private CoreArchitectureController coreArchitecture;
     private UIViewStateManager uiViewStateManager;
