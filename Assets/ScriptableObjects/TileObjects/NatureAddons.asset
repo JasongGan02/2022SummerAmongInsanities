@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: NatureAddons
   sizeRatio: 0.125
   prefab: {fileID: 7400510951586041090, guid: 97d85591df3b762468794bea93cba057, type: 3}
-  tileID: 8
+  tileLayer: 2
   _maxStack: 99
   _healthPoint: 1
   _drops: []
@@ -32,3 +32,4 @@ MonoBehaviour:
   _craftTime: 0
   _needsBackground: 0
   _isLit: 0
+  _wallTileObject: {fileID: 0}

@@ -18,7 +18,8 @@ public class GameData
         this.playerPosition = Vector3.zero;
     }
 
-    public static SerializableWorldData SetWorldData(Dictionary<Vector2Int, int[,]> dictionary)
+    /*
+    public static SerializableWorldData SetWorldData(Dictionary<Vector2Int, TileObject[,,]> dictionary)
     {
         var serializableWorldData = new SerializableWorldData();
         foreach (var kvp in dictionary)
@@ -27,7 +28,7 @@ public class GameData
         }
         return serializableWorldData;
     }
-    public Dictionary<Vector2Int, int[,]> GetWorldData()
+    public Dictionary<Vector2Int, TileObject[,,]> GetWorldData()
     {
         // Convert and return from worldData
         if (serializableWorldData != null) 
@@ -69,6 +70,7 @@ public class GameData
         }
         return array;
     }
+    */
 }
 
 

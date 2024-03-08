@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Grass02
   sizeRatio: 0.125
   prefab: {fileID: 3131238724964298343, guid: 858ec57d47bf4104693ecb757cc1894d, type: 3}
-  tileID: 7
+  tileLayer: 2
   _maxStack: 99
   _healthPoint: 1
   _drops: []
@@ -30,3 +30,4 @@ MonoBehaviour:
   _craftTime: 0
   _needsBackground: 1
   _isLit: 0
+  _wallTileObject: {fileID: 0}

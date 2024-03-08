@@ -54,11 +54,11 @@ public class BreakableObjectController : MonoBehaviour
         {
 
             // Remove the tile entry from the dictionary
-            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y] = 0;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, (tile as TileObject).TileLayer] = null;
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
         {
-            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y] = -((TileObject)tile).TileID;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, (tile as TileObject).TileLayer] = ((TileObject)tile).WallTileObject; //TODO: every wall tile has a ref to its wall TileObject Variant;
             WorldGenerator.PlaceTile(((TileObject)tile), worldPostion.x, worldPostion.y, chunkCoord, true, false);
         }
         foreach (GameObject droppedItem in drops)

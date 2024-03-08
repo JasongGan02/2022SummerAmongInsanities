@@ -9,12 +9,12 @@ using Random = UnityEngine.Random;
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
     [SerializeField]
-    private int tileID; // The new ID field
+    private int tileLayer = 1; // tile layer it is supposed to be at, for all tile objects the default should be 1 suggesting a entity object. 
 
-    public int TileID
+    public int TileLayer
     {
-        get => tileID;
-        set => tileID = value;
+        get => tileLayer;
+        set => tileLayer = value;
     }
 
     [SerializeField]
@@ -53,6 +53,8 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     [SerializeField]
     private bool _isLit; // determine if this tile is a source of light
 
+    [SerializeField]
+    private TileObject _wallTileObject;
     public GameObject GetPlacedGameObject()
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -157,18 +159,20 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     public GameObject[] Prefabs
     {
         get => _prefabs;
-        set => _prefabs = value;
     }
     public bool NeedsBackground
     {
         get => _needsBackground;
-        set => _needsBackground = value;
     }
 
     public bool IsLit
     {
         get => _isLit;
-        set => _isLit = value;
+    }
+    
+    public TileObject WallTileObject
+    {
+        get => _wallTileObject;
     }
 
     public GameObject GetGeneratedGameObjects()
