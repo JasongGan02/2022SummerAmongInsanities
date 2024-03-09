@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
@@ -54,11 +55,11 @@ public class BreakableObjectController : MonoBehaviour
         {
 
             // Remove the tile entry from the dictionary
-            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, (tile as TileObject).TileLayer] = null;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, ((TileObject)tile).TileLayer] = null;
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
         {
-            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, (tile as TileObject).TileLayer] = ((TileObject)tile).WallTileObject; //TODO: every wall tile has a ref to its wall TileObject Variant;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, 0] = (TileObject)tile; //TODO: every wall tile has a ref to its wall TileObject Variant;
             WorldGenerator.PlaceTile(((TileObject)tile), worldPostion.x, worldPostion.y, chunkCoord, true, false);
         }
         foreach (GameObject droppedItem in drops)
@@ -70,5 +71,6 @@ public class BreakableObjectController : MonoBehaviour
             float randomTorque = Random.Range(-20f, 20f); // Adjust the range as needed
             droppedItem.GetComponent<Rigidbody2D>().AddTorque(randomTorque);
         }
+        WorldGenerator.Instance.RefreshChunkLight(chunkCoord, true);
     }
 }

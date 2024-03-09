@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Tree
   sizeRatio: 0.25
   prefab: {fileID: 2655721104761988997, guid: c4285e791d6e4444a9530dcb62363f7e, type: 3}
-  tileLayer: 2
+  tileLayer: 3
   _maxStack: 99
   _healthPoint: 4
   _drops:

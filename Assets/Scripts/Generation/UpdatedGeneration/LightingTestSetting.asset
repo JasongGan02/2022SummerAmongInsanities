@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88c5d0be68e56849b90eed7d395045d, type: 3}
+  m_Name: LightingTestSetting
+  m_EditorClassIdentifier: 
+  <tileAtlas>k__BackingField: {fileID: 11400000, guid: c6c92fd5ea6040440adbd3e1073220d7, type: 2}
+  <heightMultiplier>k__BackingField: 1
+  <heightAddition>k__BackingField: 20
+  <dirtLayerHeight>k__BackingField: 2
+  <terrainFrequency>k__BackingField: 0
+  <caveFrequency>k__BackingField: 0.105
+  <tallGrassChance>k__BackingField: 10
+  <treeChance>k__BackingField: 20
+  <vineChance>k__BackingField: 0
+  <stalactiteChance>k__BackingField: 0
+  <potChance>k__BackingField: 0
+  <ores>k__BackingField:
+  - <oreTile>k__BackingField: {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
+    <maxSpawnHeight>k__BackingField: 0
+    <minSpawnHeight>k__BackingField: 5
+    <spawnFrequency>k__BackingField: 0.045
+    <spawnRadius>k__BackingField: 0.045

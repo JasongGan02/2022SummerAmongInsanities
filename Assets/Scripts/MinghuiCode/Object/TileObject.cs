@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 [CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
+    [Tooltip("0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)")]
     [SerializeField]
     private int tileLayer = 1; // tile layer it is supposed to be at, for all tile objects the default should be 1 suggesting a entity object. 
 
@@ -53,14 +54,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     [SerializeField]
     private bool _isLit; // determine if this tile is a source of light
 
-    [SerializeField]
-    private TileObject _wallTileObject;
+    [Range(0f, 15f)] [SerializeField] private float _lightIntensity = 0;
+
     public GameObject GetPlacedGameObject()
     {
-        GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.name = itemName;
-        var controller = worldGameObject.AddComponent<BreakableObjectController>();
-        controller.Initialize(this, HealthPoint, true);
+        GameObject worldGameObject = GetGeneratedGameObjects();
+        worldGameObject.GetComponent<BreakableObjectController>().Initialize(this, HealthPoint, true);
         return worldGameObject;
     }
     
@@ -72,6 +71,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
         spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
+        spriteRenderer.sortingOrder = 10;
         var collider = ghost.GetComponent<BoxCollider2D>();
         collider.isTrigger = true;
         
@@ -169,11 +169,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         get => _isLit;
     }
-    
-    public TileObject WallTileObject
+
+    public float LightIntensity
     {
-        get => _wallTileObject;
+        get => _lightIntensity;
     }
+    
 
     public GameObject GetGeneratedGameObjects()
     {
@@ -191,7 +192,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         var controller = worldGameObject.AddComponent<BreakableObjectController>();
         controller.Initialize(this, HealthPoint, false);
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.sortingOrder = -5;
+        spriteRenderer.sortingOrder = TileLayer;
         return worldGameObject;
     }
     public GameObject GetGeneratedWallGameObjects()
@@ -209,7 +210,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         worldGameObject.name += "_Wall";
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        spriteRenderer.sortingOrder = -10;
+        spriteRenderer.sortingOrder = 0;
         worldGameObject.layer = 2; //ignore raycast in general
         if (worldGameObject.GetComponent<Collider2D>() != null)
         {

@@ -8,10 +8,8 @@ public class InfiniteTerrainGenerator : MonoBehaviour
 
     [SerializeField] private Transform Player;
     [SerializeField] private int RenderDistance;
-    [SerializeField] private int smoothIteration = 2;
     private WorldGenerator GeneratorInstance;
     private List<int> CoordsToRemove;
-    private int previousPlrChunkX = 0;
     int plrChunkX;
     private int createChunkCounter = 0;
     // Start is called before the first frame update
@@ -47,8 +45,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour
             int chunkCoord = x;
             if (!WorldGenerator.ActiveChunks.ContainsKey(chunkCoord))
             {
-                createChunkCounter++; // Increment the counter
-                StartCoroutine(CreateChunkWithCallback(chunkCoord, OnChunkCreated));
+                GeneratorInstance.StartCoroutine(GeneratorInstance.CreateChunk(chunkCoord));
             }
 
             CoordsToRemove.Remove(chunkCoord);
@@ -60,57 +57,8 @@ public class InfiniteTerrainGenerator : MonoBehaviour
             WorldGenerator.ActiveChunks.Remove(coord);
             chunkToDisable.SetActive(false);
         }
-        UpdateLightingAfterChunksCreated();
-        previousPlrChunkX = plrChunkX;
     }
-
-    private void OnChunkCreated()
-    {
-        createChunkCounter--; // Decrement the counter
-        Debug.Log(createChunkCounter);
-        if (createChunkCounter == 0) // All CreateChunk coroutines have finished
-        {
-            UpdateLightingAfterChunksCreated();
-        }
-    }
-
-    private void UpdateLightingAfterChunksCreated()
-    {
-        StartCoroutine(UpdateLightingAfterChunksCreatedCoroutine());
-
-    }
-
-    private IEnumerator UpdateLightingAfterChunksCreatedCoroutine()
-    {
-        for (int i = 0; i < smoothIteration; i++)
-        {
-            int coroutinesCompleted = 0; // Counter to track completed coroutines
-            int coroutinesToComplete = WorldGenerator.ActiveChunks.Count; // Total coroutines to wait for
-
-            // Start all coroutines for this iteration
-            foreach (var activeChunk in WorldGenerator.ActiveChunks)
-            {
-                int chunkCoord = activeChunk.Key;
-                Vector2Int pos = new Vector2Int(chunkCoord, 0);
-                StartCoroutine(GeneratorInstance.UpdateChunkLight(pos, () => coroutinesCompleted++));
-            }
-
-            // Wait for all coroutines to complete
-            yield return new WaitUntil(() => coroutinesCompleted == coroutinesToComplete);
-        }
-
-        // After all iterations are complete, proceed with applying light to all chunks
-        foreach (var activeChunk in WorldGenerator.ActiveChunks)
-        {
-            int chunkCoord = activeChunk.Key;
-            Vector2Int pos = new Vector2Int(chunkCoord, 0);
-            if (WorldGenerator.WorldLightData.ContainsKey(pos) && WorldGenerator.WorldLightTexture.ContainsKey(pos))
-            {
-                StartCoroutine(GeneratorInstance.ApplyLightToChunk(WorldGenerator.WorldLightTexture[pos], WorldGenerator.WorldLightData[pos], pos));
-            }
-        }
-    }
-
+    
 
     void InitializeTerrainAtDefaultPosition()
     {
@@ -132,11 +80,6 @@ public class InfiniteTerrainGenerator : MonoBehaviour
                 GenerateChunkWithCallback(chunkCoord);
             }
         }
-    }
-    private IEnumerator CreateChunkWithCallback(int chunkCoord, Action callback)
-    {
-        yield return StartCoroutine(GeneratorInstance.CreateChunk(chunkCoord));
-        callback?.Invoke();
     }
 
     void GenerateChunkWithCallback(int chunkCoord)
