@@ -66,6 +66,11 @@ public class ShadowObjectController : MonoBehaviour
             }
             return TowerObjectCheck(objectType);
         }
+        else if(objectType is ChestObject) 
+        {
+            return ChestObjectCheck(objectType);
+        }
+        
 
         return null;
     }
@@ -87,6 +92,20 @@ public class ShadowObjectController : MonoBehaviour
         transform.position = new Vector2(x, y);
         return new TileGhostPlacementResult(transform, CollisionCount==0 && IsConstructionShadowInRange(coreArchitecture) && downRay && constructionMode.CheckEnergyAvailableForConstruction((objectType as TowerObject).energyCost));
     }
+
+    private TileGhostPlacementResult ChestObjectCheck(BaseObject objectType)
+    {
+        Vector2 mousePosition = GetMousePosition2D();
+        ConstructionMode constructionMode = FindObjectOfType<ConstructionMode>();
+        Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
+        float x = GetSnappedCoordinate(mousePosition.x);
+        float y = GetComponent<BoxCollider2D>().bounds.size.y / 0.9f / 2 + 0.03f + downRay.point.y;
+        transform.position = new Vector2(x, y);
+        return new TileGhostPlacementResult(transform, CollisionCount == 0 && IsConstructionShadowInRange(coreArchitecture) && downRay);
+    }
+
+
 
     bool IsConstructionShadowInRange(CoreArchitectureController coreArchitecture)
     {

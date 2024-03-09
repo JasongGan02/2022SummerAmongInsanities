@@ -11,13 +11,22 @@ public class SpawnManager : MonoBehaviour
     public MedicineObject[] medicineObjects;
     public TorchObject[] torchObjects;
     public ProjectileObject[] projectileObjects;
+    public BaseObject[] inventoryObjects;
+    public int[] inventoryNumbers;
+    private Inventory inventory;
+
     [SerializeField]
     private GameObject spawnPoint;
 
     void Start()
     {
         StartCoroutine(WaitForCoreArchitectureAndDoSomething());
-        
+
+        inventory = FindObjectOfType<Inventory>();
+        for (int i = 0; i< inventoryNumbers.Length; i++)
+        {
+            inventory.AddItem(inventoryObjects[i] as IInventoryObject, inventoryNumbers[i]);
+        }
     }
     // only a temporary solution
     public void SpawnRamdonWeapon() 

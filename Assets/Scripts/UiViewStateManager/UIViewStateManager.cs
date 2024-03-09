@@ -55,6 +55,12 @@ public class UIViewStateManager : MonoBehaviour
     {
         ToggleUI(UIBeingViewed.Null);
     }
+
+    public void DisplayChestUI()
+    {
+        ToggleUI(UIBeingViewed.Chest);
+    }
+
 }
 
 public enum UIBeingViewed {
@@ -62,5 +68,6 @@ public enum UIBeingViewed {
     Construction,
     Inventory,
     Rogue,
-    Craft
+    Craft,
+    Chest
 }

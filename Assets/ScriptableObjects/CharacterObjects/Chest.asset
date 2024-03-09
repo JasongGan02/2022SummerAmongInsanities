@@ -9,23 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: Spear
+  m_Script: {fileID: 11500000, guid: cc4c0f62894685c4c8cf2ff46fac4220, type: 3}
+  m_Name: Chest
   m_EditorClassIdentifier: 
-  itemName: Spear
-  sizeRatio: 1
-  prefab: {fileID: 3246375338820597191, guid: 20a952f4910043c46bc0a12cbba8667b, type: 3}
-  level: 3
-  quality: {r: 0, g: 0, b: 0, a: 0}
-  durability: 99
-  _maxStack: 1
-  damageCoef: 1
-  farm: 0
-  frequency: 1
-  projectileObject: {fileID: 0}
+  itemName: Chest
+  sizeRatio: 0.25
+  prefab: {fileID: 1572283341343830946, guid: 49b7ce8fef1c36c48868b2ebad0a174b, type: 3}
+  _maxStack: 99
   _recipe:
   - {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
   _quantity: 03000000
   _isCraftable: 1
-  _isCoreNeeded: 0
-  _craftTime: 4
+  _isCoreNeeded: 1
+  _craftTime: 2
