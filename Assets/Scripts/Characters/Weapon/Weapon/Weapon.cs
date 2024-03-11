@@ -31,7 +31,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected float frequency = 10f;
 
     protected audioManager am;
-
+    protected GameObject floatingTextPrefab;
     public float DamageAmount => finalDamage;
 
     public float CriticalChance => characterController.CriticalChance;
@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         playerinteraction = player.GetComponent<PlayerInteraction>();
         inventory = FindObjectOfType<Inventory>();
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
-        
+        floatingTextPrefab = GameObject.Find("FloatingDamage");
     }
 
 
@@ -144,5 +144,16 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
+
+        if (floatingTextPrefab)
+        {
+            ShowDamageText(damageDealt, (target as EnemyController).GetPosition());
+        }
+    }
+
+    private void ShowDamageText(float damage, Vector3 position)
+    {
+        var floatingTextInstance = Instantiate(floatingTextPrefab, position, Quaternion.identity, transform);
+        floatingTextInstance.GetComponent<FloatingText>().SetText(damage.ToString());
     }
 }
