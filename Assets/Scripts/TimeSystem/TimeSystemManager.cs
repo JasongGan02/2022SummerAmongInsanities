@@ -7,9 +7,13 @@ using TMPro;
 public class TimeSystemManager : MonoBehaviour
 {
     public float dayToRealTimeInSecond;
-    public int dayStartHour = 6;
+    public int dayStartHour = 8;
     public int nightStartHour = 20;
     public int redMoonNightInterval = 5;
+    public int dawnStartHour = 5; // Hour dawn starts
+    public int dawnEndHour = 7; // Hour dawn ends
+    public int duskStartHour = 18; // Hour dusk starts
+    public int duskEndHour = 20; // Hour dusk ends
     public bool isDebugDayTime = false;
 
     public Action OnDayStartedHandler;
@@ -19,8 +23,14 @@ public class TimeSystemManager : MonoBehaviour
     public Action<int> OnDayUpdatedHandler;
 
     private GameObject timeText; //x��xʱ
+    private int currentMinute = 0;
     private int currentHour = 0;
-    private int currentDay = 1;
+    private int currentDay = 0;
+    
+    //LightManager variables
+    private float lastSunlightLevelUpdate = -1f;
+    private float maxSunlightLevel = 15; 
+    [SerializeField] float minSunlightLevel = 4;
     // Start is called before the first frame update
     void Awake()
     {
@@ -74,9 +84,9 @@ public class TimeSystemManager : MonoBehaviour
         }
     }
 
-    public int GetCurHour() 
+    public float GetCurTime() 
     {
-        return currentHour;
+        return currentHour + currentMinute / 60f; // 1 hour 30 minutes = 1.5 hours
     }
 
     public bool IsInDaytime()
@@ -94,53 +104,105 @@ public class TimeSystemManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(dayToRealTimeInSecond / 24);
+            yield return new WaitForSeconds(dayToRealTimeInSecond / (24 * 60));
 
             // Skip updating the time if debug mode is on
-            if (!isDebugDayTime) 
+            if (!isDebugDayTime)
             {
-                currentHour += 1;
-                OnHourUpdatedHandler?.Invoke(currentHour);
+                currentMinute++;
+                if (currentMinute == 60)
+                {
+                    currentHour++;
+                    currentMinute = 0;
+
+                    OnHourUpdatedHandler?.Invoke(currentHour);
+                }
+
+                if (currentHour == 24)
+                {
+                    currentDay++;
+                    currentHour = 0;
+                    OnDayUpdatedHandler?.Invoke(currentDay);
+                }
+
+                //OnMinuteUpdatedHandler?.Invoke(currentHour, currentMinute); // Notify listeners every minute
             }
             else
             {
                 currentHour = dayStartHour;
-            }
-
-            if (currentHour == 24)
-            {
-                currentDay += 1;
-                currentHour = 0;
-                OnDayUpdatedHandler?.Invoke(currentDay);
+                currentMinute = 0; // Reset minutes in debug mode
             }
 
             UpdateTimeUI();
 
-            if (currentHour == dayStartHour)
+            CheckForDayNightTransition();
+            CalculateAndUpdateSunlight();
+        }
+    }
+
+    private void CheckForDayNightTransition()
+    {
+        if (currentHour == dayStartHour && currentMinute == 0)
+        {
+            OnDayStartedHandler?.Invoke();
+        }
+        else if (currentHour == nightStartHour && currentMinute == 0)
+        {
+            if (!isDebugDayTime)
             {
-                OnDayStartedHandler?.Invoke();
-            }
-            else if (currentHour == nightStartHour)
-            {
-                if (!isDebugDayTime)
+                if (currentDay % redMoonNightInterval == 0)
                 {
-                    if (currentDay % redMoonNightInterval == 0)
-                    {
-                        OnNightStartedHandler?.Invoke(true);
-                    }
-                    else
-                    {
-                        OnNightStartedHandler?.Invoke(false);
-                    }
+                    OnNightStartedHandler?.Invoke(true);
+                }
+                else
+                {
+                    OnNightStartedHandler?.Invoke(false);
                 }
             }
         }
     }
 
-    
-
     private void UpdateTimeUI()
     {
-        timeText.GetComponent<TMP_Text>().text = currentDay + "天" + currentHour + "时";
+        timeText.GetComponent<TMP_Text>().text = $"{currentDay}天{currentHour}时{currentMinute}分";
     }
+    
+    public void CalculateAndUpdateSunlight()
+    {
+        float currentHour = GetCurTime(); // This should now return a more precise time, including minutes as a fraction
+        float sunlightLevel;
+
+        if (currentHour >= dawnEndHour && currentHour < duskStartHour)
+        {
+            sunlightLevel = maxSunlightLevel;
+        }
+        else if (currentHour >= duskEndHour || currentHour < dawnStartHour)
+        {
+            sunlightLevel = minSunlightLevel;
+        }
+        else
+        {
+            if (currentHour >= dawnStartHour && currentHour < dawnEndHour)
+            {
+                float progress = (currentHour - dawnStartHour) / (dawnEndHour - dawnStartHour);
+                sunlightLevel = Mathf.Lerp(minSunlightLevel, maxSunlightLevel, progress);
+            }
+            else if (currentHour >= duskStartHour && currentHour < duskEndHour)
+            {
+                float progress = (currentHour - duskStartHour) / (duskEndHour - duskStartHour);
+                sunlightLevel = Mathf.Lerp(maxSunlightLevel, minSunlightLevel, progress);
+            }
+            else
+            {
+                sunlightLevel = minSunlightLevel;
+            }
+        }
+
+        if (!Mathf.Approximately(sunlightLevel, lastSunlightLevelUpdate))
+        {
+            LightGenerator.Instance.UpdateSunlightBrightness(sunlightLevel);
+            lastSunlightLevelUpdate = sunlightLevel;
+        }
+    }
+
 }

@@ -14,5 +14,5 @@ public interface IInventoryObject
 
     public Sprite GetSpriteForInventory();
 
-    public GameObject GetDroppedGameObject(int amount);
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition);
 }

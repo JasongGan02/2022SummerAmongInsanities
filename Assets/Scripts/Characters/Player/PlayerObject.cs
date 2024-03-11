@@ -8,7 +8,7 @@ public class PlayerObject : CharacterObject
 {
     public float RespwanTimeInterval;
 
-    public override List<GameObject> GetDroppedGameObjects(bool playerDropItemsOnDeath)
+    public override List<GameObject> GetDroppedGameObjects(bool playerDropItemsOnDeath, Vector3 dropPosition)
     {
         List<GameObject> droppedItems = new();
         return droppedItems;

@@ -99,7 +99,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         return prefab.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public GameObject GetDroppedGameObject(int amount)
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
@@ -108,9 +108,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
             drop.AddComponent<Rigidbody2D>();
         }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        
 
         return drop;
     }
@@ -132,18 +133,18 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _drops = value;
     }
 
-    public List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
+    public List<GameObject> GetDroppedGameObjects(bool isUserPlaced, Vector3 dropPosition)
     {
         List<GameObject> droppedItems = new();
         if (isUserPlaced)
         {
-            droppedItems.Add(GetDroppedGameObject(1));
+            droppedItems.Add(GetDroppedGameObject(1, dropPosition));
         }
         else
         {
             foreach (Drop drop in Drops)
             {
-                GameObject droppedGameObject = drop.GetDroppedItem();
+                GameObject droppedGameObject = drop.GetDroppedItem(dropPosition);
                 droppedItems.Add(droppedGameObject);
             }   
         }

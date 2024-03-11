@@ -43,7 +43,6 @@ public class PlayerInteraction : MonoBehaviour
 
     public GameObject prop;
     public MedicineObject currentMedicine;
-    public TorchObject currentTorch;
 
     private audioManager am;
 
@@ -215,11 +214,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             prop = (currentSlotInUse.item as MedicineObject).GetSpawnedGameObject();
         }
-
-        if (currentSlotInUse.item is TorchObject)
-        {
-            prop = (currentSlotInUse.item as TorchObject).GetSpawnedGameObject();
-        }
+        
 
 
         else

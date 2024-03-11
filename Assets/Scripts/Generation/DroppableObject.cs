@@ -75,7 +75,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
         return prefab.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public GameObject GetDroppedGameObject(int amount)
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
@@ -84,6 +84,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
             drop.AddComponent<Rigidbody2D>();
         }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);

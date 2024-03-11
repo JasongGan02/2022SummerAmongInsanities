@@ -16,8 +16,7 @@ public class GrantEffectController : EffectController
         }
         for (int i = 0; i < items.Length; i++) 
         {
-            GameObject drop = (items[i] as IInventoryObject).GetDroppedGameObject(nums[i]);
-            drop.transform.position = transform.position;
+            GameObject drop = ((IInventoryObject)items[i]).GetDroppedGameObject(nums[i], transform.position);
         }
     }
 }

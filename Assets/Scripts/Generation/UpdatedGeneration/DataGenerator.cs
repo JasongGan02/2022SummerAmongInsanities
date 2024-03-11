@@ -136,7 +136,7 @@ public class DataGenerator
                         TempData[x, y, tileObject.TileLayer] = tileObject;
                     else
                     {
-                        //Place Wall Tile is represented by negative ID
+                        //Place Wall Tile is represented by tileLayer = 0
                         if (y < height - curBiomeSettings.dirtLayerHeight - sysRandom.Next(2, 5))
                             TempData[x, y, 0] = curBiomeSettings.tileAtlas.stone; 
                         else if (y < height)
@@ -145,12 +145,12 @@ public class DataGenerator
                     //spawn addons
                     if (y == height - 1)
                     {
-                        if (TempData[x, y, tileObject.TileLayer] == curBiomeSettings.tileAtlas.grass)
+                        if (TempData[x, y, 1] == curBiomeSettings.tileAtlas.grass)
                         {
                             if (sysRandom.Next(0, 100) < curBiomeSettings.tallGrassChance)
-                                TempData[x, y+1, tileObject.TileLayer] = curBiomeSettings.tileAtlas.natureAddons;
+                                TempData[x, y+1, 3] = curBiomeSettings.tileAtlas.natureAddons; //layer = 3 to ignore lighting
                             else if (sysRandom.Next(0, 100) < curBiomeSettings.treeChance)
-                                TempData[x, y + 1, tileObject.TileLayer] = curBiomeSettings.tileAtlas.tree;
+                                TempData[x, y + 1, 3] = curBiomeSettings.tileAtlas.tree;
                         }
                     }
 

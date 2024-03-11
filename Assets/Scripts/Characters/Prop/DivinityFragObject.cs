@@ -23,7 +23,7 @@ public class DivinityFragObject : BaseObject, IInventoryObject
         return prefab.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public GameObject GetDroppedGameObject(int amount)
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
@@ -33,8 +33,9 @@ public class DivinityFragObject : BaseObject, IInventoryObject
         }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         var controller = drop.AddComponent<DroppedObjectController>();
-        controller.Initialize(this, amount);
+        drop.transform.position = dropPosition;
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        controller.Initialize(this, amount);
 
         return drop;
     }

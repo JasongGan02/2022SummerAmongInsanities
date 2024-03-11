@@ -44,12 +44,12 @@ public class CharacterObject : BaseObject, IPoolableObject
         return worldGameObject;
     }
 
-    public virtual List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer)
+    public virtual List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer, Vector3 dropPosition)
     {
         List<GameObject> droppedItems = new();
         foreach (Drop drop in Drops)
         {
-            GameObject droppedGameObject = drop.GetDroppedItem();
+            GameObject droppedGameObject = drop.GetDroppedItem(dropPosition);
             droppedItems.Add(droppedGameObject);
         }   
         return droppedItems;

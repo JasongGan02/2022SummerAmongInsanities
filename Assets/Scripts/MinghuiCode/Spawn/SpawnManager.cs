@@ -9,7 +9,6 @@ public class SpawnManager : MonoBehaviour
     public TowerObject[] testCase; //to-do just a test. do a list
     public DivinityFragObject divinityFrag;
     public MedicineObject[] medicineObjects;
-    public TorchObject[] torchObjects;
     public ProjectileObject[] projectileObjects;
     public BaseObject[] inventoryObjects;
     public int[] inventoryNumbers;
@@ -17,6 +16,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject spawnPoint;
+
+    public Vector3 coreSpawnPosition;
 
     void Start()
     {
@@ -35,16 +36,14 @@ public class SpawnManager : MonoBehaviour
         if (equipments.Length == 0) return;
 
         int index = Random.Range(0, equipments.Length);
-        GameObject drop = equipments[index].GetDroppedGameObject(1);
-        drop.transform.position = spawnPoint.transform.position;
+        coreSpawnPosition = spawnPoint.transform.position;
+        GameObject drop = equipments[index].GetDroppedGameObject(1, coreSpawnPosition);
 
-        GameObject dropTower = testCase[0].GetDroppedGameObject(1);
-        dropTower.transform.position = spawnPoint.transform.position;
+        GameObject dropTower = testCase[0].GetDroppedGameObject(1, coreSpawnPosition);
 
         foreach (TowerObject each in testCase)
         {
-            dropTower = each.GetDroppedGameObject(1);
-            dropTower.transform.position = spawnPoint.transform.position;
+            dropTower = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
         spawnPoint.transform.position = CoreArchitectureController.Instance.transform.transform.position;
     }
@@ -52,8 +51,7 @@ public class SpawnManager : MonoBehaviour
     public void SpawnFrags(int num) 
     {
         spawnPoint.transform.position = CoreArchitectureController.Instance.transform.position;
-        GameObject drop = divinityFrag.GetDroppedGameObject(num);
-        drop.transform.position = spawnPoint.transform.position;
+        GameObject drop = divinityFrag.GetDroppedGameObject(num, coreSpawnPosition);
     }
 
     public void SpawnProjectile(int num)
@@ -61,29 +59,11 @@ public class SpawnManager : MonoBehaviour
         spawnPoint.transform.position = CoreArchitectureController.Instance.transform.transform.position;
         foreach (ProjectileObject each in projectileObjects)
         {
-            GameObject dropProjectile = each.GetDroppedGameObject(1);
-            dropProjectile.transform.position = spawnPoint.transform.position;
+            GameObject dropProjectile = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
     }
-
-    public void SpawnMedicine()
-    {
-        foreach(MedicineObject each in medicineObjects)
-        {
-            GameObject m1 = each.GetDroppedGameObject(1);
-            m1.transform.position = spawnPoint.transform.position;
-        }
-    }
-
-    public void SpawnTorch()
-    {
-        foreach(TorchObject each in torchObjects)
-        {
-            GameObject p = each.GetDroppedGameObject(1);
-            p.transform.position = spawnPoint.transform.position;
-        }
-    }
-
+    
+    
     IEnumerator WaitForCoreArchitectureAndDoSomething()
     {
         // Wait until CoreArchitecture is available
@@ -94,8 +74,7 @@ public class SpawnManager : MonoBehaviour
         spawnPoint.transform.position = CoreArchitectureController.Instance.transform.position;
         foreach (TowerObject each in testCase)
         {
-            GameObject dropTower = each.GetDroppedGameObject(1);
-            dropTower.transform.position = spawnPoint.transform.position;
+            GameObject dropTower = each.GetDroppedGameObject(1, spawnPoint.transform.position);
         }
         SpawnFrags(30);
 
@@ -117,14 +96,6 @@ public class SpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn 10 Frags"))
         {
             spawnManager.SpawnFrags(10);
-        }
-        if (GUILayout.Button("Spawn Medicine"))
-        {
-            spawnManager.SpawnMedicine();
-        }
-        if (GUILayout.Button("Spawn Torch"))
-        {
-            spawnManager.SpawnTorch();
         }
         if (GUILayout.Button("Spawn Projectile"))
         {

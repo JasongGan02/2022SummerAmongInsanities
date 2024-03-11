@@ -24,7 +24,7 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
         set => _maxStack = value;
     }
 
-    public GameObject GetDroppedGameObject(int amount)
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
     {
         GameObject drop = PoolManager.Instance.Get(this);
         drop.layer = Constants.Layer.RESOURCE;
@@ -47,6 +47,7 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
             controller.enabled = true;
         }
         controller.Initialize(this, amount);
+        drop.transform.position = dropPosition;
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
 
         return drop;

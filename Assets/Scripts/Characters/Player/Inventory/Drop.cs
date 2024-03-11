@@ -18,9 +18,9 @@ public class Drop
         return count;
     }
 
-    public GameObject GetDroppedItem()
+    public GameObject GetDroppedItem(Vector3 dropPosition)
     {
-        return (droppedItem as IInventoryObject).GetDroppedGameObject(GetDroppedItemCount());
+        return (droppedItem as IInventoryObject).GetDroppedGameObject(GetDroppedItemCount(), dropPosition);
     }
 }
 

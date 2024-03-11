@@ -8,5 +8,5 @@ public interface IBreakableObject
 
     Drop[] Drops { get; set; }
 
-    public List<GameObject> GetDroppedGameObjects(bool isPlacedByPlayer);
+    public List<GameObject> GetDroppedGameObjects(bool isPlacedByPlayer, Vector3 dropPosition);
 }

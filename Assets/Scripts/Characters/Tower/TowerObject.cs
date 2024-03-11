@@ -49,7 +49,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         return prefab.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public GameObject GetDroppedGameObject(int amount)
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
@@ -65,6 +65,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         
         }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
@@ -94,18 +95,18 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         return worldGameObject;
     }
 
-    public override List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer) //need to consider the case if it is placed by User.
+    public override List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer, Vector3 dropPosition) //need to consider the case if it is placed by User.
     {
         List<GameObject> droppedItems = new();
         if (isDestroyedByPlayer)
         {
-            droppedItems.Add(GetDroppedGameObject(1)); //drop itself
+            droppedItems.Add(GetDroppedGameObject(1, dropPosition)); //drop itself
         }
         else
         {
             foreach (Drop drop in Drops)
             {
-                GameObject droppedGameObject = drop.GetDroppedItem(); //drop some of original materials
+                GameObject droppedGameObject = drop.GetDroppedItem(dropPosition); //drop some of original materials
                 droppedItems.Add(droppedGameObject);
             }   
         }

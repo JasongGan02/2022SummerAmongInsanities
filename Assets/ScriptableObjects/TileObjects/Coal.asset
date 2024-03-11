@@ -29,4 +29,4 @@ MonoBehaviour:
   _craftTime: 0
   _needsBackground: 1
   _isLit: 1
-  _lightIntensity: 6.18
+  _lightIntensity: 15

@@ -90,7 +90,7 @@ public class LightGenerator : MonoBehaviour
                             }
                         }
                       
-                        if (chunkData[x, y, 0] is null && chunkData[x, y, 1] is null && chunkData[x, y, 2] is null) //if illuminate block
+                        if (chunkData[x, y, 0] is null && chunkData[x, y, 1] is null && chunkData[x, y, 2] is null) //sky light for air block
                             lightLevel = sunlightBrightness; //sky light
                         else if (isLit)
                         {
@@ -137,23 +137,19 @@ public class LightGenerator : MonoBehaviour
                         int nx2 = Mathf.Clamp(x + 1, 0, ChunkSize.x - 1);
                         int ny1 = Mathf.Clamp(y - 1, 0, ChunkSize.y - 1);
                         int ny2 = Mathf.Clamp(y + 1, 0, ChunkSize.y - 1);
-
-                        //cross-chunks egde cases
-                        float leftEdgeLight = x == 0 && leftEdgeData != null ? leftEdgeData[y] : 0;
-                        float rightEdgeLight = x == ChunkSize.x - 1 && rightEdgeData != null ? rightEdgeData[y] : 0;
-                            
+                        
+                        
                         lightLevel = Mathf.Max(
                             lightData[nx1, y],
                             lightData[nx2, y],
                             lightData[x, ny1],
-                            lightData[x, ny2],
-                            leftEdgeLight,
-                            rightEdgeLight);
-
-                        if (chunkData[x, y, 1] is null) //wall should also be considered as air but they are not lit wall is in 0, others'z are > 0. Any z bigger than 1 would be considered as air block
+                            lightData[x, ny2]);
+                            
+                        if (chunkData[x, y, 1] is null)
                             lightLevel -= 0.75f;
                         else
                             lightLevel -= 2.5f;
+                        
 
                         lightData[x, y] = lightLevel;
                     }
@@ -164,7 +160,7 @@ public class LightGenerator : MonoBehaviour
             {
                 for (int y = 0; y < ChunkSize.y; y++)
                 {
-                    float adjustedValue = 1 - (lightData[x, y] / sunlightBrightness);
+                    float adjustedValue = 1 - (lightData[x, y] / 15);
                     lightData[x, y] = adjustedValue <= 0.051 ? 0 : adjustedValue;
                 }
             }
@@ -212,13 +208,14 @@ public class LightGenerator : MonoBehaviour
         {
             int height = chunkLightData.GetLength(1);
             float[] edgeData = new float[height];
-
+            TileObject[,,] chunkData = WorldGenerator.WorldData[targetChunkPosition];
             int columnIndex = getLeftEdge ? chunkLightData.GetLength(0) - 1 : 0;
             for (int y = 0; y < height; y++)
             {
                 // Convert adjusted light data back to raw light data
                 float adjustedValue = chunkLightData[columnIndex, y];
-                float originalValue = sunlightBrightness * (1 - adjustedValue);
+                float originalValue = chunkData[columnIndex, y, 0] is null && chunkData[columnIndex, y, 1] is null && chunkData[columnIndex, y, 2] is null ? sunlightBrightness: 15 * (1 - adjustedValue);
+                
                 edgeData[y] = originalValue;
             }
 
@@ -226,6 +223,32 @@ public class LightGenerator : MonoBehaviour
         }
         
     }
+    
+    public void UpdateSunlightBrightness(float newSunlightBrightness)
+    {
+        sunlightBrightness = newSunlightBrightness;
+        RefreshAllActiveChunks();
+    }
+
+    private void RefreshAllActiveChunks()
+    {
+        StartCoroutine(RefreshAllActiveChunksCoroutine());
+    }
+    
+    private IEnumerator RefreshAllActiveChunksCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        var chunksToRefresh = new List<int>(WorldGenerator.ActiveChunks.Keys);
+        foreach (var chunk in chunksToRefresh)
+        {
+            bool curDone = false;
+            Vector2Int chunkPosition = new Vector2Int(chunk, 0); // Adjust as necessary
+            worldGenerator.RefreshChunkLight(chunkPosition, true, () => curDone = true);
+            yield return new WaitUntil(() => curDone);
+        }
+    }
+
+
 
 }
 

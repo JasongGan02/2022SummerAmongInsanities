@@ -45,22 +45,24 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         WorldLightTexture = new Dictionary<Vector2Int, Texture2D>();
         ActiveChunks = new Dictionary<int, GameObject>();
         TotalChunks = new Dictionary<int, GameObject>();
+        RecalculateSeed();
         dataCreator = new DataGenerator(this, settings, GetComponent<StructureGenerator>());
 
 
-        RecalculateSeed();
+        
     }
     private void RecalculateSeed() { if (seed == 0) seed = UnityEngine.Random.Range(-10000, 10000); }
 
     public IEnumerator CreateChunk(int ChunkCoord, Action onChunkCreated = null)
     {
+        Vector2Int pos = new Vector2Int(ChunkCoord, 0);
         if (TotalChunks.ContainsKey(ChunkCoord))
         {
             TotalChunks[ChunkCoord].SetActive(true);
             ActiveChunks.Add(ChunkCoord, TotalChunks[ChunkCoord]);
+            RefreshChunkLight(pos, false);
             yield break;
         }
-        Vector2Int pos = new Vector2Int(ChunkCoord, 0);
         string chunkName = $"Chunk {ChunkCoord}";
 
         GameObject newChunk = new GameObject(chunkName);
@@ -147,18 +149,12 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
                     {
                         PlaceTile(tileObject, x + (offset.x * ChunkSize.x), y, offset, z == 0, false);
                     }
-
-                    // Yield return null will wait for the next frame before continuing the loop
-                    if (y % 10000000 == 0) // Adjust this value as needed for performance
-                    {
-                        yield return null;
-                    }
-
                 }
             }
         }
 
         onDrawingComplete?.Invoke();
+        yield return null;
     }
 
     public void RefreshChunkLight(Vector2Int offset, bool updateNeighbors = false, Action onRefreshComplete = null)
@@ -178,8 +174,8 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         });
 
         yield return new WaitUntil(() => lightDataToApply != null);
-        
-        StartCoroutine(ApplyLightToChunk(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
+        if (WorldLightTexture.ContainsKey(offset))
+            StartCoroutine(ApplyLightToChunk(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
     }
 
     public IEnumerator ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
@@ -208,24 +204,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
     }
 
-
-    public void UpdateChunk(int ChunkCoord)
-    {
-        if (ActiveChunks.ContainsKey(ChunkCoord))
-        {
-            Vector2Int DataCoords = new Vector2Int(ChunkCoord, 0);
-            /*
-            GameObject TargetChunk = ActiveChunks[ChunkCoord];
-            MeshFilter targetFilter = TargetChunk.GetComponent<MeshFilter>();
-            MeshCollider targetCollider = TargetChunk.GetComponent<MeshCollider>();
-
-            StartCoroutine(meshCreator.CreateMeshFromData(WorldData[DataCoords], x =>
-            {
-                targetFilter.mesh = x;
-                targetCollider.sharedMesh = x;
-            }));*/
-        }
-    }
+    
 
     public static int GetChunkCoordsFromPosition(Vector2 WorldPosition)
     {
@@ -267,45 +246,52 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         // If all layers from 0 upwards are null (empty), return true
         return true;
     }
+    
 
     public void AddCoreArchitectureToChunk(int chunkCoord)
     {
-        if (TotalChunks.ContainsKey(chunkCoord))
-        {
-            Vector2Int chunkPosition = new Vector2Int(chunkCoord, 0);
-
-            // Check if WorldData contains the chunk data
-            if (!WorldData.ContainsKey(chunkPosition))
-            {
-                Debug.LogError("World data not found for chunk coordinate: " + chunkCoord);
-                return;
-            }
-
-            TileObject[,,] chunkData = WorldData[chunkPosition];
-            int middleX = ChunkSize.x / 2; // Middle x of the chunk
-            int highestY = FindHighestBlockInColumn(chunkData, middleX);
-            // Calculate the world position for the top of the chunk
-            Vector3 topPosition = new Vector3(chunkCoord * ChunkSize.x + middleX, highestY + 1.73f, 0); // +1 to place it above the highest block
-            GameObject CAgameObject = coreArchitectureSO.GetSpawnedGameObject();
-            CAgameObject.transform.position = topPosition;
-        }
-        else
+        if (!TotalChunks.ContainsKey(chunkCoord))
         {
             Debug.LogError("Chunk not found for coordinate: " + chunkCoord);
+            return;
         }
+
+        Vector2Int chunkPosition = new Vector2Int(chunkCoord, 0);
+        if (!WorldData.ContainsKey(chunkPosition))
+        {
+            Debug.LogError("World data not found for chunk coordinate: " + chunkCoord);
+            return;
+        }
+
+        TileObject[,,] chunkData = WorldData[chunkPosition];
+        int middleX = ChunkSize.x / 2; // Middle x of the chunk
+
+        // Find the highest non-null block in the middle column, replace it with grass, and place the core above it
+        int highestY = FindHighestBlockInColumn(chunkData, middleX);
+
+        if (highestY < 0)
+        {
+            Debug.LogError("No valid ground found in chunk: " + chunkCoord);
+            return;
+        }
+        Debug.Log("X: " + (middleX + 0.5f) + " Y: " + (highestY + 0.5f));
+
+        // Place the core architecture object
+        Vector3 corePosition = new Vector3(chunkCoord * ChunkSize.x + middleX + 0.5f, highestY + 0.5f + 2.2f, 0); // Adjust the Y position as needed
+        GameObject coreGameObject = coreArchitectureSO.GetSpawnedGameObject();
+        coreGameObject.transform.position = corePosition;
     }
 
     private int FindHighestBlockInColumn(TileObject[,,] chunkData, int x)
     {
         for (int y = ChunkSize.y - 1; y >= 0; y--)
         {
-            if (chunkData[x, y, 1] ) // Assuming 0 indicates no block
+            if (chunkData[x, y, 1] != null) // Assuming layer 1 is the entity layer
             {
-                return y; // Return the y position of the topmost block
+                return y;
             }
-            
         }
-        return 0; // Return 0 if no blocks are found in the column
+        return -1; // Indicate no block found
     }
 
     #region
