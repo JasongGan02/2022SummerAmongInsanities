@@ -17,6 +17,7 @@ public class TimeSystemManager : MonoBehaviour
     public bool isDebugDayTime = false;
 
     public Action OnDayStartedHandler;
+    public Action OnDuskStartedHandler;
     public Action<bool> OnNightStartedHandler; // The boolean is used to set moon type
 
     public Action<int> OnHourUpdatedHandler;
