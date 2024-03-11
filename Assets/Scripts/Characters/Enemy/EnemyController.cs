@@ -296,6 +296,10 @@ public abstract class EnemyController : CharacterController
         //Debug.Log("didn't find target");
         return false; 
     }
-    
-    
+
+    public Vector3 GetPosition()
+    {
+        return transform.position; // Return the GameObject's position
+    }
+
 }

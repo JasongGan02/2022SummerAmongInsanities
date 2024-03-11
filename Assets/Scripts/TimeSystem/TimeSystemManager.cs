@@ -23,6 +23,8 @@ public class TimeSystemManager : MonoBehaviour
     public Action<int> OnHourUpdatedHandler;
     public Action<int> OnDayUpdatedHandler;
 
+    public audioManager am;
+
     private GameObject timeText; //x��xʱ
     private int currentMinute = 0;
     private int currentHour = 0;
@@ -35,6 +37,8 @@ public class TimeSystemManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         timeText = GameObject.Find(Constants.Name.TIME_TEXT);
 
         // If debug mode is enabled, set time to daytime
@@ -42,9 +46,11 @@ public class TimeSystemManager : MonoBehaviour
         {
             currentHour = dayStartHour+1;
             OnDayStartedHandler?.Invoke();
+            am.playBGM(am.DayTime);
         }
         else
         {
+            am.playBGM(am.NightTime);
             if (currentHour >= dayStartHour && currentHour < nightStartHour)
             {
                 OnDayStartedHandler?.Invoke();
@@ -92,7 +98,9 @@ public class TimeSystemManager : MonoBehaviour
 
     public bool IsInDaytime()
     {
+        
         return currentHour >= dayStartHour && currentHour < nightStartHour;
+        
     }
 
     public float GetHowMuchPercentageOfNightTimeHasPassed()
@@ -134,6 +142,14 @@ public class TimeSystemManager : MonoBehaviour
                 currentMinute = 0; // Reset minutes in debug mode
             }
 
+            if (currentHour == 24)
+            {
+                
+                currentDay += 1;
+                currentHour = 0;
+                OnDayUpdatedHandler?.Invoke(currentDay);
+            }
+
             UpdateTimeUI();
 
             CheckForDayNightTransition();
@@ -152,6 +168,13 @@ public class TimeSystemManager : MonoBehaviour
             if (!isDebugDayTime)
             {
                 if (currentDay % redMoonNightInterval == 0)
+                OnDayStartedHandler?.Invoke();
+                am.playBGM(am.DayTime);
+            }
+            else if (currentHour == nightStartHour)
+            {
+                am.playBGM(am.NightTime);
+                if (!isDebugDayTime)
                 {
                     OnNightStartedHandler?.Invoke(true);
                 }
