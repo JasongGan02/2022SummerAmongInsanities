@@ -108,7 +108,7 @@ public class CraftingQueueManager : MonoBehaviour
                 {
                     // Item crafting is complete; you can handle item creation here
                     if (coreArchitecture != null)
-                    spawn(itemToCraft);
+                        spawn(itemToCraft);
 
                     // Remove the item from the queue
                     craftQueue.Dequeue();
@@ -130,11 +130,7 @@ public class CraftingQueueManager : MonoBehaviour
 
     private void spawn(BaseObject itemToCraft)
     {
-
-        GameObject drop = (itemToCraft as ICraftableObject).GetDroppedGameObject(1);
-        drop.transform.position = CoreArchitectureController.Instance.transform.transform.position;
-
-
+        GameObject drop = ((ICraftableObject)itemToCraft).GetDroppedGameObject(1, CoreArchitectureController.Instance.transform.transform.position);
     }
 
     IEnumerator WaitForCoreArchitectureAndInitialize()

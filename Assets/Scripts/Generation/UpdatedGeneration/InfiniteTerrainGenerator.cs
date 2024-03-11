@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,8 @@ public class InfiniteTerrainGenerator : MonoBehaviour
     [SerializeField] private int RenderDistance;
     private WorldGenerator GeneratorInstance;
     private List<int> CoordsToRemove;
-
+    int plrChunkX;
+    private int createChunkCounter = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,8 @@ public class InfiniteTerrainGenerator : MonoBehaviour
             Player = FindObjectOfType<PlayerController>()?.gameObject.transform ?? null;
             return;
         }
-        int plrChunkX = (int)Player.position.x / WorldGenerator.ChunkSize.x;
+
+        plrChunkX = (int)Player.position.x / WorldGenerator.ChunkSize.x;
         CoordsToRemove.Clear();
 
         foreach (KeyValuePair<int, GameObject> activeChunk in WorldGenerator.ActiveChunks)
@@ -39,15 +42,13 @@ public class InfiniteTerrainGenerator : MonoBehaviour
 
         for (int x = plrChunkX - RenderDistance; x <= plrChunkX + RenderDistance; x++)
         {
-
             int chunkCoord = x;
             if (!WorldGenerator.ActiveChunks.ContainsKey(chunkCoord))
             {
-                StartCoroutine(GeneratorInstance.CreateChunk(chunkCoord));
+                GeneratorInstance.StartCoroutine(GeneratorInstance.CreateChunk(chunkCoord));
             }
 
             CoordsToRemove.Remove(chunkCoord);
-           
         }
 
         foreach (int coord in CoordsToRemove)
@@ -57,6 +58,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour
             chunkToDisable.SetActive(false);
         }
     }
+    
 
     void InitializeTerrainAtDefaultPosition()
     {

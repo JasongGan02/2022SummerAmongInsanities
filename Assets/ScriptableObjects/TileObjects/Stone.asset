@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Stone
   sizeRatio: 0.5
   prefab: {fileID: 1306158573666937238, guid: be13caefde161bd43a09a851be012380, type: 3}
-  tileID: 3
+  tileLayer: 1
   _maxStack: 99
   _healthPoint: 1
   _drops:
@@ -31,3 +31,4 @@ MonoBehaviour:
   _craftTime: 0
   _needsBackground: 1
   _isLit: 0
+  _wallTileObject: {fileID: 0}

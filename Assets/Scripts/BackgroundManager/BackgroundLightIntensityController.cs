@@ -21,7 +21,7 @@ public class BackgroundLightIntensityController : MonoBehaviour
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
         backgroundLight = GetComponent<Light2D>();
         transitionTimeInRealSecond = timeSystemManager.dayToRealTimeInSecond / 24 * transitionTimeInGameHour;
-        backgroundLight.intensity = 0.2f;
+        //backgroundLight.intensity = 0.2f;
     }
 
     private void OnEnable()

@@ -238,14 +238,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
 
     protected virtual void OnObjectReturned(bool isDestroyedByPlayer)
     {
-        var drops = characterStats.GetDroppedGameObjects(isDestroyedByPlayer);
-        if (drops != null)
-        {
-            foreach (GameObject droppedItem in drops)
-            {
-                droppedItem.transform.position = gameObject.transform.position;
-            }
-        }
+        var drops = characterStats.GetDroppedGameObjects(isDestroyedByPlayer, gameObject.transform.position);
     }
 
     public virtual void Reinitialize()

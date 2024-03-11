@@ -1,23 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class LightGenerator : MonoBehaviour
 {
-    //Process the data in multithreading here, and return the OnComplete to apply to the Material 
+    [Tooltip("between 0 & 15")][SerializeField] private float sunlightBrightness = 15f;
+    [SerializeField] private int iterations = 7;
+    private Queue<GenData> DataToGenerate = new Queue<GenData>();
+    public bool Terminate;
+    bool saved = false;
+    // Singleton instance
+    public static LightGenerator Instance { get; private set; }
+    private WorldGenerator worldGenerator;
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            //DontDestroyOnLoad(gameObject); // Optional: Keep instance alive across scenes
+        }
+
+        worldGenerator = WorldGenerator.Instance;
+        // Optionally start the DataGenLoop here or allow other scripts to control when it starts
+        StartCoroutine(DataGenLoop());
+    }
+
     public class GenData
     {
         public System.Action<float[,]> OnComplete;
         public Vector2Int GenerationPoint;
+        public bool isRefreshing = false;
     }
 
-    public LightGenerator(WorldGenerator worldGen)
-    {
-        GeneratorInstance = worldGen;
-        DataToGenerate = new Queue<GenData>();
-        worldGen.StartCoroutine(DataGenLoop());
-    }
     public void QueueDataToGenerate(GenData data)
     {
         DataToGenerate.Enqueue(data);
@@ -25,31 +46,31 @@ public class LightGenerator : MonoBehaviour
 
     public IEnumerator DataGenLoop()
     {
-        while (Terminate == false)
+        while (!Terminate)
         {
             if (DataToGenerate.Count > 0)
             {
                 GenData gen = DataToGenerate.Dequeue();
-                yield return GeneratorInstance.StartCoroutine(GenerateLightData(gen.GenerationPoint, gen.OnComplete));
+                yield return StartCoroutine(GenerateLightData(gen.GenerationPoint, gen.OnComplete, gen.isRefreshing));
             }
-
-            yield return null;
+            else
+            {
+                yield return null; // Wait until there's data to generate
+            }
         }
     }
 
-    [Tooltip("between 0 & 15")][SerializeField] private float sunlightBrightness = 15f;
-    [SerializeField] private int iterations = 7;
-    private Queue<GenData> DataToGenerate;
-    private WorldGenerator GeneratorInstance;
-    public bool Terminate;
-
-    public IEnumerator GenerateLightData(Vector2Int offset, System.Action<float[,]> callback)
+    public IEnumerator GenerateLightData(Vector2Int offset, System.Action<float[,]> callback, bool isRefreshing = false)
     {
         Vector2Int ChunkSize = WorldGenerator.ChunkSize;
+        TileObject[,,] chunkData = WorldGenerator.WorldData[offset];
         float[,] lightData = new float[ChunkSize.x, ChunkSize.y];
-        int[,] chunkData = WorldGenerator.WorldData[offset];
+
         Task t = Task.Factory.StartNew(delegate
         {
+            float[] leftEdgeData = GetEdgeLightData(offset, getLeftEdge: true);
+            float[] rightEdgeData = GetEdgeLightData(offset, getLeftEdge: false);
+            
             for (int i = 0; i < iterations; i++)
             {
                 for (int x = 0; x < ChunkSize.x; x++)
@@ -57,10 +78,24 @@ public class LightGenerator : MonoBehaviour
                     float lightLevel = sunlightBrightness;
                     for (int y = ChunkSize.y - 1; y >= 0; y--)
                     {
-                        TileObject tileObject = TileObjectRegistry.GetTileObjectByID(chunkData[x, y]);
-                        if ((tileObject != null && tileObject.IsLit) || chunkData[x, y] == 0) //if illuminate block
-
-                            lightLevel = sunlightBrightness;
+                        bool isLit = false;
+                        TileObject curTile = null;
+                        for (int z = 0; z < chunkData.GetLength(2); z++)
+                        {
+                            if (chunkData[x, y, z] is null) continue;
+                            if (chunkData[x, y, z].IsLit)
+                            {
+                                isLit = true;
+                                curTile = chunkData[x, y, z];
+                            }
+                        }
+                      
+                        if (chunkData[x, y, 0] is null && chunkData[x, y, 1] is null && chunkData[x, y, 2] is null) //sky light for air block
+                            lightLevel = sunlightBrightness; //sky light
+                        else if (isLit)
+                        {
+                            lightLevel = curTile.LightIntensity; //tile's own lightIntensity
+                        }
                         else
                         {
                             //find brightest neighbour
@@ -68,14 +103,20 @@ public class LightGenerator : MonoBehaviour
                             int nx2 = Mathf.Clamp(x + 1, 0, ChunkSize.x - 1);
                             int ny1 = Mathf.Clamp(y - 1, 0, ChunkSize.y - 1);
                             int ny2 = Mathf.Clamp(y + 1, 0, ChunkSize.y - 1);
-
+                            
+                            //cross-chunks egde cases
+                            float leftEdgeLight = x == 0 && leftEdgeData != null ? leftEdgeData[y] : 0;
+                            float rightEdgeLight = x == ChunkSize.x - 1 && rightEdgeData != null ? rightEdgeData[y] : 0;
+                            
                             lightLevel = Mathf.Max(
                                 lightData[nx1, y],
                                 lightData[nx2, y],
                                 lightData[x, ny1],
-                                lightData[x, ny2]);
-
-                            if (chunkData[x, y] <= 0)
+                                lightData[x, ny2],
+                                leftEdgeLight,
+                                rightEdgeLight);
+                                
+                            if (chunkData[x, y, 1] is null)
                                 lightLevel -= 0.75f;
                             else
                                 lightLevel -= 2.5f;
@@ -96,17 +137,19 @@ public class LightGenerator : MonoBehaviour
                         int nx2 = Mathf.Clamp(x + 1, 0, ChunkSize.x - 1);
                         int ny1 = Mathf.Clamp(y - 1, 0, ChunkSize.y - 1);
                         int ny2 = Mathf.Clamp(y + 1, 0, ChunkSize.y - 1);
-
+                        
+                        
                         lightLevel = Mathf.Max(
                             lightData[nx1, y],
                             lightData[nx2, y],
                             lightData[x, ny1],
                             lightData[x, ny2]);
-
-                        if (chunkData[x, y] <= 0) //wall should also be considered as air but they are not lit
+                            
+                        if (chunkData[x, y, 1] is null)
                             lightLevel -= 0.75f;
                         else
                             lightLevel -= 2.5f;
+                        
 
                         lightData[x, y] = lightLevel;
                     }
@@ -117,8 +160,8 @@ public class LightGenerator : MonoBehaviour
             {
                 for (int y = 0; y < ChunkSize.y; y++)
                 {
-                    float adjustedValue = 1 - (lightData[x, y] / sunlightBrightness);
-                    lightData[x, y] = adjustedValue <= 0.05 ? 0 : adjustedValue;
+                    float adjustedValue = 1 - (lightData[x, y] / 15);
+                    lightData[x, y] = adjustedValue <= 0.051 ? 0 : adjustedValue;
                 }
             }
 
@@ -131,9 +174,81 @@ public class LightGenerator : MonoBehaviour
         if (t.Exception != null)
             Debug.LogError(t.Exception);
 
-        WorldGenerator.WorldLightData.Add(offset, lightData);
-        callback(lightData);
+        
+        WorldGenerator.WorldLightData[offset] = lightData;
+        if (lightData != null)
+            callback(lightData);
+
+        if (!isRefreshing)
+        {
+            Vector2Int leftChunkOffset = new Vector2Int(offset.x - 1, 0);
+            if (WorldGenerator.WorldLightData.ContainsKey(leftChunkOffset))
+            {
+                worldGenerator.RefreshChunkLight(leftChunkOffset, true);
+            }
+            
+            Vector2Int rightChunkOffset = new Vector2Int(offset.x + 1, 0);
+            if (WorldGenerator.WorldLightData.ContainsKey(rightChunkOffset))
+            {
+                worldGenerator.RefreshChunkLight(rightChunkOffset, true);
+            }
+        }
     }
+
+    private float[] GetEdgeLightData(Vector2Int chunkPosition, bool getLeftEdge)
+    {
+
+        Vector2Int targetChunkPosition = new Vector2Int(chunkPosition.x + (getLeftEdge ? -1 : 1), 0);
+        if (!WorldGenerator.WorldLightData.TryGetValue(targetChunkPosition, out var chunkLightData))
+        {
+            return null;
+
+        }
+        else
+        {
+            int height = chunkLightData.GetLength(1);
+            float[] edgeData = new float[height];
+            TileObject[,,] chunkData = WorldGenerator.WorldData[targetChunkPosition];
+            int columnIndex = getLeftEdge ? chunkLightData.GetLength(0) - 1 : 0;
+            for (int y = 0; y < height; y++)
+            {
+                // Convert adjusted light data back to raw light data
+                float adjustedValue = chunkLightData[columnIndex, y];
+                float originalValue = chunkData[columnIndex, y, 0] is null && chunkData[columnIndex, y, 1] is null && chunkData[columnIndex, y, 2] is null ? sunlightBrightness: 15 * (1 - adjustedValue);
+                
+                edgeData[y] = originalValue;
+            }
+
+            return edgeData;
+        }
+        
+    }
+    
+    public void UpdateSunlightBrightness(float newSunlightBrightness)
+    {
+        sunlightBrightness = newSunlightBrightness;
+        RefreshAllActiveChunks();
+    }
+
+    private void RefreshAllActiveChunks()
+    {
+        StartCoroutine(RefreshAllActiveChunksCoroutine());
+    }
+    
+    private IEnumerator RefreshAllActiveChunksCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        var chunksToRefresh = new List<int>(WorldGenerator.ActiveChunks.Keys);
+        foreach (var chunk in chunksToRefresh)
+        {
+            bool curDone = false;
+            Vector2Int chunkPosition = new Vector2Int(chunk, 0); // Adjust as necessary
+            worldGenerator.RefreshChunkLight(chunkPosition, true, () => curDone = true);
+            yield return new WaitUntil(() => curDone);
+        }
+    }
+
+
 
 }
 

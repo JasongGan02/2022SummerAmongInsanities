@@ -8,13 +8,14 @@ using Random = UnityEngine.Random;
 [CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
+    [Tooltip("0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)")]
     [SerializeField]
-    private int tileID; // The new ID field
+    private int tileLayer = 1; // tile layer it is supposed to be at, for all tile objects the default should be 1 suggesting a entity object. 
 
-    public int TileID
+    public int TileLayer
     {
-        get => tileID;
-        set => tileID = value;
+        get => tileLayer;
+        set => tileLayer = value;
     }
 
     [SerializeField]
@@ -53,12 +54,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     [SerializeField]
     private bool _isLit; // determine if this tile is a source of light
 
+    [Range(0f, 15f)] [SerializeField] private float _lightIntensity = 0;
+
     public GameObject GetPlacedGameObject()
     {
-        GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.name = itemName;
-        var controller = worldGameObject.AddComponent<BreakableObjectController>();
-        controller.Initialize(this, HealthPoint, true);
+        GameObject worldGameObject = GetGeneratedGameObjects();
+        worldGameObject.GetComponent<BreakableObjectController>().Initialize(this, HealthPoint, true);
         return worldGameObject;
     }
     
@@ -70,6 +71,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         Color spriteColor = spriteRenderer.color; // Get the current color of the sprite
         spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
+        spriteRenderer.sortingOrder = 10;
         var collider = ghost.GetComponent<BoxCollider2D>();
         collider.isTrigger = true;
         
@@ -97,7 +99,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         return prefab.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public GameObject GetDroppedGameObject(int amount)
+    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
     {
         GameObject drop = Instantiate(prefab);
         drop.layer = Constants.Layer.RESOURCE;
@@ -106,9 +108,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
             drop.AddComponent<Rigidbody2D>();
         }
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
+        
 
         return drop;
     }
@@ -130,18 +133,18 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _drops = value;
     }
 
-    public List<GameObject> GetDroppedGameObjects(bool isUserPlaced)
+    public List<GameObject> GetDroppedGameObjects(bool isUserPlaced, Vector3 dropPosition)
     {
         List<GameObject> droppedItems = new();
         if (isUserPlaced)
         {
-            droppedItems.Add(GetDroppedGameObject(1));
+            droppedItems.Add(GetDroppedGameObject(1, dropPosition));
         }
         else
         {
             foreach (Drop drop in Drops)
             {
-                GameObject droppedGameObject = drop.GetDroppedItem();
+                GameObject droppedGameObject = drop.GetDroppedItem(dropPosition);
                 droppedItems.Add(droppedGameObject);
             }   
         }
@@ -157,19 +160,22 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     public GameObject[] Prefabs
     {
         get => _prefabs;
-        set => _prefabs = value;
     }
     public bool NeedsBackground
     {
         get => _needsBackground;
-        set => _needsBackground = value;
     }
 
     public bool IsLit
     {
         get => _isLit;
-        set => _isLit = value;
     }
+
+    public float LightIntensity
+    {
+        get => _lightIntensity;
+    }
+    
 
     public GameObject GetGeneratedGameObjects()
     {
@@ -187,7 +193,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         var controller = worldGameObject.AddComponent<BreakableObjectController>();
         controller.Initialize(this, HealthPoint, false);
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.sortingOrder = -5;
+        spriteRenderer.sortingOrder = TileLayer;
         return worldGameObject;
     }
     public GameObject GetGeneratedWallGameObjects()
@@ -205,7 +211,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         worldGameObject.name += "_Wall";
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f);
-        spriteRenderer.sortingOrder = -10;
+        spriteRenderer.sortingOrder = 0;
         worldGameObject.layer = 2; //ignore raycast in general
         if (worldGameObject.GetComponent<Collider2D>() != null)
         {

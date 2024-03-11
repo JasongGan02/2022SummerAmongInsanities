@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7661658594972742450}
   - component: {fileID: 1069695666722027998}
   - component: {fileID: 206044893877249731}
-  - component: {fileID: -7054000892706792214}
   m_Layer: 6
   m_Name: stone-block-0001
   m_TagString: ground
@@ -103,7 +102,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1.25, y: 1.25}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -112,30 +111,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-7054000892706792214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306158573666937238}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_ComponentVersion: 1
-  m_HasRenderer: 0
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: 00000000
-  m_ShapePath:
-  - {x: -0.49929065, y: -0.501496, z: 0}
-  - {x: -0.50590694, y: 0.50370145, z: 0}
-  - {x: 0.50370145, y: 0.5037015, z: 0}
-  - {x: 0.501496, y: -0.4970852, z: 0}
-  m_ShapePathHash: -1927997294
-  m_Mesh: {fileID: 0}
-  m_InstanceId: -3645104

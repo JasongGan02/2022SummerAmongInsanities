@@ -35,7 +35,7 @@ public class ShadowObjectController : MonoBehaviour
                 Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(adjacentPos), 0);
                 if (WorldGenerator.WorldData.ContainsKey(chunkCoord))
                 {
-                    if (WorldGenerator.GetDataFromWorldPos(adjacentPos) > 0)
+                    if (!WorldGenerator.IsCurTileEmpty(adjacentPos))
                     {
                         return true;
                     }
@@ -78,7 +78,7 @@ public class ShadowObjectController : MonoBehaviour
     private bool TileObjectCheck(float x, float y)
     {
         Vector2Int worldPosition = new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-        return WorldGenerator.GetDataFromWorldPos(worldPosition) <=0 && CheckAdjcentPos(worldPosition)  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
+        return WorldGenerator.IsCurTileEmpty(worldPosition) && CheckAdjcentPos(worldPosition)  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
     }
 
     private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)

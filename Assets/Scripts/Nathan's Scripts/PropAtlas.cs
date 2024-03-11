@@ -7,5 +7,4 @@ public class PropAtlas : ScriptableObject
 {
     [Header("Props")]
     public MedicineObject Health_Potion;
-    public TorchObject Torch;
 }

@@ -106,8 +106,7 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
                 dropPosition = player.transform.position + new Vector3(-1, 0, 0);
             }
             // TODO refactor collectible object to set the amount when getting the dropped item
-            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count);
-            droppedItem.transform.position = dropPosition;
+            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count, dropPosition);
             droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
         }
 

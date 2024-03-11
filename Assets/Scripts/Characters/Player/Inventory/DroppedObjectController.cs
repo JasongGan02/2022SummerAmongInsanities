@@ -17,8 +17,17 @@ public class DroppedObjectController : MonoBehaviour
     {
         this.amount = amount;
         this.item = item;
-        GameObject currentChunk = WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
-        transform.SetParent(currentChunk.transform, true);
+        if (WorldGenerator.TotalChunks.ContainsKey(WorldGenerator.GetChunkCoordsFromPosition(transform.position)))
+        {
+            GameObject currentChunk = WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
+            transform.SetParent(currentChunk.transform, true);
+        }
+        else
+        {
+            
+            Debug.LogError("Drop Position's chunk is not initialized yet");
+        }
+        
         //GetComponent<SpriteRenderer>().sor 
     }
 

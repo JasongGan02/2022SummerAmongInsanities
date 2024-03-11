@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
-public class BreakableObjectController : MonoBehaviour
+public class BreakableObjectController : MonoBehaviour, IDamageable
 {
     private IBreakableObject tile;
     private float healthPoint;
@@ -46,19 +47,18 @@ public class BreakableObjectController : MonoBehaviour
     {
         am.loopoffWeaponAudio();
         am.playWeaponAudio(am.tile_endbreak);
-        var drops = tile.GetDroppedGameObjects(isPlacedByPlayer);
+        var drops = tile.GetDroppedGameObjects(isPlacedByPlayer, transform.position);
         Vector2Int worldPostion = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         Vector2Int localPosition = new Vector2Int(Mathf.FloorToInt(transform.localPosition.x), Mathf.FloorToInt(transform.localPosition.y));
         Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(transform.position), 0);
         if (WorldGenerator.WorldData.ContainsKey(chunkCoord))
         {
-
             // Remove the tile entry from the dictionary
-            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y] = 0;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, ((TileObject)tile).TileLayer] = null;
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
         {
-            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y] = -((TileObject)tile).TileID;
+            WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, 0] = (TileObject)tile; 
             WorldGenerator.PlaceTile(((TileObject)tile), worldPostion.x, worldPostion.y, chunkCoord, true, false);
         }
         foreach (GameObject droppedItem in drops)
@@ -70,5 +70,16 @@ public class BreakableObjectController : MonoBehaviour
             float randomTorque = Random.Range(-20f, 20f); // Adjust the range as needed
             droppedItem.GetComponent<Rigidbody2D>().AddTorque(randomTorque);
         }
+        WorldGenerator.Instance.RefreshChunkLight(chunkCoord, true);
+    }
+
+    public void TakeDamage(float amount, IDamageSource source)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public float CalculateDamage(float incomingAtkDamage, float attackerCritChance, float attackerCritDmgCoef)
+    {
+        throw new System.NotImplementedException();
     }
 }

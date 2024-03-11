@@ -4,13 +4,14 @@ using UnityEngine;
 using System.Threading.Tasks;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.Experimental.Rendering.RayTracingAccelerationStructure;
+using System;
 
 public class DataGenerator
 {   
 
     public class GenData
     {
-        public System.Action<int[,]> OnComplete;
+        public System.Action<TileObject[,,]> OnComplete;
         public Vector2Int GenerationPoint;
     }
 
@@ -55,10 +56,10 @@ public class DataGenerator
         }
     }
 
-    public IEnumerator GenerateData(Vector2Int offset, System.Action<int[,]> callback)
+    public IEnumerator GenerateData(Vector2Int offset, System.Action<TileObject[,,]> callback)
     {
         Vector2Int ChunkSize = WorldGenerator.ChunkSize;
-        int[,] TempData = new int[ChunkSize.x, ChunkSize.y];
+        TileObject[,,] TempData = new TileObject[ChunkSize.x, ChunkSize.y, WorldGenerator.TileLayers];
         /*
         if (WorldGenerator.AdditiveWorldData.TryGetValue(offset.x, out int[,] addedData))
         { // new
@@ -100,8 +101,9 @@ public class DataGenerator
                     for (int y = 0; y < ChunkSize.y; y++)
                     {
                         float worldX = x + (offset.x * ChunkSize.x);
-                        float v = Mathf.PerlinNoise((worldX + noiseOffsetX + ore.oreTile.TileID) * ore.spawnFrequency,
-                            (y + noiseOffsetY + ore.oreTile.TileID) * ore.spawnFrequency);
+                        float oreFloat = BitConverter.ToSingle(BitConverter.GetBytes(ore.oreTile.itemName.GetHashCode()), 0) % 10;
+                        float v = Mathf.PerlinNoise((worldX + noiseOffsetX + oreFloat) * ore.spawnFrequency,
+                            (y + noiseOffsetY + oreFloat) * ore.spawnFrequency);
                         spawnMask[x, y] = v <= ore.spawnRadius && y <= ore.maxSpawnHeight && y >= ore.minSpawnHeight;
                     }
                 }
@@ -115,40 +117,40 @@ public class DataGenerator
                 float height = GetHeight(worldX, curBiomeSettings);
                 for (int y = 0; y < height; y++)
                 {
-                    int tileToPlace; // grass: 1; dirt: 2; stone: 3
+                    TileObject tileObject; // grass: 1; dirt: 2; stone: 3
                     if (y < height - curBiomeSettings.dirtLayerHeight)
-                        tileToPlace = curBiomeSettings.tileAtlas.stone.TileID;
+                        tileObject = curBiomeSettings.tileAtlas.stone;
                     else if (y < height - 1)
-                        tileToPlace = curBiomeSettings.tileAtlas.dirt.TileID; 
+                        tileObject = curBiomeSettings.tileAtlas.dirt;
                     else
-                        tileToPlace = curBiomeSettings.tileAtlas.grass.TileID; 
+                        tileObject = curBiomeSettings.tileAtlas.grass; 
                     //ores
                     foreach (OreClass ore in curBiomeSettings.ores)
                     {
                         if (spawnMasks[ore][x, y])
-                            tileToPlace = ore.oreTile.TileID;
+                            tileObject = ore.oreTile;
                     }
 
                     //place the tile if we're not in a cave 
                     if (cavePoints[x, y])
-                        TempData[x, y] = tileToPlace;
+                        TempData[x, y, tileObject.TileLayer] = tileObject;
                     else
                     {
-                        //Place Wall Tile is represented by negative ID
+                        //Place Wall Tile is represented by tileLayer = 0
                         if (y < height - curBiomeSettings.dirtLayerHeight - sysRandom.Next(2, 5))
-                            TempData[x, y] = - curBiomeSettings.tileAtlas.stone.TileID; 
+                            TempData[x, y, 0] = curBiomeSettings.tileAtlas.stone; 
                         else if (y < height)
-                            TempData[x, y] = - curBiomeSettings.tileAtlas.dirt.TileID;
+                            TempData[x, y, 0] = curBiomeSettings.tileAtlas.dirt;
                     }
                     //spawn addons
                     if (y == height - 1)
                     {
-                        if (TempData[x, y] == curBiomeSettings.tileAtlas.grass.TileID)
+                        if (TempData[x, y, 1] == curBiomeSettings.tileAtlas.grass)
                         {
                             if (sysRandom.Next(0, 100) < curBiomeSettings.tallGrassChance)
-                                TempData[x, y+1] = curBiomeSettings.tileAtlas.natureAddons.TileID;
+                                TempData[x, y+1, 3] = curBiomeSettings.tileAtlas.natureAddons; //layer = 3 to ignore lighting
                             else if (sysRandom.Next(0, 100) < curBiomeSettings.treeChance)
-                                TempData[x, y+1] = curBiomeSettings.tileAtlas.tree.TileID;
+                                TempData[x, y + 1, 3] = curBiomeSettings.tileAtlas.tree;
                         }
                     }
 
