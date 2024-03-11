@@ -213,7 +213,7 @@ public class LightGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 // Convert adjusted light data back to raw light data
-                float adjustedValue = chunkLightData[columnIndex, y];
+                float adjustedValue = chunkLightData[columnIndex, y]; //TODO: implement similar logic in generate light
                 float originalValue = chunkData[columnIndex, y, 0] is null && chunkData[columnIndex, y, 1] is null && chunkData[columnIndex, y, 2] is null ? sunlightBrightness: 15 * (1 - adjustedValue);
                 
                 edgeData[y] = originalValue;
