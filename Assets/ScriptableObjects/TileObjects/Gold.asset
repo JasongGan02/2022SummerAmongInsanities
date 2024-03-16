@@ -28,5 +28,5 @@ MonoBehaviour:
   _isCoreNeeded: 0
   _craftTime: 0
   _needsBackground: 1
-  _isLit: 0
-  _wallTileObject: {fileID: 0}
+  _isLit: 1
+  _lightIntensity: 15

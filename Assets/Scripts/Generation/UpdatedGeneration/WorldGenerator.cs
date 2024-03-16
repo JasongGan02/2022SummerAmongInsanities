@@ -60,7 +60,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         {
             TotalChunks[ChunkCoord].SetActive(true);
             ActiveChunks.Add(ChunkCoord, TotalChunks[ChunkCoord]);
-            RefreshChunkLight(pos, false);
+            RefreshChunkLight(pos, true);
             yield break;
         }
         string chunkName = $"Chunk {ChunkCoord}";
@@ -125,7 +125,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         // lightMapOverlay.transform.localScale = new Vector3(ChunkSize.x, ChunkSize.y, 1);
         // lightMapOverlay.transform.position = new Vector2(ChunkCoord * ChunkSize.x + ChunkSize.x / 2f, ChunkSize.y / 2f);
         
-        StartCoroutine(ApplyLightToChunk(lightMap, lightDataToApply,  () =>
+        StartCoroutine(ApplyLightToChunkCoroutine(lightMap, lightDataToApply,  () =>
         {
             onChunkCreated?.Invoke(); // Call the callback after drawing is complete
             lightMapOverlay.transform.SetParent(newChunk.transform, true);
@@ -175,10 +175,15 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         yield return new WaitUntil(() => lightDataToApply != null);
         if (WorldLightTexture.ContainsKey(offset))
-            StartCoroutine(ApplyLightToChunk(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
+            StartCoroutine(ApplyLightToChunkCoroutine(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
     }
 
-    public IEnumerator ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
+    public void ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
+    {
+        StartCoroutine(ApplyLightToChunkCoroutine(chunkTexture, LightData, () =>  onDrawingComplete?.Invoke() ));
+    }
+    
+    private IEnumerator ApplyLightToChunkCoroutine(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
     {
         yield return new WaitForEndOfFrame();
         for (int x = 0; x < ChunkSize.x; x++)
