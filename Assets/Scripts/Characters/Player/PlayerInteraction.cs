@@ -466,7 +466,7 @@ public class PlayerInteraction : MonoBehaviour
             Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(worldPostion), 0);
             WorldGenerator.WorldData[chunkCoord][Mathf.FloorToInt(worldPostion.x - chunkCoord.x * WorldGenerator.ChunkSize.x), Mathf.FloorToInt(worldPostion.y), curTile.TileLayer] = curTile;
             WorldGenerator.PlaceTile((TileObject)currentSlotInUse.item, worldPostion.x, worldPostion.y, chunkCoord, false, true);
-            WorldGenerator.Instance.RefreshChunkLight(chunkCoord, false, () => Debug.Log("Chunk: " + chunkCoord + " is PlaceDownRefresh"));
+            WorldGenerator.Instance.RefreshChunkLight(chunkCoord, true, () => Debug.Log("Chunk: " + chunkCoord + " is PlaceDownRefresh"));
             inventory.RemoveItemByOne(indexInUse);
         } 
         else if(currentSlotInUse.item is TowerObject)

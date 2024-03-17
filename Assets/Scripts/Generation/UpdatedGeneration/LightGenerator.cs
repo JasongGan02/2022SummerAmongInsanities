@@ -31,13 +31,19 @@ public class LightGenerator : MonoBehaviour
         worldGenerator = WorldGenerator.Instance;
         // Optionally start the DataGenLoop here or allow other scripts to control when it starts
         StartCoroutine(DataGenLoop());
+        StartCoroutine(PeriodicLightUpdateCoroutine());
+    }
+
+    private void OnDisable()
+    {
+         StopAllCoroutines();
     }
 
     public class GenData
     {
         public System.Action<float[,]> OnComplete;
         public Vector2Int GenerationPoint;
-        public bool isRefreshing = false;
+        public bool UpdateNeighbors = false;
     }
 
     public void QueueDataToGenerate(GenData data)
@@ -52,7 +58,7 @@ public class LightGenerator : MonoBehaviour
             if (DataToGenerate.Count > 0)
             {
                 GenData gen = DataToGenerate.Dequeue();
-                yield return StartCoroutine(GenerateLightData(gen.GenerationPoint, gen.OnComplete, gen.isRefreshing));
+                yield return StartCoroutine(GenerateLightData(gen.GenerationPoint, gen.OnComplete, gen.UpdateNeighbors));
             }
             else
             {
@@ -249,32 +255,6 @@ public class LightGenerator : MonoBehaviour
 
         });
         yield return new WaitUntil(() => t.IsCompleted || t.IsCanceled);
-        /*yield return new WaitUntil(() => {
-            return t.IsCompleted || t.IsCanceled;
-        });
-
-        if (t.Exception != null)
-            Debug.LogError(t.Exception);
-
-
-        WorldGenerator.WorldLightData[offset] = lightData;
-        if (lightData != null)
-            callback(lightData);
-
-        if (updateNeighbors)
-        {
-            Vector2Int leftChunkOffset = new Vector2Int(offset.x - 1, 0);
-            if (WorldGenerator.WorldLightData.ContainsKey(leftChunkOffset))
-            {
-                worldGenerator.RefreshChunkLight(leftChunkOffset);
-            }
-
-            Vector2Int rightChunkOffset = new Vector2Int(offset.x + 1, 0);
-            if (WorldGenerator.WorldLightData.ContainsKey(rightChunkOffset))
-            {
-                worldGenerator.RefreshChunkLight(rightChunkOffset);
-            }
-        }*/
     }
 
     private float[] GetEdgeLightData(Vector2Int chunkPosition, bool getLeftEdge)
@@ -353,6 +333,16 @@ public class LightGenerator : MonoBehaviour
         
     }
     
+    private IEnumerator PeriodicLightUpdateCoroutine()
+    {
+        while (!Terminate) // Use the existing termination condition
+        {
+            yield return new WaitForSeconds(5f); // Wait for 5 seconds
+
+            RefreshAllActiveChunks(); // Call the method to refresh all active chunks' light
+        }
+    }
+
     public void UpdateSunlightBrightness(float newSunlightBrightness)
     {
         sunlightBrightness = newSunlightBrightness;
@@ -363,7 +353,8 @@ public class LightGenerator : MonoBehaviour
     {
         StartCoroutine(RefreshAllActiveChunksCoroutine());
     }
-    
+
+    private static int ID;
     private IEnumerator RefreshAllActiveChunksCoroutine()
     {
         yield return new WaitForEndOfFrame();
@@ -386,7 +377,7 @@ public class LightGenerator : MonoBehaviour
             {
                 GenerationPoint = chunkPosition,
                 OnComplete = onChunkUpdateComplete,
-                isRefreshing =  true
+                UpdateNeighbors =  true
             });
         }
         

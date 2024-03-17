@@ -115,11 +115,11 @@ public class CraftingQueueManager : MonoBehaviour
                     UpdateQueueUI(craftQueue);
 
                     // IMPORTANT: Unsubscribe from the event to prevent multiple calls
-                    timeSystemManager.OnHourUpdatedHandler -= hourUpdateHandler;
+                    timeSystemManager.onHourUpdated -= hourUpdateHandler;
                 }
             };
 
-            timeSystemManager.OnHourUpdatedHandler += hourUpdateHandler;
+            timeSystemManager.onHourUpdated += hourUpdateHandler;
 
             // Wait for crafting time to complete (Note: This is just a safety wait, adjust the value as required)
             yield return new WaitForSeconds(remainingCraftingTime * timeSystemManager.dayToRealTimeInSecond / 24);
