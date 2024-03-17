@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c799bc862edc1f428098d8b4fe7363e, type: 3}
+  m_Name: Creeper
+  m_EditorClassIdentifier: 
+  itemName: Creeper
+  sizeRatio: 2
+  prefab: {fileID: 5811422692972195447, guid: c2161fd224ed4004a870c00fdb2f2ee8, type: 3}
+  _HP: 20
+  _armor: 0
+  _atkDamage: 60
+  _atkSpeed: 10
+  _atkRange: 7
+  _criticalMultiplier: 0
+  _criticalChance: 0
+  _movingSpeed: 5
+  _jumpForce: 20
+  _totalJumps: 1
+  Drops: []
+  Hatred:
+  - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
+  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
+  - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  SensingRange: 10

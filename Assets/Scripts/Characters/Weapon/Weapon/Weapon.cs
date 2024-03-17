@@ -154,6 +154,6 @@ public class Weapon : MonoBehaviour, IDamageSource
     private void ShowDamageText(float damage, Vector3 position)
     {
         var floatingTextInstance = Instantiate(floatingTextPrefab, position, Quaternion.identity, transform);
-        floatingTextInstance.GetComponent<FloatingText>().SetText(damage.ToString());
+        //floatingTextInstance.GetComponent<FloatingText>().SetText(damage.ToString());
     }
 }

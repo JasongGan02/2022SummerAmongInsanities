@@ -11,5 +11,5 @@ public class CharacterAtlas : ScriptableObject
     public CharacterObject lady;
     public CharacterObject dumb;
     public CharacterObject villagerWithWeapon;
-
+    public CharacterObject creeper;
 }

@@ -789,6 +789,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &988891825 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5022870085557637279, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &988891831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988891825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3ee9e78b714854bbe3a059f034bdbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1045300722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.014857214
+      value: 32.274666
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1388,7 +1405,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 316539784631488185, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
 --- !u!1001 &8685695345761983943
@@ -1401,19 +1419,47 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.size
-      value: 15
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[14].poolableObject
       value: 
       objectReference: {fileID: 11400000, guid: 2b59cb1301e886845bfd594c3d51e81c, type: 2}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[15].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[16].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[17].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[14].initialPoolSize
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[15].initialPoolSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[16].initialPoolSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[17].initialPoolSize
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: isDebugDayTime
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: minSunlightLevel
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
@@ -1425,7 +1471,7 @@ PrefabInstance:
       objectReference: {fileID: 701233755}
     - target: {fileID: 1527045367632481217, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: enemyTypes.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1527045367632481217, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: enemyTypes.Array.data[1]
@@ -1443,6 +1489,10 @@ PrefabInstance:
       propertyPath: enemyTypes.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1527045367632481217, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: enemyTypes.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
     - target: {fileID: 2834861535451641174, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: content
       value: 

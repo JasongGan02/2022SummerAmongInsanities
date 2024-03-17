@@ -50,10 +50,7 @@ public class DumbController : EnemyController
         SenseFrontBlock();
         if (PrevHP > CurrentHP)
         {
-            //animator.SetBool("walk", false);
-            //animator.SetBool("flee", false);
-            //animator.SetBool("knockback", true);
-            ChangeAnimation("dumb_knockback");
+            animator.Play("dumb_knockback");
             hittingback = 0.3f;
             isFleeing = true;
             PrevHP = CurrentHP;
@@ -63,8 +60,7 @@ public class DumbController : EnemyController
             flee();
         }
         else if(_HP <= maxHP/2){
-            //animator.SetBool("flee", true);
-            ChangeAnimation("dumb_flee");
+            animator.Play("dumb_flee");
             Vector2 direction = (player.transform.position - transform.position);
             if (direction.x > 0)
             {
@@ -75,8 +71,7 @@ public class DumbController : EnemyController
                 transform.right = Vector2.right;
             }
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -_movingSpeed * Time.deltaTime);
-                //animator.SetFloat("movingSpeed", 1f);
-            }
+        }
         else{
             idle();
         }
@@ -86,9 +81,7 @@ public class DumbController : EnemyController
 
         if (patrolTime <= 0f)
         {
-            //animator.SetBool("knockback", false);
-            //animator.SetBool("walk", false);
-            ChangeAnimation("dumb_idle");
+            animator.Play("dumb_idle");
             patrolRest = 2f;
             patrolTime = UnityEngine.Random.Range(1f, 3f);
             if (UnityEngine.Random.Range(0f,1f) > 0.5f)
@@ -103,8 +96,7 @@ public class DumbController : EnemyController
         }
         else
         {
-            //animator.SetBool("walk", true);
-            ChangeAnimation("dumb_walk");
+            animator.Play("dumb_walk");
             patrolTime -= Time.deltaTime;
             if (patrolDirection)
             {
@@ -136,9 +128,7 @@ public class DumbController : EnemyController
         if (hittingback > 0f) { hittingback -= Time.deltaTime; }
         else if (fleeTime > 0f)
         {
-            //animator.SetBool("knockback", false);
-            //animator.SetBool("flee", true);
-            ChangeAnimation("dumb_flee");
+            animator.Play("dumb_flee");
             fleeTime -= Time.deltaTime;
             if (player.transform.position.x > transform.position.x)
             {
@@ -152,8 +142,7 @@ public class DumbController : EnemyController
             }
         }
         else {
-            //animator.SetBool("flee", false);
-            ChangeAnimation("dumb_walk");
+            animator.Play("dumb_walk");
             hittingback = 0.3f;
             fleeTime = 5f;
             isFleeing = false;
