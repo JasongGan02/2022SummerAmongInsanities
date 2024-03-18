@@ -12,7 +12,7 @@ public class CreeperController : EnemyController
     bool facingright = false;
     private Rigidbody2D rb;
     float patroltime = 0f;
-    //private Animator animator;
+    private Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
     GameObject target;
@@ -22,54 +22,56 @@ public class CreeperController : EnemyController
     public Transform backCheck;
     LayerMask ground_mask;
 
-    private BoxCollider2D boxCollider;
+    private CircleCollider2D Collider;
 
     private float Wait = 0.3f;
+    bool isAttacking = false;
+    bool booming = false;
 
     new void Awake()
     {
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
         groundCheckCenter = transform.Find("groundCheckCenter");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
-        boxCollider = GetComponent<BoxCollider2D>();
+        Collider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void EnemyLoop()
     {
-        SenseFrontBlock();
+        if (!booming) { 
+            SenseFrontBlock();
 
-
-        target = WhatToAttack();
-        if (target == null) { patrol(); }
-        else
-        {
-            if (villager_sight())
+            target = WhatToAttack();
+            if (target == null) { patrol(); }
+            else
             {
-                if (DistanceToTarget(target.transform) < _atkRange)
+                if (villager_sight())
                 {
-                    attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
-                }
-                else
-                {
-                    approach(2.0f * _movingSpeed, target.transform);
-                    flip(target.transform);
+                    if (DistanceToTarget(target.transform) < _atkRange && !isAttacking)
+                    {
+                        attack(target.transform, _atkSpeed); // default:1;  lower -> faster
+                    }
+                    else if (!booming)
+                    {
+                        approach(2.0f * _movingSpeed, target.transform);
+                        flip(target.transform);
+                    }
                 }
             }
         }
     }
 
-    void attack(Transform target, float frequency)
+    void attack(Transform target, float waitingTime)
     {
         if (rest)
         {
             if (Wait > 0)
             {
                 Wait -= Time.deltaTime;
-                //animator.Play("villager_run");
             }
             else
             {
@@ -77,32 +79,49 @@ public class CreeperController : EnemyController
             }
         }
 
-        else
+        else if (!isAttacking)
         {
-            //animator.Play("villager_attack");
-            float checkD = Vector2.Distance(transform.position, player.transform.position);
-            if (checkD < _atkRange) // hurt target successfully
-            {
-                ApplyDamage(target.GetComponent<CharacterController>());
-                
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-            else // didn't hurt target
-            {
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-            BreakSurrounding(_atkRange, _atkDamage);
-            death();
+            isAttacking = true;
+            animator.Play("creeper_preBoom");
+            //ChangeCollider("creeper_preBoom");
+            StartCoroutine(WaitAndContinue(waitingTime));
         }
 
         flip(target);
     }
 
+    private IEnumerator WaitAndContinue(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        booming = true;
+        animator.Play("creeper_boom");
+        ChangeCollider("creeper_boom");
+        yield return new WaitForSeconds(0.15f);
+        float checkD = Vector2.Distance(transform.position, player.transform.position);
+        if (checkD < _atkRange) // hurt target successfully
+        {
+            ApplyDamage(target.GetComponent<CharacterController>());
+            Vector2 direction = player.transform.position - transform.position;
+            direction.Normalize();
+            player.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(2f * direction.x * _jumpForce, 2f * direction.y * _jumpForce); // effect on player
+            rest = true;
+            Wait = 1.0f * _atkSpeed;
+        }
+        else // didn't hurt target
+        {
+            rest = true;
+            Wait = 1.0f * _atkSpeed;
+        }
+        BreakSurrounding(_atkRange, _atkDamage);
+        animator.Play("creeper_posBoom");
+        ChangeCollider("creeper_posBoom");
+        yield return new WaitForSeconds(0.8f);
+        death();
+    }
+
     void BreakSurrounding(float range, float Damage)
     {
-        int numberOfDirections = 25; // Number of directions to cast rays in (one for each degree in a circle)
+        int numberOfDirections = 30; // Number of directions to cast rays in (one for each degree in a circle)
         float angleStep = 360.0f / numberOfDirections; // Calculate the angle step based on the number of directions
 
         // Iterate over each direction based on the number of directions and angle step
@@ -129,14 +148,6 @@ public class CreeperController : EnemyController
 
     void approach(float speed, Transform target)
     {
-        if (speed > _movingSpeed)
-        {
-            //animator.Play("villager_run");
-        }
-        else
-        {
-            //animator.Play("villager_walk");
-        }
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
@@ -146,7 +157,7 @@ public class CreeperController : EnemyController
         if (patroltime <= 0f)
         {
             patrolRest = 2f;
-            //animator.Play("villager_idle");
+            animator.Play("creeper_idle");
             patroltime = Random.Range(1f, 3f);
             if (Random.Range(0f, 1f) < 0.5) // go left
             {
@@ -163,7 +174,7 @@ public class CreeperController : EnemyController
         }
         else
         {
-            //animator.Play("villager_walk");
+            animator.Play("creeper_idle");
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
@@ -276,5 +287,31 @@ public class CreeperController : EnemyController
             return false;
         }
         return true;
+    }
+
+    void ChangeCollider(string status)
+    {
+        float horizontal = transform.position.x;
+        float vertical = transform.position.y;
+        if (status == "creeper_idle") {
+            Collider.offset = new Vector2 { x = -0.2630091f + horizontal, y = -3.62576f + vertical };
+            Collider.radius = 9.307809f; 
+        }
+        else if (status == "creeper_preBoom") {
+            Collider.offset = new Vector2 { x = -0.05069017f + horizontal, y = -2.169847f + vertical };
+            Collider.radius = 8.97416f; 
+        }
+        else if (status == "creeper_boom") {
+            //Collider.offset = new Vector2 { x = 0.8289242f + horizontal, y = -0.1376402f + vertical };
+            //Collider.radius = 5.759026f;
+            Collider.radius = 0.1f;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        }
+        else if (status == "creeper_posBoom")
+        {
+            Collider.radius = 0f;
+            transform.localScale = new Vector3(0.4f, 0.4f, transform.localScale.z);
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        }
     }
 }
