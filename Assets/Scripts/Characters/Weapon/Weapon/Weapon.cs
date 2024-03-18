@@ -27,8 +27,12 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected float speed;
     protected float magnitude = 0.1f;
     protected float maxSpeed = 10f; // Set the maximum speed of the object
-    protected float slowDownDistance = 1f; // Set the distance from the player where the object should start slowing down
-    protected float frequency = 10f;
+    protected float frequency = 10f; // spining frequency
+
+    protected bool isAttacking = false;
+    protected float attackCooldown = 0.6f; // Duration for which the attack will continue
+    protected float lastAttackTime;
+
 
     protected audioManager am;
     protected GameObject floatingTextPrefab;
@@ -51,21 +55,30 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     public virtual void Update()
     {
-        
         Flip();
 
-        if (Input.GetMouseButton(0))
+        // Check if the mouse button is pressed or if the attack is already in progress
+        if (Input.GetMouseButtonDown(0) || (isAttacking && Time.time - lastAttackTime < attackCooldown))
         {
-            //InvokeRepeating("attack", 0.5f, AtkInterval);
+            if (!isAttacking)
+            {
+                lastAttackTime = Time.time;
+                isAttacking = true;
+                InvokeRepeating("PlayAttack", 0.1f, 1f); 
+            }
             attack();
         }
         else
         {
+            if (isAttacking && Time.time - lastAttackTime >= attackCooldown)
+            {
+                isAttacking = false;
+                CancelInvoke("PlayAttack"); 
+            }
             Patrol();
-
         }
-
     }
+
 
     public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
@@ -76,29 +89,18 @@ public class Weapon : MonoBehaviour, IDamageSource
     }
 
 
-    void PlayAttack()
+    protected void PlayAttack()
     {
         am.playWeaponAudio(am.attack);
     }
     public virtual void attack()
     {
-        if(Input.GetMouseButtonDown(0))
-        InvokeRepeating("PlayAttack", 0.1f, 1f);
-
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        float speed = maxSpeed; // Set the default speed to the maximum speed
+        if (!isAttacking) return;
         
+        float speed = maxSpeed; // Set the default speed to the maximum speed
 
-
-            if (playermovement.facingRight)
+        if (playermovement.facingRight)
         {
-            if (transform.position.x > player.transform.position.x + slowDownDistance)
-            {
-                // Gradually slow down as the object approaches the slow down distance
-                float percentSlowDown = Mathf.Clamp01((transform.position.x - (player.transform.position.x + slowDownDistance)) / slowDownDistance);
-                speed = maxSpeed * (1 - percentSlowDown);
-            }
-
             transform.position = player.transform.position + new Vector3(1f, 0, 0) + Vector3.right * Mathf.Sin(Time.time * frequency) * magnitude * speed;
         }
         else
@@ -106,10 +108,10 @@ public class Weapon : MonoBehaviour, IDamageSource
             transform.position = player.transform.position - new Vector3(1f, 0, 0) - Vector3.right * Mathf.Sin(Time.time * frequency) * magnitude * speed;
         }
 
-    }
+    } 
 
 
-    // flip the enemy
+
     public virtual void Flip()
     {
         if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
@@ -123,7 +125,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     // patrol around
     public virtual void Patrol()
     {
-        CancelInvoke("PlayAttack");
+        
         transform.position = player.transform.position;
        
     }
@@ -144,16 +146,6 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
-
-        if (floatingTextPrefab)
-        {
-            ShowDamageText(damageDealt, (target as EnemyController).GetPosition());
-        }
     }
 
-    private void ShowDamageText(float damage, Vector3 position)
-    {
-        var floatingTextInstance = Instantiate(floatingTextPrefab, position, Quaternion.identity, transform);
-        floatingTextInstance.GetComponent<FloatingText>().SetText(damage.ToString());
-    }
 }
