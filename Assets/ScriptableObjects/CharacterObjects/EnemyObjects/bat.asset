@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eaecfe4630d5f54c86cf7f9a8bb2ec0, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: 
-  itemName: bat
+  itemName: Bat
   sizeRatio: 2
   prefab: {fileID: 5572140884625632519, guid: d55593716ae05bb438fc113cba10a4d6, type: 3}
   _HP: 50
+  _armor: 0
   _atkDamage: 10
   _atkSpeed: 3
   _atkRange: 10
+  _criticalMultiplier: 0
+  _criticalChance: 0
   _movingSpeed: 13
   _jumpForce: 0
   _totalJumps: 0
@@ -30,3 +33,9 @@ MonoBehaviour:
   - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   SensingRange: 6
+  minLightLevel: 0
+  maxLightLevel: 6
+  spawnWeight: 100
+  groupSize: 1
+  biome: 
+  colliderSize: {x: 0, y: 0}

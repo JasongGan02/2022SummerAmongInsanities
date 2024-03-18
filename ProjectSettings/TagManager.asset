@@ -13,6 +13,7 @@ TagManager:
   - weapon
   - HoveringBuffUI
   - audio
+  - Chest
   layers:
   - Default
   - TransparentFX
