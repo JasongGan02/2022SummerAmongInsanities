@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class VillagerController : EnemyController
+public class CreeperController : EnemyController
 {
     bool rest = false;
     bool facingright = false;
@@ -17,68 +17,61 @@ public class VillagerController : EnemyController
     float patrolRest = 2f;
     GameObject target;
 
-    public Transform groundCheckLeft;
     public Transform groundCheckCenter;
-    public Transform groundCheckRight;
     public Transform frontCheck;
     public Transform backCheck;
-    public Transform attackStart;
-    public Transform attackEnd;
     LayerMask ground_mask;
 
-    private BoxCollider2D boxCollider;
+    private CircleCollider2D Collider;
 
     private float Wait = 0.3f;
+    bool isAttacking = false;
+    bool booming = false;
 
     new void Awake()
     {
         animator = GetComponent<Animator>();
         towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
-        groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");
-        groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
-        attackStart = transform.Find("attackStart");
-        attackEnd = transform.Find("attackEnd");
-        boxCollider = GetComponent<BoxCollider2D>();
+        Collider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void EnemyLoop()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false) 
-            { SenseFrontBlock(); ChangeCollider("Stand"); }
-        else { ChangeCollider("Sit"); }
-        
+        if (!booming) { 
+            SenseFrontBlock();
 
-        target = WhatToAttack();
-        if (target == null) { patrol(); }
-        else
-        {
-            if (villager_sight())
+            target = WhatToAttack();
+            if (target == null) { patrol(); }
+            else
             {
-                if (DistanceToTarget(target.transform) < _atkRange)
+                if (villager_sight())
                 {
-                    attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
-                }
-                else
-                {
-                    approach(2.0f * _movingSpeed, target.transform);
-                    flip(target.transform);
+                    if (DistanceToTarget(target.transform) < _atkRange && !isAttacking)
+                    {
+                        attack(target.transform, _atkSpeed); // default:1;  lower -> faster
+                    }
+                    else if (!booming)
+                    {
+                        approach(2.0f * _movingSpeed, target.transform);
+                        flip(target.transform);
+                    }
                 }
             }
         }
     }
 
-    void attack(Transform target, float frequency)
+    void attack(Transform target, float waitingTime)
     {
         if (rest)
         {
-            if (Wait > 0) { 
-                Wait -= Time.deltaTime; 
-                animator.Play("villager_run"); 
+            if (Wait > 0)
+            {
+                Wait -= Time.deltaTime;
             }
             else
             {
@@ -86,37 +79,75 @@ public class VillagerController : EnemyController
             }
         }
 
-        else
+        else if (!isAttacking)
         {
-            animator.Play("villager_attack");
-            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
-            if (checkD < 0.75f) // hurt target successfully
-            {
-                ApplyDamage(target.GetComponent<CharacterController>());
-
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-            else // didn't hurt target
-            {
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-
+            isAttacking = true;
+            animator.Play("creeper_preBoom");
+            //ChangeCollider("creeper_preBoom");
+            StartCoroutine(WaitAndContinue(waitingTime));
         }
 
         flip(target);
     }
+
+    private IEnumerator WaitAndContinue(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        booming = true;
+        animator.Play("creeper_boom");
+        ChangeCollider("creeper_boom");
+        yield return new WaitForSeconds(0.15f);
+        float checkD = Vector2.Distance(transform.position, player.transform.position);
+        if (checkD < _atkRange) // hurt target successfully
+        {
+            ApplyDamage(target.GetComponent<CharacterController>());
+            Vector2 direction = player.transform.position - transform.position;
+            direction.Normalize();
+            player.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(2f * direction.x * _jumpForce, 2f * direction.y * _jumpForce); // effect on player
+            rest = true;
+            Wait = 1.0f * _atkSpeed;
+        }
+        else // didn't hurt target
+        {
+            rest = true;
+            Wait = 1.0f * _atkSpeed;
+        }
+        BreakSurrounding(_atkRange, _atkDamage);
+        animator.Play("creeper_posBoom");
+        ChangeCollider("creeper_posBoom");
+        yield return new WaitForSeconds(0.8f);
+        death();
+    }
+
+    void BreakSurrounding(float range, float Damage)
+    {
+        int numberOfDirections = 30; // Number of directions to cast rays in (one for each degree in a circle)
+        float angleStep = 360.0f / numberOfDirections; // Calculate the angle step based on the number of directions
+
+        // Iterate over each direction based on the number of directions and angle step
+        for (int i = 0; i < numberOfDirections; i++)
+        {
+            float angleInRadians = (angleStep * i) * Mathf.Deg2Rad; // Convert current angle to radians
+                                                                    // Calculate the direction vector based on the current angle
+            Vector2 dir = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
+
+            // Cast a ray in the current direction for the specified range
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, range, ground_mask);
+
+            // Iterate over each hit in the current direction
+            foreach (RaycastHit2D hit in hits)
+            {
+                var breakable = hit.transform.GetComponent<BreakableObjectController>();
+                if (breakable != null)
+                {
+                    breakable.OnClicked(Damage);
+                }
+            }
+        }
+    }
+
     void approach(float speed, Transform target)
     {
-        if (speed > _movingSpeed)
-        {
-            animator.Play("villager_run");
-        }
-        else
-        {
-            animator.Play("villager_walk");
-        }
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
@@ -126,7 +157,7 @@ public class VillagerController : EnemyController
         if (patroltime <= 0f)
         {
             patrolRest = 2f;
-            animator.Play("villager_idle");
+            animator.Play("creeper_idle");
             patroltime = Random.Range(1f, 3f);
             if (Random.Range(0f, 1f) < 0.5) // go left
             {
@@ -143,10 +174,10 @@ public class VillagerController : EnemyController
         }
         else
         {
-            animator.Play("villager_walk");
+            animator.Play("creeper_idle");
             patroltime -= Time.deltaTime;
-            if (patrolToRight) 
-            { 
+            if (patrolToRight)
+            {
                 rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
                 if (!facingright) { flip(); }
             }
@@ -186,9 +217,7 @@ public class VillagerController : EnemyController
     new void SenseFrontBlock()
     {
         headCheck();
-        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
         RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
 
@@ -249,9 +278,9 @@ public class VillagerController : EnemyController
 
         RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
         RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
-        if (checkTop.collider != null && 
+        if (checkTop.collider != null &&
             checkBottom.collider != null &&
-            checkTop.collider.gameObject.CompareTag("ground") && 
+            checkTop.collider.gameObject.CompareTag("ground") &&
             checkBottom.collider.gameObject.CompareTag("ground"))
         {
             //Debug.Log("there is ground block");
@@ -259,17 +288,30 @@ public class VillagerController : EnemyController
         }
         return true;
     }
-    public void ChangeCollider(string status)
+
+    void ChangeCollider(string status)
     {
-        // Enable or disable the colliders based on the state
-        // boxCollider.enabled = !isSitting;
-        if (status == "Stand")
-        {
-            boxCollider.size = new Vector2(0.1875544f, 1.0f);
+        float horizontal = transform.position.x;
+        float vertical = transform.position.y;
+        if (status == "creeper_idle") {
+            Collider.offset = new Vector2 { x = -0.2630091f + horizontal, y = -3.62576f + vertical };
+            Collider.radius = 9.307809f; 
         }
-        else
+        else if (status == "creeper_preBoom") {
+            Collider.offset = new Vector2 { x = -0.05069017f + horizontal, y = -2.169847f + vertical };
+            Collider.radius = 8.97416f; 
+        }
+        else if (status == "creeper_boom") {
+            //Collider.offset = new Vector2 { x = 0.8289242f + horizontal, y = -0.1376402f + vertical };
+            //Collider.radius = 5.759026f;
+            Collider.radius = 0.1f;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        }
+        else if (status == "creeper_posBoom")
         {
-            boxCollider.size = new Vector2(0.1875544f, 0.718245f);
+            Collider.radius = 0f;
+            transform.localScale = new Vector3(0.4f, 0.4f, transform.localScale.z);
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         }
     }
 }

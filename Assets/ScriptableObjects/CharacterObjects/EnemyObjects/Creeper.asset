@@ -9,27 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b80aff767a32a48b33e96c301de720, type: 3}
-  m_Name: VillagerWithWeapon
+  m_Script: {fileID: 11500000, guid: 0c799bc862edc1f428098d8b4fe7363e, type: 3}
+  m_Name: Creeper
   m_EditorClassIdentifier: 
-  itemName: VillagerWithWeapon
-  sizeRatio: 1.6
-  prefab: {fileID: 5469098318322386293, guid: a5061e01c5ca21f4fb2f7b8ad582b6a7, type: 3}
-  _HP: 90
+  itemName: Creeper
+  sizeRatio: 2
+  prefab: {fileID: 5811422692972195447, guid: c2161fd224ed4004a870c00fdb2f2ee8, type: 3}
+  _HP: 20
   _armor: 0
-  _atkDamage: 7
+  _atkDamage: 6
   _atkSpeed: 2
-  _atkRange: 1.25
+  _atkRange: 7
   _criticalMultiplier: 0
   _criticalChance: 0
-  _movingSpeed: 2
-  _jumpForce: 14
+  _movingSpeed: 5
+  _jumpForce: 20
   _totalJumps: 1
-  Drops:
-  - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
-    chance: 1
+  Drops: []
   Hatred:
-  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
+  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
-  SensingRange: 3
+  SensingRange: 10

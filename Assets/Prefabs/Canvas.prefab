@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 5022870085557637276}
   - component: {fileID: 5022870085557637277}
   - component: {fileID: 5022870085557637278}
-  - component: {fileID: 316539784631488185}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -246,20 +245,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &316539784631488185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5022870085557637279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c19c09a16f9937243a7cd79ba0f03c1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1
-  fadeOutTime: 0.5
 --- !u!1001 &908047359173769780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1128,11 +1113,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 576765077651311287, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 7.562164
+      value: 0.0061412626
       objectReference: {fileID: 0}
     - target: {fileID: 3133679831648596759, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
       propertyPath: m_Size
-      value: 0.98373425
+      value: 0.99992836
       objectReference: {fileID: 0}
     - target: {fileID: 5241521377819062821, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
       propertyPath: m_Name

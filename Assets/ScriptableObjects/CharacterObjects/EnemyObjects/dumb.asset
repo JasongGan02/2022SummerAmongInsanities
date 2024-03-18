@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642ba1d2a3e83fd4786524d331e17b53, type: 3}
   m_Name: Dumb
   m_EditorClassIdentifier: 
-  itemName: Dumb
+  itemName: dumb
   sizeRatio: 2
   prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
   _HP: 100
