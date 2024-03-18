@@ -26,7 +26,7 @@ public class BackgroundLightIntensityController : MonoBehaviour
 
     private void OnEnable()
     {
-        timeSystemManager.OnHourUpdatedHandler += UpdateDaylightStatus;
+        timeSystemManager.onHourUpdated += UpdateDaylightStatus;
     }
 
     // Update is called once per frame

@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Tilemaps;
+using Debug = UnityEngine.Debug;
 
 public class WorldGenerator : MonoBehaviour, IDataPersistence
 {
@@ -60,7 +62,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         {
             TotalChunks[ChunkCoord].SetActive(true);
             ActiveChunks.Add(ChunkCoord, TotalChunks[ChunkCoord]);
-            RefreshChunkLight(pos, false);
+            RefreshChunkLight(pos, true);
             yield break;
         }
         string chunkName = $"Chunk {ChunkCoord}";
@@ -104,12 +106,17 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             LightGenerator.Instance.QueueDataToGenerate(new LightGenerator.GenData
             {
                 GenerationPoint = pos,
-                OnComplete = x => lightDataToApply = x
+                OnComplete = x =>
+                {
+                    lightDataToApply = x;
+                }, 
+                UpdateNeighbors = true
+                    
             });
 
             yield return new WaitUntil(() => lightDataToApply != null);
         }
-
+        
         string lightOverlayName = $"Light Overlay {ChunkCoord}";
         GameObject lightMapOverlay = Instantiate(lightOverlayPrefab);
         lightMapOverlay.name = lightOverlayName;
@@ -121,16 +128,13 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         lightMap.filterMode = FilterMode.Point; //< remove this line for smooth lighting, keep it for tiled lighting
         if (!WorldLightTexture.ContainsKey(pos))
             WorldLightTexture.Add(pos, lightMap);
-        // lightMapOverlay.transform.SetParent(newChunk.transform, true);
-        // lightMapOverlay.transform.localScale = new Vector3(ChunkSize.x, ChunkSize.y, 1);
-        // lightMapOverlay.transform.position = new Vector2(ChunkCoord * ChunkSize.x + ChunkSize.x / 2f, ChunkSize.y / 2f);
-        
-        StartCoroutine(ApplyLightToChunk(lightMap, lightDataToApply,  () =>
+        StartCoroutine(ApplyLightToChunkCoroutine(lightMap, lightDataToApply,  () =>
         {
             onChunkCreated?.Invoke(); // Call the callback after drawing is complete
             lightMapOverlay.transform.SetParent(newChunk.transform, true);
             lightMapOverlay.transform.localScale = new Vector3(ChunkSize.x, ChunkSize.y, 1);
             lightMapOverlay.transform.position = new Vector2(ChunkCoord * ChunkSize.x + ChunkSize.x / 2f, ChunkSize.y / 2f);
+            lightMapOverlay.SetActive(true);
         }));
 
     }
@@ -170,15 +174,20 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         {
             GenerationPoint = offset,
             OnComplete = x => lightDataToApply = x,
-            isRefreshing =  updateNeighbors
+            UpdateNeighbors =  updateNeighbors
         });
 
         yield return new WaitUntil(() => lightDataToApply != null);
         if (WorldLightTexture.ContainsKey(offset))
-            StartCoroutine(ApplyLightToChunk(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
+            StartCoroutine(ApplyLightToChunkCoroutine(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
     }
 
-    public IEnumerator ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
+    public void ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
+    {
+        StartCoroutine(ApplyLightToChunkCoroutine(chunkTexture, LightData, () =>  onDrawingComplete?.Invoke() ));
+    }
+    
+    private IEnumerator ApplyLightToChunkCoroutine(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
     {
         yield return new WaitForEndOfFrame();
         for (int x = 0; x < ChunkSize.x; x++)
@@ -277,7 +286,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         Debug.Log("X: " + (middleX + 0.5f) + " Y: " + (highestY + 0.5f));
 
         // Place the core architecture object
-        Vector3 corePosition = new Vector3(chunkCoord * ChunkSize.x + middleX + 0.5f, highestY + 0.5f + 2.2f, 0); // Adjust the Y position as needed
+        Vector3 corePosition = new Vector3(chunkCoord * ChunkSize.x + middleX + 0.5f, highestY + 1f, 0); // Adjust the Y position as needed
         GameObject coreGameObject = coreArchitectureSO.GetSpawnedGameObject();
         coreGameObject.transform.position = corePosition;
     }

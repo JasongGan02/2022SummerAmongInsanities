@@ -20,14 +20,14 @@ public class DifficultyManager : MonoBehaviour
     private void Start()
     {
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
-        timeSystemManager.OnDayUpdatedHandler += OnDayPassed;
-        timeSystemManager.OnNightStartedHandler += OnRedMoonNight;
+        timeSystemManager.onDayUpdated += OnDayPassed;
+        timeSystemManager.onNightStarted += OnRedMoonNight;
     }
 
     private void OnDestroy()
     {
-        timeSystemManager.OnDayUpdatedHandler -= OnDayPassed;
-        timeSystemManager.OnNightStartedHandler -= OnRedMoonNight;
+        timeSystemManager.onDayUpdated -= OnDayPassed;
+        timeSystemManager.onNightStarted -= OnRedMoonNight;
     }
 
     private void Update()

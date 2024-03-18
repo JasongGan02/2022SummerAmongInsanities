@@ -35,13 +35,16 @@ public class PlanetMovementController : MonoBehaviour
         {
             duration = 24 - timeSystemManager.GetDayTimeLengthInHour();
         }
-        duration *= 0.85f;
+
+        duration /= 24;
+        duration *= timeSystemManager.dayToRealTimeInSecond;
         speed = Mathf.PI / duration;
     }
 
     private void Update()
     {
         timeCounter += Time.deltaTime * speed;
+        //Debug.Log(timeCounter);
         var x = Mathf.Sin(timeCounter) * radius;
         var y = Mathf.Cos(timeCounter) * height;
         transform.position = new Vector2(x + mainCamera.transform.position.x, y + heightOffset);

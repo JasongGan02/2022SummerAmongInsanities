@@ -27,15 +27,15 @@ public class BackgroundManager : MonoBehaviour
         worldGenerator = FindObjectOfType<WorldGenerator>();
 
         BG.transform.position = new Vector3(BG.transform.position.x, worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f, BG.transform.position.z);
-        timeSystemManager.OnDayStartedHandler += OnDayStarted;
-        timeSystemManager.OnNightStartedHandler += OnNightStarted;
+        timeSystemManager.onDayStarted += OnDayStarted;
+        timeSystemManager.onNightStarted += OnNightStarted;
 
     }
 
     private void OnDisable()
     {
-        timeSystemManager.OnDayStartedHandler -= OnDayStarted;
-        timeSystemManager.OnNightStartedHandler -= OnNightStarted;
+        timeSystemManager.onDayStarted -= OnDayStarted;
+        timeSystemManager.onNightStarted -= OnNightStarted;
     }
 
     private void OnDayStarted()

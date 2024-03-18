@@ -28,3 +28,9 @@ MonoBehaviour:
   Drops: []
   Hatred: []
   SensingRange: 0
+  minLightLevel: 6
+  maxLightLevel: 16
+  spawnWeight: 40
+  groupSize: 1
+  biome: 
+  colliderSize: {x: 1, y: 3}
