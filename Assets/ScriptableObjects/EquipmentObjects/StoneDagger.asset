@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StoneDagger
   m_EditorClassIdentifier: 
   itemName: StoneDagger
-  sizeRatio: 3
+  sizeRatio: 2
   prefab: {fileID: 6619999146407397511, guid: d8c938e23d90fa046b05183eccb259c2, type: 3}
   level: 5
   quality: {r: 0, g: 0, b: 0, a: 0}
