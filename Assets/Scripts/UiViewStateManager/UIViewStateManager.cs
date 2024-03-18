@@ -33,6 +33,10 @@ public class UIViewStateManager : MonoBehaviour
         {
             ToggleUI(UIBeingViewed.Craft);
         }
+        else if (Input.GetKeyDown(KeyCode.Escape)) // Check for the Escape key
+        {
+            collaspeAllUI(); // Call the method to collapse all UI
+        }
     }
 
     private void ToggleUI(UIBeingViewed ui)

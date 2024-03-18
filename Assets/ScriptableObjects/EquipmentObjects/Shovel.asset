@@ -24,9 +24,8 @@ MonoBehaviour:
   frequency: 1
   projectileObject: {fileID: 0}
   _recipe:
-  - {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
-  - {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
-  _quantity: 0200000003000000
+  - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
+  _quantity: 03000000
   _isCraftable: 1
   _isCoreNeeded: 0
   _craftTime: 3

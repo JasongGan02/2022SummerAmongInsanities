@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   itemName: Axe
-  sizeRatio: 2
+  sizeRatio: 1.5
   prefab: {fileID: 3605020804775853097, guid: 2ccaaa46a7164f546bf32e5f2f9df7e3, type: 3}
   level: 1
   quality: {r: 1, g: 1, b: 1, a: 0}
@@ -25,12 +25,7 @@ MonoBehaviour:
   projectileObject: {fileID: 0}
   _recipe:
   - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
-  - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
-  - {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
-  - {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
-  - {fileID: 11400000, guid: 681c780344b4b7c44b2568bfea4222af, type: 2}
-  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
-  _quantity: 010000000200000003000000040000000500000006000000
+  _quantity: 01000000
   _isCraftable: 1
   _isCoreNeeded: 1
   _craftTime: 4
