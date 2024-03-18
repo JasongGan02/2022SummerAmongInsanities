@@ -26,10 +26,6 @@ public class TimeSystemManager : MonoBehaviour
 
     private TMP_Text timeText; //x��xʱ
     private float currentMinute = 0;
-    public audioManager am;
-
-    private GameObject timeText; //x��xʱ
-    private int currentMinute = 0;
     private int currentHour = 0;
     private int currentDay = 0;
     
@@ -39,6 +35,7 @@ public class TimeSystemManager : MonoBehaviour
     private float minSunlightLevel = 4;
 
     private float gameMinuteInRealSec;
+    public audioManager am;
     // Start is called before the first frame update
     void Awake()
     {
@@ -48,8 +45,6 @@ public class TimeSystemManager : MonoBehaviour
         else InitializeTimeBasedOnCurrentHour();
 
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
-        timeText = GameObject.Find(Constants.Name.TIME_TEXT);
-
     }
     
     private void SetToDaytime()
@@ -61,7 +56,7 @@ public class TimeSystemManager : MonoBehaviour
     
     private void InitializeTimeBasedOnCurrentHour()
     {
-        am.playBGM(am.NightTime)
+        am.playBGM(am.NightTime);
         if (currentHour >= dayStartHour && currentHour < nightStartHour) onDayStarted?.Invoke();
         else onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
     }
