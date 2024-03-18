@@ -9,7 +9,6 @@ using UnityEngine.UIElements;
 public class VillagerWithWeaponController : EnemyController
 {
     bool rest = false;
-    float cooldown = 0f;
     bool facingright = false;
     private Rigidbody2D rb;
     float patroltime = 0f;
@@ -23,10 +22,13 @@ public class VillagerWithWeaponController : EnemyController
     public Transform groundCheckRight;
     public Transform frontCheck;
     public Transform backCheck;
+    public Transform attackStart;
+    public Transform attackEnd;
     LayerMask ground_mask;
-    
+
+    private BoxCollider2D boxCollider;
+
     private float Wait = 0.3f;
-    private float horizontal_speed;
 
     new void Awake()
     {
@@ -38,149 +40,92 @@ public class VillagerWithWeaponController : EnemyController
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
-
+        attackStart = transform.Find("attackStart");
+        attackEnd = transform.Find("attackEnd");
+        boxCollider = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void EnemyLoop()
     {
-
-        //UpdateNearestTower();
-        rb = GetComponent<Rigidbody2D>();
-        horizontal_speed = rb.velocity.x;
-
-        if (horizontal_speed > _movingSpeed) { animator.SetBool("walk", true); animator.SetBool("run", true); }
-        else if (horizontal_speed > 0f) { animator.SetBool("walk", true); animator.SetBool("run", false); }
+        SenseFrontBlock();
 
         target = WhatToAttack();
         if (target == null) { patrol(); }
-        else if (target.CompareTag("Player") && IsPlayerSensed() && villager_sight())
-        {
-            if (IsPlayerInAtkRange())
-            {
-                attack();
-            }
-            else
-            {
-                approachPlayer(1.3f * _movingSpeed);
-                flip(player.transform);
-            }
-        }
         else
         {
-            if (IsTowerInAtkRange((int)_atkRange) && villager_sight())
+            if (villager_sight())
             {
-                flip(target.transform);
-                attackTower(target.transform);
-            }
-            else
-            {
-                approach(_movingSpeed, target.transform);
-                flip(target.transform);
+                if (DistanceToTarget(target.transform) < _atkRange)
+                {
+                    attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
+                }
+                else
+                {
+                    approach(2.0f * _movingSpeed, target.transform);
+                    flip(target.transform);
+                }
             }
         }
     }
 
-    bool IsTowerInAtkRange(int AtkRange)
-    {
-        if (target != null)
-        {
-            float distance = CalculateDistanceFromEnemyToTower(target.transform);
-            if (distance <= AtkRange)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
-    }
-    void attackTower(Transform target)
+    void attack(Transform target, float frequency)
     {
         if (rest)
         {
-            if (Wait > 0) { Wait -= Time.deltaTime; }
+            if (Wait > 0) { 
+                Wait -= Time.deltaTime; 
+                animator.Play("villagerWithWeapon_run"); 
+            }
             else
             {
-                animator.SetBool("attack", false);
-                if (cooldown > _atkSpeed)
-                {
-                    cooldown = 0f;
-                    rest = false;
-                }
-                else { cooldown += Time.deltaTime; }
-                //Debug.Log("rest");
+                rest = false;
             }
-        }
-
-        else if (Vector2.Distance(transform.position, target.position) > 1f)
-        {
-            animator.SetBool("attack", false);
-            approach(2 * _movingSpeed, target);
         }
 
         else
         {
-            animator.SetBool("attack", true);
-            ApplyDamage(target.GetComponent<CharacterController>());
-            rest = true;
-            Wait = 0.2f;
+            animator.Play("villagerWithWeapon_attack");
+            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+            if (checkD < 1.0f) // hurt target successfully
+            {
+                ApplyDamage(target.GetComponent<CharacterController>());
+
+                rest = true;
+                Wait = 1.0f * _atkSpeed;
+            }
+            else // didn't hurt target
+            {
+                rest = true;
+                Wait = 1.0f * _atkSpeed;
+            }
         }
 
         flip(target);
     }
-    new void attack()
-    {
-        if (rest)
-        {
-            if (Wait > 0) { Wait -= Time.deltaTime; }
-            else
-            {
-                animator.SetBool("attack", false);
-                if (cooldown > _atkSpeed)
-                {
-                    cooldown = 0f;
-                    rest = false;
-                }
-                else { cooldown += Time.deltaTime; }
-                //Debug.Log("rest");
-            }
-        }
 
-        else if (Vector2.Distance(transform.position, player.transform.position) > 0.7f)
-        {
-            animator.SetBool("attack", false);
-            approachPlayer(2 * _movingSpeed);
-        }
 
-        else
-        {
-            animator.SetBool("attack", true);
-            //Debug.Log("hit");
-            ApplyDamage(player.GetComponent<CharacterController>());
-            rest = true;
-            Wait = 0.2f;
-        }
-
-        flip(player.transform);
-    }
-    void approachPlayer(float speed)
-    {
-        if (player.transform.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
-    }
     void approach(float speed, Transform target)
     {
+        if (speed > _movingSpeed)
+        {
+            animator.Play("villagerWithWeapon_run");
+        }
+        else
+        {
+            animator.Play("villagerWithWeapon_walk");
+        }
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
+
+
     void patrol()
     {
-        animator.SetBool("attack", false);
         if (patroltime <= 0f)
         {
             patrolRest = 2f;
+            animator.Play("villagerWithWeapon_idle");
             patroltime = Random.Range(1f, 3f);
             if (Random.Range(0f, 1f) < 0.5) // go left
             {
@@ -197,6 +142,7 @@ public class VillagerWithWeaponController : EnemyController
         }
         else
         {
+            animator.Play("villagerWithWeapon_walk");
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
@@ -210,6 +156,7 @@ public class VillagerWithWeaponController : EnemyController
             }
         }
     }
+
     void flip(Transform target)
     {
         if (target.position.x >= transform.position.x && !facingright)
@@ -223,6 +170,7 @@ public class VillagerWithWeaponController : EnemyController
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
     }
+
     void flip()
     {
         if (facingright)
@@ -236,6 +184,7 @@ public class VillagerWithWeaponController : EnemyController
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
+
     new void SenseFrontBlock()
     {
         headCheck();
@@ -245,19 +194,29 @@ public class VillagerWithWeaponController : EnemyController
         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
         RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
 
-        if (hitLeft.transform != null
-            || hitRight.transform != null
-            || hitCenter.transform != null)
+        if (hitCenter.transform != null)
         {
-            if (hitFront.transform != null || hitBack.transform != null)
+            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
             {
-                if (headCheck()) { Jump(); /*Debug.Log("jumping."); */ }
-                else { /*Debug.Log("front obstacle too high!");*/ }
+                if (hitFront.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
             }
-            else { /*Debug.Log("no obstacle in front");*/ }
+            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
+            {
+                if (hitBack.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
+            }
         }
-        else { /*Debug.Log("foot in the air");*/ }
-
     }
     bool headCheck()
     {
@@ -274,8 +233,7 @@ public class VillagerWithWeaponController : EnemyController
     }
     private void Jump()
     {
-        Vector2 jumpForce = new Vector2(rb.velocity.x, _jumpForce);
-        rb.AddForce(jumpForce, (ForceMode2D)ForceMode.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
     }
     private bool villager_sight()
     {
@@ -303,4 +261,5 @@ public class VillagerWithWeaponController : EnemyController
         }
         return true;
     }
+
 }

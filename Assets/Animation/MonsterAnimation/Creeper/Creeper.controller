@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-8675698625205062374
+--- !u!1102 &-7853490491920301308
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: dumb_knockback
+  m_Name: creeper_preBoom
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,20 +20,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 92a78a7edcbda404d80b78d102e1408a, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0b9a6aa215b15ef43a3007bd39018482, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-5929317084070994201
+--- !u!1102 &-2441090098793362702
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: dumb_flee
+  m_Name: creeper_idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -46,56 +46,25 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 730238af3cad0a94799ffe11b8b50937, type: 2}
+  m_Motion: {fileID: 7400000, guid: 8837e2f6d8cbdba43841804de88e8b1a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1107 &-3481788907242774478
-AnimatorStateMachine:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
-  m_ChildStates:
-  - serializedVersion: 1
-    m_State: {fileID: 5002412156156542474}
-    m_Position: {x: 50, y: 270, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 3463325494924895259}
-    m_Position: {x: 50, y: 320, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -5929317084070994201}
-    m_Position: {x: 260, y: 270, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -8675698625205062374}
-    m_Position: {x: 260, y: 320, z: 0}
-  m_ChildStateMachines: []
-  m_AnyStateTransitions: []
-  m_EntryTransitions: []
-  m_StateMachineTransitions: {}
-  m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 370, y: 20, z: 0}
-  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 5002412156156542474}
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: dumb
+  m_Name: Creeper
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: -3481788907242774478}
+    m_StateMachine: {fileID: 1469407556438543971}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -105,14 +74,45 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &3463325494924895259
+--- !u!1107 &1469407556438543971
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Base Layer
+  m_ChildStates:
+  - serializedVersion: 1
+    m_State: {fileID: -2441090098793362702}
+    m_Position: {x: 30, y: 180, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -7853490491920301308}
+    m_Position: {x: 30, y: 240, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 3091347149060970896}
+    m_Position: {x: 30, y: 300, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 4765061347146812808}
+    m_Position: {x: 30, y: 360, z: 0}
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: -2441090098793362702}
+--- !u!1102 &3091347149060970896
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: dumb_walk
+  m_Name: creeper_boom
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -125,20 +125,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 356d65d78093b0b449d8125e6665931d, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4c3467ed8acba554ab4a762273e06000, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &5002412156156542474
+--- !u!1102 &4765061347146812808
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: dumb_idle
+  m_Name: creeper_posBoom
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -151,7 +151,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: fe77568dc0829c149a414e9837944f7d, type: 2}
+  m_Motion: {fileID: 7400000, guid: bf354165d59f62a48b3f1f1724653752, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

@@ -30,6 +30,7 @@ public class CharacterSpawnManager : MonoBehaviour
 
     public void SpawnCharacter(CharacterObject characterType)
     {
+        
         GameObject character = PoolManager.Instance.Get(characterType);
 
         if (character != null)
@@ -122,6 +123,11 @@ public class CharacterSpawnManager : MonoBehaviour
         CharacterObject enemy = enemyTypes[4];
         SpawnCharacter(enemy);
     }
+    public void SpawnCreeper()
+    {
+        CharacterObject enemy = enemyTypes[5];
+        SpawnCharacter(enemy);
+    }
 }
 
 [CustomEditor(typeof(CharacterSpawnManager))]
@@ -155,6 +161,10 @@ public class CharacterSpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn VillagerWithWeapon"))
         {
             spawnManager.SpawnVillagerWithWeapon();
+        }
+        if (GUILayout.Button("Spawn Creeper"))
+        {
+            spawnManager.SpawnCreeper();
         }
     }
 }
