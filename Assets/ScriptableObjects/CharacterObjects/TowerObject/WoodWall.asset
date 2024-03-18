@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: WoodWall
   m_EditorClassIdentifier: 
   itemName: WoodWall
-  sizeRatio: 0.5
+  sizeRatio: 2
   prefab: {fileID: 3397657003104583585, guid: e8b0da03e9b2e7b4c92dfeb7de975321, type: 3}
   _HP: 0
+  _armor: 0
   _atkDamage: 0
   _atkSpeed: 0
   _atkRange: 0
+  _criticalMultiplier: 0
+  _criticalChance: 0
   _movingSpeed: 0
   _jumpForce: 0
   _totalJumps: 0

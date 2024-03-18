@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   itemName: Spear
-  sizeRatio: 1
+  sizeRatio: 2
   prefab: {fileID: 3246375338820597191, guid: 20a952f4910043c46bc0a12cbba8667b, type: 3}
   level: 3
   quality: {r: 0, g: 0, b: 0, a: 0}
@@ -24,7 +24,7 @@ MonoBehaviour:
   frequency: 1
   projectileObject: {fileID: 0}
   _recipe:
-  - {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
+  - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
   _quantity: 03000000
   _isCraftable: 1
   _isCoreNeeded: 0

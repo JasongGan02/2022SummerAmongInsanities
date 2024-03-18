@@ -26,6 +26,10 @@ public class TimeSystemManager : MonoBehaviour
 
     private TMP_Text timeText; //x��xʱ
     private float currentMinute = 0;
+    public audioManager am;
+
+    private GameObject timeText; //x��xʱ
+    private int currentMinute = 0;
     private int currentHour = 0;
     private int currentDay = 0;
     
@@ -42,16 +46,22 @@ public class TimeSystemManager : MonoBehaviour
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
         if (isDebugDayTime) SetToDaytime();
         else InitializeTimeBasedOnCurrentHour();
+
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+        timeText = GameObject.Find(Constants.Name.TIME_TEXT);
+
     }
     
     private void SetToDaytime()
     {
         currentHour = dayStartHour + 1;
         onDayStarted?.Invoke();
+        am.playBGM(am.DayTime);
     }
     
     private void InitializeTimeBasedOnCurrentHour()
     {
+        am.playBGM(am.NightTime)
         if (currentHour >= dayStartHour && currentHour < nightStartHour) onDayStarted?.Invoke();
         else onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
     }
@@ -75,7 +85,9 @@ public class TimeSystemManager : MonoBehaviour
 
     public bool IsInDaytime()
     {
+        
         return currentHour >= dayStartHour && currentHour < nightStartHour;
+        
     }
 
     public float GetHowMuchPercentageOfNightTimeHasPassed()
@@ -135,18 +147,20 @@ public class TimeSystemManager : MonoBehaviour
             onDayStarted?.Invoke();
             dayStarted = true; // Mark the day start transition as handled
             nightStarted = false;
+            am.playBGM(am.DayTime);
         }
         else if (currentHour == nightStartHour && !nightStarted)
         {
             onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
             nightStarted = true; // Mark the night start transition as handled
             dayStarted = false;
+            am.playBGM(am.NightTime);
         }
     }
 
     private void UpdateTimeUI()
     {
-        timeText.text = $"{currentDay}天{currentHour}时{(int)currentMinute}分";
+        timeText.text = $"{currentDay}天{currentHour}时";
     }
     public float GetCurrentTime() => currentHour + currentMinute / 60f;
     public void CalculateAndUpdateSunlight()

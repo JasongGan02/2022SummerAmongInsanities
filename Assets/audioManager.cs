@@ -11,6 +11,8 @@ public class audioManager : MonoBehaviour
     [SerializeField] AudioSource towerAudio;
     [SerializeField] AudioSource playerReactAudio;
     [SerializeField] AudioSource enemyAudio;
+    [SerializeField] AudioSource BGM;
+
 
     [Header("----Audio Clip-----")]
     public AudioClip[] injured = { injured0, injured1};
@@ -28,9 +30,6 @@ public class audioManager : MonoBehaviour
 
     public AudioClip jump;
     public AudioClip doublejump;
-
-  
-
     public AudioClip attack;
     public AudioClip bow;
     public AudioClip shoot;
@@ -41,13 +40,23 @@ public class audioManager : MonoBehaviour
 
     public AudioClip catapult_shootRock;
 
-    public AudioClip villager_attack;
+
+    public AudioClip DayTime;
+    public AudioClip NightTime;
+
+
 
     void Start()
     {
         playerAudio.enabled = true;
-    } 
+    }
 
+
+    public void playBGM(AudioClip clip)
+    {
+        BGM.clip = clip;
+        BGM.Play();
+    }
 
     public void playAudio(AudioClip clip)
     {
