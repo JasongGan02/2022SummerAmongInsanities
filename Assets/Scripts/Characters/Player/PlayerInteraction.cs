@@ -27,23 +27,22 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("tile placement")]
     TerrainGeneration terrainGeneration;
-    private GameObject currentTileGhost = null;
     public int placeTileRange = 15;
 
     [Header("use item")]
-    private GameObject weaponInUse;
+    private GameObject gameObjectInUse;
     private WeaponObject currentWeapon;
-    private GameObject currentInUseItemUI;
+    private GameObject currentInUseItemIconUI;
     public GameObject equipmentTemplate;
     private InventorySlot currentSlotInUse = null;
     private int indexInUse = EMPTY;
-    public float handAttack = 1;
+    
+    
     public float handFarm = 0.5f;
     public float handFrequency = 1;
-
-    public GameObject prop;
-    public MedicineObject currentMedicine;
-
+    
+    
+    
     private audioManager am;
 
     private ChestController currentChest;
@@ -69,7 +68,7 @@ public class PlayerInteraction : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         terrainGeneration = FindObjectOfType<TerrainGeneration>();
-        currentInUseItemUI = GameObject.Find(Constants.Name.CURRENT_WEAPON_UI);
+        currentInUseItemIconUI = GameObject.Find(Constants.Name.CURRENT_ITEM_UI);
     }
     
     void Start()
@@ -110,9 +109,6 @@ public class PlayerInteraction : MonoBehaviour
         PlaceTileCheck();
         PlaceTileCancelCheck();
         playAnim();
-
-        
-
     }
     
 
@@ -163,60 +159,33 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
-        
         UseItemInSlot(args.slotIndex);
-        
     }
   
     private void UseItemInSlot(int slotIndex)
     {
-
-        if (indexInUse == slotIndex)
-        {
-            ClearCurrentItemInUse();
-            return;
-        }
-
+        if (indexInUse == slotIndex) {ClearCurrentItemInUse(); return;} //Double Click To Cancel
+        ClearCurrentItemInUse();
         indexInUse = slotIndex;
         currentSlotInUse = inventory.GetInventorySlotAtIndex(indexInUse);
-
         UpdateCurrentInUseItemUI();
+        InstantiateCurrentItemInUseGameObject();
+    }
 
-
-      
-        if (currentTileGhost != null)
-        {
-            Destroy(currentTileGhost); 
-        }
-        if (weaponInUse != null)
-        {
-           
-           Destroy(weaponInUse);
-        }         
-        if (prop != null)
-        {
-            Destroy(prop); 
-        }
-
+    private void InstantiateCurrentItemInUseGameObject()
+    {
         if (currentSlotInUse.item is IShadowObject)
         {
-            currentTileGhost = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
+            gameObjectInUse = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
         }
 
         if (currentSlotInUse.item is WeaponObject && currentSlotInUse.item.GetItemName() != "Shovel")
         {
             playerController = GetComponent<PlayerController>();
-            weaponInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject(playerController);
+            gameObjectInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject(playerController);
+            currentWeapon = currentSlotInUse.item as WeaponObject;
             waitTime = 1 / currentWeapon?.getfrequency() ?? 1;
         }
-
-        if (currentSlotInUse.item is MedicineObject)
-        {
-            prop = (currentSlotInUse.item as MedicineObject).GetSpawnedGameObject();
-        }
-        
-
-
         else
         {
             currentWeapon = null;
@@ -229,54 +198,26 @@ public class PlayerInteraction : MonoBehaviour
         return currentSlotInUse?.item;
     }
 
-    
-
-
-
     private void UpdateCurrentInUseItemUI()
     {
-        if (currentSlotInUse.item != null)
-        {
-            //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
-        }
-
-        for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
-        {
-            
-            Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
-        }
-        GameObject template = Instantiate(equipmentTemplate);
-        template.transform.Find("Icon").GetComponent<Image>().sprite = currentSlotInUse.item.GetSpriteForInventory();
-        template.transform.SetParent(currentInUseItemUI.transform);
-        template.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        currentInUseItemIconUI.SetActive(true);
+        currentInUseItemIconUI.GetComponent<Image>().sprite = currentSlotInUse.item?.GetSpriteForInventory();
     }
 
     private void ClearCurrentItemInUse()
     {
-        if (currentSlotInUse!= null && currentSlotInUse.item != null)
+        if (gameObjectInUse != null)
         {
-           //Destroy(GameObject.Find(currentSlotInUse.item.GetItemName()));
-        }
-
-        if (weaponInUse != null)
-        {
-
-            Destroy(weaponInUse);
+            Destroy(gameObjectInUse);
+            gameObjectInUse = null;
         }
 
         indexInUse = EMPTY;
         currentSlotInUse = null;
         currentWeapon= null;
-
-        for (int i = 0; i < currentInUseItemUI.transform.childCount; i++)
-        {
-            
-            Destroy(currentInUseItemUI.transform.GetChild(i).gameObject);
-
-        }
-
-        
+        currentInUseItemIconUI.SetActive(false);
     }
+    
     #region
     private void StartTimer()
     {
@@ -403,27 +344,20 @@ public class PlayerInteraction : MonoBehaviour
             Input.GetMouseButtonDown(1) || 
             Input.GetMouseButtonDown(2) || (!UIViewStateManager.GetCurUI() && UIViewStateManager.isViewingUI()))
         {
-            if (Input.GetMouseButtonDown(2))
-            Debug.Log("Right");
-
             ClearCurrentItemInUse();
-            if (currentTileGhost != null)
-            {
-                Destroy(currentTileGhost);
-                currentTileGhost = null;
-            }
         }
     }
 
     private void PlaceTileCheck()
     {
-        if (currentTileGhost != null && currentSlotInUse != null)
+        ShadowObjectController shadowObjectController = gameObjectInUse?.GetComponent<ShadowObjectController>();
+        if (shadowObjectController != null && currentSlotInUse != null)
         {
-            TileGhostPlacementResult result = currentTileGhost.GetComponent<ShadowObjectController>().GetTileGhostPlacementResult(currentSlotInUse.item as BaseObject);
-            currentTileGhost.transform.position = result.transform.position;
+            TileGhostPlacementResult result = shadowObjectController.GetTileGhostPlacementResult(currentSlotInUse.item as BaseObject);
+            shadowObjectController.transform.position = result.transform.position;
             if (CanPlaceTile(result))
             {
-                currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+                shadowObjectController.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
                 if (Input.GetMouseButtonDown(0) )
                 {
                     PlaceTile(result.transform);
@@ -431,10 +365,8 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                currentTileGhost.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.6f, 0.6f, 0.5f);
+                shadowObjectController.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.6f, 0.6f, 0.5f);
             }
-
-            
         }
     }
 

@@ -42,7 +42,7 @@ public static class Constants
         public static string BACKGROUND_LIGHT = "BackgroundLight";
         public static string TIME_TEXT = "TimeText";
 
-        public static string CURRENT_WEAPON_UI = "CurrentWeapon";
+        public static string CURRENT_ITEM_UI = "Icon";
     }
 
 

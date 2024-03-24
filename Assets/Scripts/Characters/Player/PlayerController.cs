@@ -112,16 +112,8 @@ public class PlayerController : CharacterController, IDataPersistence
         deathCount++;
         PoolManager.Instance.Return(this.gameObject, characterStats);
         OnObjectReturned(true);
-         GameObject WeaponInUse = GameObject.FindWithTag("weapon");
-        if (WeaponInUse != null)
-        {
-            Destroy(WeaponInUse);
-        }
-        GameObject TowerInUse = GameObject.FindWithTag("tower");
-        if (TowerInUse != null)
-        {
-            Destroy(TowerInUse);
-        }
+        GameObject WeaponInUse = GameObject.FindWithTag("weapon");
+
         if (characterSpawnManager != null)
         {
             characterSpawnManager.StartRespawnCoroutine();

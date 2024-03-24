@@ -5,8 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UIElements/FloatingDamage.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/EnemyGenerator.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0001.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0001.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0002.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0002.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0003.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0003.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0004.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0004.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0005.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0005.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/grass-0002.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/grass-0002.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/grass-0003.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/grass-0003.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/grass-0004.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/grass-0004.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/flower-0002.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/flower-0002.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/flower-0003.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/flower-0003.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/flower-0004.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/flower-0004.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/flower-0005.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/flower-0005.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/grass-0002.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/grass-0002.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/grass-0003.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/grass-0003.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/nature/grass-0004.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/nature/grass-0004.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprite/Nature/flower-0001.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprite/Nature/flower-0001.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprite/Nature/grass-0001.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprite/Nature/grass-0001.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprite/Nature/tree-0001.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprite/Nature/tree-0001.png.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,29 +50,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Attach to Unity Editor.Attach to Unity Editor &amp; Play.executor&quot;: &quot;Debug&quot;,
-    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Standalone Player.Start Unity.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Jason&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Attach to Unity Editor.Attach to Unity Editor & Play.executor": "Debug",
+    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Standalone Player.Start Unity.executor": "Debug",
+    "git-widget-placeholder": "Scott",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\34061\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\34061\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.1.3f1\Editor\Unity.exe" />
@@ -104,6 +125,7 @@
       <workItem from="1710007839589" duration="43083000" />
       <workItem from="1710542745309" duration="26037000" />
       <workItem from="1710710578433" duration="6430000" />
+      <workItem from="1711251222630" duration="168000" />
     </task>
     <servers />
   </component>

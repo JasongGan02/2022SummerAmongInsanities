@@ -63,7 +63,6 @@ public class CharacterObject : BaseObject, IPoolableObject
         controllerName = itemName + "Controller";
         Type type = Type.GetType(controllerName);
         var controller = worldGameObject.AddComponent(type);
-        Debug.Log(controller.ToString());
         (controller as CharacterController).Initialize(this);
         return worldGameObject;
     }
