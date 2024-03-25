@@ -21,6 +21,8 @@ public class CreeperController : EnemyController
     public Transform frontCheck;
     public Transform backCheck;
     LayerMask ground_mask;
+    LayerMask enemy_mask;
+    LayerMask flyEnemy_mask;
 
     private CircleCollider2D Collider;
 
@@ -33,6 +35,8 @@ public class CreeperController : EnemyController
         animator = GetComponent<Animator>();
         towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
+        enemy_mask = LayerMask.GetMask("enemy");
+        flyEnemy_mask = LayerMask.GetMask("flyenemy");
         groundCheckCenter = transform.Find("groundCheckCenter");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
@@ -133,6 +137,8 @@ public class CreeperController : EnemyController
 
             // Cast a ray in the current direction for the specified range
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, range, ground_mask);
+            RaycastHit2D[] enemyHits = Physics2D.RaycastAll(transform.position, dir, range, enemy_mask);
+            RaycastHit2D[] flyEnemyHits = Physics2D.RaycastAll(transform.position, dir, range, flyEnemy_mask);
 
             // Iterate over each hit in the current direction
             foreach (RaycastHit2D hit in hits)
@@ -141,6 +147,26 @@ public class CreeperController : EnemyController
                 if (breakable != null)
                 {
                     breakable.OnClicked(Damage);
+                }
+            }
+            
+            foreach (RaycastHit2D hit in enemyHits)
+            {
+                var enemyController = hit.transform.GetComponent<CharacterController>();
+                if (enemyController != null)
+                {
+                    enemyController.TakeDamage(Damage, this);
+                    //Debug.Log("Damaging Enemy");
+                }
+            }
+
+            foreach (RaycastHit2D hit in flyEnemyHits)
+            {
+                var enemyController = hit.transform.GetComponent<CharacterController>();
+                if (enemyController != null)
+                {
+                    enemyController.TakeDamage(Damage, this);
+                    //Debug.Log("Damaging Fly Enemy");
                 }
             }
         }

@@ -17,12 +17,12 @@ MonoBehaviour:
   prefab: {fileID: 5811422692972195447, guid: c2161fd224ed4004a870c00fdb2f2ee8, type: 3}
   _HP: 20
   _armor: 0
-  _atkDamage: 6
+  _atkDamage: 40
   _atkSpeed: 2
-  _atkRange: 7
+  _atkRange: 5
   _criticalMultiplier: 0
   _criticalChance: 0
-  _movingSpeed: 5
+  _movingSpeed: 3.5
   _jumpForce: 20
   _totalJumps: 1
   Drops: []
@@ -31,3 +31,9 @@ MonoBehaviour:
   - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   SensingRange: 10
+  minLightLevel: 0
+  maxLightLevel: 0
+  spawnWeight: 0
+  groupSize: 0
+  biome: 
+  colliderSize: {x: 0, y: 0}
