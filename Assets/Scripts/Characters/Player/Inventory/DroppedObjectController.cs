@@ -27,8 +27,8 @@ public class DroppedObjectController : MonoBehaviour
             
             Debug.LogError("Drop Position's chunk is not initialized yet");
         }
-        
-        //GetComponent<SpriteRenderer>().sor 
+
+        GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
     private void Start()

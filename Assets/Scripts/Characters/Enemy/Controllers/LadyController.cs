@@ -254,7 +254,6 @@ public class LadyController : EnemyController, IRangedAttacker
                     if (headCheck())
                     {
                         Jump();
-                        Debug.Log("jumping.");
                     }
                 }
             }
@@ -265,7 +264,6 @@ public class LadyController : EnemyController, IRangedAttacker
                     if (headCheck())
                     {
                         Jump();
-                        Debug.Log("jumping.");
                     }
                 }
             }

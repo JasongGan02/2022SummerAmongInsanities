@@ -25,7 +25,7 @@ public class EnemyObject : CharacterObject, ISpawnable
     public float MinLightLevel => minLightLevel;
     public float MaxLightLevel => maxLightLevel;
     public float SpawnWeight => spawnWeight;
-    public int GroupSize => groupSize;
+    public int PackSize => groupSize;
     public string Biome => biome;
     public Vector2Int ColliderSize => colliderSize;
 }

@@ -31,8 +31,10 @@ public class BackgroundManager : MonoBehaviour
         timeSystemManager.onNightStarted += OnNightStarted;
 
     }
+    
+    
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         timeSystemManager.onDayStarted -= OnDayStarted;
         timeSystemManager.onNightStarted -= OnNightStarted;
@@ -48,7 +50,6 @@ public class BackgroundManager : MonoBehaviour
     private void OnNightStarted(bool isRedMoonNight)
     {
         sun.SetActive(false);
-
         if (isRedMoonNight)
         {
             redMoon.SetActive(true);

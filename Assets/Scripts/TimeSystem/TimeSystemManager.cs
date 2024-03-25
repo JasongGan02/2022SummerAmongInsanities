@@ -56,9 +56,16 @@ public class TimeSystemManager : MonoBehaviour
     
     private void InitializeTimeBasedOnCurrentHour()
     {
-        am.playBGM(am.NightTime);
-        if (currentHour >= dayStartHour && currentHour < nightStartHour) onDayStarted?.Invoke();
-        else onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+        if (currentHour >= dayStartHour && currentHour < nightStartHour)
+        {
+            am.playBGM(am.DayTime);
+            onDayStarted?.Invoke();
+        }
+        else
+        {
+            am.playBGM(am.NightTime);
+            onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+        }
     }
 
     public int GetDayTimeLengthInHour()

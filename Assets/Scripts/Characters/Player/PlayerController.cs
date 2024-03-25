@@ -103,8 +103,6 @@ public class PlayerController : CharacterController, IDataPersistence
     }
     protected override void death()
     {
-            
-        
         _HP = 0;
         UpdateHealthUI();
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
