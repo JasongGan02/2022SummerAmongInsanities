@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -5,11 +6,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System;
-using System.Threading;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine.Rendering;
+using static UnityEngine.Rendering.DebugUI;
+
 
 public class Weapon : MonoBehaviour, IDamageSource
 {
@@ -20,61 +18,40 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     protected GameObject player;
     protected Playermovement playermovement;
-    protected PlayerInteraction playerinteraction;
-    protected Inventory inventory;
-    
 
-    protected float speed;
-    protected float magnitude = 0.1f;
-    protected float maxSpeed = 10f; // Set the maximum speed of the object
-    protected float frequency = 10f; // spining frequency
-
-    protected bool isAttacking = false;
-    protected float attackCooldown = 0.6f; // Duration for which the attack will continue
-    protected float lastAttackTime;
-
-
+    protected Animator weaponAnmator;
     protected audioManager am;
-    protected GameObject floatingTextPrefab;
+
+    protected float Delay = 1f;
+    protected bool attackBlocked;
+    protected Inventory inventory;
+
     public float DamageAmount => finalDamage;
 
     public float CriticalChance => characterController.CriticalChance;
-
     public float CriticalMultiplier => characterController.CriticalMultiplier;
+
+
 
     public virtual void Start()
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
-        playerinteraction = player.GetComponent<PlayerInteraction>();
-        inventory = FindObjectOfType<Inventory>();
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
-        floatingTextPrefab = GameObject.Find("FloatingDamage");
+        weaponAnmator = this.GetComponent<Animator>();
+        inventory = FindObjectOfType<Inventory>();
     }
 
 
     public virtual void Update()
     {
         Flip();
-
-        // Check if the mouse button is pressed or if the attack is already in progress
-        if (Input.GetMouseButtonDown(0) || (isAttacking && Time.time - lastAttackTime < attackCooldown))
+        if (Input.GetMouseButtonDown(0))
         {
-            if (!isAttacking)
-            {
-                lastAttackTime = Time.time;
-                isAttacking = true;
-                InvokeRepeating("PlayAttack", 0.1f, 1f); 
-            }
             attack();
         }
         else
         {
-            if (isAttacking && Time.time - lastAttackTime >= attackCooldown)
-            {
-                isAttacking = false;
-                CancelInvoke("PlayAttack"); 
-            }
             Patrol();
         }
     }
@@ -95,32 +72,38 @@ public class Weapon : MonoBehaviour, IDamageSource
     }
     public virtual void attack()
     {
-        if (!isAttacking) return;
-        
-        float speed = maxSpeed; // Set the default speed to the maximum speed
+        if (attackBlocked)
+            return;
 
-        if (playermovement.facingRight)
-        {
-            transform.position = player.transform.position + new Vector3(1f, 0, 0) + Vector3.right * Mathf.Sin(Time.time * frequency) * magnitude * speed;
-        }
+        if(playermovement.facingRight)
+        weaponAnmator.SetTrigger("Attack");
         else
-        {
-            transform.position = player.transform.position - new Vector3(1f, 0, 0) - Vector3.right * Mathf.Sin(Time.time * frequency) * magnitude * speed;
-        }
+        weaponAnmator.SetTrigger("AttackLeft");
 
-    } 
+        PlayAttack();
+        attackBlocked= true;
+        StartCoroutine(DelayAttack());
+        
+    }
 
+    protected IEnumerator DelayAttack()
+    {
+        yield return new WaitForSeconds(Delay);
+        attackBlocked = false;
+    }
 
 
     public virtual void Flip()
     {
-        if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
+ 
+        if ((playermovement.facingRight && transform.localScale.x < 0) ||
+            (!playermovement.facingRight && transform.localScale.x > 0))
         {
-            Vector3 transformScale = transform.localScale;
-            transformScale.y *= -1;
-            transform.localScale = transformScale;
+            
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
     }
+
 
     // patrol around
     public virtual void Patrol()

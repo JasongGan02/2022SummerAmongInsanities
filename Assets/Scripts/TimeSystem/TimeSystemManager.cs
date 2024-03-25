@@ -35,7 +35,7 @@ public class TimeSystemManager : MonoBehaviour
     private float minSunlightLevel = 4;
 
     private float gameMinuteInRealSec;
-    public audioManager am;
+    private audioManager am;
     // Start is called before the first frame update
     void Awake()
     {
