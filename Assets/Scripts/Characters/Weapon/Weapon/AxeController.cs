@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AxeController : StoneDaggerController
+public class AxeController : Weapon
 {
  
 }
