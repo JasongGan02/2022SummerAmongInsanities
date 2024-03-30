@@ -9,7 +9,6 @@ public abstract class AttackTowerController : TowerController
 
     //run-time variables
     protected bool isEnemySpotted;
-    protected EnemyContainer enemyContainer;
      
 
     // Find nearest enemy in the enemy array
@@ -26,7 +25,7 @@ public abstract class AttackTowerController : TowerController
         GameObject nearestTarget = null;
 
         // Get all enemies from the container
-        var enemies = enemyContainer.GetComponentsInChildren<EnemyController>(); // Assuming 'Enemy' is your enemy script
+        var enemies = MobSpawner.FindEnemyNearby(transform.position); // Assuming 'Enemy' is your enemy script
 
         // Iterate over each hated type
         foreach (var hatedType in Hatred)

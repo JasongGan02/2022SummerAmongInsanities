@@ -259,6 +259,23 @@ public class MobSpawner : MonoBehaviour
         // Also add to a specific chunk's container based on types
         //AddEnemyToGrid(enemy, enemy.transform.position);
     }
+
+    public static List<EnemyController> FindEnemyNearby(Vector3 worldPosition)
+    {
+        int chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(worldPosition);
+        List<EnemyController> nearbyEnemies = new List<EnemyController>();
+
+        // Check the specified chunk and its immediate neighbors
+        for (int offset = -1; offset <= 1; offset++)
+        {
+            int currentChunk = chunkCoord + offset;
+            if (WorldGenerator.ActiveChunks.ContainsKey(currentChunk))
+            {
+                nearbyEnemies.AddRange(WorldGenerator.ActiveChunks[currentChunk].transform.Find("MobContainer").Find("EnemyContainer").GetComponentsInChildren<EnemyController>());
+            }
+        }
+        return nearbyEnemies;
+    }
 }
 
 [System.Serializable]

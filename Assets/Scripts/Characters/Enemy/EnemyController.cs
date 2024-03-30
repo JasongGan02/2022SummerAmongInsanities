@@ -62,6 +62,7 @@ public abstract class EnemyController : CharacterController
             player = GameObject.Find("Player"); 
         }
         if (this.transform.position.y < -400) death();
+        SetEnemyContainer();
         EnemyLoop();
     }
 
@@ -300,6 +301,13 @@ public abstract class EnemyController : CharacterController
     public Vector3 GetPosition()
     {
         return transform.position; // Return the GameObject's position
+    }
+
+    protected void SetEnemyContainer()
+    {
+        int chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(transform.position);
+        if (WorldGenerator.ActiveChunks.ContainsKey(chunkCoord))
+            transform.SetParent(WorldGenerator.ActiveChunks[chunkCoord].transform.Find("MobContainer").Find("EnemyContainer"), true);
     }
 
 }

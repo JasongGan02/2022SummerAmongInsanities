@@ -15,9 +15,9 @@ MonoBehaviour:
   itemName: VillagerWithWeapon
   sizeRatio: 1.6
   prefab: {fileID: 5469098318322386293, guid: a5061e01c5ca21f4fb2f7b8ad582b6a7, type: 3}
-  _HP: 90
+  _HP: 131.769
   _armor: 0
-  _atkDamage: 7
+  _atkDamage: 10.248701
   _atkSpeed: 2
   _atkRange: 1.25
   _criticalMultiplier: 0
@@ -33,3 +33,9 @@ MonoBehaviour:
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   SensingRange: 3
+  minLightLevel: 0
+  maxLightLevel: 0
+  spawnWeight: 0
+  groupSize: 0
+  biome: 
+  colliderSize: {x: 0, y: 0}
