@@ -72,6 +72,8 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         newChunk.transform.position = new Vector2(ChunkCoord * ChunkSize.x, 0f);
         newChunk.transform.SetParent(transform, true);
         ActiveChunks.Add(ChunkCoord, newChunk);
+        
+        SetUpNewChunkWithContainers(newChunk);
 
         TileObject[,,] dataToApply = WorldData.ContainsKey(pos) ? WorldData[pos] : null;
 
@@ -88,7 +90,9 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         if (!TotalChunks.ContainsKey(ChunkCoord))
             TotalChunks.Add(ChunkCoord, newChunk);
-
+        
+        
+        
         bool isChunkDrawn = false;
         StartCoroutine(DrawChunk(dataToApply, pos, () =>
         {
@@ -137,6 +141,20 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             lightMapOverlay.SetActive(true);
         }));
 
+    }
+
+    private static void SetUpNewChunkWithContainers(GameObject newChunk)
+    {
+        GameObject tiles = new GameObject("Tiles");
+        tiles.transform.SetParent(newChunk.transform);
+        GameObject chunkMobContainer = new GameObject("MobContainer");
+        chunkMobContainer.transform.SetParent(newChunk.transform);
+        GameObject enemyContainer = new GameObject("EnemyContainer");
+        enemyContainer.transform.SetParent(chunkMobContainer.transform);
+        GameObject towerContainer = new GameObject("TowerContainer");
+        towerContainer.transform.SetParent(newChunk.transform);
+        GameObject dropContainer = new GameObject("DropContainer");
+        dropContainer.transform.SetParent(newChunk.transform);
     }
 
     public IEnumerator DrawChunk(TileObject[,,] Data, Vector2Int offset, Action onDrawingComplete = null)
@@ -209,7 +227,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
                                 isWall ? tile.GetGeneratedWallGameObjects() :
                                 tile.GetGeneratedGameObjects();
         if (!TotalChunks.TryGetValue(chunkID.x, out GameObject game)) Debug.LogError("TotalChunks not found ID: "+chunkID.x);
-        tileGameObject.transform.parent = TotalChunks[chunkID.x].transform;
+        tileGameObject.transform.parent = TotalChunks[chunkID.x].transform.Find("Tiles").transform;
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
     }
 
@@ -283,7 +301,6 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             Debug.LogError("No valid ground found in chunk: " + chunkCoord);
             return;
         }
-        Debug.Log("X: " + (middleX + 0.5f) + " Y: " + (highestY + 0.5f));
 
         // Place the core architecture object
         Vector3 corePosition = new Vector3(chunkCoord * ChunkSize.x + middleX + 0.5f, highestY + 1f, 0); // Adjust the Y position as needed

@@ -57,3 +57,6 @@ TagManager:
   - name: DroppedObject
     uniqueID: 250587171
     locked: 0
+  - name: Characters
+    uniqueID: 3122815825
+    locked: 0

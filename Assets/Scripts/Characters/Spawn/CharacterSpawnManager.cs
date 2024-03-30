@@ -11,7 +11,8 @@ public class CharacterSpawnManager : MonoBehaviour
     private int deathCount = 0;
     private CoreArchitectureController coreArchitecture;
     private GameObject player;
-
+    private Vector3 coreSpawnPosition;
+    
     private void Start()
     {
         StartCoroutine(WaitForCoreArchitectureAndInitialize());
@@ -74,7 +75,7 @@ public class CharacterSpawnManager : MonoBehaviour
     private void SpawnPlayer()
     {
         GameObject player = PoolManager.Instance.Get(characterAtlas.player);
-        player.transform.position = coreArchitecture.transform.position;
+        player.transform.position = coreSpawnPosition;
         this.player = player;
     }
 
@@ -86,7 +87,8 @@ public class CharacterSpawnManager : MonoBehaviour
         }
 
         coreArchitecture = CoreArchitectureController.Instance;
-        transform.position = coreArchitecture.transform.position;
+        coreSpawnPosition = coreArchitecture.transform.Find("SpawnPoint").position;
+        transform.position = coreSpawnPosition;
         SpawnPlayer();
     }
 

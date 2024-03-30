@@ -13,7 +13,6 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
     protected virtual void Start()
     {
         // Common start logic for all ranged towers
-        enemyContainer = FindObjectOfType<EnemyContainer>();
         isEnemySpotted = false;
         startPosition = this.transform;
         InvokeRepeating("Attack", 0f, _atkSpeed);

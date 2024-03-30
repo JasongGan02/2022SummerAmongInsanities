@@ -15,9 +15,9 @@ MonoBehaviour:
   itemName: lady
   sizeRatio: 2
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
-  _HP: 20
+  _HP: 29.282001
   _armor: 0
-  _atkDamage: 8
+  _atkDamage: 11.712801
   _atkSpeed: 4
   _atkRange: 10
   _criticalMultiplier: 0
