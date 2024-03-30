@@ -99,7 +99,13 @@ public class CharacterSpawnManager : MonoBehaviour
         CharacterObject randomEnemyType = enemyTypes[randomIndex];
         SpawnCharacter(randomEnemyType);
     }
-
+    public void SpawnManyEnemy()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            SpawnRandomEnemy();
+        }
+    }
     public void SpawnBat()
     {
         CharacterObject enemy = enemyTypes[0];
@@ -143,6 +149,10 @@ public class CharacterSpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn Random Enemy"))
         {
             spawnManager.SpawnRandomEnemy();
+        }
+        if (GUILayout.Button("Spawn Many Enemies"))
+        {
+            spawnManager.SpawnManyEnemy();
         }
         if (GUILayout.Button("Spawn Bat"))
         {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5c77fc65ce11a47bd8974f9f0f4e97, type: 3}
   m_Name: Lady
   m_EditorClassIdentifier: 
-  itemName: Lady
+  itemName: lady
   sizeRatio: 2
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
   _HP: 29.282001
