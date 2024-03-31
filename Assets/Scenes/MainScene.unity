@@ -379,10 +379,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1609682452758840842, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
-      propertyPath: m_Intensity
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5245653059314779888, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
       propertyPath: m_Name
       value: Background

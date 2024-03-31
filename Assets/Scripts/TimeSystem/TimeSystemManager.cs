@@ -44,6 +44,7 @@ public class TimeSystemManager : MonoBehaviour
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         if (isDebugDayTime) SetToDaytime();
         else InitializeTimeBasedOnCurrentHour();
+
     }
     
     private void SetToDaytime()
