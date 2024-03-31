@@ -13,7 +13,6 @@ public class audioManager : MonoBehaviour
     [SerializeField] AudioSource enemyAudio;
     [SerializeField] AudioSource BGM;
 
-
     [Header("----Audio Clip-----")]
     public AudioClip[] injured = { injured0, injured1};
     private int lastPlayedClipIndex = -1;
@@ -33,6 +32,7 @@ public class audioManager : MonoBehaviour
     public AudioClip attack;
     public AudioClip bow;
     public AudioClip shoot;
+    public AudioClip PickUp;
 
     public AudioClip death;
     public AudioClip tile_duringbreak;
@@ -44,10 +44,12 @@ public class audioManager : MonoBehaviour
     public AudioClip DayTime;
     public AudioClip NightTime;
 
+    private bool isPlayerAudioParentSet = false;
+
 
 
     void Start()
-    {
+    {   
         playerAudio.enabled = true;
     }
 
@@ -125,8 +127,25 @@ public class audioManager : MonoBehaviour
     {
         return weaponAudio.isPlaying && weaponAudio.clip == clip;
     }
+    private void SetPlayerAudioParent()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && playerAudio != null)
+        {
+
+            playerAudio.transform.SetParent(player.transform);
+            playerAudio.transform.localPosition = Vector3.zero;
+
+            isPlayerAudioParentSet = true;
+        }
+    }
+
     void Update()
     {
-        
+        if (!isPlayerAudioParentSet)
+        {
+            SetPlayerAudioParent();
+        }
     }
+
 }

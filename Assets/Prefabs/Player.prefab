@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 1120449656137656567}
   - component: {fileID: 2012019307616880249}
   - component: {fileID: 4399184682783356512}
+  - component: {fileID: 1744316974723998262}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -230,7 +231,7 @@ Transform:
   - {fileID: 5902607712887390058}
   - {fileID: 3855199898732275903}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6647711791749533986
 SpriteRenderer:
@@ -385,12 +386,8 @@ MonoBehaviour:
   - {fileID: 3429148027577167092}
   placeTileRange: 5
   equipmentTemplate: {fileID: 5703799991536060000, guid: cc327834c14524b41af052db4d6824cb, type: 3}
-  handAttack: 1
   handFarm: 0.5
   handFrequency: 1
-  prop: {fileID: 0}
-  currentMedicine: {fileID: 0}
-  currentTorch: {fileID: 0}
 --- !u!114 &1120449656137656567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +624,7 @@ MonoBehaviour:
   - {x: 0.19680214, y: -0.46011162, z: 0}
   m_ShapePathHash: 1986624917
   m_Mesh: {fileID: 0}
-  m_InstanceId: -10692576
+  m_InstanceId: 107042
 --- !u!50 &4399184682783356512
 Rigidbody2D:
   serializedVersion: 4
@@ -649,6 +646,14 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!81 &1744316974723998262
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647711791749533985}
+  m_Enabled: 1
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0
