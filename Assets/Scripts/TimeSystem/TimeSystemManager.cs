@@ -172,6 +172,7 @@ public class TimeSystemManager : MonoBehaviour
         if (sunlightLevel != lastSunlightLevelUpdate)
         {
             LightGenerator.Instance.UpdateSunlightBrightness(sunlightLevel);
+            LightningControl.Instance.UpdateSunlightBrightness(sunlightLevel);
             lastSunlightLevelUpdate = sunlightLevel;
         }
     }
