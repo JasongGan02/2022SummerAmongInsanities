@@ -41,10 +41,9 @@ public class TimeSystemManager : MonoBehaviour
     {
         timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<TMP_Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
+        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         if (isDebugDayTime) SetToDaytime();
         else InitializeTimeBasedOnCurrentHour();
-
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
     
     private void SetToDaytime()
