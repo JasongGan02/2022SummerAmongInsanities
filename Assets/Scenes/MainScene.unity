@@ -536,7 +536,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301439332}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &301439337
 Camera:
   m_ObjectHideFlags: 0
@@ -564,7 +564,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.8125
+  orthographic size: 3
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -820,6 +820,11 @@ GameObject:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4878420190821419895, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
   m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &722572889 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5885483217933147918, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+  m_PrefabInstance: {fileID: 8685695345761983943}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &760687529 stripped
 GameObject:
@@ -1560,7 +1565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000002861023
+      value: 0.021360632
       objectReference: {fileID: 0}
     - target: {fileID: 7634390715916760211, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1628,6 +1633,22 @@ PrefabInstance:
       propertyPath: IPoolableObjectPools.Array.data[15].initialPoolSize
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: death
+      value: 
+      objectReference: {fileID: 8300000, guid: 995daf1faa5d4c34d9ab9febc7902644, type: 3}
+    - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: PickUp
+      value: 
+      objectReference: {fileID: 8300000, guid: 1001f3026032a73478dcbef1d60eed88, type: 3}
+    - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: playerAudio
+      value: 
+      objectReference: {fileID: 722572889}
+    - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: pfPlayerAudio
+      value: 
+      objectReference: {fileID: 722572889}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: am
       value: 
@@ -1688,6 +1709,14 @@ PrefabInstance:
       propertyPath: enemyTypes.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 2171391345293792677, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -32.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2171391345293792677, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 43.6
+      objectReference: {fileID: 0}
     - target: {fileID: 2834861535451641174, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: content
       value: 
@@ -1780,6 +1809,22 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 763498279}
+    - target: {fileID: 5885483217933147918, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: MaxDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885483217933147918, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: MinDistance
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885483217933147918, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: rolloffMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885483217933147918, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8685695344788396458, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_RootOrder
       value: 6
