@@ -30,8 +30,9 @@ public class VillagerController : EnemyController
 
     private float Wait = 0.3f;
 
-    new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         animator = GetComponent<Animator>();
         towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");

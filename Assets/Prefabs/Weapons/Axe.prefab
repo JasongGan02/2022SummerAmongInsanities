@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3605020804775853098}
   - component: {fileID: 3605020804775853099}
   - component: {fileID: 3605020804775853096}
-  - component: {fileID: -6652849961131107443}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3605020804775853097}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -112,13 +111,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.40628985, y: 0.46905708}
-      - {x: 0.06400633, y: 0.10729343}
-      - {x: 0.12311603, y: 0.054814667}
-      - {x: 0.3577497, y: 0.2829314}
-      - {x: 0.37142688, y: 0.11293107}
+    - - {x: 0.41388735, y: 0.46145955}
+      - {x: 0.058734734, y: 0.11408918}
+      - {x: 0.12152887, y: 0.048781015}
+      - {x: 0.3516531, y: 0.26616564}
+      - {x: 0.3706764, y: 0.10378608}
       - {x: 0.5489594, y: 0.28595772}
-      - {x: 0.5241177, y: 0.3666898}
+      - {x: 0.52791643, y: 0.36479038}
   m_UseDelaunayMesh: 0
 --- !u!50 &3605020804775853096
 Rigidbody2D:
@@ -141,23 +140,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!95 &-6652849961131107443
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3605020804775853097}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6899fa0fac7a52b48a9c8df8b9c6df97, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

@@ -27,7 +27,7 @@ public class EquipmentObject : BaseObject, IInventoryObject
         controller.Initialize(this, amount);
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         drop.transform.position = dropPosition;
-        drop.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        drop.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         return drop;
     }
 

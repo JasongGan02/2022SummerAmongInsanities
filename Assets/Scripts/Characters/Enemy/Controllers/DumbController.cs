@@ -32,8 +32,9 @@ public class DumbController : EnemyController
 
 
     // Start is called before the first frame update
-    new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody2D>();
         CurrentHP = _HP;
         PrevHP = CurrentHP;
@@ -42,6 +43,7 @@ public class DumbController : EnemyController
         groundCheckCenter = transform.Find("groundCheckCenter");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
+
     }
 
     // Update is called once per frame
