@@ -146,15 +146,15 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     private static void SetUpNewChunkWithContainers(GameObject newChunk)
     {
         GameObject tiles = new GameObject("Tiles");
-        tiles.transform.SetParent(newChunk.transform);
+        tiles.transform.SetParent(newChunk.transform, true);
         GameObject chunkMobContainer = new GameObject("MobContainer");
-        chunkMobContainer.transform.SetParent(newChunk.transform);
+        chunkMobContainer.transform.SetParent(newChunk.transform, true);
         GameObject enemyContainer = new GameObject("EnemyContainer");
-        enemyContainer.transform.SetParent(chunkMobContainer.transform);
+        enemyContainer.transform.SetParent(chunkMobContainer.transform, true);
         GameObject towerContainer = new GameObject("TowerContainer");
-        towerContainer.transform.SetParent(newChunk.transform);
+        towerContainer.transform.SetParent(newChunk.transform, true);
         GameObject dropContainer = new GameObject("DropContainer");
-        dropContainer.transform.SetParent(newChunk.transform);
+        dropContainer.transform.SetParent(newChunk.transform, true);
     }
 
     public IEnumerator DrawChunk(TileObject[,,] Data, Vector2Int offset, Action onDrawingComplete = null)
@@ -227,7 +227,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
                                 isWall ? tile.GetGeneratedWallGameObjects() :
                                 tile.GetGeneratedGameObjects();
         if (!TotalChunks.TryGetValue(chunkID.x, out GameObject game)) Debug.LogError("TotalChunks not found ID: "+chunkID.x);
-        tileGameObject.transform.parent = TotalChunks[chunkID.x].transform.Find("Tiles").transform;
+        tileGameObject.transform.SetParent(TotalChunks[chunkID.x].transform.Find("Tiles").transform, true);
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
     }
 
