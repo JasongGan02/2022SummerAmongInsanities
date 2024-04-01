@@ -52,8 +52,9 @@ public class BatController : EnemyController
 
     }
 
-    new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         animator = GetComponent<Animator>();
         Tr = GetComponent<TrailRenderer>();
         Ps = GetComponent<ParticleSystem>();

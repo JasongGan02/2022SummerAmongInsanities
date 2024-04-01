@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 9cfa1b5578241b6459e62f1257bf9fec
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - damageTextPrefab: {fileID: 4343719289473068921, guid: 5d4b307b693a3014d81deb1871432cd3, type: 3}
+  - canvas: {fileID: 5022870085557637279, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

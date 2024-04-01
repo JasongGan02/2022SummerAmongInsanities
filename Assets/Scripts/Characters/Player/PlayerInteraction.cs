@@ -329,6 +329,8 @@ public class PlayerInteraction : MonoBehaviour
             if (inventory.CanAddItem(resoureObject.item))
             {
                 resoureObject.PickingUp();
+                am.playAudio(am.PickUp);
+                Debug.Log("Pick Up");
             }
         }
     }

@@ -49,14 +49,16 @@ public class LadyController : EnemyController, IRangedAttacker
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ground_mask = LayerMask.GetMask("ground");
         groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");
         groundCheckRight = transform.Find("groundCheckRight");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
+        damageDisplay = gameObject.AddComponent<DamageDisplay>();
     }
 
 

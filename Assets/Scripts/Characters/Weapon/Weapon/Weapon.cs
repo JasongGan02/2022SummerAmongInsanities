@@ -6,8 +6,9 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Constants;
 using static UnityEngine.Rendering.DebugUI;
-
+using Animator = UnityEngine.Animator;
 
 public class Weapon : MonoBehaviour, IDamageSource
 {
@@ -25,7 +26,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected float Delay = 1f;
     protected bool attackBlocked;
     protected Inventory inventory;
-
+    protected bool isAttacking = false;
     public float DamageAmount => finalDamage;
 
     public float CriticalChance => characterController.CriticalChance;
@@ -35,11 +36,15 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     public virtual void Start()
     {
+        anim();
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
-        weaponAnmator = this.GetComponent<Animator>();
         inventory = FindObjectOfType<Inventory>();
+    }
+
+    protected virtual void anim()
+    {
     }
 
 
@@ -75,15 +80,26 @@ public class Weapon : MonoBehaviour, IDamageSource
         if (attackBlocked)
             return;
 
-        if(playermovement.facingRight)
-        weaponAnmator.SetTrigger("Attack");
+        if (playermovement.facingRight)
+            Attack();
         else
-        weaponAnmator.SetTrigger("AttackLeft");
+            AttackLeft();
 
         PlayAttack();
         attackBlocked= true;
         StartCoroutine(DelayAttack());
         
+    }
+    protected void Attack()
+    {
+        weaponAnmator.SetTrigger("Attack");
+        isAttacking = true;
+    }
+
+    protected void AttackLeft()
+    {
+        weaponAnmator.SetTrigger("AttackLeft");
+        isAttacking = true;
     }
 
     protected IEnumerator DelayAttack()
@@ -116,10 +132,12 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "enemy")
+        if (collision.gameObject.tag == "enemy" && isAttacking)
         {
             ApplyDamage(collision.gameObject.GetComponent<CharacterController>());
-            Debug.Log("damaging"); 
+            Debug.Log("damaging");
+
+            isAttacking = false;
 
         }
            

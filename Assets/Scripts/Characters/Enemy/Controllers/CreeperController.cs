@@ -30,8 +30,9 @@ public class CreeperController : EnemyController
     bool isAttacking = false;
     bool booming = false;
 
-    new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         animator = GetComponent<Animator>();
         towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
