@@ -29,7 +29,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     [Header("Lighting")]
     //Light
     public Material lightShader;
-    //[SerializeField] private GameObject lightOverlayPrefab;
+    [SerializeField] private GameObject lightOverlayPrefab;
     // Start is called before the first frame update
     void Awake()
     {
@@ -120,7 +120,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
             yield return new WaitUntil(() => lightDataToApply != null);
         }
-       /* 
+        
         string lightOverlayName = $"Light Overlay {ChunkCoord}";
         GameObject lightMapOverlay = Instantiate(lightOverlayPrefab);
         lightMapOverlay.name = lightOverlayName;
@@ -140,7 +140,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             lightMapOverlay.transform.position = new Vector2(ChunkCoord * ChunkSize.x + ChunkSize.x / 2f, ChunkSize.y / 2f);
             lightMapOverlay.SetActive(true);
         }));
-       */
+       
     }
 
     private static void SetUpNewChunkWithContainers(GameObject newChunk)
