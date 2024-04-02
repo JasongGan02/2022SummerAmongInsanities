@@ -31,7 +31,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     protected int _totalJumps;
     protected Drop[] drops;
     protected List<TextAsset> Hatred;
-    
+    protected DamageDisplay damageDisplay;
 
     protected audioManager am;
 
@@ -52,8 +52,10 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();
-        
 
+
+        damageDisplay = gameObject.AddComponent<DamageDisplay>();
+       
     }
 
     protected virtual void OnEnabled()
@@ -157,7 +159,11 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     #region
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        // Apply damage taking logic here
+        if (damageDisplay != null)
+            damageDisplay.ShowDamage(amount);
+        else
+            Debug.Log("displayNullDamage");
+
         ApplyHPChange(amount);
     }
 

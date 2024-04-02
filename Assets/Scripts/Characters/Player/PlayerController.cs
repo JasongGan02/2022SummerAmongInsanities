@@ -111,6 +111,9 @@ public class PlayerController : CharacterController, IDataPersistence
         PoolManager.Instance.Return(this.gameObject, characterStats);
         OnObjectReturned(true);
         GameObject WeaponInUse = GameObject.FindWithTag("weapon");
+        Destroy(WeaponInUse.GetComponent<Weapon>());
+        Destroy(WeaponInUse.GetComponent<Animator>());
+        WeaponInUse.AddComponent<DroppedObjectController>();
 
         if (characterSpawnManager != null)
         {
