@@ -23,7 +23,7 @@ public class CharacterSpawnManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            SpawnRandomEnemy();
+            //SpawnRandomEnemy();
         }
 
         

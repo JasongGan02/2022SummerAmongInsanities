@@ -63,7 +63,7 @@ public class TimeSystemManager : MonoBehaviour
         }
         else
         {
-            am.playBGM(am.NightTime);
+            //am.playBGM(am.NightTime);
             onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
         }
     }
