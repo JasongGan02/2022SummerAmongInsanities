@@ -29,6 +29,8 @@ public class VillagerWithWeaponController : EnemyController
     private BoxCollider2D boxCollider;
 
     private float Wait = 0.3f;
+    private float attacking_animation_timer = 0f;
+    float damage_start_time_0 = 0.30f;
 
     protected override void Awake()
     {
@@ -72,33 +74,44 @@ public class VillagerWithWeaponController : EnemyController
 
     void attack(Transform target, float frequency)
     {
-        if (rest)
+        // start attack
+        if (!rest && attacking_animation_timer <= 0)
         {
-            if (Wait > 0) { 
-                Wait -= Time.deltaTime; 
-                animator.Play("villagerWithWeapon_run"); 
+            animator.Play("villagerWithWeapon_attack");
+            attacking_animation_timer = 0.3f; // Time & Speed of animation
+        }
+
+        // wait for attack behavior finish
+        else if (attacking_animation_timer > 0) // make sure the attack behavior animation is complete
+        {
+            attacking_animation_timer -= Time.deltaTime;
+
+            if (attacking_animation_timer < (0.3f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.3f - damage_start_time_0 - 0.01f))
+            {
+                float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+                if (checkD < 0.95f) // hurt target successfully
+                {
+                    ApplyDamage(target.GetComponent<CharacterController>());
+                }
+                else { Debug.Log("Distance to Target" + checkD); }
+                rest = true;
+                attacking_animation_timer = 0f;
+                Wait = frequency;
+            }
+
+        }
+
+        // finished attack and wait for next, this else if should be changed to else later!
+        else if (rest)
+        {
+            if (Wait > 0)
+            {
+                Wait -= Time.deltaTime;
+                animator.Play("villagerWithWeapon_idle");
             }
             else
             {
                 rest = false;
-            }
-        }
-
-        else
-        {
-            animator.Play("villagerWithWeapon_attack");
-            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
-            if (checkD < 1.0f) // hurt target successfully
-            {
-                ApplyDamage(target.GetComponent<CharacterController>());
-
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-            else // didn't hurt target
-            {
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
             }
         }
 
@@ -116,6 +129,7 @@ public class VillagerWithWeaponController : EnemyController
         {
             animator.Play("villagerWithWeapon_walk");
         }
+        if (MoveForwardDepthCheck() == false) { return; }
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
@@ -147,13 +161,19 @@ public class VillagerWithWeaponController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
-                if (!facingright) { flip(); }
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    if (!facingright) { flip(); }
+                }
             }
             else
             {
-                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
-                if (facingright) { flip(); }
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    if (facingright) { flip(); }
+                }
             }
         }
     }
@@ -188,6 +208,7 @@ public class VillagerWithWeaponController : EnemyController
 
     new void SenseFrontBlock()
     {
+        if (MoveForwardDepthCheck() == false) { return; }
         headCheck();
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
@@ -263,4 +284,11 @@ public class VillagerWithWeaponController : EnemyController
         return true;
     }
 
+    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
+    {
+        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
+        if (hit.collider != null) { return true; }
+        return false;
+    }
 }

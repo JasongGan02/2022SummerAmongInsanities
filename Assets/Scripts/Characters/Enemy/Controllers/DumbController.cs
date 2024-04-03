@@ -102,13 +102,19 @@ public class DumbController : EnemyController
             patrolTime -= Time.deltaTime;
             if (patrolDirection)
             {
-                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
-                if (!facingRight) { flip(); }
+                if (MoveForwardDepthCheck())
+                {
+                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    if (!facingRight) { flip(); }
+                }
             }
             else
             {
-                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
-                if (facingRight) { flip(); }
+                if (MoveForwardDepthCheck())
+                {
+                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    if (facingRight) { flip(); }
+                }
             }
         }
     }
@@ -134,13 +140,19 @@ public class DumbController : EnemyController
             fleeTime -= Time.deltaTime;
             if (player.transform.position.x > transform.position.x)
             {
-                rb.velocity = new Vector2(_movingSpeed * -2, rb.velocity.y);
-                if (facingRight) { flip(); }
+                if (MoveForwardDepthCheck())
+                {
+                    rb.velocity = new Vector2(_movingSpeed * -2, rb.velocity.y);
+                    if (facingRight) { flip(); }
+                }
             }
             else
             {
-                rb.velocity = new Vector2(_movingSpeed * 2, rb.velocity.y);
-                if (!facingRight) { flip(); }
+                if (MoveForwardDepthCheck())
+                {
+                    rb.velocity = new Vector2(_movingSpeed * 2, rb.velocity.y);
+                    if (!facingRight) { flip(); }
+                }
             }
         }
         else {
@@ -153,6 +165,8 @@ public class DumbController : EnemyController
 
     new void SenseFrontBlock()
     {
+        if(MoveForwardDepthCheck() == false) { return; }
+
         headCheck();
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
@@ -200,11 +214,12 @@ public class DumbController : EnemyController
     {
         rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
     }
-    public void ChangeAnimation(string movement)
+
+    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(movement))
-        {
-            animator.Play(movement);
-        }
+        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
+        if (hit.collider != null) { return true; }
+        return false;
     }
 }

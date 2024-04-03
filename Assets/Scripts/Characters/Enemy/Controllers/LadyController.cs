@@ -184,13 +184,19 @@ public class LadyController : EnemyController, IRangedAttacker
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
-                if (!facingright) { flip(); }
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    if (!facingright) { flip(); }
+                }
             }
             else
             {
-                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
-                if (facingright) { flip(); }
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    if (facingright) { flip(); }
+                }
             }
         }
     }
@@ -237,6 +243,7 @@ public class LadyController : EnemyController, IRangedAttacker
     }
     new void SenseFrontBlock()
     {
+        if (MoveForwardDepthCheck() == false) { return; }
         headCheck();
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
@@ -295,17 +302,44 @@ public class LadyController : EnemyController, IRangedAttacker
         //Debug.Log("currentDistance" + currentDistance);
         if (currentDistance < distance)
         {
-            if (target.position.x > transform.position.x)
+            if (RetreatDepthCheck() == true) // check if there isn't abyss on the back
             {
-                rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                //Debug.Log("going Left");
-            }
-            else
-            {
-                rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                //Debug.Log("going Right");
+                if (target.position.x > transform.position.x)
+                {
+                    rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                    //Debug.Log("going Left");
+                }
+                else
+                {
+                    rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                    //Debug.Log("going Right");
+                }
             }
         }
         else { animator.SetFloat("movingSpeed", 0f); }
+    }
+
+    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
+    {
+        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
+        if (hit.collider != null) { return true; }
+        return false;
+    }
+    private bool RetreatDepthCheck() // when retreat from Player, don't go to abyss
+    {
+        Vector2 backDepthDetector = new Vector2();
+        if (facingright)
+        {
+            backDepthDetector = new Vector2(backCheck.position.x - 0.35f, frontCheck.position.y);
+        }
+        else
+        {
+            backDepthDetector = new Vector2(backCheck.position.x + 0.35f, frontCheck.position.y);
+        }
+        
+        RaycastHit2D hit = Physics2D.Raycast(backDepthDetector, Vector2.down, 3f, ground_mask);
+        if (hit.collider != null) { return true; }
+        return false;
     }
 }

@@ -29,6 +29,8 @@ public class VillagerController : EnemyController
     private BoxCollider2D boxCollider;
 
     private float Wait = 0.3f;
+    private float attacking_animation_timer = 0f;
+    float damage_start_time_0 = 0.17f;
 
     protected override void Awake()
     {
@@ -49,10 +51,10 @@ public class VillagerController : EnemyController
 
     protected override void EnemyLoop()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false) 
-            { SenseFrontBlock(); ChangeCollider("Stand"); }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
+        { SenseFrontBlock(); ChangeCollider("Stand"); }
         else { ChangeCollider("Sit"); }
-        
+
 
         target = WhatToAttack();
         if (target == null) { patrol(); }
@@ -75,35 +77,44 @@ public class VillagerController : EnemyController
 
     void attack(Transform target, float frequency)
     {
-        if (rest)
+        // start attack
+        if (!rest && attacking_animation_timer <= 0)
         {
-            if (Wait > 0) { 
-                Wait -= Time.deltaTime; 
-                animator.Play("villager_run"); 
+            animator.Play("villager_attack");
+            attacking_animation_timer = 0.25f; // Time & Speed of animation
+        }
+
+        // wait for attack behavior finish
+        else if (attacking_animation_timer > 0) // make sure the attack behavior animation is complete
+        {
+            attacking_animation_timer -= Time.deltaTime;
+
+            if (attacking_animation_timer < (0.25f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.25f - damage_start_time_0 - 0.01f))
+            {
+                float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+                if (checkD < 0.75f) // hurt target successfully
+                {
+                    ApplyDamage(target.GetComponent<CharacterController>());
+                }
+                rest = true;
+                attacking_animation_timer = 0f;
+                Wait = frequency;
+            }
+
+        }
+
+        // finished attack and wait for next, this else if should be changed to else later!
+        else if (rest)
+        {
+            if (Wait > 0)
+            {
+                Wait -= Time.deltaTime;
+                animator.Play("villager_rest");
             }
             else
             {
                 rest = false;
             }
-        }
-
-        else
-        {
-            animator.Play("villager_attack");
-            float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
-            if (checkD < 0.75f) // hurt target successfully
-            {
-                ApplyDamage(target.GetComponent<CharacterController>());
-
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-            else // didn't hurt target
-            {
-                rest = true;
-                Wait = 1.0f * _atkSpeed;
-            }
-
         }
 
         flip(target);
@@ -118,6 +129,7 @@ public class VillagerController : EnemyController
         {
             animator.Play("villager_walk");
         }
+        if (MoveForwardDepthCheck() == false) { return; }
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
@@ -146,15 +158,21 @@ public class VillagerController : EnemyController
         {
             animator.Play("villager_walk");
             patroltime -= Time.deltaTime;
-            if (patrolToRight) 
-            { 
-                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
-                if (!facingright) { flip(); }
+            if (patrolToRight)
+            {
+                if (MoveForwardDepthCheck() == true) 
+                {
+                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    if (!facingright) { flip(); }
+                }
             }
             else
             {
-                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
-                if (facingright) { flip(); }
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    if (facingright) { flip(); }
+                }
             }
         }
     }
@@ -186,6 +204,7 @@ public class VillagerController : EnemyController
     }
     new void SenseFrontBlock()
     {
+        if (MoveForwardDepthCheck() == false) { return; }
         headCheck();
         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
@@ -250,9 +269,9 @@ public class VillagerController : EnemyController
 
         RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
         RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
-        if (checkTop.collider != null && 
+        if (checkTop.collider != null &&
             checkBottom.collider != null &&
-            checkTop.collider.gameObject.CompareTag("ground") && 
+            checkTop.collider.gameObject.CompareTag("ground") &&
             checkBottom.collider.gameObject.CompareTag("ground"))
         {
             //Debug.Log("there is ground block");
@@ -272,5 +291,12 @@ public class VillagerController : EnemyController
         {
             boxCollider.size = new Vector2(0.1875544f, 0.718245f);
         }
+    }
+    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
+    {
+        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
+        if (hit.collider != null) { return true; }
+        return false;
     }
 }
