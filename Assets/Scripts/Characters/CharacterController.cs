@@ -49,6 +49,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
         set { characterStats = value; }
     }
 
+    public BaseObject PoolableObject => characterStats;
+
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();

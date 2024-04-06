@@ -17,7 +17,8 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public static Dictionary<int, GameObject> ActiveChunks;
     public static Dictionary<int, GameObject> TotalChunks;
     public static Dictionary<int, int[,]> AdditiveWorldData;
-    public static readonly Vector2Int ChunkSize = new Vector2Int(16, 100);
+    public static HashSet<int> ReadyChunks = new HashSet<int>();
+    public static readonly Vector2Int ChunkSize = new Vector2Int(32, 100);
     public static int TileLayers = 4; // 0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)
     public float seed;
     public TerrainSettings[] settings;
@@ -139,6 +140,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             lightMapOverlay.transform.localScale = new Vector3(ChunkSize.x, ChunkSize.y, 1);
             lightMapOverlay.transform.position = new Vector2(ChunkCoord * ChunkSize.x + ChunkSize.x / 2f, ChunkSize.y / 2f);
             lightMapOverlay.SetActive(true);
+            ReadyChunks.Add(ChunkCoord);
         }));
        
     }
