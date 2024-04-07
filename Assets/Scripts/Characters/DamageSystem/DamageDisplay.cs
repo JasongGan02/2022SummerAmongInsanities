@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 
 public class DamageDisplay : MonoBehaviour
 {
@@ -9,65 +11,45 @@ public class DamageDisplay : MonoBehaviour
 
     void Awake()
     {
-        // Attempt to find the Canvas in the scene (you might want to tag your canvas for more precise finding)
-        canvas = FindObjectOfType<Canvas>();
 
-        // Load the Damage Text Prefab from Resources folder
-        damageTextPrefab = Resources.Load<GameObject>("DamageDisplay");
-        if (damageTextPrefab == null)
-        {
-            Debug.LogError("Damage Text Prefab not found in Resources. Please check the path.");
-        }
     }
-        
-    public void ShowDamage(float amount)
+
+    public void ShowDamage(float amount,Transform enemyTransform)
     {
-        if (canvas == null || damageTextPrefab == null)
+        var damageTextMeshPrefab = Resources.Load<TextMeshPro>("DamageDisplay");
+
+        if (damageTextMeshPrefab == null)
         {
-            Debug.LogError("Required components not found. Please ensure a Canvas is present and the DamageTextPrefab is correctly set.");
+            Debug.LogError("Damage Text Mesh Prefab not found in Resources. Please check the path.");
             return;
         }
 
-        GameObject textObj = Instantiate(damageTextPrefab, canvas.transform, false);
-        Text damageText = textObj.GetComponent<Text>();
-        if (damageText == null)
-        {
-            Debug.LogError("DamageTextPrefab does not contain a Text component.");
-            return;
-        }
-        int roundedAmount = Mathf.RoundToInt(amount);
-        // Set the text to the rounded integer amount
-        damageText.text = roundedAmount.ToString();
+        // Instantiate the text mesh as a child of the enemy's transform
+        TextMeshPro textMesh = Instantiate(damageTextMeshPrefab, enemyTransform.position, Quaternion.identity, enemyTransform);
 
-        // Assume canvas is the Canvas component, and we need its RectTransform
-        RectTransform canvasRectTransform = canvas.GetComponent<RectTransform>();
+        // Set the text to the damage amount
+        textMesh.text = Mathf.RoundToInt(amount).ToString();
 
-        // Calculate the position to place the damage text
-        Vector2 worldPosition = transform.position + new Vector3(0, 2f, 0); // Adjust the Y offset as needed
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+        // You may want to adjust the local position to offset the text from the enemy's center
+        textMesh.transform.localPosition = new Vector3(0, 0.5f, 0);
 
-        // Convert screen position to canvas local position
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, screenPosition, canvas.GetComponent<Canvas>().worldCamera, out Vector2 localPoint);
-        RectTransform rectTransform = textObj.GetComponent<RectTransform>();
-        rectTransform.localPosition = new Vector3(localPoint.x, localPoint.y, 0);
-
-        // Start the animation coroutine
-        StartCoroutine(AnimateDamageText(rectTransform));
+        // Start the animation coroutine on the TextMeshPro component
+        StartCoroutine(AnimateDamageText(textMesh));
     }
-
-
-    private IEnumerator AnimateDamageText(RectTransform textTransform)
+    private IEnumerator AnimateDamageText(TextMeshPro textMesh)
     {
         float duration = 1f; // Duration of the animation
-        Vector3 startpos = textTransform.anchoredPosition;
-        Vector3 endpos = startpos + new Vector3(0, 100f, 0); // Adjust as needed for the "jump" effect
+        Vector3 startPos = textMesh.transform.localPosition;
+        Vector3 endPos = startPos + new Vector3(0, 1f, 0); // Move text up over time
 
         for (float t = 0; t < duration; t += Time.deltaTime)
         {
-            textTransform.anchoredPosition = Vector3.Lerp(startpos, endpos, t / duration);
+            textMesh.transform.localPosition = Vector3.Lerp(startPos, endPos, t / duration);
             yield return null;
         }
 
-        Destroy(textTransform.gameObject);
+        Destroy(textMesh.gameObject);
     }
 }
+
+
