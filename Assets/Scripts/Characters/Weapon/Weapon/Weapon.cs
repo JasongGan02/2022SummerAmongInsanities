@@ -32,7 +32,8 @@ public class Weapon : MonoBehaviour, IDamageSource
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
 
-
+    protected LayerMask enemyLayer;
+    protected float detectionRadius = 1.5f;
 
     public virtual void Start()
     {
@@ -50,15 +51,10 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     public virtual void Update()
     {
+        DetectAndAttackEnemy();
+        Patrol();
         Flip();
-        if (Input.GetMouseButtonDown(0))
-        {
-            attack();
-        }
-        else
-        {
-            Patrol();
-        }
+        
     }
 
 
@@ -69,7 +65,24 @@ public class Weapon : MonoBehaviour, IDamageSource
         finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
 
     }
+    protected virtual void DetectAndAttackEnemy()
+    {
+        // Detect enemies within a certain radius around the weapon
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+        foreach(Collider2D hit in hits)
+        {
+            if(hit.TryGetComponent<EnemyController>(out EnemyController enemyController))
+            {
+                EnsureFacingEnemy(hit.gameObject.transform.position);
 
+                // Trigger attack
+                if (!attackBlocked)
+                {
+                    attack();
+                }
+            }
+        }
+    }
 
     protected void PlayAttack()
     {
@@ -108,6 +121,16 @@ public class Weapon : MonoBehaviour, IDamageSource
         attackBlocked = false;
     }
 
+
+    protected void EnsureFacingEnemy(Vector3 enemyPosition)
+    {
+        bool shouldFaceRight = enemyPosition.x > transform.position.x;
+        if (shouldFaceRight != playermovement.facingRight)
+        {
+            // Flip player and weapon if they're not facing towards the enemy
+            Flip();
+        }
+    }
 
     public virtual void Flip()
     {
