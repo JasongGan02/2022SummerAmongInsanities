@@ -10,7 +10,7 @@ using UnityEngine;
 public class DumbController : EnemyController
 {
 
-    int maxHP;
+    private float maxHP;
     private Rigidbody2D rb;
     private float patrolTime = 0f;
     private bool patrolDirection = false;
@@ -36,14 +36,18 @@ public class DumbController : EnemyController
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
-        CurrentHP = _HP;
-        PrevHP = CurrentHP;
         animator = GetComponent<Animator>();
         ground_mask = LayerMask.GetMask("ground");
         groundCheckCenter = transform.Find("groundCheckCenter");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
 
+    }
+    private void Start()
+    {
+        maxHP = _HP;
+        CurrentHP = _HP;
+        PrevHP = _HP;
     }
 
     // Update is called once per frame
@@ -62,6 +66,7 @@ public class DumbController : EnemyController
             flee();
         }
         else if(_HP <= maxHP/2){
+            //Debug.Log("HP less than 50%");
             animator.Play("dumb_flee");
             Vector2 direction = (player.transform.position - transform.position);
             if (direction.x > 0)

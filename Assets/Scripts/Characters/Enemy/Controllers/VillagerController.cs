@@ -10,7 +10,6 @@ public class VillagerController : EnemyController
 {
     bool rest = false;
     bool facingright = false;
-    private Rigidbody2D rb;
     float patroltime = 0f;
     private Animator animator;
     bool patrolToRight = true;
@@ -73,6 +72,7 @@ public class VillagerController : EnemyController
                 }
             }
         }
+        ShakePlayerOverHead();
     }
 
     void attack(Transform target, float frequency)
@@ -298,5 +298,24 @@ public class VillagerController : EnemyController
         RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
         if (hit.collider != null) { return true; }
         return false;
+    }
+
+    new void ShakePlayerOverHead()
+    {
+        if (System.Math.Abs(player.transform.position.x - transform.position.x) < 0.3f)
+        {
+            if (System.Math.Abs(player.transform.position.y - transform.position.y) < 2f)
+            {
+                Debug.Log("shaking the player over head");
+                if (Random.Range(0f, 1f) <= 0.5f)
+                {
+                    rb.velocity = new Vector2(-12f, rb.velocity.y);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(12f, rb.velocity.y);
+                }
+            }
+        }
     }
 }

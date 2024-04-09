@@ -22,7 +22,6 @@ public class LadyController : EnemyController, IRangedAttacker
     private bool canMove = true;
 
 
-    private Rigidbody2D rb;
     private float nextJump;
     private bool canJump = true;
     private bool isJump = false;
