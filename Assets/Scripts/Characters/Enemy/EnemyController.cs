@@ -23,6 +23,7 @@ public abstract class EnemyController : CharacterController
     protected float timer;
     protected Transform NearestTowerTransform;
 
+    protected Rigidbody2D rb;
     protected bool isFindTower;
     protected bool isTouchTower;
     protected bool isFindPlayer;
@@ -308,6 +309,25 @@ public abstract class EnemyController : CharacterController
         int chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(transform.position);
         if (WorldGenerator.ActiveChunks.ContainsKey(chunkCoord))
             transform.SetParent(WorldGenerator.ActiveChunks[chunkCoord].transform.Find("MobContainer").Find("EnemyContainer"), true);
+    }
+
+    public void ShakePlayerOverHead()
+    {
+        if (Math.Abs(player.transform.position.x - this.transform.position.x) < 0.1f)
+        {
+            if (Math.Abs(player.transform.position.y - this.transform.position.y) < 0.3f)
+            {
+                Debug.Log("shaking the player over head");
+                if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
+                {
+                    this.rb.velocity = new Vector2(-2, rb.velocity.y);
+                }
+                else
+                {
+                    this.rb.velocity = new Vector2(2, rb.velocity.y);
+                }
+            }
+        }
     }
 
 }
