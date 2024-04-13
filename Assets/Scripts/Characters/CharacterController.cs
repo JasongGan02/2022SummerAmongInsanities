@@ -55,7 +55,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     {
         effects = new List<EffectObject>();
 
-
+        
         damageDisplay = gameObject.AddComponent<DamageDisplay>();
        
     }
@@ -161,8 +161,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     #region
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
+        Transform damagedTransfrom = this.transform;
         if (damageDisplay != null)
-            damageDisplay.ShowDamage(amount);
+            damageDisplay.ShowDamage(amount, damagedTransfrom);
         else
             Debug.Log("displayNullDamage");
 

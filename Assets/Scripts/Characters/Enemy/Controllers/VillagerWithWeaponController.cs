@@ -10,7 +10,6 @@ public class VillagerWithWeaponController : EnemyController
 {
     bool rest = false;
     bool facingright = false;
-    private Rigidbody2D rb;
     float patroltime = 0f;
     private Animator animator;
     bool patrolToRight = true;
