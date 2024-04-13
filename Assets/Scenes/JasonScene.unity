@@ -771,11 +771,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
     - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
     - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
-  enemyObjects:
-  - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
-  - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
-  - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
-  spawnRate: 1
+  safeZoneRadius: 20
+  spawnRate: 0.1
 --- !u!4 &486349709
 Transform:
   m_ObjectHideFlags: 0
