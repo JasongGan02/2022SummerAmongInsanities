@@ -199,6 +199,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4677015888933098900, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+      propertyPath: RenderDistance
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
@@ -771,8 +775,17 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
     - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
     - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
+  - categoryName: WaveEnemy
+    baseMobCap: 30
+    mobScriptableObjects:
+    - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
+    - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+    - {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
+    - {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
+    - {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
   safeZoneRadius: 20
   spawnRate: 0.1
+  despawnDistance: 80
 --- !u!4 &486349709
 Transform:
   m_ObjectHideFlags: 0
@@ -1080,7 +1093,7 @@ GameObject:
   - component: {fileID: 1797734688}
   - component: {fileID: 1797734687}
   m_Layer: 0
-  m_Name: MobContainer
+  m_Name: DifficultyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1098,7 +1111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cb95e6bdf933140b521b01a06733f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopLevelingUp: 1
+  stopLevelingUp: 0
   playerCount: 1
   difficultyValue: 1
   enemyObjects:

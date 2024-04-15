@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MobSpawner : MonoBehaviour
@@ -11,21 +12,88 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] private List<MobCategory> mobCategories;
     [SerializeField] private float safeZoneRadius = 20f;
     [SerializeField] private float spawnRate;
+    [SerializeField] private float despawnDistance = 80f;
+    [SerializeField] public static int waveNumber = 5;
     
     //public static Dictionary<int, GameObject> Global
     private float totalWeight = 0f;
     private List<int> currentTickActiveChunk = new List<int>();
-    private List<GameObject> enemyList = new List<GameObject>(); //TODO: get a dic for all lists;
+    public static List<GameObject> enemyList = new List<GameObject>(); //TODO: get a dic for all lists;
     private GameObject player;
-    
+
     private void Start()
     {
         //spawnRate = Time.fixedDeltaTime;
         player = GameObject.FindGameObjectWithTag("Player");
         InitializeTotalWeights();
-        StartCoroutine(SpawnCycleCoroutine());
+        StartCoroutine(SpawnCycleCoroutine()); 
+        TimeSystemManager.onNightStarted += HandleNightStart;
     }
 
+    private void OnDestroy()
+    {
+        TimeSystemManager.onNightStarted -= HandleNightStart;
+    }
+
+    public static void UpdateSpawnDiff(float coeff)
+    {
+        Debug.Log("coeff: " + 1 + 0.4 * coeff);
+        waveNumber = (int) (waveNumber * (1 + 0.4 * coeff));
+        Debug.Log(waveNumber);
+    }
+    
+    private void HandleNightStart(bool isRedMoon)
+    {
+        StartWaveSpawning(isRedMoon ? 2f : 1f); // Normal intensity for regular nights
+    }
+    
+    private void StartWaveSpawning(float intensityMultiplier)
+    {
+        float energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance();
+        float spawnDistance = energyZoneRadius + 20f;
+        Vector3 corePosition = CoreArchitectureController.Instance.transform.position;
+
+        StartCoroutine(SpawnWaveAtPoint(corePosition, (int)(waveNumber * intensityMultiplier), spawnDistance, intensityMultiplier));
+    }
+    private IEnumerator SpawnWaveAtPoint(Vector3 corePosition, int waveNumber, float spawnDistance, float intensityMultiplier)
+    {
+        // Assuming a constant spacing to spread out the wave along a line parallel to the core
+        for (int i = 0; i < waveNumber; i++)
+        {
+            if (!CanSpawnCategory(mobCategories[1])) yield return null;
+            
+            // Generate offset to create a line of enemies along the x-axis from both sides
+            Vector2Int offset = GenerateTriangularDistributedOffset(8);
+            Vector3 spawnPointLeft = new Vector3(corePosition.x - spawnDistance + offset.x, corePosition.y, 0);
+            Vector3 spawnPointRight = new Vector3(corePosition.x + spawnDistance + offset.x, corePosition.y, 0);
+
+            // Calculate the actual spawn points based on terrain data for both sides
+            SpawnEnemyAtGround(spawnPointLeft);
+            SpawnEnemyAtGround(spawnPointRight);
+
+            // Delay next spawn in the wave for staggered appearance
+            float randomDelay = Random.Range(1f, 5f) / intensityMultiplier;
+            yield return new WaitForSeconds(randomDelay); // Faster spawning for more intense nights
+        }
+    }
+    
+    private void SpawnEnemyAtGround(Vector3 spawnPoint)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(spawnPoint + Vector3.up * 50, Vector3.down, 100);
+        if (hit.collider != null)
+        {
+            // Adjust to spawn on the topmost solid ground
+            spawnPoint.y = hit.point.y + 1; // Ensure the enemy is slightly above the ground
+            
+            // Select the enemy type and spawn
+            GameObject enemy = PoolManager.Instance.Get(SelectEnemyObjectBasedOnWeight(mobCategories[1]) as EnemyObject);
+            enemy.transform.position = spawnPoint;
+            RegisterMob(enemy);
+            
+        }
+    }
+    
+    
     private void InitializeTotalWeights()
     {
         foreach (MobCategory mc in mobCategories)
@@ -75,7 +143,7 @@ public class MobSpawner : MonoBehaviour
         foreach (var category in mobCategories)
         {
             // Check if the global mob cap allows spawning in this category
-            if (CanSpawnCategory(category))
+            if (category.categoryName != "WaveEnemy" && CanSpawnCategory(category))
             {
                 AttemptSpawnMobs(category);
             }
@@ -106,14 +174,9 @@ public class MobSpawner : MonoBehaviour
         //if (terrainData[chosenX, chosenY, 1] == null) return; TODO: instead of == null this should check if the block is able to spawn thing
         ISpawnable spawnableMob = SelectEnemyObjectBasedOnWeight(category);
         if (spawnableMob == null) return;
-        // int packIndex = 0;
-        // while (packIndex < spawnableMob.PackSize)
-        // {
-        //     
-        // }
+
         for (int packIndex = 0; packIndex < spawnableMob.PackSize; packIndex++)
         {
-            // Add random offsets for pack spawning, ensuring we stay within chunk bounds
             Vector2Int offset = GenerateTriangularDistributedOffset(8);
             int finalX = Mathf.Clamp(chosenX + offset.x, 0, WorldGenerator.ChunkSize.x - 1);
             int finalY = Mathf.Clamp(chosenY + offset.y, 0, maxY);
@@ -122,21 +185,16 @@ public class MobSpawner : MonoBehaviour
 
             if (ShouldSpawnHere(terrainData, lightData, finalX, finalY, spawnableMob.ColliderSize, spawnableMob.MinLightLevel, spawnableMob.MaxLightLevel))
             {
-                GameObject spawnedGameObject = PoolManager.Instance.Get(spawnableMob as EnemyObject);
-                spawnedGameObject.transform.position = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
                 if (WorldGenerator.ActiveChunks.ContainsKey(chunkCoord.x))
                 {
+                    GameObject spawnedGameObject = PoolManager.Instance.Get(spawnableMob as EnemyObject);
+                    spawnedGameObject.transform.position = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
                     Transform enemyContainer = WorldGenerator.ActiveChunks[chunkCoord.x].transform.Find("MobContainer").Find("EnemyContainer");
                     spawnedGameObject.transform.SetParent(enemyContainer, true);
+                    RegisterMob(spawnedGameObject);
                 }
-                RegisterMob(spawnedGameObject);
-                Debug.Log($"X: {finalX + chunkCoord.x * WorldGenerator.ChunkSize.x}, Y: {finalY + 1}");
-                // Assuming one pack per spawn attempt per category, break after successfully spawning a pack
             }
         }
-        
-        
-        
     }
 
     private bool CheckSafeZone(int finalX, Vector2Int chunkCoord, int finalY)
@@ -197,8 +255,6 @@ public class MobSpawner : MonoBehaviour
 
     private void DespawnEntities()
     {
-        float despawnDistance = 50f; // Example distance
-
         GameObject player = GameObject.FindGameObjectWithTag("Player"); // Assuming the player has a tag "Player"
         if (player == null) return;
 

@@ -16,18 +16,20 @@ public class DifficultyManager : MonoBehaviour
     private int enemyLevel;
     private float playerFactor;
     private TimeSystemManager timeSystemManager;
+    private float _coeff;
 
     private void Start()
     {
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
         timeSystemManager.onDayUpdated += OnDayPassed;
-        timeSystemManager.onNightStarted += OnRedMoonNight;
+        TimeSystemManager.onNightStarted += OnRedMoonNight;
+        TimeSystemManager.onNightStarted += UpdateSpawnDiff;
     }
 
     private void OnDestroy()
     {
         timeSystemManager.onDayUpdated -= OnDayPassed;
-        timeSystemManager.onNightStarted -= OnRedMoonNight;
+        TimeSystemManager.onNightStarted -= OnRedMoonNight;
     }
 
     private void Update()
@@ -43,15 +45,15 @@ public class DifficultyManager : MonoBehaviour
     {
         float playerFactor = 1 + 0.3f * (playerCount - 1);
         float timeFactor = 0.0506f * difficultyValue * Mathf.Pow(playerCount, 0.2f);
-        float daysFactor = Mathf.Pow(1.15f, daysCompleted);
+        float daysFactor = Mathf.Pow(1.13f, daysCompleted);
 
-        float coeff = (playerFactor + timeInMinutes * timeFactor) * daysFactor;
+        _coeff = (playerFactor + timeInMinutes * timeFactor) * daysFactor;
         
         // Use coeff to adjust enemy levels, money costs, and rewards as necessary
         // For example: 
-        UpdateEnemyLevels(coeff);
-        UpdateInteractableCosts(coeff);
-        UpdateEnemyRewards(coeff);
+        UpdateEnemyLevels(_coeff);
+        UpdateInteractableCosts(_coeff);
+        UpdateEnemyRewards(_coeff);
     }
 
     private void OnDayPassed(int day)
@@ -83,10 +85,16 @@ public class DifficultyManager : MonoBehaviour
             enemyObject.LevelUp();
         }
         // Find all EnemyController instances and update them
-        foreach (var enemy in GetComponentsInChildren<EnemyController>())
+        foreach (var enemy in MobSpawner.enemyList)
         {
-            enemy.LevelUp();
+            enemy.GetComponent<EnemyController>().LevelUp();
         }
+    }
+    
+    public void UpdateSpawnDiff(bool isRedMoon)
+    {
+        MobSpawner.waveNumber *= (int)(MobSpawner.waveNumber * (1 + 0.2 * _coeff)) ;
+        Debug.Log(MobSpawner.waveNumber);
     }
 
     private void UpdateInteractableCosts(float coeff)
