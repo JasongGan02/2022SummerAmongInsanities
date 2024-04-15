@@ -19,7 +19,7 @@ public class TimeSystemManager : MonoBehaviour
 
     public Action onDayStarted { get; set; }
     public Action onDuskStarted { get; }
-    public Action<bool> onNightStarted { get; set; }
+    public static Action<bool> onNightStarted { get; set; }
 
     public Action<int> onHourUpdated { get; set; }
     public Action<int> onDayUpdated { get; set; }

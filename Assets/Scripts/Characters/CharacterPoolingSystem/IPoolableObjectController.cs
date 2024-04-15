@@ -5,4 +5,9 @@ using UnityEngine;
 public interface IPoolableObjectController
 {
     void Reinitialize();
+
+    public BaseObject PoolableObject
+    {
+        get;
+    }
 }

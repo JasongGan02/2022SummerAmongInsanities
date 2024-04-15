@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class CoreArchitectureController : CharacterController
 {
-    float Constructable_Distance;
+    public float Constructable_Distance = 15;
     GameObject Constructable_Circle;
 
     GameObject player;
@@ -31,7 +31,6 @@ public class CoreArchitectureController : CharacterController
     {
         player = GameObject.FindWithTag("Player");
         Constructable_Circle = transform.Find("Circle").gameObject;
-        Constructable_Distance = 15;
         InitConstructableCircle();
 
     }

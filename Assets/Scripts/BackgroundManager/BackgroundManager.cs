@@ -28,7 +28,7 @@ public class BackgroundManager : MonoBehaviour
 
         BG.transform.position = new Vector3(BG.transform.position.x, worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f, BG.transform.position.z);
         timeSystemManager.onDayStarted += OnDayStarted;
-        timeSystemManager.onNightStarted += OnNightStarted;
+        TimeSystemManager.onNightStarted += OnNightStarted;
 
     }
     
@@ -37,7 +37,7 @@ public class BackgroundManager : MonoBehaviour
     private void OnDestroy()
     {
         timeSystemManager.onDayStarted -= OnDayStarted;
-        timeSystemManager.onNightStarted -= OnNightStarted;
+        TimeSystemManager.onNightStarted -= OnNightStarted;
     }
 
     private void OnDayStarted()
