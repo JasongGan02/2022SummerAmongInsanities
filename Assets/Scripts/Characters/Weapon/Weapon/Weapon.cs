@@ -16,6 +16,8 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected CharacterController characterController;
     protected WeaponObject weaponStats;
     protected float finalDamage;
+    protected float detectionRadius;
+
 
     protected GameObject player;
     protected Playermovement playermovement;
@@ -33,15 +35,17 @@ public class Weapon : MonoBehaviour, IDamageSource
     public float CriticalMultiplier => characterController.CriticalMultiplier;
 
     protected LayerMask enemyLayer;
-    protected float detectionRadius = 1.5f;
+    protected Quaternion initialRotation;
 
     public virtual void Start()
     {
+
         anim();
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         inventory = FindObjectOfType<Inventory>();
+        initialRotation = transform.rotation;
     }
 
     protected virtual void anim()
@@ -51,6 +55,7 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     public virtual void Update()
     {
+        transform.rotation = initialRotation;
         DetectAndAttackEnemy();
         Patrol();
         Flip();
@@ -63,6 +68,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         this.characterController = characterController;
         this.weaponStats = weaponObject;
         finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
+        detectionRadius = characterController.AtkRange; // to do rangeCoef
 
     }
     protected virtual void DetectAndAttackEnemy()
@@ -103,13 +109,13 @@ public class Weapon : MonoBehaviour, IDamageSource
         StartCoroutine(DelayAttack());
         
     }
-    protected void Attack()
+    protected virtual void Attack()
     {
         weaponAnmator.SetTrigger("Attack");
         isAttacking = true;
     }
 
-    protected void AttackLeft()
+    protected virtual void AttackLeft()
     {
         weaponAnmator.SetTrigger("AttackLeft");
         isAttacking = true;
@@ -148,8 +154,21 @@ public class Weapon : MonoBehaviour, IDamageSource
     public virtual void Patrol()
     {
         
-        transform.position = player.transform.position;
-       
+        
+        if (playermovement.facingRight)
+        {
+            // Patrol in front of the player to the right
+            transform.position = new Vector3(player.transform.position.x + detectionRadius,
+                                             player.transform.position.y,
+                                             player.transform.position.z);
+        }
+        else
+        {
+            // Patrol in front of the player to the left
+            transform.position = new Vector3(player.transform.position.x - detectionRadius,
+                                             player.transform.position.y,
+                                             player.transform.position.z);
+        }
     }
 
 
