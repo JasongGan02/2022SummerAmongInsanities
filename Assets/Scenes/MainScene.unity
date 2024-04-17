@@ -443,7 +443,9 @@ PrefabInstance:
       propertyPath: heightOffset
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1713470745861563648, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
+    - {fileID: 1713470745527743193, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
 --- !u!1 &301439332
@@ -735,6 +737,26 @@ Transform:
   m_Father: {fileID: 182581677}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &549860226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1713470745527743195, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
+  m_PrefabInstance: {fileID: 191274506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &549860229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549860226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 960a5df1dd50f4f0faaece70840fcbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  horizontalParallaxEffect: 1
+  verticalParallaxEffect: 1
 --- !u!1 &701233753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4878420192029176314, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
@@ -934,6 +956,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1146202165 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1713470745861563650, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
+  m_PrefabInstance: {fileID: 191274506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1146202168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146202165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 960a5df1dd50f4f0faaece70840fcbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  horizontalParallaxEffect: 1
+  verticalParallaxEffect: 1
 --- !u!1 &1292711032
 GameObject:
   m_ObjectHideFlags: 0

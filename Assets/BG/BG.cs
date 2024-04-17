@@ -13,6 +13,7 @@ public class BG : MonoBehaviour
         startpos = transform.position.x;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
         cam = Camera.main.transform.gameObject;
+        
     }
 
     void Update()
