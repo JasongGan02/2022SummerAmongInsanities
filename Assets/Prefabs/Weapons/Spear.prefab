@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7300551353389401830}
   - component: {fileID: 4492738828011379102}
   - component: {fileID: 3920562686328062940}
-  - component: {fileID: 4625506572887054572}
   m_Layer: 0
   m_Name: Spear
   m_TagString: Untagged
@@ -118,7 +117,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.029868826, y: -0.08022377}
@@ -134,23 +133,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.13961342, y: 1.1013606}
   m_EdgeRadius: 0
---- !u!95 &4625506572887054572
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246375338820597191}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2a8c0a5301f232d40aa07ccb2aed88f7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

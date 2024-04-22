@@ -25,8 +25,7 @@ public class BowController : RangedWeaponController
 
     public override void Update()
     {
-        Flip();
-        Patrol();
+     
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -72,30 +71,7 @@ public class BowController : RangedWeaponController
         }
     }
 
-    public override void Patrol()
-    {
-        if (playermovement.facingRight)
-        {
-            transform.position = player.transform.position + new Vector3(0.8f, 0, 0);
-        }
-        else
-        {
-            transform.position = player.transform.position - new Vector3(0.8f, 0, 0);
-        }
-    }
 
-    public override void Flip()
-    {
-        if (playermovement.facingRight)
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 315));
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 135));
-        }
-
-    }
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {

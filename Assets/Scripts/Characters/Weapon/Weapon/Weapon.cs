@@ -17,172 +17,109 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected WeaponObject weaponStats;
     protected float finalDamage;
     protected float detectionRadius;
-
-
     protected GameObject player;
     protected Playermovement playermovement;
-
-    protected Animator weaponAnmator;
     protected audioManager am;
-
     protected float Delay = 1f;
     protected bool attackBlocked;
     protected Inventory inventory;
     protected bool isAttacking = false;
+    protected Vector3 offset = new Vector3(1.0f, 0, 0);
     public float DamageAmount => finalDamage;
-
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
 
     protected LayerMask enemyLayer;
-    protected Quaternion initialRotation;
 
     public virtual void Start()
     {
-
-        anim();
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
         am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         inventory = FindObjectOfType<Inventory>();
-        initialRotation = transform.rotation;
     }
-
-    protected virtual void anim()
-    {
-    }
-
-
-    public virtual void Update()
-    {
-        transform.rotation = initialRotation;
-        DetectAndAttackEnemy();
-        Patrol();
-        Flip();
-        
-    }
-
 
     public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
         finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
-        detectionRadius = characterController.AtkRange; // to do rangeCoef
+        detectionRadius = characterController.AtkRange; 
 
+    }
+
+    public virtual void Update()
+    {
+        if (!isAttacking)
+        {
+            FollowPlayer();
+        }
+        DetectAndAttackEnemy();
+    }
+
+    void FollowPlayer()
+    {
+        transform.position = player.transform.position + offset;
     }
     protected virtual void DetectAndAttackEnemy()
     {
-        // Detect enemies within a certain radius around the weapon
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
-        foreach(Collider2D hit in hits)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, detectionRadius);
+        foreach (Collider2D hit in hits)
         {
-            if(hit.TryGetComponent<EnemyController>(out EnemyController enemyController))
+            if (hit.CompareTag("enemy") && !isAttacking)
             {
-                EnsureFacingEnemy(hit.gameObject.transform.position);
-
-                // Trigger attack
-                if (!attackBlocked)
-                {
-                    attack();
-                }
+                StartCoroutine(Attack(hit.transform));
             }
         }
     }
-
     protected void PlayAttack()
     {
         am.playWeaponAudio(am.attack);
     }
-    public virtual void attack()
+
+    IEnumerator Attack(Transform enemy)
     {
-        if (attackBlocked)
-            return;
+        isAttacking = true;
 
-        if (playermovement.facingRight)
-            Attack();
-        else
-            AttackLeft();
+   
+        Vector2 direction = (enemy.position - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
 
+     
         PlayAttack();
-        attackBlocked= true;
-        StartCoroutine(DelayAttack());
-        
-    }
-    protected virtual void Attack()
-    {
-        weaponAnmator.SetTrigger("Attack");
-        isAttacking = true;
-    }
-
-    protected virtual void AttackLeft()
-    {
-        weaponAnmator.SetTrigger("AttackLeft");
-        isAttacking = true;
-    }
-
-    protected IEnumerator DelayAttack()
-    {
-        yield return new WaitForSeconds(Delay);
-        attackBlocked = false;
-    }
-
-
-    protected void EnsureFacingEnemy(Vector3 enemyPosition)
-    {
-        bool shouldFaceRight = enemyPosition.x > transform.position.x;
-        if (shouldFaceRight != playermovement.facingRight)
+        Vector3 originalPosition = transform.position;
+        Vector3 attackPosition = player.transform.position + (Vector3)direction * 1.0f; // Adjust 1.0f to control how far the spear pokes
+        while (Vector3.Distance(transform.position, attackPosition) > 0.1f)
         {
-            // Flip player and weapon if they're not facing towards the enemy
-            Flip();
+            transform.position = Vector3.MoveTowards(transform.position, attackPosition, Time.deltaTime * 2);
+            yield return null;
         }
-    }
 
-    public virtual void Flip()
-    {
- 
-        if ((playermovement.facingRight && transform.localScale.x < 0) ||
-            (!playermovement.facingRight && transform.localScale.x > 0))
-        {
-            
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
-    }
+        yield return new WaitForSeconds(0.1f);
 
+        while (Vector3.Distance(transform.position, originalPosition) > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * 2);
+            yield return null;
+        }
 
-    // patrol around
-    public virtual void Patrol()
-    {
-        
-        
-        if (playermovement.facingRight)
-        {
-            // Patrol in front of the player to the right
-            transform.position = new Vector3(player.transform.position.x + detectionRadius,
-                                             player.transform.position.y,
-                                             player.transform.position.z);
-        }
-        else
-        {
-            // Patrol in front of the player to the left
-            transform.position = new Vector3(player.transform.position.x - detectionRadius,
-                                             player.transform.position.y,
-                                             player.transform.position.z);
-        }
+        isAttacking = false;
     }
 
 
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "enemy" && isAttacking)
+        if (collision.gameObject.CompareTag("enemy") && isAttacking)
         {
-            ApplyDamage(collision.gameObject.GetComponent<CharacterController>());
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                ApplyDamage(damageable);
+            }
             Debug.Log("damaging");
-
-            isAttacking = false;
-
+            isAttacking = false; 
         }
-           
     }
 
     public void ApplyDamage(IDamageable target)
