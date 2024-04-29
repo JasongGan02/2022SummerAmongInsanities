@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5122404738386094512}
   - component: {fileID: 5122404738386094515}
   - component: {fileID: 4840921556256003634}
+  - component: {fileID: -660632844091910825}
   m_Layer: 10
   m_Name: ArcherTower 1
   m_TagString: tower
@@ -165,3 +166,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1651878, y: 1.409131}
   m_EdgeRadius: 0
+--- !u!114 &-660632844091910825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122404738386094519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories:
+  - {fileID: 11400000, guid: 952ec3522270f66428e8a520db627f92, type: 2}

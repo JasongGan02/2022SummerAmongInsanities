@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Playermovement : MonoBehaviour
+public class Playermovement : MonoBehaviour, IAudioable
 {
     [SerializeField]
     private float MS;
@@ -20,6 +20,7 @@ public class Playermovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
+    private AudioEmitter _audioEmitter;
 
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
@@ -38,13 +39,12 @@ public class Playermovement : MonoBehaviour
     bool multipleJump;                                      
 
     public float range = 0.05f;
-
-    audioManager am;
+    
 
     void Awake()
     {
         availableJumps = totalJumps;
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+        _audioEmitter = GetComponent<AudioEmitter>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         
@@ -145,7 +145,7 @@ public class Playermovement : MonoBehaviour
 
     void PlayFootstep()
     {
-        am.PlayFootstep();
+        _audioEmitter.PlayClipFromCategory("PlayerSteps");
     }
 
     private void Jump()
@@ -158,7 +158,7 @@ public class Playermovement : MonoBehaviour
 
             rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
             animator.Play("playerJump");
-           am.playAudio(am.jump);
+            _audioEmitter.PlayClipFromCategory("Jump");
 
 
         }
@@ -172,7 +172,7 @@ public class Playermovement : MonoBehaviour
                 
                 rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
                 animator.Play("playerDoubleJump");
-                am.playAudio(am.doublejump);
+                _audioEmitter.PlayClipFromCategory("DoubleJump");
             }
         }
     }
@@ -213,5 +213,10 @@ public class Playermovement : MonoBehaviour
         this.MS = MS;
         this.jumpForce = jumpForce;
         this.totalJumps = totalJumps;
+    }
+
+    public AudioEmitter GetAudioEmitter()
+    {
+        return _audioEmitter;
     }
 }

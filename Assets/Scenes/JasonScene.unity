@@ -206,6 +206,27 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+--- !u!1 &72692344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1523719304591458122, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+  m_PrefabInstance: {fileID: 8685695345761983943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &72692347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72692344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories:
+  - {fileID: 11400000, guid: 6a37e2b83e709554bb01a24686577753, type: 2}
+  - {fileID: 11400000, guid: d4bdfd966c2b0bf47b8fed8907bff14a, type: 2}
+  spatialBlend: 0
 --- !u!1 &162735417
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +561,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301439332}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &301439337
 Camera:
   m_ObjectHideFlags: 0
@@ -1111,7 +1132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cb95e6bdf933140b521b01a06733f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopLevelingUp: 0
+  stopLevelingUp: 1
   playerCount: 1
   difficultyValue: 1
   enemyObjects:
@@ -1674,6 +1695,10 @@ PrefabInstance:
       propertyPath: enemyTypes.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1932488204404519316, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
     - target: {fileID: 2171391345293792677, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_LocalPosition.x
       value: -32.7

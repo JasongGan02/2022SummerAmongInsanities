@@ -5,12 +5,173 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_DayTransToNight.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_DayTransToNight.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_Daytime.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_Daytime.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_Maintitle.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_Maintitle.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_Nighttime.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/BGM/Draft_Nighttime.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/SFX_player_death_001.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/SFX_player_death_001.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/attack.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/attack.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/death.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/death.mp3.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/doubleJump.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/doubleJump.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/jump.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/jump.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 02.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 02.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 03.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 03.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 04.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 04.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 05.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 05.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 06.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 06.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 07.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/Player/step/Footstep_Grass 07.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/SFX_items_absorbed_001.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/SFX_items_absorbed_001.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/duringBreaking.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/duringBreaking.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/enemy.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/finishBreaking.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/finishBreaking.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/injury.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/injury/injured_new_1.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/injury/injured_new_1.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/injury/injured_new_2.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/injury/injured_new_2.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/tower.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/tower/catapult_shootRock.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/tower/catapult_shootRock.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/weapon.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/weapon/Bow.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/weapon/Bow.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/weapon/Shot.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Audio/weapon/Shot.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem/AudioClipCategory.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem/AudioClipCategory.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem/AudioEmitter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem/AudioEmitter.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem/IAudioable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AudioSystem/IAudioable.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Bullets/ArcherBullet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Bullets/ArcherBullet.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Bullets/CatapultBullet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Bullets/CatapultBullet.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Bullets/TrapBullet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Bullets/TrapBullet.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Core/Core-Architecture.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Core/Core-Architecture.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/ArcherTower 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/ArcherTower 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/ArcherTower.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/ArcherTower.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/CatapultTower 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/CatapultTower 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/CatapultTower.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/CatapultTower.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/TrapTower 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/TrapTower 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/TrapTower.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/TrapTower.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Craft/Walls.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Craft/Walls/StoneWall.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Craft/Walls/StoneWall.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Craft/Walls/WoodenWall.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Craft/Walls/WoodenWall.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Bat.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Bat.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Dumb.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Dumb.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Lady.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Lady.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/LadyProjectile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/LadyProjectile.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Villager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Villager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/VillagerWithWeapon.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/VillagerWithWeapon.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/creeper.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/creeper.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Axe.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Axe.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Bow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Bow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Dagger.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Dagger.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/PlayerBowArrow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/PlayerBowArrow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Spear.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Spear.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/shovel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/shovel.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/audio/audioManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/audio/audioManager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_DayTransToNight.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_DayTransToNight.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_Daytime.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_Daytime.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_Maintitle.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_Maintitle.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_Nighttime.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/BGM/Draft_Nighttime.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/SFX_items_absorbed_001.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/SFX_items_absorbed_001.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/SFX_player_death_001.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/SFX_player_death_001.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/attack.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/attack.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/death.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/death.mp3.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/doubleJump.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/doubleJump.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/duringBreaking.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/duringBreaking.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/enemy.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/finishBreaking.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/finishBreaking.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/injury.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/injury/injured_new_1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/injury/injured_new_1.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/injury/injured_new_2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/injury/injured_new_2.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/jump.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/jump.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 02.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 02.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 03.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 03.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 04.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 04.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 05.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 05.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 06.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 06.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 07.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/Footstep_Grass 07.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/step0.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/step/step0.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/tower.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/tower/catapult_shootRock.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/tower/catapult_shootRock.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/weapon.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/weapon/Bow.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/weapon/Bow.wav.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/weapon/Shot.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/sound/weapon/Shot.wav.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BackgroundManager/BackgroundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BackgroundManager/BackgroundManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/DifficultyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/DifficultyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Playermovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Playermovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/ArcherTowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/ArcherTowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/CatapultTowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/CatapultTowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/TowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/TowerController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/TrapTowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/TrapTowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AttackTowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/AttackTowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AttackTowerController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/AttackTowerController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/RangedTowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/RangedTowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/RangedTowerController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/RangedTowerController.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,10 +183,14 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f3d0e7ec4efc44199bb22a77b1c8eff446a800/d8/190cef38/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AudioSystem/AudioClipCategory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AudioSystem/AudioEmitter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AudioSystem/IAudioable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Spawn/ISpawnable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/UnityMainThreadDispatcher.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f3d0e7ec4efc44199bb22a77b1c8eff446a800/d8/190cef38/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -84,10 +249,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="22580">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="22580" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -115,12 +280,15 @@
       <workItem from="1712425324027" duration="6299000" />
       <workItem from="1713032468740" duration="639000" />
       <workItem from="1713033264174" duration="14012000" />
+      <workItem from="1713740796219" duration="7000000" />
+      <workItem from="1714326610696" duration="6587000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="Vcs.Log.Tabs.Properties">

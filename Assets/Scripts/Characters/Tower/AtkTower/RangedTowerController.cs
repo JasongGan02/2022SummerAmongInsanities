@@ -16,7 +16,6 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
         isEnemySpotted = false;
         startPosition = this.transform;
         InvokeRepeating("Attack", 0f, _atkSpeed);
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
     }
 
     protected abstract void Attack();
