@@ -9,8 +9,7 @@ public abstract class AttackTowerController : TowerController
 
     //run-time variables
     protected bool isEnemySpotted;
-     
-
+    
     // Find nearest enemy in the enemy array
     protected virtual GameObject WhatToAttack()
     {

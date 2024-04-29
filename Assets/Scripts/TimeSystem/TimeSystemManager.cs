@@ -35,13 +35,13 @@ public class TimeSystemManager : MonoBehaviour
     private float minSunlightLevel = 4;
 
     private float gameMinuteInRealSec;
-    private audioManager am;
+    private AudioEmitter _audioEmitter;
     // Start is called before the first frame update
     void Awake()
     {
         timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<TMP_Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+        _audioEmitter = GetComponent<AudioEmitter>();
         if (isDebugDayTime) SetToDaytime();
         else InitializeTimeBasedOnCurrentHour();
 
@@ -51,14 +51,14 @@ public class TimeSystemManager : MonoBehaviour
     {
         currentHour = dayStartHour + 1;
         onDayStarted?.Invoke();
-        am.playBGM(am.DayTime);
     }
     
     private void InitializeTimeBasedOnCurrentHour()
     {
         if (currentHour >= dayStartHour && currentHour < nightStartHour)
         {
-            am.playBGM(am.DayTime);
+            _audioEmitter.PlayClipFromCategory("DayTime", false);
+            _audioEmitter.IsPlaying("DayTime");
             onDayStarted?.Invoke();
         }
         else
@@ -149,14 +149,14 @@ public class TimeSystemManager : MonoBehaviour
             onDayStarted?.Invoke();
             dayStarted = true; // Mark the day start transition as handled
             nightStarted = false;
-            am.playBGM(am.DayTime);
+            _audioEmitter.PlayClipFromCategory("DayTime", false);
         }
         else if (currentHour == nightStartHour && !nightStarted)
         {
             onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
             nightStarted = true; // Mark the night start transition as handled
             dayStarted = false;
-            am.playBGM(am.NightTime);
+            _audioEmitter.PlayClipFromCategory("NightTime", false);
         }
     }
 

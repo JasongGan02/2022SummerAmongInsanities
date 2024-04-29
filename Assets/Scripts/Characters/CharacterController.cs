@@ -7,7 +7,8 @@ using System.Threading;
 using UnityEditor.Build;
 using System.Linq;
 
-public abstract class CharacterController : MonoBehaviour, IEffectableObject, IPoolableObjectController, IDamageable, IDamageSource
+[RequireComponent(typeof(AudioEmitter))]
+public abstract class CharacterController : MonoBehaviour, IEffectableObject, IPoolableObjectController, IDamageable, IDamageSource, IAudioable
 {
      /*any kind of "permanent" variable will go to this characterObject. e.g. And to refer the MaxHP, call characterStats.HP. Do not change any value 
     in the scriptable objects by directly calling them. e.g. characterStats.HP +=1; this is not allowed as this HP is the MaxHP of a character. They should only be modified through other 
@@ -33,7 +34,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     protected List<TextAsset> Hatred;
     protected DamageDisplay damageDisplay;
 
-    protected audioManager am;
+    protected AudioEmitter _audioEmitter;
 
     protected List<EffectObject> effects;
 
@@ -54,7 +55,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     protected virtual void Awake()
     {
         effects = new List<EffectObject>();
-
+        _audioEmitter = GetComponent<AudioEmitter>();
         
         damageDisplay = gameObject.AddComponent<DamageDisplay>();
        
@@ -265,6 +266,11 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     {
         get { return _atkRange; }
         set { _atkRange = value; }
+    }
+
+    public AudioEmitter GetAudioEmitter()
+    {
+        return _audioEmitter;
     }
 }
 

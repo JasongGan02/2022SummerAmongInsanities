@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: -1323644387312248681}
   - component: {fileID: 1500471903371331963}
   - component: {fileID: 7493795012163469305}
+  - component: {fileID: -7342387135251917992}
   m_Layer: 9
   m_Name: Lady
   m_TagString: enemy
@@ -221,6 +222,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7578354, y: 3.777275}
   m_EdgeRadius: 0.01
+--- !u!114 &-7342387135251917992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495697151584585258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories: []
 --- !u!1 &4985672977949795190
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5826273889304481977}
   - component: {fileID: 8747359634952033181}
   - component: {fileID: 1950812999718748309}
+  - component: {fileID: -8505257412784531010}
   m_Layer: 0
   m_Name: Bow
   m_TagString: Untagged
@@ -141,3 +142,16 @@ PolygonCollider2D:
       - {x: 0.031941414, y: 0.15752316}
       - {x: -0.032175027, y: 0.18899876}
   m_UseDelaunayMesh: 0
+--- !u!114 &-8505257412784531010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776729951293410429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories: []
