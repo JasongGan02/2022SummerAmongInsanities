@@ -20,6 +20,7 @@ MonoBehaviour:
   durability: 0
   _maxStack: 1
   damageCoef: 1
+  rangeCoef: 0.5
   farm: 0
   frequency: 1
   projectileObject: {fileID: 0}
