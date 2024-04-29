@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Constants;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 using Animator = UnityEngine.Animator;
 
@@ -16,173 +17,170 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected CharacterController characterController;
     protected WeaponObject weaponStats;
     protected float finalDamage;
-    protected float detectionRadius;
+    protected float attackRange;
 
 
     protected GameObject player;
     protected Playermovement playermovement;
+    protected Transform targetEnemy;
 
-    protected Animator weaponAnmator;
-    protected audioManager am;
 
-    protected float Delay = 1f;
-    protected bool attackBlocked;
     protected Inventory inventory;
     protected bool isAttacking = false;
-    public float DamageAmount => finalDamage;
+    protected float attackDelay = 1f;
+    protected Vector2 targetDirection;
+    protected float speed = 15f;
 
+    public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
 
-    protected LayerMask enemyLayer;
-    protected Quaternion initialRotation;
 
     public virtual void Start()
     {
-
-        anim();
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         inventory = FindObjectOfType<Inventory>();
-        initialRotation = transform.rotation;
     }
-
-    protected virtual void anim()
-    {
-    }
-
-
-    public virtual void Update()
-    {
-        transform.rotation = initialRotation;
-        DetectAndAttackEnemy();
-        Patrol();
-        Flip();
-        
-    }
-
 
     public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
         finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
-        detectionRadius = characterController.AtkRange; // to do rangeCoef
+        attackRange = characterController.AtkRange * weaponObject.RangeCoef; ; 
 
     }
+
+    protected void Flip()
+    {
+
+        Vector3 theScale = transform.localScale;
+        if (playermovement.facingRight)
+        {
+
+            theScale.y = 1.5f;
+            transform.localScale = theScale;
+            transform.position = player.transform.position + new Vector3(0.5f, -0.2f, 0);
+
+        }
+        else
+        {
+            theScale.y = -1.5f;
+            transform.localScale = theScale;
+            transform.position = player.transform.position + new Vector3(-0.5f, -0.2f, 0);
+        }
+    }
+    public virtual void Update()
+    {
+
+        if (!isAttacking)
+        {
+            transform.position = player.transform.position;
+            DetectAndAttackEnemy();  
+        }
+    }
+
+
     protected virtual void DetectAndAttackEnemy()
     {
-        // Detect enemies within a certain radius around the weapon
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
-        foreach(Collider2D hit in hits)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);
+        foreach (Collider2D hit in hits)
         {
-            if(hit.TryGetComponent<EnemyController>(out EnemyController enemyController))
+            if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
             {
-                EnsureFacingEnemy(hit.gameObject.transform.position);
 
-                // Trigger attack
-                if (!attackBlocked)
-                {
-                    attack();
-                }
+                targetEnemy = hit.transform;
+                
+                StartCoroutine(PrepareAttack(hit.transform.position));
+                break;
             }
         }
-    }
-
-    protected void PlayAttack()
-    {
-        am.playWeaponAudio(am.attack);
-    }
-    public virtual void attack()
-    {
-        if (attackBlocked)
-            return;
-
-        if (playermovement.facingRight)
-            Attack();
-        else
-            AttackLeft();
-
-        PlayAttack();
-        attackBlocked= true;
-        StartCoroutine(DelayAttack());
+        if(targetEnemy == null)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 270);
+        }
         
     }
-    protected virtual void Attack()
+
+
+    IEnumerator PrepareAttack(Vector2 targetPosition)
     {
-        weaponAnmator.SetTrigger("Attack");
+        if (isAttacking)
+            yield break;
+
         isAttacking = true;
-    }
 
-    protected virtual void AttackLeft()
-    {
-        weaponAnmator.SetTrigger("AttackLeft");
-        isAttacking = true;
-    }
+        targetDirection = (targetPosition - (Vector2)player.transform.position).normalized;
+        float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
+        Quaternion startRotation = transform.rotation;
+        Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
 
-    protected IEnumerator DelayAttack()
-    {
-        yield return new WaitForSeconds(Delay);
-        attackBlocked = false;
-    }
-
-
-    protected void EnsureFacingEnemy(Vector3 enemyPosition)
-    {
-        bool shouldFaceRight = enemyPosition.x > transform.position.x;
-        if (shouldFaceRight != playermovement.facingRight)
+        float rotateTime = 0.0f;
+        float rotationDuration = 0.2f; // 旋转时间减半
+        while (rotateTime < 1.0f)
         {
-            // Flip player and weapon if they're not facing towards the enemy
-            Flip();
+            rotateTime += Time.deltaTime / rotationDuration; // 调整时间增加的比例，缩短旋转时间
+            transform.rotation = Quaternion.Lerp(startRotation, endRotation, rotateTime);
+
+            yield return null; // 等待下一帧
         }
+
+        StartCoroutine(PerformAttack());
+
+
     }
 
-    public virtual void Flip()
+    IEnumerator PerformAttack()
     {
- 
-        if ((playermovement.facingRight && transform.localScale.x < 0) ||
-            (!playermovement.facingRight && transform.localScale.x > 0))
+        float startTime = Time.time;
+        float journeyLength = attackRange;
+        float fracJourney = 0f;
+
+        Vector2 startPosition = player.transform.position; // 攻击开始的位置
+        Vector2 endPosition = startPosition + targetDirection * attackRange; // 攻击最远到达的位置
+
+        // 矛向前移动
+        while (fracJourney < 1.0f)
         {
-            
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            float distCovered = (Time.time - startTime) * speed * 3;
+            fracJourney = distCovered / journeyLength;
+            transform.position = Vector2.Lerp(startPosition, endPosition, fracJourney);
+            yield return null;
         }
+
+        // 稍作等待
+        yield return new WaitForSeconds(0.1f);
+
+        // 矛返回起始位置
+        startTime = Time.time; // 重置时间
+        fracJourney = 0f; // 重置插值参数
+        while (fracJourney < 1.0f)
+        {
+            float distCovered = (Time.time - startTime) * speed;
+            fracJourney = distCovered / journeyLength;
+            transform.position = Vector2.Lerp(endPosition, startPosition, fracJourney);
+            yield return null;
+        }
+
+        isAttacking = false; // 攻击结束
+        targetEnemy = null;
     }
 
 
-    // patrol around
-    public virtual void Patrol()
+
+
+
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        
-        if (playermovement.facingRight)
+        if (collision.CompareTag("enemy") && isAttacking)
         {
-            // Patrol in front of the player to the right
-            transform.position = new Vector3(player.transform.position.x + detectionRadius,
-                                             player.transform.position.y,
-                                             player.transform.position.z);
+            IDamageable damageable = collision.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                ApplyDamage(damageable);
+            }
         }
-        else
-        {
-            // Patrol in front of the player to the left
-            transform.position = new Vector3(player.transform.position.x - detectionRadius,
-                                             player.transform.position.y,
-                                             player.transform.position.z);
-        }
-    }
-
-
-    public virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "enemy" && isAttacking)
-        {
-            ApplyDamage(collision.gameObject.GetComponent<CharacterController>());
-            Debug.Log("damaging");
-
-            isAttacking = false;
-
-        }
-           
     }
 
     public void ApplyDamage(IDamageable target)
@@ -191,5 +189,6 @@ public class Weapon : MonoBehaviour, IDamageSource
         target.TakeDamage(damageDealt, this);
     }
 
+  
 
 }
