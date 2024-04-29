@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Constants;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 using Animator = UnityEngine.Animator;
 
@@ -16,26 +17,29 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected CharacterController characterController;
     protected WeaponObject weaponStats;
     protected float finalDamage;
-    protected float detectionRadius;
+    protected float attackRange;
+
+
     protected GameObject player;
     protected Playermovement playermovement;
-    protected audioManager am;
-    protected float Delay = 1f;
-    protected bool attackBlocked;
+    protected Transform targetEnemy;
+
+
     protected Inventory inventory;
     protected bool isAttacking = false;
-    protected Vector3 offset = new Vector3(1.0f, 0, 0);
+    protected float attackDelay = 1f;
+    protected Vector2 targetDirection;
+    protected float speed = 15f;
+
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
 
-    protected LayerMask enemyLayer;
 
     public virtual void Start()
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
         inventory = FindObjectOfType<Inventory>();
     }
 
@@ -44,81 +48,138 @@ public class Weapon : MonoBehaviour, IDamageSource
         this.characterController = characterController;
         this.weaponStats = weaponObject;
         finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
-        detectionRadius = characterController.AtkRange; 
+        attackRange = characterController.AtkRange * weaponObject.RangeCoef; ; 
 
     }
 
+    protected void Flip()
+    {
+
+        Vector3 theScale = transform.localScale;
+        if (playermovement.facingRight)
+        {
+
+            theScale.y = 1.5f;
+            transform.localScale = theScale;
+            transform.position = player.transform.position + new Vector3(0.5f, -0.2f, 0);
+
+        }
+        else
+        {
+            theScale.y = -1.5f;
+            transform.localScale = theScale;
+            transform.position = player.transform.position + new Vector3(-0.5f, -0.2f, 0);
+        }
+    }
     public virtual void Update()
     {
+
         if (!isAttacking)
         {
-            FollowPlayer();
+            transform.position = player.transform.position;
+            DetectAndAttackEnemy();  
         }
-        DetectAndAttackEnemy();
     }
 
-    void FollowPlayer()
-    {
-        transform.position = player.transform.position + offset;
-    }
+
     protected virtual void DetectAndAttackEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, detectionRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);
         foreach (Collider2D hit in hits)
         {
-            if (hit.CompareTag("enemy") && !isAttacking)
+            if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
             {
-                StartCoroutine(Attack(hit.transform));
+
+                targetEnemy = hit.transform;
+                
+                StartCoroutine(PrepareAttack(hit.transform.position));
+                break;
             }
         }
-    }
-    protected void PlayAttack()
-    {
-        am.playWeaponAudio(am.attack);
+        if(targetEnemy == null)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 270);
+        }
+        
     }
 
-    IEnumerator Attack(Transform enemy)
+
+    IEnumerator PrepareAttack(Vector2 targetPosition)
     {
+        if (isAttacking)
+            yield break;
+
         isAttacking = true;
 
-   
-        Vector2 direction = (enemy.position - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        targetDirection = (targetPosition - (Vector2)player.transform.position).normalized;
+        float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
+        Quaternion startRotation = transform.rotation;
+        Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
 
-     
-        PlayAttack();
-        Vector3 originalPosition = transform.position;
-        Vector3 attackPosition = player.transform.position + (Vector3)direction * 1.0f; // Adjust 1.0f to control how far the spear pokes
-        while (Vector3.Distance(transform.position, attackPosition) > 0.1f)
+        float rotateTime = 0.0f;
+        float rotationDuration = 0.2f; // 旋转时间减半
+        while (rotateTime < 1.0f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, attackPosition, Time.deltaTime * 2);
+            rotateTime += Time.deltaTime / rotationDuration; // 调整时间增加的比例，缩短旋转时间
+            transform.rotation = Quaternion.Lerp(startRotation, endRotation, rotateTime);
+
+            yield return null; // 等待下一帧
+        }
+
+        StartCoroutine(PerformAttack());
+
+
+    }
+
+    IEnumerator PerformAttack()
+    {
+        float startTime = Time.time;
+        float journeyLength = attackRange;
+        float fracJourney = 0f;
+
+        Vector2 startPosition = player.transform.position; // 攻击开始的位置
+        Vector2 endPosition = startPosition + targetDirection * attackRange; // 攻击最远到达的位置
+
+        // 矛向前移动
+        while (fracJourney < 1.0f)
+        {
+            float distCovered = (Time.time - startTime) * speed * 3;
+            fracJourney = distCovered / journeyLength;
+            transform.position = Vector2.Lerp(startPosition, endPosition, fracJourney);
             yield return null;
         }
 
+        // 稍作等待
         yield return new WaitForSeconds(0.1f);
 
-        while (Vector3.Distance(transform.position, originalPosition) > 0.1f)
+        // 矛返回起始位置
+        startTime = Time.time; // 重置时间
+        fracJourney = 0f; // 重置插值参数
+        while (fracJourney < 1.0f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * 2);
+            float distCovered = (Time.time - startTime) * speed;
+            fracJourney = distCovered / journeyLength;
+            transform.position = Vector2.Lerp(endPosition, startPosition, fracJourney);
             yield return null;
         }
 
-        isAttacking = false;
+        isAttacking = false; // 攻击结束
+        targetEnemy = null;
     }
 
 
-    public virtual void OnCollisionEnter2D(Collision2D collision)
+
+
+
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("enemy") && isAttacking)
+        if (collision.CompareTag("enemy") && isAttacking)
         {
-            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null)
             {
                 ApplyDamage(damageable);
             }
-            Debug.Log("damaging");
-            isAttacking = false; 
         }
     }
 
@@ -128,5 +189,6 @@ public class Weapon : MonoBehaviour, IDamageSource
         target.TakeDamage(damageDealt, this);
     }
 
+  
 
 }
