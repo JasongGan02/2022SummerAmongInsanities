@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +22,8 @@ public class VillagerController : EnemyController
     public Transform head;
     LayerMask ground_mask;
 
-    private BoxCollider2D boxCollider;
+    //private BoxCollider2D boxCollider;
+    private CapsuleCollider2D capsuleCollider;
 
     private float Wait = 0.3f;
     private float attacking_animation_timer = 0f;
@@ -31,7 +33,7 @@ public class VillagerController : EnemyController
     public float PathTicker = 3f;
     public int PathCounter;
     public int bodyHeight = 2;
-
+    public LineRenderer lineRenderer;
 
     protected override void Awake()
     {
@@ -47,8 +49,19 @@ public class VillagerController : EnemyController
         attackStart = transform.Find("attackStart");
         attackEnd = transform.Find("attackEnd");
         head = transform.Find("head");
-        boxCollider = GetComponent<BoxCollider2D>();
+        //boxCollider = GetComponent<BoxCollider2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        if (lineRenderer == null)
+        {
+            GameObject lineObj = new GameObject("PathLine");
+            lineRenderer = lineObj.AddComponent<LineRenderer>();
+            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            lineRenderer.startColor = Color.red;
+            lineRenderer.endColor = Color.red;
+            lineRenderer.startWidth = 0.3f;
+            lineRenderer.endWidth = 0.3f;
+        }
     }
 
     protected override void EnemyLoop()
@@ -58,22 +71,21 @@ public class VillagerController : EnemyController
         else { ChangeCollider("Sit"); }
 
 
-        if (target == null || SearchTicker < 0) { target = WhatToAttack(); SearchTicker = 3f; } // if doesn't have target or searched more than 3 sec
+        if (target == null || (DistanceToTarget(target.transform) > SensingRange && SearchTicker < 0)) { target = WhatToAttack(); SearchTicker = 1f; } // if doesn't have target or searched more than 3 sec
         if (target == null) { patrol(); }
         else
         {
-            if (PathToTarget.Count == 0 || PathTicker < 0) { PathFind(); PathTicker = 0.5f; }   // find a path to target
+            if (PathToTarget.Count == 0 || PathTicker < 0) { PathFind(); PathTicker = 1f; }   // find a path to target
             else { PathExecute(); } // continue current path
             if (true || villager_sight())   // see target clearly
             {
-                BreakObstacleOnMyWay();
-                //Debug.Log("target is " + target.transform);
                 if (DistanceToTarget(target.transform) < _atkRange)
                 {
                     attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
                 }
                 else
                 {
+                    Debug.Log("approaching target " + target.transform); 
                     approach(2.0f * _movingSpeed, target.transform);
                     flip(target.transform);
                 }
@@ -304,11 +316,15 @@ public class VillagerController : EnemyController
         // boxCollider.enabled = !isSitting;
         if (status == "Stand")
         {
-            boxCollider.size = new Vector2(0.1875544f, 1.0f);
+            //boxCollider.size = new Vector2(0.1875544f, 1.0f);
+            capsuleCollider.offset = new Vector2(0.02169657f, 0.0001685619f);
+            capsuleCollider.size = new Vector2(0.1895304f, 1.017319f);
         }
         else
         {
-            boxCollider.size = new Vector2(0.1875544f, 0.718245f);
+            //boxCollider.size = new Vector2(0.1875544f, 0.718245f);
+            capsuleCollider.offset = new Vector2(0.02169657f, -0.05424142f);
+            capsuleCollider.size = new Vector2(0.1895304f, 0.7271314f);
         }
     }
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
@@ -386,28 +402,34 @@ public class VillagerController : EnemyController
 
 
 
-
-
-
     public void PathExecute()       // execute path to target
     {
         //Debug.Log("Path found with steps: " + path.Count);
-        if (DistanceToTarget(target.transform) < _atkRange) { PathToTarget.Clear(); PathCounter = 0; return; }
-
+        if (DistanceToTarget(target.transform) < _atkRange) {
+            PathToTarget.Clear(); PathCounter = 0; Debug.Log("close to target!"); return;
+            //return;
+        }
+        DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
             approach(2 * _movingSpeed, PathToTarget[PathCounter].x, PathToTarget[PathCounter].y);
             //Debug.Log("now approach position " + PathToTarget[PathCounter].x + " , " + PathToTarget[PathCounter].y);
-            if (DistanceToPoint(PathToTarget[PathCounter]) < _atkRange + 1) // needs testing
+            if (DistanceToPoint(PathToTarget[PathCounter]) < _atkRange ) // needs testing
             {
-                //Debug.Log("tempTarget " + PathToTarget[PathCounter]);
-                //TileObject tile = WorldGenerator.GetDataFromWorldPos(PathToTarget[PathCounter]);
-                //if (tile != null)
-                //{
-                //    Debug.Log(" will attack this tile" + PathToTarget[PathCounter]);
-                //    target = GetTileGameObject(PathToTarget[PathCounter]);
-                //}
-                PathCounter++;
+                Debug.Log("tempTarget " + PathToTarget[PathCounter]);
+                TileObject tile = WorldGenerator.GetDataFromWorldPos(PathToTarget[PathCounter]);
+                //Vector2Int temp = new Vector2Int(3, 66);
+                //TileObject tile = WorldGenerator.GetDataFromWorldPos(temp);
+                Debug.Log(tile);
+                if (tile != null)
+                {
+                    Debug.Log(" will attack this tile" + PathToTarget[PathCounter]);
+                    target = GetTileGameObject(PathToTarget[PathCounter]);
+                }
+                else
+                {
+                    PathCounter++;
+                }
             }
         }
         else
@@ -451,14 +473,31 @@ public class VillagerController : EnemyController
                 }
                 else
                 {
-                    healthGrid[x - minX, y - minY] = 1; // Indicate no tile data available
+                    if (y > minY)
+                    {
+                        Vector2Int tempPosition = new Vector2Int(x, y-1);
+                        TileObject checkTemp = WorldGenerator.GetDataFromWorldPos(tempPosition);
+                        if (checkTemp != null) // there is a tile below, so attainable
+                        {
+                            healthGrid[x - minX, y - minY] = 1;
+                        }
+                        else
+                        {
+                            healthGrid[x - minX, y - minY] = 999; // there is an air block below, so villager can't reach this block position
+                        }
+                    }
+                    else // y = minY
+                    {
+                        healthGrid[x - minX, y - minY] = 1;
+                    }
                 }
             }
         }
         healthGrid[startX - minX, startY - minY] = 0; // starting point doesn't have cost
-
         Vector2Int start = new Vector2Int(startX - minX, startY - minY);
         Vector2Int end = new Vector2Int(endX - minX, endY - minY);
+
+        LogHealthGrid(healthGrid); // Print the formatted grid
 
         List<Vector2Int> path = AstarPath(start, end, healthGrid, maxX - minX + 1, maxY - minY + 1, minX, minY);
         if (path.Count > 0)
@@ -467,7 +506,7 @@ public class VillagerController : EnemyController
             PathCounter = 0;         // reset ticker
             //Debug.Log("start position " + startX + "  " + startY + " target position " + endX + " " + endY);
             string pathString = string.Join(", ", path);
-            //Debug.Log(pathString);
+            Debug.Log(pathString);
         }
         else
         {
@@ -610,35 +649,46 @@ public class VillagerController : EnemyController
         return new List<Vector2Int>(); // Return empty if no path is found
     }
 
-    public void BreakObstacleOnMyWay()
+    public void DrawPath()
     {
-        float x = groundCheckCenter.position.x;
-        float y = groundCheckCenter.position.y;
-        if (facingright)
+        if (lineRenderer == null)
         {
-            x += 1;
+            Debug.LogError("LineRenderer is not initialized!");
+            return;
         }
-        else
+        else if (PathToTarget != null)
         {
-            x -= 1;
-        }
-        int X = Mathf.FloorToInt(x);
-        int Y = Mathf.FloorToInt(y);
-        Debug.Log("BreakObstacle range  " + Y + "    " + Y + bodyHeight + 1);
-        for (int level = Y; level < Y + bodyHeight;)
-        {
-            Vector2Int position = new Vector2Int(X, level);
-            GameObject tile = GetTileGameObject(position);
-            if (tile != null && rb.velocity.x < 0.1f && Mathf.Abs(tile.transform.position.x - transform.position.x) < _atkRange)
+            Vector3[] positions = new Vector3[PathToTarget.Count];
+
+            for (int i = 0; i < PathToTarget.Count; i++)
             {
-                target = tile;
-                return;
+                // Convert Vector2Int to Vector3, adjust y to z if required by your project's coordinate system
+                positions[i] = new Vector3(PathToTarget[i].x, PathToTarget[i].y, 0);
             }
-            else
-            {
-                level++;
-            }
+
+            lineRenderer.positionCount = positions.Length;
+            lineRenderer.SetPositions(positions);
         }
-        return;
     }
+    public void LogHealthGrid(int[,] healthGrid)
+    {
+        int width = healthGrid.GetLength(0); // Getting the first dimension size
+        int height = healthGrid.GetLength(1); // Getting the second dimension size
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        // Loop through each row
+        for (int y = height - 1; y >= 0; y--)
+        {
+            // Loop through each column in the current row
+            for (int x = 0; x < width; x++)
+            {
+                // Append each cell value followed by a space for separation
+                sb.AppendFormat("{0,5}", healthGrid[x, y]);
+            }
+            sb.AppendLine(); // Add a newline after each row
+        }
+
+        Debug.Log(sb.ToString()); // Log the entire grid at once
+    }
+
 }
