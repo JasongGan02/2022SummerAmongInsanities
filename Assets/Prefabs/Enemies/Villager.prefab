@@ -329,7 +329,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clipCategories: []
+  clipCategories:
+  - {fileID: 11400000, guid: d91542b85b98a5a4b8c304571aefc763, type: 2}
+  spatialBlend: 1
 --- !u!1 &6287776942257114443
 GameObject:
   m_ObjectHideFlags: 0

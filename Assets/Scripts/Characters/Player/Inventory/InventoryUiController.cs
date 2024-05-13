@@ -13,7 +13,7 @@ public class InventoryUiController
     private GameObject inventoryGrid;
     private GameObject template;
     private Inventory.InventoryButtonClickedCallback buttonClickedCallback;
-    private BaseInventory.InventoryButtonClickedCallback BasebuttonClickedCallback;
+    private BaseInventory.IInventoryButtonClickedCallback BasebuttonClickedCallback;
 
     private GameObject extraRow;
     private GameObject hotbarContainer;
@@ -53,7 +53,7 @@ public class InventoryUiController
         GameObject defaultRow,
         GameObject inventoryGrid,
         GameObject template,
-        BaseInventory.InventoryButtonClickedCallback BasebuttonClickedCallback,
+        BaseInventory.IInventoryButtonClickedCallback BasebuttonClickedCallback,
         UIViewStateManager uiViewStateManager
         )
     {

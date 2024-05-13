@@ -146,6 +146,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
 
     //Implementation of IDamageSource
     #region
+
+    public GameObject SourceGameObject => gameObject;
     public float DamageAmount => _atkDamage;
     public float CriticalChance => _criticalChance;
     public float CriticalMultiplier => _criticalMultiplier;

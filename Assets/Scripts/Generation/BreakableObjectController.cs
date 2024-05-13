@@ -10,15 +10,9 @@ public class BreakableObjectController : MonoBehaviour, IDamageable
     private IBreakableObject tile;
     private float healthPoint;
     private WorldGenerator terrainGeneration;
-
-    private audioManager am;
+    private GameObject breaker;
 
     
-    private void Awake()
-    {
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
-    }
-
     [HideInInspector] public bool isPlacedByPlayer;
     public void Initialize(TileObject tile, int hp, bool isPlacedByPlayer)
     {
@@ -27,26 +21,24 @@ public class BreakableObjectController : MonoBehaviour, IDamageable
         this.isPlacedByPlayer = isPlacedByPlayer;
     }
 
-    public void OnClicked(float damage)
+    public void SetBreaker(GameObject breaker)
     {
-        
-        
-
-        healthPoint -= damage;
-    
-        if (healthPoint <= 0)
-        {
-            
-            Debug.Log("Destroy by Clicking");
-            Destroy(gameObject);
-            OnObjectDestroyed();
-        }
+        this.breaker = breaker;
     }
-  
-    private void OnObjectDestroyed()
+    
+    private void OnObjectDestroyed(IDamageSource source)
     {
-        am.loopoffWeaponAudio();
-        am.playWeaponAudio(am.tile_endbreak);
+        AudioEmitter audioEmitter = null;
+        if (breaker != null) //Player
+        {
+            audioEmitter = breaker.GetComponent<AudioEmitter>();
+            audioEmitter.StopAudio();
+        }
+        else
+        {
+            audioEmitter = source.SourceGameObject.GetComponent<AudioEmitter>();
+        }
+        audioEmitter.PlayClipFromCategory("TileAfterBreaking");
         var drops = tile.GetDroppedGameObjects(isPlacedByPlayer, transform.position);
         Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(transform.position), 0);
         Vector2Int worldPostion = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
@@ -54,7 +46,6 @@ public class BreakableObjectController : MonoBehaviour, IDamageable
         if (WorldGenerator.WorldData.ContainsKey(chunkCoord))
         {
             // Remove the tile entry from the dictionary
-            Debug.Log(localPosition);
             WorldGenerator.WorldData[chunkCoord][localPosition.x, localPosition.y, ((TileObject)tile).TileLayer] = null;
         }
         if (((IGenerationObject)tile).NeedsBackground && !isPlacedByPlayer)
@@ -76,11 +67,23 @@ public class BreakableObjectController : MonoBehaviour, IDamageable
 
     public void TakeDamage(float amount, IDamageSource source)
     {
-        throw new System.NotImplementedException();
+        healthPoint -= amount;
+        if (healthPoint <= 0)
+        {
+            Destroy(gameObject);
+            OnObjectDestroyed(source);
+        }
     }
 
     public float CalculateDamage(float incomingAtkDamage, float attackerCritChance, float attackerCritDmgCoef)
     {
-        throw new System.NotImplementedException();
+        // Determine if this is a critical hit
+        bool isCritical = UnityEngine.Random.value < attackerCritChance;
+
+        // Calculate base damage with critical hit consideration
+        float baseDamage = isCritical ? incomingAtkDamage * attackerCritDmgCoef : incomingAtkDamage;
+        
+        return baseDamage;
     }
+    
 }

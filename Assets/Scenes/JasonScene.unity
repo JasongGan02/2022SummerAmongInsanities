@@ -1540,6 +1540,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5022870087241938297, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: defaultInventoryObject
+      value: 
+      objectReference: {fileID: 11400000, guid: baa2233ce5dbc7049bc9922326bb99e5, type: 2}
     - target: {fileID: 7011028178136475246, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_SizeDelta.x
       value: 64.5841

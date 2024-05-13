@@ -12,7 +12,6 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
     public GameObject extraRow;
     public int maxExtraRow = 4;
-    
     private GameObject hotbar;
     private CraftingQueueManager queueManager;
     
@@ -155,7 +154,6 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
     private void HandleHotbarKeyPress() 
     {
-        
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             UseItemInHotbarSlot(0);
@@ -221,7 +219,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
     //Find number of exp in inventory and return it for Inventory Upgrade and Rogue Level Up
-    public int checkEXP()
+    public int CheckExp()
     {
         for (int i = 0; i < database.GetSize(); i++)
         {
@@ -234,7 +232,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         return 0;
     }
 
-    public bool spendEXP(int cost)
+    public bool SpendExp(int cost)
     {   
         
         for (int i = 0; i < database.GetSize(); i++)
@@ -287,7 +285,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public InventorySlot findSLOT (IInventoryObject inventoryObject)
+    public InventorySlot FindSlot (IInventoryObject inventoryObject)
     {   
         
         for (int i = 0; i < database.GetSize(); i++)
@@ -306,7 +304,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         return null;
     }
 
-    public int findSLOTINDEX(IInventoryObject inventoryObject)
+    public int FindSlotindex(IInventoryObject inventoryObject)
     {
 
         for (int i = 0; i < database.GetSize(); i++)
@@ -323,7 +321,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
         return -1;
     }
-    public int findSlotIndex(string inventoryObject)
+    public int FindSlotIndex(string inventoryObject)
     {
 
         for (int i = 0; i < database.GetSize(); i++)
@@ -361,7 +359,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public int findItemCount(BaseObject inventoryObject)
+    public int FindItemCount(BaseObject inventoryObject)
     {
         // Ensure that inventoryObject is not null
         if (inventoryObject == null)

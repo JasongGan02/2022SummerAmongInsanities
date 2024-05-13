@@ -15,5 +15,5 @@ MonoBehaviour:
   audioName: Jump
   clipsWithVolume:
   - clip: {fileID: 8300000, guid: 1639865149a1807498e1ae2c1997cbbb, type: 3}
-    volume: 1
+    volume: 0.332
   loop: 0

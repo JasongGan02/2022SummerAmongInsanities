@@ -386,7 +386,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             inputItem0.sprite = inputItems[0].getPrefabSprite();
             inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
-            num0.text = inventory.findItemCount(inputItems[0]) + "/" + inputQuantities[0];
+            num0.text = inventory.FindItemCount(inputItems[0]) + "/" + inputQuantities[0];
             num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 1);
         }
 
@@ -400,7 +400,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             inputItem1.sprite = inputItems[1].getPrefabSprite();
             inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 1);
-            num1.text = inventory.findItemCount(inputItems[1]) + "/" + inputQuantities[1];
+            num1.text = inventory.FindItemCount(inputItems[1]) + "/" + inputQuantities[1];
             num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 1);
         }
 
@@ -414,7 +414,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             inputItem2.sprite = inputItems[2].getPrefabSprite();
             inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 1);
-            num2.text = inventory.findItemCount(inputItems[2]) + "/" + inputQuantities[2];
+            num2.text = inventory.FindItemCount(inputItems[2]) + "/" + inputQuantities[2];
             num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 1);
         }
 
@@ -427,7 +427,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             inputItem3.sprite = inputItems[3].getPrefabSprite();
             inputItem3.color = new Color(inputItem3.color.r, inputItem3.color.g, inputItem3.color.b, 1);
-            num3.text = inventory.findItemCount(inputItems[3]) + "/" + inputQuantities[3];
+            num3.text = inventory.FindItemCount(inputItems[3]) + "/" + inputQuantities[3];
             num3.color = new Color(num3.color.r, num3.color.g, num3.color.b, 1);
         }
 
@@ -440,7 +440,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             inputItem4.sprite = inputItems[4].getPrefabSprite();
             inputItem4.color = new Color(inputItem4.color.r, inputItem4.color.g, inputItem4.color.b, 1);
-            num4.text = inventory.findItemCount(inputItems[4]) + "/" + inputQuantities[4];
+            num4.text = inventory.FindItemCount(inputItems[4]) + "/" + inputQuantities[4];
             num4.color = new Color(num4.color.r, num4.color.g, num4.color.b, 1);
         }
 
@@ -454,7 +454,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             inputItem5.sprite = inputItems[5].getPrefabSprite();
             inputItem5.color = new Color(inputItem5.color.r, inputItem5.color.g, inputItem5.color.b, 1);
-            num5.text = inventory.findItemCount(inputItems[5]) + "/" + inputQuantities[5];
+            num5.text = inventory.FindItemCount(inputItems[5]) + "/" + inputQuantities[5];
             num5.color = new Color(num5.color.r, num5.color.g, num5.color.b, 1);
         }
 

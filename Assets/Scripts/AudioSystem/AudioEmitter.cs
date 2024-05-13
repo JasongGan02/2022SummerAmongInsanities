@@ -54,7 +54,6 @@ public class AudioEmitter : MonoBehaviour
                 }
                 else //if you need to terminate what is playing already
                 {
-                    Debug.Log(true);
                     audioSource.volume = clipWithVolume.volume;
                     audioSource.clip = clipWithVolume.clip;
                     audioSource.Play();

@@ -17,13 +17,7 @@ public class TowerController : CharacterController
         base.Update();
         TestDrop();
     }
-    //protected abstract void TowerLoop(); 
-
-    public override void Reinitialize()
-    {
-        base.Reinitialize();
-
-    }
+ 
     protected override void death()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();

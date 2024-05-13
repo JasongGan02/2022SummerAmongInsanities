@@ -23,14 +23,16 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected GameObject player;
     protected Playermovement playermovement;
     protected Transform targetEnemy;
-
+    
 
     protected Inventory inventory;
+    protected AudioEmitter _audioEmitter;
     protected bool isAttacking = false;
     protected float attackDelay = 1f;
     protected Vector2 targetDirection;
     protected float speed = 15f;
 
+    public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
@@ -40,6 +42,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         player = GameObject.Find("Player");
         playermovement = player.GetComponent<Playermovement>();
+        _audioEmitter = GetComponent<AudioEmitter>();
         inventory = FindObjectOfType<Inventory>();
     }
 
@@ -117,13 +120,13 @@ public class Weapon : MonoBehaviour, IDamageSource
         Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
 
         float rotateTime = 0.0f;
-        float rotationDuration = 0.2f; // Ğı×ªÊ±¼ä¼õ°ë
+        float rotationDuration = 0.2f; // æ—‹è½¬æ—¶é—´å‡åŠ
         while (rotateTime < 1.0f)
         {
-            rotateTime += Time.deltaTime / rotationDuration; // µ÷ÕûÊ±¼äÔö¼ÓµÄ±ÈÀı£¬Ëõ¶ÌĞı×ªÊ±¼ä
+            rotateTime += Time.deltaTime / rotationDuration; // è°ƒæ•´æ—¶é—´å¢åŠ çš„æ¯”ä¾‹ï¼Œç¼©çŸ­æ—‹è½¬æ—¶é—´
             transform.rotation = Quaternion.Lerp(startRotation, endRotation, rotateTime);
 
-            yield return null; // µÈ´ıÏÂÒ»Ö¡
+            yield return null; // ç­‰å¾…ä¸‹ä¸€å¸§
         }
 
         StartCoroutine(PerformAttack());
@@ -137,10 +140,10 @@ public class Weapon : MonoBehaviour, IDamageSource
         float journeyLength = attackRange;
         float fracJourney = 0f;
 
-        Vector2 startPosition = player.transform.position; // ¹¥»÷¿ªÊ¼µÄÎ»ÖÃ
-        Vector2 endPosition = startPosition + targetDirection * attackRange; // ¹¥»÷×îÔ¶µ½´ïµÄÎ»ÖÃ
+        Vector2 startPosition = player.transform.position; // æ”»å‡»å¼€å§‹çš„ä½ç½®
+        Vector2 endPosition = startPosition + targetDirection * attackRange; // æ”»å‡»æœ€è¿œåˆ°è¾¾çš„ä½ç½®
 
-        // Ã¬ÏòÇ°ÒÆ¶¯
+        // çŸ›å‘å‰ç§»åŠ¨
         while (fracJourney < 1.0f)
         {
             float distCovered = (Time.time - startTime) * speed * 3;
@@ -149,12 +152,12 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-        // ÉÔ×÷µÈ´ı
+        // ç¨ä½œç­‰å¾…
         yield return new WaitForSeconds(0.1f);
 
-        // Ã¬·µ»ØÆğÊ¼Î»ÖÃ
-        startTime = Time.time; // ÖØÖÃÊ±¼ä
-        fracJourney = 0f; // ÖØÖÃ²åÖµ²ÎÊı
+        // çŸ›è¿”å›èµ·å§‹ä½ç½®
+        startTime = Time.time; // é‡ç½®æ—¶é—´
+        fracJourney = 0f; // é‡ç½®æ’å€¼å‚æ•°
         while (fracJourney < 1.0f)
         {
             float distCovered = (Time.time - startTime) * speed;
@@ -163,7 +166,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-        isAttacking = false; // ¹¥»÷½áÊø
+        isAttacking = false; // æ”»å‡»ç»“æŸ
         targetEnemy = null;
     }
 

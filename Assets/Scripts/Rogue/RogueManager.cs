@@ -63,7 +63,7 @@ public class RogueManager : MonoBehaviour
         
         if (buffContainer.transform.childCount == 0)
         {
-            if(inventory.spendEXP(levelUpCost))
+            if(inventory.SpendExp(levelUpCost))
             {
                 AddBuffs();
             }
@@ -71,7 +71,7 @@ public class RogueManager : MonoBehaviour
         }
         else
         {
-            if(inventory.spendEXP(levelUpCost))
+            if(inventory.SpendExp(levelUpCost))
             {
                 for(int i = 0; i < buffContainer.transform.childCount; i++)
                 {
@@ -169,7 +169,7 @@ public class RogueManager : MonoBehaviour
 
     private void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
-        if (!inventory.spendEXP((node.effect?.cost ?? 0))) return;
+        if (!inventory.SpendExp((node.effect?.cost ?? 0))) return;
         selectedNodes.Add(node);
         selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
 
