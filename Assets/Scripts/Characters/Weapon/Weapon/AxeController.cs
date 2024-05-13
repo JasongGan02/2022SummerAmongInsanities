@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class AxeController : Weapon
 {
-
-
-
     protected override void DetectAndAttackEnemy()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);

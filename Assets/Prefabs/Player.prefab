@@ -385,6 +385,7 @@ MonoBehaviour:
   - {fileID: 4345295238556224730}
   - {fileID: 3429148027577167092}
   placeTileRange: 5
+  hand: {fileID: 11400000, guid: baa2233ce5dbc7049bc9922326bb99e5, type: 2}
   equipmentTemplate: {fileID: 5703799991536060000, guid: cc327834c14524b41af052db4d6824cb, type: 3}
   handFarm: 0.5
   handFrequency: 1
@@ -666,6 +667,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d91542b85b98a5a4b8c304571aefc763, type: 2}
   - {fileID: 11400000, guid: 65a2bc3ac43b63b43afa8668ad74779a, type: 2}
   - {fileID: 11400000, guid: edd940e77f279bf42924f537ed25f2d5, type: 2}
+  - {fileID: 11400000, guid: 66f686bb4986bc34fac2b045c8692ed6, type: 2}
+  spatialBlend: 1
 --- !u!1 &7716306966358594839
 GameObject:
   m_ObjectHideFlags: 0

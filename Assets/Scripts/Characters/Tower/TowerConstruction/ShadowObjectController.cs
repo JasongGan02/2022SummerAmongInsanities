@@ -7,22 +7,97 @@ using System;
 
 public class ShadowObjectController : MonoBehaviour
 {
-    CoreArchitectureController coreArchitecture;
-    IShadowObject curShadow; 
-    private uint CollisionCount = 0;
+    private CoreArchitectureController coreArchitecture;
+    private uint collisionCount = 0;
     
    
     private void Awake()
     {
         coreArchitecture = CoreArchitectureController.Instance;
     }
-    /***
-    Place Tile Implementations
+    
+    public TileGhostPlacementResult GetTileGhostPlacementResult(BaseObject objectType)
+    {
+        Vector2 mousePosition = GetMousePosition2D();
+        float x = GetSnappedCoordinate(mousePosition.x);
+        float y = GetSnappedCoordinate(mousePosition.y);
+        transform.position = new Vector2(x, y);
 
-    ***/
+        if (objectType is TileObject tileObject)
+        {
+            return HandleTileObjectPlacement(tileObject);
+        }
+        else if (objectType is TowerObject towerObject)
+        {
+            return HandleTowerObjectPlacement(towerObject);
+        }
+        else if (objectType is ChestObject chestObject)
+        {
+            return HandleChestObjectPlacement(chestObject);
+        }
 
+        return null;
+    }
+    
+    private TileGhostPlacementResult HandleTileObjectPlacement(TileObject tileObject)
+    {
+        bool isPlacementValid = IsBasePlacementValid() && IsTilePlacementValid(tileObject);
+        return new TileGhostPlacementResult(transform, isPlacementValid);
+    }
 
-    private bool CheckAdjcentPos(Vector2Int tilePos)
+    private TileGhostPlacementResult HandleTowerObjectPlacement(TowerObject towerObject)
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            RotateObject(towerObject.rotateAngle);
+        }
+        
+        bool isPlacementValid = IsBasePlacementValid() && IsTowerPlacementValid(towerObject);
+        return new TileGhostPlacementResult(transform, isPlacementValid);
+    }
+
+    private TileGhostPlacementResult HandleChestObjectPlacement(ChestObject chestObject)
+    {
+        bool isPlacementValid = IsBasePlacementValid() && IsChestPlacementValid(chestObject);
+        return new TileGhostPlacementResult(transform, isPlacementValid);
+    }
+
+    private bool IsBasePlacementValid()
+    {
+        Vector2Int worldPosition = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+        Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
+        return WorldGenerator.IsCurTileEmpty(worldPosition) && collisionCount == 0 && downRay;
+    }
+
+    private bool IsTilePlacementValid(TileObject tileObject)
+    {
+        Vector2Int worldPosition = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+        return CheckAdjacentPos(worldPosition) && !IsConstructionShadowInRange(coreArchitecture);
+    }
+
+    private bool IsTowerPlacementValid(TowerObject towerObject)
+    {
+        return IsConstructionShadowInRange(coreArchitecture) && CheckEnergyAvailable(towerObject.energyCost);
+    }
+
+    private bool IsChestPlacementValid(ChestObject chestObject)
+    {
+        return IsConstructionShadowInRange(coreArchitecture);
+    }
+
+    private void RotateObject(Quaternion rotation)
+    {
+        transform.rotation *= rotation;
+    }
+
+    private bool CheckEnergyAvailable(int energyCost)
+    {
+        ConstructionMode constructionMode = FindObjectOfType<ConstructionMode>();
+        return constructionMode.CheckEnergyAvailableForConstruction(energyCost);
+    }
+    
+    private bool CheckAdjacentPos(Vector2Int tilePos)
     {
         // Check for adjacent tiles
         for (int i = -1; i <= 1; i++)
@@ -44,37 +119,8 @@ public class ShadowObjectController : MonoBehaviour
         }
         return false;
     }
-
     
-    public TileGhostPlacementResult GetTileGhostPlacementResult(BaseObject objectType)
-    {
-        Vector2 mousePosition = GetMousePosition2D();
-        float x = GetSnappedCoordinate(mousePosition.x);
-        float y = GetSnappedCoordinate(mousePosition.y);
-        transform.position = new Vector2(x, y);
-        if (objectType is TileObject) 
-        {    
-            return new TileGhostPlacementResult(transform, TileObjectCheck(x, y));
-        } 
-        else if(objectType is TowerObject)
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                // Rotate the object
-                
-                transform.rotation *= (objectType as TowerObject).rotateAngle;
-            }
-            return TowerObjectCheck(objectType);
-        }
-        else if(objectType is ChestObject) 
-        {
-            return ChestObjectCheck(objectType);
-        }
-        
-
-        return null;
-    }
-
+    /*
     private bool TileObjectCheck(float x, float y)
     {
         Vector2Int worldPosition = new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
@@ -104,7 +150,7 @@ public class ShadowObjectController : MonoBehaviour
         transform.position = new Vector2(x, y);
         return new TileGhostPlacementResult(transform, CollisionCount == 0 && IsConstructionShadowInRange(coreArchitecture) && downRay);
     }
-
+    */
 
 
     bool IsConstructionShadowInRange(CoreArchitectureController coreArchitecture)
@@ -143,13 +189,13 @@ public class ShadowObjectController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        CollisionCount++;
+        collisionCount++;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         //if(curShadow is not TileObject)
-        CollisionCount--;
+        collisionCount--;
 
     }
 }

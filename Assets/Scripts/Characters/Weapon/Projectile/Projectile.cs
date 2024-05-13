@@ -17,6 +17,7 @@ public class Projectile : MonoBehaviour, IDamageSource
     public float speed = 20f; // Speed of the projectile
     public float gravityScale = 0.1f; // Scaled down gravity effect
 
+    public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
 
     public float CriticalChance => firingCharacter.CriticalChance;

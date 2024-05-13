@@ -122,7 +122,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         isInSlot = true;
 
         BaseInventory ToInventory = dropTargetInventory.GetComponentInChildren<BaseInventory>();
-        originatingInventory.SwapItemsbetweenInventory(ToInventory, currentSlotIndex, anotherSlotIndex);
+        originatingInventory.SwapItemsBetweenInventory(ToInventory, currentSlotIndex, anotherSlotIndex);
 
     }
 
