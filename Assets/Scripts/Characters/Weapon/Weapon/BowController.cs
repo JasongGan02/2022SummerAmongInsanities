@@ -29,7 +29,7 @@ public class BowController : RangedWeaponController
         
         if (Input.GetMouseButtonDown(0))
         {
-            //am.playWeaponAudio(am.bow);
+    
 
             chargeTime = 0f; // Start charging when the button is pressed
         }
@@ -67,7 +67,13 @@ public class BowController : RangedWeaponController
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             playerBowArrow.Initialize(characterController, projectileObject, force, damage);
             playerBowArrow.Launch(mousePosition); // Launch without a specific target
-            //am.playWeaponAudio(am.shoot);
+ 
         }
     }
+
+
+
+
+
+ 
 }
