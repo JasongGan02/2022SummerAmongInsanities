@@ -497,6 +497,7 @@ public class VillagerController : EnemyController
             if (totalPathCost >= 99) { PathToTarget.Clear(); Debug.Log("path cost too much!"); return; }
             PathToTarget = path;      // update Path
             PathCounter = 0;         // reset ticker
+            AdjustPath();            // don't go back
             //Debug.Log("start position " + startX + "  " + startY + " target position " + endX + " " + endY);
             string pathString = string.Join(", ", path);
             Debug.Log(pathString);
@@ -506,8 +507,7 @@ public class VillagerController : EnemyController
             Debug.Log("No path found.");
         }
     }
-    public int DistanceToGround(int x, int y)
-    {
+    public int DistanceToGround(int x, int y){
         Vector2Int position = new Vector2Int(x, y);
         if (y == 0 || WorldGenerator.GetDataFromWorldPos(position) != null)
         {
@@ -521,6 +521,16 @@ public class VillagerController : EnemyController
             }
         }
         return -1;  // false value: input y is invalid
+    }
+    public void AdjustPath() {
+        if (PathToTarget.Count > 0 && PathToTarget.Contains(transform.position)) {
+            for (int i = 0; i < PathToTarget.Count; i++) {
+                if (PathToTarget[i] == transform.position) {
+                    PathCounter = i + 1;  // Set PathCounter to the index of the current position
+                    return;
+                }
+            }
+        }
     }
     //public static List<Vector2Int> AstarPath(Vector2Int start, Vector2Int goal, int[,] costGrid, int width, int height, int minX, int minY)
     //{
