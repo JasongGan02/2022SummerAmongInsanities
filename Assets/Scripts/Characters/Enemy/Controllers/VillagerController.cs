@@ -523,9 +523,10 @@ public class VillagerController : EnemyController
         return -1;  // false value: input y is invalid
     }
     public void AdjustPath() {
-        if (PathToTarget.Count > 0 && PathToTarget.Contains(transform.position)) {
+        Vector2Int tempPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        if (PathToTarget.Count > 0 && PathToTarget.Contains(tempPosition)) {
             for (int i = 0; i < PathToTarget.Count; i++) {
-                if (PathToTarget[i] == transform.position) {
+                if (PathToTarget[i].x == (int)transform.position.x && PathToTarget[i].y == (int)transform.position.y) {
                     PathCounter = i + 1;  // Set PathCounter to the index of the current position
                     return;
                 }
