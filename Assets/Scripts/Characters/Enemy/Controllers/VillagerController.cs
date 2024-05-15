@@ -164,6 +164,7 @@ public class VillagerController : EnemyController
     }
     void patrol()
     {
+        RemovePathLine();
         if (patroltime <= 0f)
         {
             patrolRest = 2f;
