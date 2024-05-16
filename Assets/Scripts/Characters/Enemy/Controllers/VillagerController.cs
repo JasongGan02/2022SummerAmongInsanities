@@ -40,6 +40,7 @@ public class VillagerController : EnemyController
     public Transform tileDetect2;
     public Transform tileDetect3;
     public Transform tileDetect4;
+    public float BreakObstaclesCD = 1f;
 
     protected override void Awake()
     {
@@ -67,7 +68,7 @@ public class VillagerController : EnemyController
     protected override void EnemyLoop()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
-        { SenseFrontBlock(); ChangeCollider("Stand"); }
+        { ChangeCollider("Stand"); }
         else { ChangeCollider("Sit"); }
 
 
@@ -86,7 +87,6 @@ public class VillagerController : EnemyController
                 else
                 {
                     Debug.Log("approaching target " + target.transform);
-                    //approach(2.0f * _movingSpeed, target.transform);
                     //flip(target.transform);
                 }
             }
@@ -186,6 +186,7 @@ public class VillagerController : EnemyController
         else
         {
             animator.Play("villager_walk");
+            SenseFrontBlock();
             if (MoveForwardDepthCheck() == false) { return; }
             patroltime -= Time.deltaTime;
             if (patrolToRight)
@@ -417,15 +418,13 @@ public class VillagerController : EnemyController
         if (PathCounter < PathToTarget.Count)
         {
             approach(2 * _movingSpeed, PathToTarget[PathCounter].x, PathToTarget[PathCounter].y);
-            //Debug.Log("now approach position " + PathToTarget[PathCounter].x + " , " + PathToTarget[PathCounter].y);
-            //Debug.Log("tempTarget " + PathToTarget[PathCounter]);
-            //TileObject tile = WorldGenerator.GetDataFromWorldPos(PathToTarget[PathCounter]);
-            //Debug.Log(tile);
-            //if (tile != null)
-            //{
-            //    Debug.Log(" will attack this tile" + PathToTarget[PathCounter]);
-            //    target = GetTileGameObject(PathToTarget[PathCounter]);
-            //}
+            if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y < PathToTarget[PathCounter+1].y)
+            {   // next position is higher than current
+                Jump();
+            } else if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y > PathToTarget[PathCounter-1].y)
+            {
+
+            }
             BreakObstacles();   // independent function to deal with tile obstacle
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
@@ -734,67 +733,73 @@ public class VillagerController : EnemyController
 
     public bool CloseToLocation(Vector2Int location)
     {
-        int x1 = (int)transform.position.x;
-        int y1 = (int)(transform.position.y - 0.25f);
-        if (x1 == location.x && y1 == location.y)
+        //int x1 = (int)transform.position.x;
+        //int y1 = (int)(transform.position.y - 0.25f);
+        //if (x1 == location.x && y1 == location.y)
+        Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
+        if (Vector2.Distance(currentLoc, location) < 1f)
         {
             return true;
         }
-        Debug.Log("x " + x1 + " y " + y1 + " target x: " + location.x + " target y: " + location.y);
+        //Debug.Log("x " + x1 + " y " + y1 + " target x: " + location.x + " target y: " + location.y);
         return false;
     }
     public void BreakObstacles()
     {
-        Vector2 direction1 = Vector2.left;
-        Vector2 direction2 = Vector2.left;
-        Vector2 direction3 = (Vector2.left + Vector2.up).normalized;
-        Vector2 direction4 = Vector2.up;
-        if (facingright)
+        BreakObstaclesCD -= Time.deltaTime;
+        if (BreakObstaclesCD < 0f)
         {
-            direction1 = Vector2.right;
-            direction2 = Vector2.right;
-            direction3 = (Vector2.right + Vector2.up).normalized;
-        }
-        float rayLength = 0.05f;
-        RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
-        Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red); // Visualize Raycast
-        RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, ground_mask);
-        Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green); // Visualize Raycast
-        RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
-        Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue); // Visualize Raycast
-        RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
-        Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
+            Vector2 direction1 = Vector2.left;
+            Vector2 direction2 = Vector2.left;
+            Vector2 direction3 = (Vector2.left + Vector2.up).normalized;
+            Vector2 direction4 = Vector2.up;
+            if (facingright)
+            {
+                direction1 = Vector2.right;
+                direction2 = Vector2.right;
+                direction3 = (Vector2.right + Vector2.up).normalized;
+            }
+            float rayLength = 0.05f;
+            RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
+            Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red); // Visualize Raycast
+            RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, ground_mask);
+            Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green); // Visualize Raycast
+            RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
+            Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue); // Visualize Raycast
+            RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
+            Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
 
-        if (hitTileDetect2.transform != null)
-        {
-            var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
-            if (breakable1 != null)
+            if (hitTileDetect2.transform != null)
             {
-                target = breakable1.gameObject;
+                var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
+                if (breakable1 != null)
+                {
+                    target = breakable1.gameObject; BreakObstaclesCD = 1f;
+                }
             }
-        }
-        else if (hitTileDetect1.transform != null)
-        {
-            var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
-            if (breakable2 != null)
+            else if (hitTileDetect1.transform != null)
             {
-                target = breakable2.gameObject;
+                var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
+                if (breakable2 != null)
+                {
+                    target = breakable2.gameObject; BreakObstaclesCD = 1f;
+                }
             }
-        }
-        else if (hitTileDetect3.transform != null)   // check if villager is stopped by this block
-        {
-            var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
-            if (breakable3 != null)
+            else if (hitTileDetect3.transform != null)   // check if villager is stopped by this block
             {
-                target = breakable3.gameObject;
+                var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
+                if (breakable3 != null)
+                {
+                    target = breakable3.gameObject; BreakObstaclesCD = 1f;
+                }
             }
-        }
-        else if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
-        {
-            var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
-            if (breakable4 != null)
+            else if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
             {
-                target = breakable4.gameObject;
+                var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
+                if (breakable4 != null)
+                {
+                    target = breakable4.gameObject; BreakObstaclesCD = 1f;
+                }
             }
         }
     }
