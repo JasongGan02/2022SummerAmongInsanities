@@ -30,7 +30,7 @@ public class VillagerController : EnemyController
     private float attacking_animation_timer = 0f;
     float damage_start_time_0 = 0.17f;
     float TargetTicker = 1f;
-    public List<Vector2Int> PathToTarget = new List<Vector2Int>();
+    public List<Vector2> PathToTarget = new List<Vector2>();
     public float PathTicker = 3f;
     public int PathCounter;
     public int bodyHeight = 2;
@@ -368,7 +368,7 @@ public class VillagerController : EnemyController
         return Vector2.Distance(currentPosition, targetPosition);
     }
 
-    void approach(float speed, int x, int y)
+    void approach(float speed, float x, float y)
     {
         if (speed > _movingSpeed)
         {
@@ -417,15 +417,21 @@ public class VillagerController : EnemyController
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            approach(2 * _movingSpeed, PathToTarget[PathCounter].x, PathToTarget[PathCounter].y);
-            if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y < PathToTarget[PathCounter+1].y)
-            {   // next position is higher than current
-                Jump();
-            } else if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y > PathToTarget[PathCounter-1].y)
-            {
+            //approach(2 * _movingSpeed, PathToTarget[PathCounter].x, PathToTarget[PathCounter].y);
+            //if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y < PathToTarget[PathCounter+1].y)
+            //{   // next position is higher than current
+            //    Jump();
+            //} else if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y > PathToTarget[PathCounter-1].y)
+            //{   // next is below current
 
+            //}
+            //BreakObstacles();   // independent function to deal with tile obstacle
+            // 1: upper, below, in front, backside
+            if (PathCounter < PathToTarget.Count-1 && PathToTarget[PathCounter].y == PathToTarget[PathCounter+1].y) 
+            {   // horizontal movement
+                approach(2 * _movingSpeed, target.transform);
             }
-            BreakObstacles();   // independent function to deal with tile obstacle
+            
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
                 PathCounter++;
@@ -495,9 +501,9 @@ public class VillagerController : EnemyController
         {
             int totalPathCost = CalculatePathCost(path, healthGrid, minX, minY);
             if (totalPathCost >= 99) { PathToTarget.Clear(); Debug.Log("path cost too much!"); return; }
-            PathToTarget = path;      // update Path
+            PathToTarget = ConvertPath(path);      // update Path
             PathCounter = 0;         // reset ticker
-            AdjustPath();            // don't go back
+            //AdjustPath();            // don't go back
             //Debug.Log("start position " + startX + "  " + startY + " target position " + endX + " " + endY);
             string pathString = string.Join(", ", path);
             Debug.Log(pathString);
@@ -533,11 +539,19 @@ public class VillagerController : EnemyController
             }
         }
     }
-    //public static List<Vector2Int> AstarPath(Vector2Int start, Vector2Int goal, int[,] costGrid, int width, int height, int minX, int minY)
-    //{
-    //    List<Vector2Int> Paths = new List<Vector2Int>();
-        
-    //}
+    public List<Vector2> ConvertPath(List<Vector2Int> path)
+    {
+        List<Vector2> convertedPath = new List<Vector2>();
+
+        foreach (Vector2Int point in path)
+        {
+            Vector2 newPoint = new Vector2(point.x + 0.5f, point.y + 0.5f);
+            convertedPath.Add(newPoint);
+        }
+
+        return convertedPath;
+    }
+
     public class Node
     {
         public Vector2Int Position;
@@ -731,13 +745,13 @@ public class VillagerController : EnemyController
         Debug.Log(sb.ToString()); // Log the entire grid at once
     }
 
-    public bool CloseToLocation(Vector2Int location)
+    public bool CloseToLocation(Vector2 location)
     {
         //int x1 = (int)transform.position.x;
         //int y1 = (int)(transform.position.y - 0.25f);
         //if (x1 == location.x && y1 == location.y)
         Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
-        if (Vector2.Distance(currentLoc, location) < 1f)
+        if (Vector2.Distance(currentLoc, location) < 1.2f)
         {
             return true;
         }
