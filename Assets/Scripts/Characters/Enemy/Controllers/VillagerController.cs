@@ -77,7 +77,7 @@ public class VillagerController : EnemyController
         else
         {
             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 1f; }   // find a path to target
-            else { PathExecute(); } // continue current path
+            else { PathExecute(); }         // continue current path
             if (true || villager_sight())   // see target clearly
             {
                 if (DistanceToTarget(target.transform) < _atkRange)
@@ -158,6 +158,7 @@ public class VillagerController : EnemyController
         {
             animator.Play("villager_walk");
         }
+        if ((facingright && target.position.x < transform.position.x) || (!facingright && target.position.x > transform.position.x)) { flip(); }
         
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
@@ -411,26 +412,32 @@ public class VillagerController : EnemyController
     {
         //Debug.Log("Path found with steps: " + path.Count);
         if (DistanceToTarget(target.transform) < _atkRange) {
-            PathToTarget.Clear(); PathCounter = 0; Debug.Log("close to target!"); return;
-            //return;
+            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0; Debug.Log("close to target!");
+            return;
         }
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            //approach(2 * _movingSpeed, PathToTarget[PathCounter].x, PathToTarget[PathCounter].y);
-            //if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y < PathToTarget[PathCounter+1].y)
-            //{   // next position is higher than current
-            //    Jump();
-            //} else if (PathCounter < PathToTarget.Count && PathToTarget[PathCounter].y > PathToTarget[PathCounter-1].y)
-            //{   // next is below current
-
-            //}
-            //BreakObstacles();   // independent function to deal with tile obstacle
-            // 1: upper, below, in front, backside
-            if (PathCounter < PathToTarget.Count-1 && PathToTarget[PathCounter].y == PathToTarget[PathCounter+1].y) 
-            {   // horizontal movement
-                approach(2 * _movingSpeed, target.transform);
+            if (PathCounter < PathToTarget.Count)
+            {
+                Debug.Log("Go to: " + PathToTarget[PathCounter]);
+                if ((int)PathToTarget[PathCounter].x != (int)transform.position.x)
+                {   // horizontal movement
+                    approach(2 * _movingSpeed, target.transform);
+                    BreakObstacles("horizontal");
+                    Debug.Log("horizontal approach");
+                }
+                else if ((int)(transform.position.y - 0.25f) > (int)PathToTarget[PathCounter].y)
+                {   // go down
+                    BreakObstacles("bottom"); Debug.Log("going down");
+                }
+                else if ((int)(transform.position.y - 0.25f) < (int)PathToTarget[PathCounter].y)
+                {   // go up, if head is blocked, break above obstacle
+                    BreakObstacles("top"); 
+                    Jump(); Debug.Log("jump");
+                }
             }
+            
             
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
@@ -477,7 +484,7 @@ public class VillagerController : EnemyController
                 //if (y > minY && healthGrid[x - minX, y - minY - 1] == 99) { healthGrid[x - minX, y - minY] = 99; continue; }    // ignore too high
                 int disToGround = DistanceToGround(x, y);
                 if (disToGround > 2) { healthGrid[x - minX, y - minY] = 99; continue; } // too high, unattainable
-                else if (disToGround == 2) { healthGrid[x - minX, y - minY] = 2; continue; } // jump attainable
+                else if (disToGround == 2) { healthGrid[x - minX, y - minY] = 1; continue; } // jump attainable
                 else if (disToGround == 1) { healthGrid[x - minX, y - minY] = 1; continue; } // walk
                 else if (disToGround == 0) 
                 {
@@ -501,9 +508,9 @@ public class VillagerController : EnemyController
         {
             int totalPathCost = CalculatePathCost(path, healthGrid, minX, minY);
             if (totalPathCost >= 99) { PathToTarget.Clear(); Debug.Log("path cost too much!"); return; }
-            PathToTarget = ConvertPath(path);      // update Path
+            PathToTarget = PathPointToCenter(path);      // update Path
             PathCounter = 0;         // reset ticker
-            //AdjustPath();            // don't go back
+
             //Debug.Log("start position " + startX + "  " + startY + " target position " + endX + " " + endY);
             string pathString = string.Join(", ", path);
             Debug.Log(pathString);
@@ -528,18 +535,8 @@ public class VillagerController : EnemyController
         }
         return -1;  // false value: input y is invalid
     }
-    public void AdjustPath() {
-        Vector2Int tempPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-        if (PathToTarget.Count > 0 && PathToTarget.Contains(tempPosition)) {
-            for (int i = 0; i < PathToTarget.Count; i++) {
-                if (PathToTarget[i].x == (int)transform.position.x && PathToTarget[i].y == (int)transform.position.y) {
-                    PathCounter = i + 1;  // Set PathCounter to the index of the current position
-                    return;
-                }
-            }
-        }
-    }
-    public List<Vector2> ConvertPath(List<Vector2Int> path)
+
+    public List<Vector2> PathPointToCenter(List<Vector2Int> path)
     {
         List<Vector2> convertedPath = new List<Vector2>();
 
@@ -758,7 +755,7 @@ public class VillagerController : EnemyController
         //Debug.Log("x " + x1 + " y " + y1 + " target x: " + location.x + " target y: " + location.y);
         return false;
     }
-    public void BreakObstacles()
+    public void BreakObstacles(string command)
     {
         BreakObstaclesCD -= Time.deltaTime;
         if (BreakObstaclesCD < 0f)
@@ -774,45 +771,64 @@ public class VillagerController : EnemyController
                 direction3 = (Vector2.right + Vector2.up).normalized;
             }
             float rayLength = 0.05f;
-            RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
-            Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red); // Visualize Raycast
-            RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, ground_mask);
-            Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green); // Visualize Raycast
-            RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
-            Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue); // Visualize Raycast
-            RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
-            Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
 
-            if (hitTileDetect2.transform != null)
+            if (command == "horizontal")
             {
-                var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
-                if (breakable1 != null)
+                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red); // Visualize Raycast
+                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green); // Visualize Raycast
+                if (hitTileDetect2.transform != null)
                 {
-                    target = breakable1.gameObject; BreakObstaclesCD = 1f;
+                    var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
+                    if (breakable1 != null)
+                    {
+                        target = breakable1.gameObject; BreakObstaclesCD = 1f;
+                    }
+                }
+                else if (hitTileDetect1.transform != null)
+                {
+                    var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
+                    if (breakable2 != null)
+                    {
+                        target = breakable2.gameObject; BreakObstaclesCD = 1f;
+                    }
                 }
             }
-            else if (hitTileDetect1.transform != null)
+            else if (command == "top")
             {
-                var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
-                if (breakable2 != null)
+                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue); // Visualize Raycast
+                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
+                if (hitTileDetect3.transform != null)   // check if villager is stopped by this block
                 {
-                    target = breakable2.gameObject; BreakObstaclesCD = 1f;
+                    var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
+                    if (breakable3 != null)
+                    {
+                        target = breakable3.gameObject; BreakObstaclesCD = 1f;
+                    }
+                }
+                else if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
+                {
+                    var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
+                    if (breakable4 != null)
+                    {
+                        target = breakable4.gameObject; BreakObstaclesCD = 1f;
+                    }
                 }
             }
-            else if (hitTileDetect3.transform != null)   // check if villager is stopped by this block
+            else if (command == "bottom")
             {
-                var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
-                if (breakable3 != null)
+                RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, ground_mask);
+                Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
+                if (hitTileDetect5.transform != null)
                 {
-                    target = breakable3.gameObject; BreakObstaclesCD = 1f;
-                }
-            }
-            else if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
-            {
-                var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
-                if (breakable4 != null)
-                {
-                    target = breakable4.gameObject; BreakObstaclesCD = 1f;
+                    var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
+                    if (breakable5 != null)
+                    {
+                        target = breakable5.gameObject; BreakObstaclesCD = 1f;
+                    }
                 }
             }
         }
