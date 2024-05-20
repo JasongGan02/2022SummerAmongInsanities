@@ -8,7 +8,8 @@ using UnityEditor.PackageManager;
 using Unity.VisualScripting;
 using TMPro;
 
-public class PlayerController : CharacterController, IDataPersistence
+[RequireComponent(typeof(AudioEmitter))]
+public class PlayerController : CharacterController, IDataPersistence, IAudioable
 {
 
     private float RespwanTimeInterval;
@@ -36,7 +37,7 @@ public class PlayerController : CharacterController, IDataPersistence
     Light2D globalLight;
     public float intensityThreshold = 0.3f;
     public float checkRadius = 6f;
-
+    
     void Start()
     {
         timer = 0f;
@@ -53,7 +54,15 @@ public class PlayerController : CharacterController, IDataPersistence
         healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
         UpdateHealthUI();
         EvokeStatsChange();
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+    }
+    
+    public AudioEmitter GetAudioEmitter()
+    {
+        if (_audioEmitter == null)
+        {
+            Debug.LogError("AudioEmitter is not assigned on " + gameObject.name);
+        }
+        return _audioEmitter;
     }
 
     public void LoadData(GameData data)
@@ -144,11 +153,11 @@ public class PlayerController : CharacterController, IDataPersistence
         {
             if (dmg >= _HP)
             {
-                am.playReactAudio(am.death);
+                _audioEmitter.PlayClipFromCategory("PlayerDeath");
             }
             else
             {
-                am.playReactAudio(am.injured[UnityEngine.Random.Range(0, am.injured.Length)]);
+                _audioEmitter.PlayClipFromCategory("PlayerInjury");
             }
 
         }

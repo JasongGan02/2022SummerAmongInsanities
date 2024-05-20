@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-public class PlayerInteraction : MonoBehaviour
+public class PlayerInteraction : MonoBehaviour, IAudioable
 {
     public float interactRange = 1f;
     public float pickUpRange = 1f;
@@ -29,7 +29,9 @@ public class PlayerInteraction : MonoBehaviour
     TerrainGeneration terrainGeneration;
     public int placeTileRange = 15;
 
-    [Header("use item")]
+    [Header("use item")] 
+    [SerializeField] private WeaponObject hand;
+    private GameObject emptyHand;
     private GameObject gameObjectInUse;
     private WeaponObject currentWeapon;
     private GameObject currentInUseItemIconUI;
@@ -43,7 +45,7 @@ public class PlayerInteraction : MonoBehaviour
     
     
     
-    private audioManager am;
+    private AudioEmitter _audioEmitter;
 
     private ChestController currentChest;
 
@@ -69,13 +71,14 @@ public class PlayerInteraction : MonoBehaviour
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         terrainGeneration = FindObjectOfType<TerrainGeneration>();
         currentInUseItemIconUI = GameObject.Find(Constants.Name.CURRENT_ITEM_UI);
+        _audioEmitter = GetComponent<AudioEmitter>();
     }
     
     void Start()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
         hotbarFirstRow = GameObject.Find("InventoryUI").transform.Find("Hotbar").Find("Row(Clone)").GetComponent<RectTransform>();
-        am = GameObject.FindGameObjectWithTag("audio").GetComponent<audioManager>();
+        emptyHand = hand.GetSpawnedGameObject(GetComponent<PlayerController>());
     }
 
     private void OnEnable()
@@ -179,7 +182,7 @@ public class PlayerInteraction : MonoBehaviour
             gameObjectInUse = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
         }
 
-        if (currentSlotInUse.item is WeaponObject && currentSlotInUse.item.GetItemName() != "Shovel")
+        if (currentSlotInUse.item is WeaponObject)
         {
             playerController = GetComponent<PlayerController>();
             gameObjectInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject(playerController);
@@ -188,9 +191,9 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
         {
-            currentWeapon = null;
-            waitTime = 1 / handFrequency;
+            waitTime = 1;
         }
+       
     }
 
     public IInventoryObject GetCurrentInUseItem()
@@ -253,10 +256,10 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         
                         animator.SetBool(Constants.Animator.MELEE_TOOL, true);
-                        if (clickHit.transform.gameObject != targetObject && !am.IsWeaponPlaying(am.tile_endbreak))
+                        if (clickHit.transform.gameObject != targetObject)
                         {
-                            am.looponWeaponAudio();
-                            am.playWeaponAudio(am.tile_duringbreak);
+                            _audioEmitter.ChangeLoop("TileDuringBreaking", true);
+                            _audioEmitter.PlayClipFromCategory("TileDuringBreaking");
                             targetObject = tempTargetObject;
                             playerMovement.excavateCoeff = 0.1f;
                             StartTimer();
@@ -283,11 +286,12 @@ public class PlayerInteraction : MonoBehaviour
             
         }
         
-        if (Input.GetMouseButtonUp(0) && am.weaponclip() == am.tile_duringbreak)
+        
+        if (Input.GetMouseButtonUp(0) )
         {
             ResetMeleeAnimationAndTimer();
-            am.loopoffWeaponAudio();
-            am.StopWeaponAudio();
+            _audioEmitter.ChangeLoop("TileDuringBreaking", false);
+            _audioEmitter.StopAudio();
         }
 
         if (IsTimerCompleted())
@@ -311,11 +315,22 @@ public class PlayerInteraction : MonoBehaviour
     private void ClickOnGameObject(GameObject target)
     {
         if (target == null) return;
-
+        
+        IDamageSource damageSource = null;
+        if (gameObjectInUse != null)
+            damageSource = gameObjectInUse.GetComponent<IDamageSource>();
+        else
+        {
+            damageSource = emptyHand.GetComponent<IDamageSource>();
+        }
+        if (damageSource == null)
+            Debug.LogError("no damage source");
+        
         BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {
-            breakableTile.OnClicked(currentWeapon?.getfarm() ?? handFarm);
+            breakableTile.SetBreaker(gameObject);
+            if (damageSource != null) damageSource.ApplyDamage(breakableTile);
         }
         
     }
@@ -329,8 +344,7 @@ public class PlayerInteraction : MonoBehaviour
             if (inventory.CanAddItem(resoureObject.item))
             {
                 resoureObject.PickingUp();
-                am.playAudio(am.PickUp);
-                Debug.Log("Pick Up");
+                _audioEmitter.PlayClipFromCategory("ItemPickUp");
             }
         }
     }
@@ -462,7 +476,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private const int EMPTY = -1;
 
-
+  
+    public AudioEmitter GetAudioEmitter()
+    {
+        return _audioEmitter;
+    }
 }
 
 

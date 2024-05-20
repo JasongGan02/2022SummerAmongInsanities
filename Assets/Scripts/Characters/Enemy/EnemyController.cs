@@ -44,7 +44,6 @@ public abstract class EnemyController : CharacterController
     public void LevelUp()
     {
         Reinitialize();
-        Debug.Log(this.name + " " + _HP);
     }
 
 

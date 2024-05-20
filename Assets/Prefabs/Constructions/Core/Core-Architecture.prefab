@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 2767627944182598562}
   - component: {fileID: 4283950255864388543}
   - component: {fileID: -8541801598706225860}
+  - component: {fileID: -7690501098888045196}
   m_Layer: 10
   m_Name: Core-Architecture
   m_TagString: tower
@@ -219,6 +220,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-7690501098888045196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767627944182598563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories: []
 --- !u!1 &5841276820676258275
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7159949129242308541}
   - component: {fileID: 4220586374174658238}
   - component: {fileID: 2133402834694803451}
+  - component: {fileID: -4826320131403629995}
   m_Layer: 15
   m_Name: LadyProjectile
   m_TagString: enemy
@@ -143,3 +144,18 @@ CircleCollider2D:
   m_Offset: {x: 0.21196365, y: -0.19771303}
   serializedVersion: 2
   m_Radius: 0.9220478
+--- !u!114 &-4826320131403629995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2674270034793632360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories:
+  - {fileID: 11400000, guid: d91542b85b98a5a4b8c304571aefc763, type: 2}
+  spatialBlend: 1

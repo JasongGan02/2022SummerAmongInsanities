@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 7370350561188837362}
   - component: {fileID: 7251394023590234169}
   - component: {fileID: 5205207138010027784}
+  - component: {fileID: 533564398136153043}
   m_Layer: 9
   m_Name: creeper
   m_TagString: enemy
@@ -240,3 +241,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &533564398136153043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5811422692972195447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories:
+  - {fileID: 11400000, guid: d91542b85b98a5a4b8c304571aefc763, type: 2}
+  spatialBlend: 1

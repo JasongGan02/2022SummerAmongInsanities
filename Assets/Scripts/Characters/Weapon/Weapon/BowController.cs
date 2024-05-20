@@ -25,12 +25,11 @@ public class BowController : RangedWeaponController
 
     public override void Update()
     {
-        Flip();
-        Patrol();
+     
         
         if (Input.GetMouseButtonDown(0))
         {
-            am.playWeaponAudio(am.bow);
+    
 
             chargeTime = 0f; // Start charging when the button is pressed
         }
@@ -68,40 +67,13 @@ public class BowController : RangedWeaponController
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             playerBowArrow.Initialize(characterController, projectileObject, force, damage);
             playerBowArrow.Launch(mousePosition); // Launch without a specific target
-            am.playWeaponAudio(am.shoot);
+ 
         }
     }
 
-    public override void Patrol()
-    {
-        if (playermovement.facingRight)
-        {
-            transform.position = player.transform.position + new Vector3(0.8f, 0, 0);
-        }
-        else
-        {
-            transform.position = player.transform.position - new Vector3(0.8f, 0, 0);
-        }
-    }
-
-    public override void Flip()
-    {
-        if (playermovement.facingRight)
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 315));
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 135));
-        }
-
-    }
-
-    public override void OnCollisionEnter2D(Collision2D collision)
-    {
 
 
-    }
+
 
  
 }

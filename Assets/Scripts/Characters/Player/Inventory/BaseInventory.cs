@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClickedCallback
+public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClickedCallback
 {
     public GameObject defaultRow;
     public GameObject template;
@@ -129,7 +129,7 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
         UpdateSlotUi(index2);
     }
 
-    public void SwapItemsbetweenInventory(BaseInventory targetInventory,int index1, int index2)
+    public void SwapItemsBetweenInventory(BaseInventory targetInventory,int index1, int index2)
     {
         this.database.TransferItemToOtherInventory(targetInventory.database,index1, index2);
         UpdateSlotUi(index1);
@@ -174,7 +174,7 @@ public class BaseInventory : MonoBehaviour, BaseInventory.InventoryButtonClicked
         }
     }
 
-    public interface InventoryButtonClickedCallback
+    public interface IInventoryButtonClickedCallback
     {
         void Sort();
     }

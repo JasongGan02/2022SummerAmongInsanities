@@ -94,7 +94,6 @@ public class DifficultyManager : MonoBehaviour
     public void UpdateSpawnDiff(bool isRedMoon)
     {
         MobSpawner.waveNumber *= (int)(MobSpawner.waveNumber * (1 + 0.2 * _coeff)) ;
-        Debug.Log(MobSpawner.waveNumber);
     }
 
     private void UpdateInteractableCosts(float coeff)

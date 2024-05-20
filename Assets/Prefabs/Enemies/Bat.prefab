@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3018555575201582532}
   - component: {fileID: 3018555575201582539}
   - component: {fileID: 3018555575201582537}
+  - component: {fileID: 758889451910312853}
   m_Layer: 12
   m_Name: Bat
   m_TagString: enemy
@@ -5039,3 +5040,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &758889451910312853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572140884625632519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories:
+  - {fileID: 11400000, guid: d91542b85b98a5a4b8c304571aefc763, type: 2}
+  spatialBlend: 1

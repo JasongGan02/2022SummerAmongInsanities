@@ -146,7 +146,7 @@ public class CreeperController : EnemyController
                 var breakable = hit.transform.GetComponent<BreakableObjectController>();
                 if (breakable != null)
                 {
-                    breakable.OnClicked(Damage);
+                    ApplyDamage(breakable);
                 }
             }
             
@@ -155,7 +155,7 @@ public class CreeperController : EnemyController
                 var enemyController = hit.transform.GetComponent<CharacterController>();
                 if (enemyController != null)
                 {
-                    enemyController.TakeDamage(Damage, this);
+                    ApplyDamage(enemyController);
                     //Debug.Log("Damaging Enemy");
                 }
             }
@@ -165,7 +165,7 @@ public class CreeperController : EnemyController
                 var enemyController = hit.transform.GetComponent<CharacterController>();
                 if (enemyController != null)
                 {
-                    enemyController.TakeDamage(Damage, this);
+                    ApplyDamage(enemyController);
                     //Debug.Log("Damaging Fly Enemy");
                 }
             }

@@ -14,14 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Hand
   sizeRatio: 1
-  prefab: {fileID: 0}
+  prefab: {fileID: 351958815672505498, guid: b09ecf8e0d75ecc4e9d745e44f343c91, type: 3}
   level: 1
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 0
   _maxStack: 0
-  attack: 1
+  damageCoef: 1
+  rangeCoef: 0.5
   farm: 0.5
   frequency: 1
+  projectileObject: {fileID: 0}
   _recipe: []
   _quantity: 
   _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

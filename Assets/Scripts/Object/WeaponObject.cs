@@ -12,9 +12,17 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     [SerializeField]
     private float damageCoef;
 
+    [SerializeField]
+    private float rangeCoef;
+
     public float DamageCoef
     {
         get => damageCoef;
+    }
+
+    public float RangeCoef
+    {
+        get => rangeCoef;
     }
 
     [SerializeField]
@@ -69,10 +77,15 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         worldGameObject.layer = LayerMask.NameToLayer("weapon");
         worldGameObject.tag = "weapon";
         worldGameObject.name = itemName;
-        worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
-        //worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+        if (itemName != "Hand")
+        {
+            worldGameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
+            worldGameObject.GetComponent<Collider2D>().isTrigger = true;
+            worldGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        }
         Type type = Type.GetType(itemName+"Controller");
         var controller = worldGameObject.AddComponent(type);
+        controller.transform.SetParent(character.transform, false);
         (controller as Weapon).Initialize(this, character);
         return worldGameObject;
     }
