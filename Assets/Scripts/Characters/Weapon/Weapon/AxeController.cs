@@ -49,7 +49,7 @@ public class AxeController : Weapon
         {
          
             
-            transform.localScale = shouldFlip ? new Vector3(-2, 2, 2) : new Vector3(2, 2, 2);
+            transform.localScale = shouldFlip ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
 
             
             float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 45;
