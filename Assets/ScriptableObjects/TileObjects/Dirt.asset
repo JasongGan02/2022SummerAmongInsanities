@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 1529614696198433121, guid: b6b02f02a6b43544ca6c5b2b64a67a0c, type: 3}
   tileLayer: 1
   _maxStack: 99
-  _healthPoint: 1
+  _healthPoint: 4
   _drops:
   - droppedItem: {fileID: 11400000}
     chance: 4
@@ -29,4 +29,4 @@ MonoBehaviour:
   _craftTime: 0
   _needsBackground: 1
   _isLit: 0
-  _wallTileObject: {fileID: 0}
+  _lightIntensity: 0

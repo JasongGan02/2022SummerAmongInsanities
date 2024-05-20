@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 3719754441418985889, guid: 5acd5196880f5534e8e1c4cc7197ae5b, type: 3}
   tileLayer: 1
   _maxStack: 99
-  _healthPoint: 1
+  _healthPoint: 4
   _drops:
   - droppedItem: {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
     chance: 1

@@ -1644,6 +1644,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 788746861}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: dawnEndHour
       value: 6
       objectReference: {fileID: 0}

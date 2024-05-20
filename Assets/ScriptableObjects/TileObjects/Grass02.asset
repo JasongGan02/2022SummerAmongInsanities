@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 3131238724964298343, guid: 858ec57d47bf4104693ecb757cc1894d, type: 3}
   tileLayer: 3
   _maxStack: 99
-  _healthPoint: 1
+  _healthPoint: 4
   _drops: []
   _prefabs:
   - {fileID: 3131238724964298343, guid: 858ec57d47bf4104693ecb757cc1894d, type: 3}
@@ -30,4 +30,4 @@ MonoBehaviour:
   _craftTime: 0
   _needsBackground: 1
   _isLit: 0
-  _wallTileObject: {fileID: 0}
+  _lightIntensity: 0
