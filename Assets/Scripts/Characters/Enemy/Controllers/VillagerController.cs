@@ -76,11 +76,11 @@ public class VillagerController : EnemyController
         if (target == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
         else
         {
-            if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 1f; }   // find a path to target
+            if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
             else { PathExecute(); }         // continue current path
             if (true || villager_sight())   // see target clearly
             {
-                if (DistanceToTarget(target.transform) < _atkRange)
+                if (DistanceToTarget(target.transform) < _atkRange || target.transform.GetComponent<BreakableObjectController>() != null)
                 {
                     attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
                 }
@@ -90,8 +90,8 @@ public class VillagerController : EnemyController
                     //flip(target.transform);
                 }
             }
+            ShakePlayerOverHead();
         }
-        ShakePlayerOverHead();
         PathTicker -= Time.deltaTime;  // update ticker for path tracking
         TargetTicker -= Time.deltaTime; // update ticker for target tracking
     }
@@ -112,10 +112,10 @@ public class VillagerController : EnemyController
 
             if (attacking_animation_timer < (0.25f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.25f - damage_start_time_0 - 0.01f))
             {
-                var breakable = target.transform.GetComponent<BreakableObjectController>();
+                var breakable = target.transform.GetComponent<IDamageable>();
                 if (breakable != null)
                 {
-                    breakable.OnClicked(_atkDamage);
+                    ApplyDamage(breakable);
                 }
                 else
                 {
@@ -252,7 +252,7 @@ public class VillagerController : EnemyController
                 {
                     if (headCheck())
                     {
-                        Jump();
+                        Jump(2 * _movingSpeed);
                     }
                 }
             }
@@ -262,7 +262,7 @@ public class VillagerController : EnemyController
                 {
                     if (headCheck())
                     {
-                        Jump();
+                        Jump(2 * _movingSpeed);
                     }
                 }
             }
@@ -281,9 +281,9 @@ public class VillagerController : EnemyController
 
         return true;
     }
-    private void Jump()
+    private void Jump(float horizontal)
     {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
+        rb.velocity = new Vector2(horizontal * 1.0f, _jumpForce);
     }
     private bool villager_sight()
     {
@@ -341,9 +341,9 @@ public class VillagerController : EnemyController
 
     new void ShakePlayerOverHead()
     {
-        if (System.Math.Abs(player.transform.position.x - transform.position.x) < 0.3f)
+        if (Mathf.Abs(target.transform.position.x - transform.position.x) <= 0.3f)
         {
-            if (System.Math.Abs(player.transform.position.y - transform.position.y) < 2f)
+            if (Mathf.Abs(target.transform.position.y - transform.position.y) < 2f)
             {
                 Debug.Log("shaking the player over head");
                 if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
@@ -408,52 +408,7 @@ public class VillagerController : EnemyController
 
 
 
-    public void PathExecute()       // execute path to target
-    {
-        //Debug.Log("Path found with steps: " + path.Count);
-        if (DistanceToTarget(target.transform) < _atkRange) {
-            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0; Debug.Log("close to target!");
-            return;
-        }
-        DrawPath();
-        if (PathCounter < PathToTarget.Count)
-        {
-            if (PathCounter < PathToTarget.Count)
-            {
-                Debug.Log("Go to: " + PathToTarget[PathCounter]);
-                if ((int)PathToTarget[PathCounter].x != (int)transform.position.x)
-                {   // horizontal movement
-                    approach(2 * _movingSpeed, target.transform);
-                    BreakObstacles("horizontal");
-                    Debug.Log("horizontal approach");
-                }
-                else if ((int)(transform.position.y - 0.25f) > (int)PathToTarget[PathCounter].y)
-                {   // go down
-                    BreakObstacles("bottom"); Debug.Log("going down");
-                }
-                else if ((int)(transform.position.y - 0.25f) < (int)PathToTarget[PathCounter].y)
-                {   // go up, if head is blocked, break above obstacle
-                    BreakObstacles("top"); 
-                    Jump(); Debug.Log("jump");
-                }
-            }
-            
-            
-            if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
-            {
-                PathCounter++;
-            }
-            else
-            {
-                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
-            }
-        }
-        else
-        {   // reset Path
-            PathToTarget.Clear();
-            PathCounter = 0;
-        }
-    }
+   
 
     public void PathFind()  // only find path, not execute
     {
@@ -471,8 +426,8 @@ public class VillagerController : EnemyController
         // Ensure minimum and maximum are correct regardless of direction
         int minX = Mathf.Min(startX, endX) - 3; // increase fault tolerance
         int maxX = Mathf.Max(startX, endX) + 3;
-        int minY = Mathf.Min(startY, endY) - 2;
-        int maxY = Mathf.Max(startY, endY) + 2;
+        int minY = Mathf.Min(startY, endY) - 4;
+        int maxY = Mathf.Max(startY, endY) + 4;
         //Debug.Log("min x" + minX + "min y" + minY + "max x" + maxX + "max y" + maxY);
         // Create 2D array to store health values
         int[,] healthGrid = new int[maxX - minX + 1, maxY - minY + 1];
@@ -483,18 +438,23 @@ public class VillagerController : EnemyController
             {   // consider gravity limitation
                 //if (y > minY && healthGrid[x - minX, y - minY - 1] == 99) { healthGrid[x - minX, y - minY] = 99; continue; }    // ignore too high
                 int disToGround = DistanceToGround(x, y);
-                if (disToGround > 2) { healthGrid[x - minX, y - minY] = 99; continue; } // too high, unattainable
-                else if (disToGround == 2) { healthGrid[x - minX, y - minY] = 1; continue; } // jump attainable
-                else if (disToGround == 1) { healthGrid[x - minX, y - minY] = 1; continue; } // walk
-                else if (disToGround == 0) 
-                {
-                    if (DistanceToGround(x, y-1) > 0) { healthGrid[x - minX, y - minY] = 99; continue; }
+                if (disToGround != 0)
+                {   // air
+                    if (disToGround == 1) { healthGrid[x - minX, y - minY] = 1; continue; } // surface
+                    else if (disToGround == 2) { healthGrid[x - minX, y - minY] = 1 + 1; continue; }    // jump attainable
+                    else if (disToGround > 2 && IsNeighborOfTile(x, y) && y <= startY) { healthGrid[x - minX, y - minY] = 2; continue; } // next to tile object, possible to reach
+                    else { healthGrid[x - minX, y - minY] = 99; continue; }
+                }
+                else
+                {   // Tile, 1: what tile, 2: altitude
                     Vector2Int position = new Vector2Int(x, y);
                     TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
-                    if (tile != null) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
+                    if (IsLadder(x ,y)) { healthGrid[x - minX, y - minY] = 1; continue; }
+                    else if (IsNeighborTileReachable(x, y)) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
+                    else if (y < startY) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
+                    else if (y >= startY) { healthGrid[x - minX, y - minY] = 99; continue; }
+                    else { healthGrid[x - minX, y - minY] = 99; continue; }
                 }
-                else { healthGrid[x - minX, y - minY] = 99; continue; }
-                
             }
         }
         healthGrid[startX - minX, startY - minY] = 0; // starting point doesn't have cost
@@ -507,7 +467,7 @@ public class VillagerController : EnemyController
         if (path.Count > 0)
         {
             int totalPathCost = CalculatePathCost(path, healthGrid, minX, minY);
-            if (totalPathCost >= 99) { PathToTarget.Clear(); Debug.Log("path cost too much!"); return; }
+            if (totalPathCost >= 99) { PathToTarget.Clear();  return; }
             PathToTarget = PathPointToCenter(path);      // update Path
             PathCounter = 0;         // reset ticker
 
@@ -535,7 +495,65 @@ public class VillagerController : EnemyController
         }
         return -1;  // false value: input y is invalid
     }
+    public bool IsNeighborOfTile(int x, int y)
+    {   // check the left and right side of position is a tile object
+        Vector2Int position = new Vector2Int(x+1, y);
+        TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
+        if (tile != null) { return true; }
+        position = new Vector2Int(x-1, y);
+        tile = WorldGenerator.GetDataFromWorldPos(position);
+        if (tile != null) { return true; }
+        return false;
+    }
+    public bool IsLadder(int x, int y) { return false; }
+    public bool IsNeighborTileReachable(int x, int y)
+    {
+        Vector2Int position = new Vector2Int(x + 1, y - 1);
+        TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
+        if (tile != null) { return true;}
+        position = new Vector2Int(x-1, y-1);
+        tile = WorldGenerator.GetDataFromWorldPos(position);
+        if (tile != null) { return true;} 
+        return false;
+    }
+    public void PathExecute()       // execute path to target
+    {
+        //Debug.Log("Path found with steps: " + path.Count);
+        if (DistanceToTarget(target.transform) < _atkRange)
+        {
+            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+            return;
+        }
+        DrawPath();
+        if (PathCounter < PathToTarget.Count)
+        {
+            Debug.Log("Go to: " + PathToTarget[PathCounter]);
 
+            approach(2 * _movingSpeed, target.transform);
+            SenseFrontBlock();
+
+            Vector2 direction = target.transform.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+     
+            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
+            else if (angle >= -105 && angle <= -75) { Debug.Log("Angle: " + angle); BreakObstacles("bottom"); }
+            else { BreakObstacles("horizontal"); }
+
+            if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
+            {
+                PathCounter++;
+            }
+            else
+            {
+                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+            }
+        }
+        else
+        {   // reset Path
+            PathToTarget.Clear();
+            PathCounter = 0;
+        }
+    }
     public List<Vector2> PathPointToCenter(List<Vector2Int> path)
     {
         List<Vector2> convertedPath = new List<Vector2>();
@@ -824,9 +842,11 @@ public class VillagerController : EnemyController
                 Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
                 if (hitTileDetect5.transform != null)
                 {
+                    Debug.Log("check ground");
                     var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
                     if (breakable5 != null)
                     {
+                        Debug.Log("target at ground");
                         target = breakable5.gameObject; BreakObstaclesCD = 1f;
                     }
                 }
