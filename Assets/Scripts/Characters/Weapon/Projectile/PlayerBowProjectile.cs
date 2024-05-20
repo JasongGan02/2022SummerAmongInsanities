@@ -9,7 +9,6 @@ public class PlayerBowProjectile : Projectile
         base.Initialize(firingCharacter, projectileObject);
         this.speed = force;
         this.finalDamage = damage * (projectileObject?.DamageCoef ?? 1);
-        this.GetComponent<Collider2D>().isTrigger = true; 
     }
     public void Launch(Vector2 startPosition)
     {
@@ -21,6 +20,7 @@ public class PlayerBowProjectile : Projectile
 
     protected override void OnTriggerEnter2D(Collider2D collider)
     {
+
         if (IsInHatredList(collider))
         {
             CharacterController character = collider.GetComponent<CharacterController>();
@@ -30,13 +30,11 @@ public class PlayerBowProjectile : Projectile
             }
 
             // Return the projectile to the pool
-            //ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
-            PoolManager.Instance.Return(this.gameObject, projectileObject);
+            PoolManager.Instance.Return(gameObject, projectileObject);
         }
         else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
         {
-            //ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
-            PoolManager.Instance.Return(this.gameObject, projectileObject);
+            PoolManager.Instance.Return(gameObject, projectileObject);
         }
     }
 }

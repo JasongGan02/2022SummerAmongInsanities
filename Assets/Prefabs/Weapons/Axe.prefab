@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3605020804775853097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d2bec3c47e0147c46874439c8003b109, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 377ebbea5a4fdbe47a00b2140065374f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,8 +103,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.065079436, y: 0.07777778}
-    oldSize: {x: 0.4375, y: 0.375}
+    pivot: {x: 0.065, y: 0.077}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 0.14, y: 0.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -112,15 +112,20 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.29701784, y: 0.3592479}
-      - {x: -0.03321576, y: 0.031432316}
-      - {x: -0.03268052, y: -0.029899627}
-      - {x: 0.031706065, y: -0.036030844}
-      - {x: 0.24674018, y: 0.18711087}
-      - {x: 0.24800894, y: 0.029765725}
-      - {x: 0.28618434, y: 0.030107874}
-      - {x: 0.41396722, y: 0.15697141}
-      - {x: 0.4096327, y: 0.2565648}
+    - - {x: 0.435408, y: 0.22890936}
+      - {x: 0.26345694, y: 0.27818784}
+      - {x: 0.26212794, y: 0.42437562}
+      - {x: 0.13061082, y: 0.38271317}
+      - {x: -0.017960295, y: 0.37341797}
+      - {x: 0.0040437803, y: 0.24202263}
+      - {x: -0.51702213, y: -0.28490266}
+      - {x: -0.47927108, y: -0.35321254}
+      - {x: -0.41488448, y: -0.3663217}
+      - {x: 0.0862467, y: 0.11500511}
+      - {x: 0.15264323, y: -0.18887757}
+      - {x: 0.30711824, y: -0.100147694}
+      - {x: 0.4349012, y: 0.024389848}
+      - {x: 0.5468662, y: 0.1263092}
   m_UseDelaunayMesh: 0
 --- !u!50 &3605020804775853096
 Rigidbody2D:
