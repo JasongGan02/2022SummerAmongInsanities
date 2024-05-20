@@ -18,6 +18,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected WeaponObject weaponStats;
     protected float finalDamage;
     protected float attackRange;
+    
 
 
     protected GameObject player;
@@ -49,30 +50,12 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
-        finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
-        attackRange = characterController.AtkRange * weaponObject.RangeCoef; 
+        finalDamage =  weaponObject.BaseDamage + characterController.AtkDamage * weaponObject.DamageCoef ;
+        attackRange = weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef; 
 
     }
 
-    protected void Flip()
-    {
-
-        Vector3 theScale = transform.localScale;
-        if (playermovement.facingRight)
-        {
-
-            theScale.y = 1.5f;
-            transform.localScale = theScale;
-            transform.position = player.transform.position + new Vector3(0.5f, -0.2f, 0);
-
-        }
-        else
-        {
-            theScale.y = -1.5f;
-            transform.localScale = theScale;
-            transform.position = player.transform.position + new Vector3(-0.5f, -0.2f, 0);
-        }
-    }
+    
     public virtual void Update()
     {
 
@@ -151,7 +134,7 @@ public class Weapon : MonoBehaviour, IDamageSource
        
         while (fracJourney < 1.0f)
         {
-            float distCovered = (Time.time - startTime) * speed * 3;
+            float distCovered = (Time.time - startTime) * speed * 2;
             fracJourney = distCovered / journeyLength;
             transform.position = Vector2.Lerp(startPosition, endPosition, fracJourney);
             yield return null;

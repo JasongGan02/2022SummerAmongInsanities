@@ -108,6 +108,7 @@ public class Projectile : MonoBehaviour, IDamageSource
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
+        Debug.Log("damaging!");
     }
 
     protected virtual bool IsInHatredList(Collider2D collider)
