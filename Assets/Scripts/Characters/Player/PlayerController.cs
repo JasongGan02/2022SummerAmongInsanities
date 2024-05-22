@@ -16,9 +16,7 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     //Player Run-time only variables
     float timer;
     bool isPlayerDead = false; 
-    SpriteRenderer spriteRenderer_component;
     Playermovement playermovement_component;
-    CoreArchitectureController coreArchitecture;
     private CharacterSpawnManager characterSpawnManager;
 
     //UI Elements
@@ -42,16 +40,14 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     {
         timer = 0f;
         characterSpawnManager = FindObjectOfType<CharacterSpawnManager>();
-        spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
-        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(2).GetComponent<Image>();
         damagedHealthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
         damagedColor = damagedHealthBar.color;
         damagedColor.a = 0f;
         damagedHealthBar.color = damagedColor;
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
-        healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
+        healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>();
         UpdateHealthUI();
         EvokeStatsChange();
     }
