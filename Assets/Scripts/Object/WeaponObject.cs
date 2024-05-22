@@ -21,6 +21,9 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     [SerializeField]
     private float baseRange;
 
+    [SerializeField]
+    private float knockBack;
+
 
     public float DamageCoef
     {
@@ -41,6 +44,13 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     {
         get => baseRange;
     }
+
+    public float KnockBack
+    {
+        get => knockBack;
+    }
+
+
 
     [SerializeField]
     private float farm;
