@@ -115,7 +115,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 transform.right = Vector2.right;
             }
 
-            approach(_movingSpeed, target.transform, AtkRange);
+            approach(_movingSpeed, target.transform, AtkRange-2);   // debug
             
             // Target Taken Damage
             if (arrow != null)
