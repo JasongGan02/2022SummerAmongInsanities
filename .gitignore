@@ -72,3 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+Assets/Resources/Fonts/ClockStatic.asset
+Assets/Resources/Fonts/ClockStatic.asset.meta
