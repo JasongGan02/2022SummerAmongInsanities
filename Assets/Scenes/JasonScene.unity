@@ -1605,7 +1605,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.size
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[14].poolableObject
@@ -1616,11 +1616,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[16].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[14].initialPoolSize
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[15].initialPoolSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[16].initialPoolSize
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
@@ -1685,7 +1693,7 @@ PrefabInstance:
       objectReference: {fileID: 701233755}
     - target: {fileID: 1527045367632481217, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: enemyTypes.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1527045367632481217, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: enemyTypes.Array.data[1]
@@ -1703,6 +1711,10 @@ PrefabInstance:
       propertyPath: enemyTypes.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1527045367632481217, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: enemyTypes.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
     - target: {fileID: 1932488204404519316, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_Name
       value: AudioManager

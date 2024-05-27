@@ -341,20 +341,36 @@ public class VillagerController : EnemyController
 
     new void ShakePlayerOverHead()
     {
-        if (Mathf.Abs(target.transform.position.x - transform.position.x) <= 0.3f)
+        Vector2 direction = target.transform.position - transform.position;
+        float distance = direction.magnitude;
+
+        // Calculate the angle in degrees
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Check the conditions
+        if ((angle >= -95f && angle <= -85f) || (angle >= 85 && angle <= 95) && distance < 3f)
         {
-            if (Mathf.Abs(target.transform.position.y - transform.position.y) < 2f)
+            Debug.Log("Angle and distance conditions met");
+            if (Mathf.Abs(target.transform.position.x - transform.position.x) <= 0.3f)
             {
-                Debug.Log("shaking the player over head");
-                if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
+                Debug.Log("Within horizontal range");
+                if (Mathf.Abs(target.transform.position.y - transform.position.y) < 2f)
                 {
-                    rb.velocity = new Vector2(-12f, rb.velocity.y);
-                }
-                else
-                {
-                    rb.velocity = new Vector2(12f, rb.velocity.y);
+                    Debug.Log("Shaking the player overhead");
+                    if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
+                    {
+                        rb.velocity = new Vector2(-12f, rb.velocity.y);
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(12f, rb.velocity.y);
+                    }
                 }
             }
+        }
+        else
+        {
+            Debug.Log("distance: " + distance + " angle: " + angle);
         }
     }
 
@@ -550,6 +566,7 @@ public class VillagerController : EnemyController
         }
         else
         {   // reset Path
+            approach(2 * _movingSpeed, target.transform);
             PathToTarget.Clear();
             PathCounter = 0;
         }
