@@ -96,18 +96,20 @@ public class BowController : RangedWeaponController
       
         if (playerBowArrow != null)
         {
-            playerBowArrow.Initialize(characterController, projectileObject, force, damage);
+            playerBowArrow.Initialize(characterController, projectileObject, force, damage,knockbackForce);
             _audioEmitter.PlayClipFromCategory("ShootArrow");
             playerBowArrow.Launch(target,startPosition); 
-
             isAttacking = false;
 
         }
     }
 
 
+    protected override void KnockbackEnemy(Collider2D enemy)
+    {
+        
+    }
 
 
 
- 
 }

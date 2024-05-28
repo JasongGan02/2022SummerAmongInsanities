@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected WeaponObject weaponStats;
     protected float finalDamage;
     protected float attackRange;
-    
+    protected float knockbackForce;
 
 
     protected GameObject player;
@@ -38,6 +38,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     public float CriticalMultiplier => characterController.CriticalMultiplier;
 
 
+
     public virtual void Start()
     {
         player = GameObject.Find("Player");
@@ -51,7 +52,8 @@ public class Weapon : MonoBehaviour, IDamageSource
         this.characterController = characterController;
         this.weaponStats = weaponObject;
         finalDamage =  weaponObject.BaseDamage + characterController.AtkDamage * weaponObject.DamageCoef ;
-        attackRange = weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef; 
+        attackRange = weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef;
+        knockbackForce = weaponObject.KnockBack;
 
     }
 
@@ -167,6 +169,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             if (damageable != null)
             {
                 ApplyDamage(damageable);
+                KnockbackEnemy(collision);
             }
         }
     }
@@ -177,6 +180,14 @@ public class Weapon : MonoBehaviour, IDamageSource
         target.TakeDamage(damageDealt, this);
     }
 
-  
+    protected virtual void KnockbackEnemy(Collider2D enemy)
+    {
+        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+        if (enemyRb != null)
+        {
+            Vector2 knockbackDirection = (enemy.transform.position - player.transform.position).normalized;
+            enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+        }
+    }
 
 }
