@@ -41,6 +41,8 @@ public class VillagerController : EnemyController
     public Transform tileDetect3;
     public Transform tileDetect4;
     public float BreakObstaclesCD = 1f;
+    public Transform TargetRemainder;
+    public float ChasingRemainder = 5f;
 
     protected override void Awake()
     {
@@ -73,9 +75,12 @@ public class VillagerController : EnemyController
 
 
         if (target == null || TargetTicker < 0) { target = WhatToAttack(); TargetTicker = 1f; } // if doesn't have target
-        if (target == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
+        if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
+        else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
         else
         {
+            TargetRemainder = target.transform;
+            ChasingRemainder = 5f;  // chasing time after losing target in visual
             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
             else { PathExecute(); }         // continue current path
             if (true || villager_sight())   // see target clearly
@@ -370,7 +375,7 @@ public class VillagerController : EnemyController
         }
         else
         {
-            Debug.Log("distance: " + distance + " angle: " + angle);
+            //Debug.Log("distance: " + distance + " angle: " + angle);
         }
     }
 
@@ -567,6 +572,49 @@ public class VillagerController : EnemyController
         else
         {   // reset Path
             approach(2 * _movingSpeed, target.transform);
+            PathToTarget.Clear();
+            PathCounter = 0;
+        }
+    }
+    public void FinishExistingPath()
+    {
+        if (ChasingRemainder < 0f) {
+            TargetRemainder = null; // erase Target Remainder
+            return;
+        }
+        DisplayTargetRemainder();
+        if (DistanceToTarget(TargetRemainder) < _atkRange)
+        {
+            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+            return;
+        }
+        DrawPath();
+        if (PathCounter < PathToTarget.Count)
+        {
+            Debug.Log("Go to: " + PathToTarget[PathCounter]);
+
+            approach(2 * _movingSpeed, TargetRemainder);
+            SenseFrontBlock();
+
+            Vector2 direction = TargetRemainder.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
+            else if (angle >= -105 && angle <= -75) { Debug.Log("Angle: " + angle); BreakObstacles("bottom"); }
+            else { BreakObstacles("horizontal"); }
+
+            if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
+            {
+                PathCounter++;
+            }
+            else
+            {
+                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+            }
+        }
+        else
+        {   // reset Path
+            approach(2 * _movingSpeed, TargetRemainder);
             PathToTarget.Clear();
             PathCounter = 0;
         }
@@ -869,5 +917,9 @@ public class VillagerController : EnemyController
                 }
             }
         }
+    }
+    public void DisplayTargetRemainder()
+    {
+        
     }
 }
