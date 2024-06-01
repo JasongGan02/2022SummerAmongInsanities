@@ -24,6 +24,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private int _healthPoint;
+    public int getHP() { return _healthPoint; }
 
 
     [SerializeField]

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerBowProjectile : Projectile
 {
-    public void Initialize(CharacterController firingCharacter, ProjectileObject projectileObject, float force, float damage)
+    float knockbackForce;
+    public void Initialize(CharacterController firingCharacter, ProjectileObject projectileObject, float force, float damage,float knockbackForce)
     {
         base.Initialize(firingCharacter, projectileObject);
         this.speed = force;
         this.finalDamage = damage * (projectileObject?.DamageCoef ?? 1);
-        this.GetComponent<Collider2D>().isTrigger = true; 
+        this.knockbackForce = knockbackForce;
     }
     public void Launch(Vector2 startPosition)
     {
@@ -21,22 +22,32 @@ public class PlayerBowProjectile : Projectile
 
     protected override void OnTriggerEnter2D(Collider2D collider)
     {
+
         if (IsInHatredList(collider))
         {
             CharacterController character = collider.GetComponent<CharacterController>();
             if (character != null)
             {
                 ApplyDamage(character);
+                KnockbackEnemy(collider);
             }
 
             // Return the projectile to the pool
-            //ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
-            PoolManager.Instance.Return(this.gameObject, projectileObject);
+            PoolManager.Instance.Return(gameObject, projectileObject);
         }
         else if (collider.gameObject.layer == LayerMask.NameToLayer("ground"))
         {
-            //ProjectilePoolManager.Instance.ReturnProjectile(gameObject, projectileObject.getPrefab());
-            PoolManager.Instance.Return(this.gameObject, projectileObject);
+            PoolManager.Instance.Return(gameObject, projectileObject);
+        }
+    }
+
+    protected void KnockbackEnemy(Collider2D enemy)
+    {
+        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+        if (enemyRb != null)
+        {
+            Vector2 knockbackDirection = (enemy.transform.position - firingCharacter.transform.position).normalized;
+            enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
     }
 }

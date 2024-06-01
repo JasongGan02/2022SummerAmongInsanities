@@ -99,8 +99,8 @@ public class CreeperController : EnemyController
         yield return new WaitForSeconds(waitTime);
         booming = true;
         animator.Play("creeper_boom");
-        ChangeCollider("creeper_boom");
-        yield return new WaitForSeconds(0.15f);
+        //ChangeCollider("creeper_boom");
+        yield return new WaitForSeconds(0.3f);
         float checkD = Vector2.Distance(transform.position, player.transform.position);
         if (checkD < _atkRange) // hurt target successfully
         {
@@ -118,7 +118,7 @@ public class CreeperController : EnemyController
         }
         BreakSurrounding(_atkRange, _atkDamage);
         animator.Play("creeper_posBoom");
-        ChangeCollider("creeper_posBoom");
+        //ChangeCollider("creeper_posBoom");
         yield return new WaitForSeconds(0.8f);
         death();
     }
@@ -143,7 +143,7 @@ public class CreeperController : EnemyController
             // Iterate over each hit in the current direction
             foreach (RaycastHit2D hit in hits)
             {
-                var breakable = hit.transform.GetComponent<BreakableObjectController>();
+                var breakable = hit.transform.GetComponent<IDamageable>();
                 if (breakable != null)
                 {
                     ApplyDamage(breakable);
@@ -319,15 +319,18 @@ public class CreeperController : EnemyController
     {
         float horizontal = transform.position.x;
         float vertical = transform.position.y;
-        if (status == "creeper_idle") {
+        if (status == "creeper_idle")
+        {
             Collider.offset = new Vector2 { x = -0.2630091f + horizontal, y = -3.62576f + vertical };
-            Collider.radius = 9.307809f; 
+            Collider.radius = 9.307809f;
         }
-        else if (status == "creeper_preBoom") {
+        else if (status == "creeper_preBoom")
+        {
             Collider.offset = new Vector2 { x = -0.05069017f + horizontal, y = -2.169847f + vertical };
-            Collider.radius = 8.97416f; 
+            Collider.radius = 8.97416f;
         }
-        else if (status == "creeper_boom") {
+        else if (status == "creeper_boom")
+        {
             //Collider.offset = new Vector2 { x = 0.8289242f + horizontal, y = -0.1376402f + vertical };
             //Collider.radius = 5.759026f;
             Collider.radius = 0.1f;

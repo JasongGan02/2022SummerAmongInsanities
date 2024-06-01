@@ -15,7 +15,6 @@ public class RangedWeaponController : Weapon, IRangedAttacker
     public override void Start()
     {
         base.Start();
-        startPosition = transform;
         projectileObject = weaponStats.projectileObject;
     }
 

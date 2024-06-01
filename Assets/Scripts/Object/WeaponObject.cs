@@ -15,6 +15,16 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     [SerializeField]
     private float rangeCoef;
 
+    [SerializeField]
+    private float baseDamage;
+
+    [SerializeField]
+    private float baseRange;
+
+    [SerializeField]
+    private float knockBack;
+
+
     public float DamageCoef
     {
         get => damageCoef;
@@ -24,6 +34,23 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     {
         get => rangeCoef;
     }
+
+    public float BaseDamage
+    {
+        get => baseDamage;
+    }
+
+    public float BaseRange
+    {
+        get => baseRange;
+    }
+
+    public float KnockBack
+    {
+        get => knockBack;
+    }
+
+
 
     [SerializeField]
     private float farm;
@@ -85,7 +112,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         }
         Type type = Type.GetType(itemName+"Controller");
         var controller = worldGameObject.AddComponent(type);
-        controller.transform.SetParent(character.transform, false);
+        //controller.transform.SetParent(character.transform, false);
         (controller as Weapon).Initialize(this, character);
         return worldGameObject;
     }

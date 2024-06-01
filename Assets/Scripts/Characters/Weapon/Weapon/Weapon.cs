@@ -13,11 +13,12 @@ using Animator = UnityEngine.Animator;
 
 public class Weapon : MonoBehaviour, IDamageSource
 {
-    
+    protected AudioEmitter _audioEmitter;
     protected CharacterController characterController;
     protected WeaponObject weaponStats;
     protected float finalDamage;
     protected float attackRange;
+    protected float knockbackForce;
 
 
     protected GameObject player;
@@ -26,7 +27,6 @@ public class Weapon : MonoBehaviour, IDamageSource
     
 
     protected Inventory inventory;
-    protected AudioEmitter _audioEmitter;
     protected bool isAttacking = false;
     protected float attackDelay = 1f;
     protected Vector2 targetDirection;
@@ -36,6 +36,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
+
 
 
     public virtual void Start()
@@ -50,30 +51,13 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
-        finalDamage = characterController.AtkDamage * weaponObject.DamageCoef;
-        attackRange = characterController.AtkRange * weaponObject.RangeCoef; ; 
+        finalDamage =  weaponObject.BaseDamage + characterController.AtkDamage * weaponObject.DamageCoef ;
+        attackRange = weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef;
+        knockbackForce = weaponObject.KnockBack;
 
     }
 
-    protected void Flip()
-    {
-
-        Vector3 theScale = transform.localScale;
-        if (playermovement.facingRight)
-        {
-
-            theScale.y = 1.5f;
-            transform.localScale = theScale;
-            transform.position = player.transform.position + new Vector3(0.5f, -0.2f, 0);
-
-        }
-        else
-        {
-            theScale.y = -1.5f;
-            transform.localScale = theScale;
-            transform.position = player.transform.position + new Vector3(-0.5f, -0.2f, 0);
-        }
-    }
+    
     public virtual void Update()
     {
 
@@ -114,50 +98,56 @@ public class Weapon : MonoBehaviour, IDamageSource
 
         isAttacking = true;
 
-        targetDirection = (targetPosition - (Vector2)player.transform.position).normalized;
-        float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
-        Quaternion startRotation = transform.rotation;
-        Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
-
+        float rotationDuration = 0.2f; // Duration for rotation
         float rotateTime = 0.0f;
-        float rotationDuration = 0.2f; // 旋转时间减半
+
         while (rotateTime < 1.0f)
         {
-            rotateTime += Time.deltaTime / rotationDuration; // 调整时间增加的比例，缩短旋转时间
+            // Update target position in case it moves
+            targetDirection = (targetPosition - (Vector2)player.transform.position).normalized;
+            float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
+
+            Quaternion startRotation = transform.rotation;
+            Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
+
+            rotateTime += Time.deltaTime / rotationDuration;
             transform.rotation = Quaternion.Lerp(startRotation, endRotation, rotateTime);
 
-            yield return null; // 等待下一帧
+            // Update weapon position to follow the player's movement
+            transform.position = player.transform.position;
+
+            yield return null; // Wait for the next frame
         }
 
         StartCoroutine(PerformAttack());
-
-
     }
 
     IEnumerator PerformAttack()
     {
+        _audioEmitter.PlayClipFromCategory("WeaponAttack");
+
         float startTime = Time.time;
         float journeyLength = attackRange;
         float fracJourney = 0f;
 
-        Vector2 startPosition = player.transform.position; // 攻击开始的位置
-        Vector2 endPosition = startPosition + targetDirection * attackRange; // 攻击最远到达的位置
+        Vector2 startPosition = player.transform.position; 
+        Vector2 endPosition = startPosition + targetDirection * attackRange; 
 
-        // 矛向前移动
+       
         while (fracJourney < 1.0f)
         {
-            float distCovered = (Time.time - startTime) * speed * 3;
+            float distCovered = (Time.time - startTime) * speed * 2;
             fracJourney = distCovered / journeyLength;
             transform.position = Vector2.Lerp(startPosition, endPosition, fracJourney);
             yield return null;
         }
 
-        // 稍作等待
+     
         yield return new WaitForSeconds(0.1f);
 
-        // 矛返回起始位置
-        startTime = Time.time; // 重置时间
-        fracJourney = 0f; // 重置插值参数
+     
+        startTime = Time.time; 
+        fracJourney = 0f;
         while (fracJourney < 1.0f)
         {
             float distCovered = (Time.time - startTime) * speed;
@@ -166,15 +156,12 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-        isAttacking = false; // 攻击结束
+        isAttacking = false; 
         targetEnemy = null;
     }
 
 
-
-
-
-    public virtual void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("enemy") && isAttacking)
         {
@@ -182,6 +169,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             if (damageable != null)
             {
                 ApplyDamage(damageable);
+                KnockbackEnemy(collision);
             }
         }
     }
@@ -192,6 +180,14 @@ public class Weapon : MonoBehaviour, IDamageSource
         target.TakeDamage(damageDealt, this);
     }
 
-  
+    protected virtual void KnockbackEnemy(Collider2D enemy)
+    {
+        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+        if (enemyRb != null)
+        {
+            Vector2 knockbackDirection = (enemy.transform.position - player.transform.position).normalized;
+            enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+        }
+    }
 
 }
