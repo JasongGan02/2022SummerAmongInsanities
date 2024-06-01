@@ -8,7 +8,8 @@ public class PlayerHPUIController : MonoBehaviour
     public Image fillImage;
     public Image headImage;
     //public Image damagedHealthBar;
-    public TextMeshProUGUI healthText;
+    public Text hpLightText;
+    public Text hpDarkText;
     //public Color damagedColor;
     //private float damagedHealthFadeTimer;
     //private const float damagedHealthFadeTimerMax = 2f;
@@ -26,9 +27,10 @@ public class PlayerHPUIController : MonoBehaviour
     {
         float fillAmount = currentHP / maxHP;
         fillImage.fillAmount = fillAmount;
-        if (healthText != null)
+        if (hpLightText != null)
         {
-            healthText.text = Mathf.RoundToInt(currentHP).ToString() + "/" + Mathf.RoundToInt(maxHP).ToString();
+            hpLightText.text = Mathf.RoundToInt(currentHP).ToString() + "/" + Mathf.RoundToInt(maxHP).ToString();
+            hpDarkText.text = Mathf.RoundToInt(currentHP).ToString() + "/" + Mathf.RoundToInt(maxHP).ToString();
         }
 
         // if (damagedColor.a > 0)
