@@ -27,12 +27,12 @@ public class MobSpawner : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         InitializeTotalWeights();
         StartCoroutine(SpawnCycleCoroutine()); 
-        TimeSystemManager.onNightStarted += HandleNightStart;
+        GameEvents.current.OnNightStarted += HandleNightStart;
     }
 
     private void OnDestroy()
     {
-        TimeSystemManager.onNightStarted -= HandleNightStart;
+        GameEvents.current.OnNightStarted -= HandleNightStart;
     }
 
     public static void UpdateSpawnDiff(float coeff)

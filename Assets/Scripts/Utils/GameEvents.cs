@@ -27,4 +27,35 @@ public class GameEvents : MonoBehaviour
     {
         OnEnemyLevelIncreased?.Invoke(enemyLevel);
     }
+    
+    public event Action OnDayStarted;
+    public event Action OnDuskStarted;
+    public event Action<bool> OnNightStarted;
+    public event Action<int> OnHourUpdated;
+    public event Action<int> OnDayUpdated;
+    
+    public void DayStarted()
+    {
+        OnDayStarted?.Invoke();
+    }
+
+    public void DuskStarted()
+    {
+        OnDuskStarted?.Invoke();
+    }
+
+    public void NightStarted(bool isRedMoonNight)
+    {
+        OnNightStarted?.Invoke(isRedMoonNight);
+    }
+
+    public void HourUpdated(int hour)
+    {
+        OnHourUpdated?.Invoke(hour);
+    }
+
+    public void DayUpdated(int day)
+    {
+        OnDayUpdated?.Invoke(day);
+    }
 }
