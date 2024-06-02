@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class TimeSystemManager : MonoBehaviour
 {
@@ -16,15 +18,9 @@ public class TimeSystemManager : MonoBehaviour
     public int duskStartHour = 18; // Hour dusk starts
     public int duskEndHour = 20; // Hour dusk ends
     public bool isDebugDayTime = false;
-
-    public Action onDayStarted { get; set; }
-    public Action onDuskStarted { get; }
-    public static Action<bool> onNightStarted { get; set; }
-
-    public Action<int> onHourUpdated { get; set; }
-    public Action<int> onDayUpdated { get; set; }
-
-    private TMP_Text timeText; //x��xʱ
+    
+    private Text timeText; //hours and minutes
+    private Text calendarText; //days
     private float currentMinute = 0;
     private int currentHour = 0;
     private int currentDay = 0;
@@ -39,18 +35,24 @@ public class TimeSystemManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<TMP_Text>();
+        timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
+        calendarText = GameObject.Find(Constants.Name.CALENDAR_TEXT).GetComponent<Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
         _audioEmitter = GetComponent<AudioEmitter>();
-        if (isDebugDayTime) SetToDaytime();
-        else InitializeTimeBasedOnCurrentHour();
+        
 
     }
-    
+
+    private void Start()
+    {
+        if (isDebugDayTime) SetToDaytime();
+        else InitializeTimeBasedOnCurrentHour();
+    }
+
     private void SetToDaytime()
     {
         currentHour = dayStartHour + 1;
-        onDayStarted?.Invoke();
+        GameEvents.current.DayStarted();
     }
     
     private void InitializeTimeBasedOnCurrentHour()
@@ -59,12 +61,12 @@ public class TimeSystemManager : MonoBehaviour
         {
             _audioEmitter.PlayClipFromCategory("DayTime", false);
             _audioEmitter.IsPlaying("DayTime");
-            onDayStarted?.Invoke();
+            GameEvents.current.DayStarted();
         }
         else
         {
-            //am.playBGM(am.NightTime);
-            onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+            Debug.Log(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+            GameEvents.current.NightStarted(currentDay != 0 && currentDay % redMoonNightInterval == 0);
         }
     }
 
@@ -108,8 +110,7 @@ public class TimeSystemManager : MonoBehaviour
             currentHour += (int)(currentMinute / 60);
             currentMinute %= 60;
 
-            // Trigger any hourly updates here
-            onHourUpdated?.Invoke(currentHour);
+            GameEvents.current.HourUpdated(currentHour);
         }
 
         // Check for hour overflow and increment days accordingly.
@@ -118,8 +119,7 @@ public class TimeSystemManager : MonoBehaviour
             currentDay++;
             currentHour %= 24;
 
-            // Trigger any daily updates here
-            onDayUpdated?.Invoke(currentDay);
+            GameEvents.current.DayUpdated(currentDay);
         }
     }
     
@@ -146,14 +146,14 @@ public class TimeSystemManager : MonoBehaviour
     {
         if (currentHour == dayStartHour && !dayStarted)
         {
-            onDayStarted?.Invoke();
+            GameEvents.current.DayStarted();
             dayStarted = true; // Mark the day start transition as handled
             nightStarted = false;
             _audioEmitter.PlayClipFromCategory("DayTime", false);
         }
         else if (currentHour == nightStartHour && !nightStarted)
         {
-            onNightStarted?.Invoke(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+            GameEvents.current.NightStarted(currentDay != 0 && currentDay % redMoonNightInterval == 0);
             nightStarted = true; // Mark the night start transition as handled
             dayStarted = false;
             _audioEmitter.PlayClipFromCategory("NightTime", false);
@@ -162,7 +162,10 @@ public class TimeSystemManager : MonoBehaviour
 
     private void UpdateTimeUI()
     {
-        timeText.text = $"{currentDay}天{currentHour}时";
+        string formattedHour = currentHour.ToString("D2");
+        string formattedMinute = ((int)currentMinute).ToString("D2");
+        timeText.text = $"{formattedHour}:{formattedMinute}";
+        calendarText.text = $"{currentDay+1}";
     }
     public float GetCurrentTime() => currentHour + currentMinute / 60f;
     public void CalculateAndUpdateSunlight()

@@ -14,20 +14,12 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
 
     private float RespwanTimeInterval;
     //Player Run-time only variables
-    float timer;
-    bool isPlayerDead = false; 
-    SpriteRenderer spriteRenderer_component;
-    Playermovement playermovement_component;
-    CoreArchitectureController coreArchitecture;
+    private float timer;
+    private bool isPlayerDead = false; 
+    private Playermovement playermovement_component;
+    private PlayerHPUIController hpController;
     private CharacterSpawnManager characterSpawnManager;
 
-    //UI Elements
-    Image healthBar;
-    Image damagedHealthBar;
-    TextMeshProUGUI healthText;
-    Color damagedColor;
-    float damagedHealthFadeTimer;
-    float damaged_health_fade_timer_max = 2f;
      
     private int deathCount = 0;
     private int playerLevel = 0;
@@ -42,16 +34,10 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     {
         timer = 0f;
         characterSpawnManager = FindObjectOfType<CharacterSpawnManager>();
-        spriteRenderer_component = GetComponent<SpriteRenderer>();
         playermovement_component = GetComponent<Playermovement>();
-        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
-        healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(2).GetComponent<Image>();
-        damagedHealthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
-        damagedColor = damagedHealthBar.color;
-        damagedColor.a = 0f;
-        damagedHealthBar.color = damagedColor;
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
-        healthText = GameObject.Find(HPTEXT_UI_NAME).GetComponent<TextMeshProUGUI>(); // Replace with your actual object name
+        hpController = FindObjectOfType<PlayerHPUIController>();
+        hpController.SetupUIElements();
         UpdateHealthUI();
         EvokeStatsChange();
     }
@@ -91,23 +77,13 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     protected override void Update()
     {
         base.Update();
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             DataPersistenceManager.instance.SaveGame();
             SceneManager.LoadSceneAsync("MainMenu");
         }
         
-        if (damagedColor.a > 0)
-        {
-            damagedHealthFadeTimer -= Time.deltaTime;
-            if (damagedHealthFadeTimer < 0)
-            {
-                float fadeAmount = 5f;
-                damagedColor.a -= fadeAmount * Time.deltaTime;
-                damagedHealthBar.color = damagedColor;
-            }
-        }
-
         PlayerSurroundingLight();
     }
     protected override void death()
@@ -162,16 +138,7 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
 
         }
         base.ApplyHPChange(dmg);
-        
-        
-        if (damagedColor.a <= 0)
-        {   // Damaged Bar is invisible
-            damagedHealthBar.fillAmount = healthBar.fillAmount;
-        }
-        damagedColor.a = 1;
-        damagedHealthBar.color = damagedColor;
-        damagedHealthFadeTimer = damaged_health_fade_timer_max;
-
+        hpController.ShowDamageEffect();
         UpdateHealthUI();
     }
 
@@ -216,18 +183,9 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     }
     private void UpdateHealthUI()
     {
-        if (healthBar != null)
+        if (hpController != null)
         {
-            healthBar.fillAmount = (float)_HP / characterStats._HP;
-        }
-
-        if (healthText != null)
-        {
-            // Round HP to the nearest integer
-            int roundedHP = Mathf.RoundToInt(_HP);
-            int maxHP = Mathf.RoundToInt(characterStats._HP); // Assuming max HP should also be an integer
-
-            healthText.text = roundedHP.ToString() + "/" + maxHP.ToString();
+            hpController.UpdateHealthUI(_HP, characterStats._HP);
         }
     }
 
