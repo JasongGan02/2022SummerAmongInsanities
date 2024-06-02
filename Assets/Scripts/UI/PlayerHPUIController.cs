@@ -6,14 +6,24 @@ using UnityEngine.Serialization;
 public class PlayerHPUIController : MonoBehaviour
 {
     public Image fillImage;
-    public Image headImage;
     //public Image damagedHealthBar;
     public Text hpLightText;
     public Text hpDarkText;
+
+    public Image redMoonDeco;
+
+    public Image TimeSystemUI_Base;
+
+    public Sprite[] timeUIBaseSprites; //0 = normal 1 = blood moon
     //public Color damagedColor;
     //private float damagedHealthFadeTimer;
     //private const float damagedHealthFadeTimerMax = 2f;
-
+    
+    void Start()
+    {
+        GameEvents.current.OnDayStarted += ChangeToSun;
+        GameEvents.current.OnNightStarted += ChangeToMoon;
+    }
     // Initialize references
     public void SetupUIElements()
     {
@@ -43,17 +53,6 @@ public class PlayerHPUIController : MonoBehaviour
         //         damagedHealthBar.color = damagedColor;
         //     }
         // }
-        
-        if (headImage != null)
-        {
-            float fillWidth = fillImage.rectTransform.rect.width * fillImage.rectTransform.localScale.x;  
-            float headWidth = headImage.rectTransform.rect.width * headImage.rectTransform.localScale.x;
-            
-            // New head position calculation
-            Vector3 headPosition = headImage.rectTransform.localPosition;
-            headPosition.x = fillImage.rectTransform.rect.x + (fillWidth * fillAmount);
-            headImage.rectTransform.localPosition = headPosition;
-        }
     }
 
     // Triggered when damage is taken
@@ -63,6 +62,32 @@ public class PlayerHPUIController : MonoBehaviour
         // damagedColor.a = 1;
         // damagedHealthBar.color = damagedColor;
         // damagedHealthFadeTimer = damagedHealthFadeTimerMax;
+    }
+    
+    private void ChangeToSun()
+    {
+        TimeSystemUI_Base.sprite = timeUIBaseSprites[0];
+        redMoonDeco.gameObject.SetActive(false);
+    }
+
+    private void ChangeToMoon(bool isRedMoon)
+    {
+        if (isRedMoon)
+        {
+            TimeSystemUI_Base.sprite = timeUIBaseSprites[1];
+            redMoonDeco.gameObject.SetActive(true);
+        }
+        else
+        {
+            TimeSystemUI_Base.sprite = timeUIBaseSprites[0];
+            redMoonDeco.gameObject.SetActive(false);
+        }
+    }
+    
+    private void OnDestroy()
+    {
+        GameEvents.current.OnDayStarted -= ChangeToSun;
+        GameEvents.current.OnNightStarted -= ChangeToMoon;
     }
     
     const string HPTEXT_UI_NAME = "HPText";

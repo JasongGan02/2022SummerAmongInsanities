@@ -19,7 +19,8 @@ public class TimeSystemManager : MonoBehaviour
     public int duskEndHour = 20; // Hour dusk ends
     public bool isDebugDayTime = false;
     
-    private Text timeText; //x��xʱ
+    private Text timeText; //hours and minutes
+    private Text calendarText; //days
     private float currentMinute = 0;
     private int currentHour = 0;
     private int currentDay = 0;
@@ -35,6 +36,7 @@ public class TimeSystemManager : MonoBehaviour
     void Awake()
     {
         timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
+        calendarText = GameObject.Find(Constants.Name.CALENDAR_TEXT).GetComponent<Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
         _audioEmitter = GetComponent<AudioEmitter>();
         
@@ -160,7 +162,10 @@ public class TimeSystemManager : MonoBehaviour
 
     private void UpdateTimeUI()
     {
-        timeText.text = $"{currentDay}天{currentHour}时";
+        string formattedHour = currentHour.ToString("D2");
+        string formattedMinute = ((int)currentMinute).ToString("D2");
+        timeText.text = $"{formattedHour}:{formattedMinute}";
+        calendarText.text = $"{currentDay+1}";
     }
     public float GetCurrentTime() => currentHour + currentMinute / 60f;
     public void CalculateAndUpdateSunlight()

@@ -1381,6 +1381,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2387177722309445840, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387177722309445840, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387177722309445840, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3101251838886566981, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1543,7 +1555,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: baa2233ce5dbc7049bc9922326bb99e5, type: 2}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000018767796
+      value: -0.00009154389
       objectReference: {fileID: 0}
     - target: {fileID: 6157647836379953240, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_Enabled
@@ -1687,6 +1699,10 @@ PrefabInstance:
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: nightStartHour
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: redMoonNightInterval
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: dayToRealTimeInSecond
