@@ -16,9 +16,12 @@ MonoBehaviour:
   sizeRatio: 0.25
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
   _HP: 200
+  _armor: 0
   _atkDamage: 20
   _atkSpeed: 4
   _atkRange: 30
+  _criticalMultiplier: 0
+  _criticalChance: 0
   _movingSpeed: 0
   _jumpForce: 0
   _totalJumps: 0
@@ -33,8 +36,11 @@ MonoBehaviour:
   curAngle: {x: 0, y: 0, z: 0, w: 1}
   projectileObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
   _maxStack: 2
-  _recipe: []
-  _quantity: 
-  _isCraftable: 0
-  _isCoreNeeded: 0
-  _craftTime: 0
+  _recipe:
+  - {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
+  - {fileID: 11400000, guid: 9888ef839123be44496f7b126f2de985, type: 2}
+  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  _quantity: 140000001400000014000000
+  _isCraftable: 1
+  _isCoreNeeded: 1
+  _craftTime: 10

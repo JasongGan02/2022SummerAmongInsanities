@@ -20,12 +20,15 @@ MonoBehaviour:
   durability: 99
   _maxStack: 1
   damageCoef: 0
+  rangeCoef: 0
+  baseDamage: 0
+  baseRange: 0
+  knockBack: 0
   farm: 5
   frequency: 1
   projectileObject: {fileID: 0}
-  _recipe:
-  - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
-  _quantity: 03000000
-  _isCraftable: 1
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
   _isCoreNeeded: 0
-  _craftTime: 3
+  _craftTime: 0

@@ -85,7 +85,7 @@ public class BowController : RangedWeaponController
             return;
         // Calculate the force and damage based on charge time
 
-        float force =  AttackRange * 5;
+        float force =  AttackRange/8;
         float damage =  characterController.AtkDamage;
         //GameObject arrow = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
         
