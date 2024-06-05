@@ -25,6 +25,7 @@ public class BatController : EnemyController
 
     private float startX;
     private float startY;
+    private Transform GroupApproachTarget;
 
     // Start is called before the first frame update
     protected void Start()
@@ -58,12 +59,14 @@ public class BatController : EnemyController
         animator = GetComponent<Animator>();
         Tr = GetComponent<TrailRenderer>();
         Ps = GetComponent<ParticleSystem>();
-
+        
     }
     
 
     protected override void EnemyLoop()
     {
+        StartCoroutine(CollectEnemiesPeriodically());
+        GroupCommand("attack player");
         if (!planned) { target = WhatToAttack(); } // attacking behavior is uninterruptable
         else if (target == null) { target = WhatToAttack(); } // once target is destroied but an attack is planned
 
@@ -126,7 +129,11 @@ public class BatController : EnemyController
         {
             if (waitTime <= 0)
             {
-                moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));
+                if (GroupApproaching) { moveTo = GroupApproachTarget; }
+                else
+                {
+                    moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));
+                }
                 waitTime = 3;
             }
             else
@@ -257,5 +264,10 @@ public class BatController : EnemyController
         return false;
     }
 
+    public override void MoveTowards(Transform targetTransform)
+    {
+        GroupApproachTarget = targetTransform;
+        GroupApproaching = true;
+    }
 }
 
