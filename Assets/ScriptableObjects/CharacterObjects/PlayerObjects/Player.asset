@@ -19,7 +19,7 @@ MonoBehaviour:
   _armor: 30
   _atkDamage: 5
   _atkSpeed: 3
-  _atkRange: 5
+  _atkRange: 200
   _criticalMultiplier: 0
   _criticalChance: 0
   _movingSpeed: 4
