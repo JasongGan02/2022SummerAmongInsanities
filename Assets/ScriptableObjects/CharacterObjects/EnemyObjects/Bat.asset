@@ -15,9 +15,9 @@ MonoBehaviour:
   itemName: Bat
   sizeRatio: 2
   prefab: {fileID: 5572140884625632519, guid: f156aa64df805a745ae4ff46bd0c4534, type: 3}
-  _HP: 80.525505
+  _HP: 15
   _armor: 0
-  _atkDamage: 16.1051
+  _atkDamage: 5
   _atkSpeed: 3
   _atkRange: 10
   _criticalMultiplier: 0
