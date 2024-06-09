@@ -53,14 +53,18 @@ public class MobSpawner : MonoBehaviour
         float spawnDistance = energyZoneRadius + 20f;
         Vector3 corePosition = CoreArchitectureController.Instance.transform.position;
 
-        StartCoroutine(SpawnWaveAtPoint(corePosition, (int)(waveNumber * intensityMultiplier), spawnDistance, intensityMultiplier));
+        if (CanSpawnCategory(mobCategories[1]))
+        {
+            Debug.Log("CanSpawn");
+            StartCoroutine(SpawnWaveAtPoint(corePosition, (int)(waveNumber * intensityMultiplier), spawnDistance, intensityMultiplier));
+        }
     }
     private IEnumerator SpawnWaveAtPoint(Vector3 corePosition, int waveNumber, float spawnDistance, float intensityMultiplier)
     {
         // Assuming a constant spacing to spread out the wave along a line parallel to the core
         for (int i = 0; i < waveNumber; i++)
         {
-            if (!CanSpawnCategory(mobCategories[1])) yield return null;
+            if (!CanSpawnCategory(mobCategories[1])) yield break;
             
             // Generate offset to create a line of enemies along the x-axis from both sides
             Vector2Int offset = GenerateTriangularDistributedOffset(8);
@@ -88,7 +92,7 @@ public class MobSpawner : MonoBehaviour
             // Select the enemy type and spawn
             GameObject enemy = PoolManager.Instance.Get(SelectEnemyObjectBasedOnWeight(mobCategories[1]) as EnemyObject);
             enemy.transform.position = spawnPoint;
-            RegisterMob(enemy);
+            RegisterMob(enemy, mobCategories[1]);
             
         }
     }
@@ -130,8 +134,7 @@ public class MobSpawner : MonoBehaviour
         // Calculate current mob counts per category and update mobsInCategory dictionary
         foreach (var category in mobCategories)
         {
-            if (category.categoryName == "enemy")
-                category.currentMob = enemyList.Count;
+            category.currentMob = category.mobList.Count;
         }
         
     }
@@ -139,7 +142,6 @@ public class MobSpawner : MonoBehaviour
     private void RunSpawningAttempts()
     {
         // Iterate through each mob category
- 
         foreach (var category in mobCategories)
         {
             // Check if the global mob cap allows spawning in this category
@@ -153,7 +155,13 @@ public class MobSpawner : MonoBehaviour
 
     private bool CanSpawnCategory(MobCategory category)
     {
-        // Implement logic to check against global and local mob caps
+        if (category.categoryName == "WaveEnemy")
+        {
+            Debug.Log($"Checking if can spawn category: {category.categoryName}");
+            Debug.Log($"Current mob count: {category.currentMob}");
+            Debug.Log($"Base mob cap: {category.baseMobCap}");
+            Debug.Log($"Can spawn? {category.currentMob < category.baseMobCap}");
+        }
         return category.currentMob < category.baseMobCap; // Placeholder change baseMob to global mob for multiple players
     }
 
@@ -191,7 +199,7 @@ public class MobSpawner : MonoBehaviour
                     spawnedGameObject.transform.position = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
                     Transform enemyContainer = WorldGenerator.ActiveChunks[chunkCoord.x].transform.Find("MobContainer").Find("EnemyContainer");
                     spawnedGameObject.transform.SetParent(enemyContainer, true);
-                    RegisterMob(spawnedGameObject);
+                    RegisterMob(spawnedGameObject, category);
                 }
             }
         }
@@ -259,7 +267,7 @@ public class MobSpawner : MonoBehaviour
         if (player == null) return;
 
         Vector3 playerPosition = player.transform.position;
-    
+
         for (int i = enemyList.Count - 1; i >= 0; i--)
         {
             float distance = Vector3.Distance(playerPosition, enemyList[i].transform.position);
@@ -267,10 +275,16 @@ public class MobSpawner : MonoBehaviour
             {
                 GameObject toDespawn = enemyList[i];
                 enemyList.RemoveAt(i);
+                var category = mobCategories.FirstOrDefault(c => c.mobList.Contains(toDespawn));
+                if (category != null)
+                {
+                    category.mobList.Remove(toDespawn);
+                }
                 PoolManager.Instance.Return(toDespawn, toDespawn.GetComponent<IPoolableObjectController>().PoolableObject); // Assuming you have a method to return it to the pool or destroy it
             }
         }
     }
+
 
     
  
@@ -336,9 +350,10 @@ public class MobSpawner : MonoBehaviour
         return null; 
     }
     
-    public void RegisterMob(GameObject mob)
+    public void RegisterMob(GameObject mob, MobCategory mobCategory)
     {
         enemyList.Add(mob);
+        mobCategory.mobList.Add(mob);
     }
 
     public static List<EnemyController> FindEnemyNearby(Vector3 worldPosition)
@@ -367,4 +382,5 @@ public class MobCategory
     internal int currentMob;
     internal float totalWeight;
     public List<CharacterObject> mobScriptableObjects; 
+    public List<GameObject> mobList = new List<GameObject>();
 }

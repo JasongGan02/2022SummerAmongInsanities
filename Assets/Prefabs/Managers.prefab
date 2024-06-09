@@ -73,6 +73,68 @@ MonoBehaviour:
     initialPoolSize: 20
   - poolableObject: {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
     initialPoolSize: 20
+--- !u!1 &3730011587222673553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7597205186813551590}
+  - component: {fileID: 3739645760679070204}
+  m_Layer: 0
+  m_Name: MobSpawnerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7597205186813551590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3730011587222673553}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -60.63867, y: 45.10167, z: 0.0025611818}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8685695344788396458}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3739645760679070204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3730011587222673553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7edebfe02a1894791f31b4bfb4531b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mobCategories:
+  - categoryName: Enemy
+    baseMobCap: 30
+    mobScriptableObjects:
+    - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
+    - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+    - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
+  - categoryName: WaveEnemy
+    baseMobCap: 30
+    mobScriptableObjects:
+    - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
+    - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+    - {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
+    - {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
+    - {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+  safeZoneRadius: 20
+  spawnRate: 0.1
+  despawnDistance: 80
 --- !u!1 &4285884787739671943
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,6 +222,7 @@ Transform:
   - {fileID: 1927551331}
   - {fileID: 5139273599847005184}
   - {fileID: 9145199968869873101}
+  - {fileID: 7597205186813551590}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
