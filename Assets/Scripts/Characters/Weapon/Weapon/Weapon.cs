@@ -52,7 +52,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         this.characterController = characterController;
         this.weaponStats = weaponObject;
         finalDamage =  weaponObject.BaseDamage + characterController.AtkDamage * weaponObject.DamageCoef ;
-        attackRange = weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef;
+        attackRange = (weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef)/100;
         knockbackForce = weaponObject.KnockBack;
 
     }
@@ -125,7 +125,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     IEnumerator PerformAttack()
     {
         _audioEmitter.PlayClipFromCategory("WeaponAttack");
-
+        Debug.Log(attackRange);
         float startTime = Time.time;
         float journeyLength = attackRange;
         float fracJourney = 0f;

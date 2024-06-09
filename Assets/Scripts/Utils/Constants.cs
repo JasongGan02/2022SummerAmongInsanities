@@ -41,6 +41,7 @@ public static class Constants
         public static string RED_MOON = "RedMoon";
         public static string BACKGROUND_LIGHT = "BackgroundLight";
         public static string TIME_TEXT = "TimeText";
+        public static string CALENDAR_TEXT = "CalendarText";
 
         public static string CURRENT_ITEM_UI = "Icon";
     }

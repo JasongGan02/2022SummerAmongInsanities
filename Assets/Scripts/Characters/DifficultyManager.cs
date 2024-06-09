@@ -21,15 +21,17 @@ public class DifficultyManager : MonoBehaviour
     private void Start()
     {
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
-        timeSystemManager.onDayUpdated += OnDayPassed;
-        TimeSystemManager.onNightStarted += OnRedMoonNight;
-        TimeSystemManager.onNightStarted += UpdateSpawnDiff;
+        
+        GameEvents.current.OnDayUpdated += OnDayPassed;
+        GameEvents.current.OnNightStarted += OnRedMoonNight;
+        GameEvents.current.OnNightStarted += UpdateSpawnDiff;
     }
 
     private void OnDestroy()
     {
-        timeSystemManager.onDayUpdated -= OnDayPassed;
-        TimeSystemManager.onNightStarted -= OnRedMoonNight;
+        GameEvents.current.OnDayUpdated -= OnDayPassed;
+        GameEvents.current.OnNightStarted -= OnRedMoonNight;
+        GameEvents.current.OnNightStarted -= UpdateSpawnDiff;
     }
 
     private void Update()

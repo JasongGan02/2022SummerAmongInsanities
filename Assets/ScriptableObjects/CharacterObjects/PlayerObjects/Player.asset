@@ -15,11 +15,11 @@ MonoBehaviour:
   itemName: Player
   sizeRatio: 1
   prefab: {fileID: 6647711791749533985, guid: 4a76d7ca108e6bb4dab533130174dc7e, type: 3}
-  _HP: 100000000
+  _HP: 1000
   _armor: 30
   _atkDamage: 5
   _atkSpeed: 3
-  _atkRange: 5
+  _atkRange: 200
   _criticalMultiplier: 0
   _criticalChance: 0
   _movingSpeed: 4
