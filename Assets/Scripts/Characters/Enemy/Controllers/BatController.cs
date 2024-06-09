@@ -65,14 +65,13 @@ public class BatController : EnemyController
 
     protected override void EnemyLoop()
     {
-        StartCoroutine(CollectEnemiesPeriodically());
-        GroupCommand("attack player");
         if (!planned) { target = WhatToAttack(); } // attacking behavior is uninterruptable
         else if (target == null) { target = WhatToAttack(); } // once target is destroied but an attack is planned
 
         if (target == null)
         {
             // Patrol
+            Debug.Log("Bat is patroling");
             if(animator.GetBool("is_attacking") == true) { animator.SetBool("is_attacking", false); }
             if(Tr.emitting == true) { Tr.emitting = false; }
             Patrol();
@@ -98,6 +97,7 @@ public class BatController : EnemyController
             }
             else
             {
+                Debug.Log("Bat is patroling 2");
                 Patrol();
                 if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
                 {
@@ -123,17 +123,20 @@ public class BatController : EnemyController
 
     void Patrol()
     {
-        transform.position = Vector2.MoveTowards(transform.position, moveTo.position, 3 * Time.deltaTime);
+        if (GroupApproaching) 
+        { 
+            transform.position = Vector2.MoveTowards(transform.position, GroupApproachTarget.position, 3 * Time.deltaTime);
+        }
+        else
+        {
+            transform.position = Vector2.MoveTowards(transform.position, moveTo.position, 3 * Time.deltaTime);
+        }
 
-        if (Vector2.Distance(transform.position, moveTo.position) < 0.2f)
+        if (Vector2.Distance(transform.position, moveTo.position) < 0.2f || waitTime <= 0)
         {
             if (waitTime <= 0)
             {
-                if (GroupApproaching) { moveTo = GroupApproachTarget; }
-                else
-                {
-                    moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));
-                }
+                moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));  // cause startX I don't know need to change
                 waitTime = 3;
             }
             else
@@ -141,6 +144,8 @@ public class BatController : EnemyController
                 waitTime -= Time.deltaTime;
             }
         }
+
+        waitTime -= Time.deltaTime;
     }
 
     new void ApproachingTarget(Transform target_transform)

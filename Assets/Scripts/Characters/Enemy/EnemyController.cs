@@ -34,14 +34,14 @@ public abstract class EnemyController : CharacterController
 
     Type type;
 
-    public Transform coreTransform = null;
+    
 
     protected override void Awake()
     {
         //towerContainer = FindObjectOfType<TowerContainer>();
         base.Awake();
         timer = 0;
-        StartCoroutine(CollectEnemiesPeriodically());
+        
     }
 
 
@@ -71,8 +71,6 @@ public abstract class EnemyController : CharacterController
         {
             rb = GetComponent<Rigidbody2D>();
         }
-        if (coreTransform == null) { coreTransform = GameObject.Find("CoreArchitecture").transform; }
-        if (player != null) { GroupCommand("attack player"); }
     }
 
     protected bool IsTowerSensed()
@@ -537,71 +535,5 @@ public abstract class EnemyController : CharacterController
 
 
 
-    public IEnumerator CollectEnemiesPeriodically()
-    {
-        while (true) // This loop will run indefinitely
-        {
-            CollectEnemies();
-            yield return new WaitForSeconds(3); // Wait for 20 seconds before the next check
-        }
-    }
-    private List<GameObject> enemies = new List<GameObject>();
-    private void CollectEnemies()
-    {
-        // Find all game objects tagged as "enemy"
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("enemy");
-        enemies.Clear(); // Clear the list to avoid duplicates
-
-        // Check each enemy if it's under any "EnemyContainer"
-        foreach (GameObject enemy in allEnemies)
-        {
-            Transform parent = enemy.transform.parent;
-            while (parent != null) // Check up the hierarchy
-            {
-                if (parent.name == "EnemyContainer")
-                {
-                    enemies.Add(enemy);
-                    break; // Stop the search as we have found the enemy under the required parent
-                }
-                parent = parent.parent; // Move up in the hierarchy
-            }
-        }
-
-        // Debug to see how many enemies were collected
-        Debug.Log("Collected " + enemies.Count + " enemies under EnemyContainer(s).");
-    }
-
-    public void GroupCommand(string command)
-    {
-        if (enemies.Count <= 0) { return; }
-        if (command == "attack player")
-        {
-            CommandMove(player.transform);
-        }
-    }
-
-    public void CommandMove(Transform targetTransform)
-    {
-        foreach (GameObject enemy in enemies)
-        {
-            var enemyController = enemy.GetComponent<BatController>();
-            if (enemyController != null)
-            {
-                enemyController.GroupApproaching = true;  // Set the flag when commanding to move
-                enemyController.MoveTowards(targetTransform);  // This function needs to be defined or adjusted accordingly
-                Debug.Log(enemy.name + " move to player");
-            }
-        }
-    }
-    public void StopGroupCommand()
-    {
-        foreach (GameObject enemy in enemies)
-        {
-            var enemyController = enemy.GetComponent<BatController>();
-            if (enemyController != null)
-            {
-                enemyController.GroupApproaching = false;  // Clear the flag to resume normal behavior
-            }
-        }
-    }
+    
 }
