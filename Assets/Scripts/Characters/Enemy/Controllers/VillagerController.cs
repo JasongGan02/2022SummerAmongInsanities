@@ -635,7 +635,7 @@ public class VillagerController : EnemyController
         }
         else
         {
-            Debug.Log("PathLine GameObject does not exist or was already destroyed.");
+            //Debug.Log("PathLine GameObject does not exist or was already destroyed.");
         }
     }
     

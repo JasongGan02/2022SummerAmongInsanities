@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,12 +28,14 @@ public class BackgroundManager : MonoBehaviour
         worldGenerator = FindObjectOfType<WorldGenerator>();
 
         BG.transform.position = new Vector3(BG.transform.position.x, worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f, BG.transform.position.z);
+    }
+
+    private void Start()
+    {
         GameEvents.current.OnDayStarted += OnDayStarted;
         GameEvents.current.OnNightStarted += OnNightStarted;
-
     }
-    
-    
+
 
     private void OnDestroy()
     {
