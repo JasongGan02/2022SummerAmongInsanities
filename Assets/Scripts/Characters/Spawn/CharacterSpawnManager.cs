@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -12,10 +13,12 @@ public class CharacterSpawnManager : MonoBehaviour
     private CoreArchitectureController coreArchitecture;
     private GameObject player;
     private Vector3 coreSpawnPosition;
-    
+    public Transform coreTransform = null;
+
     private void Start()
     {
         StartCoroutine(WaitForCoreArchitectureAndInitialize());
+        StartCoroutine(CollectEnemiesPeriodically());
     }
 
     protected virtual void FixedUpdate()
@@ -89,6 +92,7 @@ public class CharacterSpawnManager : MonoBehaviour
         coreArchitecture = CoreArchitectureController.Instance;
         coreSpawnPosition = coreArchitecture.transform.Find("SpawnPoint").position;
         transform.position = coreSpawnPosition;
+        coreTransform = transform;
         SpawnPlayer();
     }
 
@@ -99,6 +103,81 @@ public class CharacterSpawnManager : MonoBehaviour
         CharacterObject randomEnemyType = enemyTypes[randomIndex];
         SpawnCharacter(randomEnemyType);
     }
+    public IEnumerator CollectEnemiesPeriodically()
+    {
+        while (true) // This loop will run indefinitely
+        {
+            CollectEnemies();
+            yield return new WaitForSeconds(3); // Wait for 20 seconds before the next check
+        }
+    }
+    private List<GameObject> enemies = new List<GameObject>();
+    private void CollectEnemies()
+    {
+        // Find all game objects tagged as "enemy"
+        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("enemy");
+        enemies.Clear(); // Clear the list to avoid duplicates
+
+        // Check each enemy if it's under any "EnemyContainer"
+        foreach (GameObject enemy in allEnemies)
+        {
+            Transform parent = enemy.transform.parent;
+            while (parent != null) // Check up the hierarchy
+            {
+                if (parent.name == "EnemyContainer")
+                {
+                    enemies.Add(enemy);
+                    break; // Stop the search as we have found the enemy under the required parent
+                }
+                parent = parent.parent; // Move up in the hierarchy
+            }
+        }
+
+        // Debug to see how many enemies were collected
+        Debug.Log("Collected " + enemies.Count + " enemies under EnemyContainer(s).");
+    }
+
+    public void GroupCommand(string command)
+    {
+        if (enemies.Count <= 0) { return; }
+        if (command == "attack player")
+        {
+            CommandMove(player.transform);
+        }
+        else if (command == "attack core")
+        {
+            CommandMove(coreArchitecture.transform);
+        }
+        else
+        {
+            StopGroupCommand();
+        }
+    }
+
+    public void CommandMove(Transform targetTransform)
+    {
+        foreach (GameObject enemy in enemies)
+        {
+            var enemyController = enemy.GetComponent<BatController>();
+            if (enemyController != null)
+            {
+                enemyController.GroupApproaching = true;  // Set the flag when commanding to move
+                enemyController.MoveTowards(targetTransform);  // This function needs to be defined or adjusted accordingly
+            }
+        }
+    }
+    public void StopGroupCommand()
+    {
+        foreach (GameObject enemy in enemies)
+        {
+            var enemyController = enemy.GetComponent<BatController>();
+            if (enemyController != null)
+            {
+                enemyController.GroupApproaching = false;  // Clear the flag to resume normal behavior
+            }
+        }
+    }
+
     public void SpawnManyEnemy()
     {
         for (int i = 0; i < 30; i++)
@@ -177,6 +256,22 @@ public class CharacterSpawnManagerEditor : Editor
         if (GUILayout.Button("Spawn Creeper"))
         {
             spawnManager.SpawnCreeper();
+        }
+        if (GUILayout.Button("Group Attack Player"))
+        {
+            spawnManager.GroupCommand("attack player");
+        }
+        if (GUILayout.Button("Group Stop Attack Player"))
+        {
+            spawnManager.GroupCommand("not attack player");
+        }
+        if (GUILayout.Button("Group Attack core"))
+        {
+            spawnManager.GroupCommand("attack core");
+        }
+        if (GUILayout.Button("Group Stop Attack core"))
+        {
+            spawnManager.GroupCommand("not attack core");
         }
     }
 }

@@ -41,6 +41,8 @@ public class VillagerController : EnemyController
     public Transform tileDetect3;
     public Transform tileDetect4;
     public float BreakObstaclesCD = 1f;
+    public Transform TargetRemainder;
+    public float ChasingRemainder = 5f;
 
     protected override void Awake()
     {
@@ -73,9 +75,12 @@ public class VillagerController : EnemyController
 
 
         if (target == null || TargetTicker < 0) { target = WhatToAttack(); TargetTicker = 1f; } // if doesn't have target
-        if (target == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
+        if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
+        else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
         else
         {
+            TargetRemainder = target.transform;
+            ChasingRemainder = 5f;  // chasing time after losing target in visual
             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
             else { PathExecute(); }         // continue current path
             if (true || villager_sight())   // see target clearly
@@ -162,6 +167,11 @@ public class VillagerController : EnemyController
         
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+    }
+    public override void MoveTowards(Transform targetTransform)
+    {
+        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        rb.velocity = direction * _movingSpeed;
     }
     void patrol()
     {
@@ -370,7 +380,7 @@ public class VillagerController : EnemyController
         }
         else
         {
-            Debug.Log("distance: " + distance + " angle: " + angle);
+            //Debug.Log("distance: " + distance + " angle: " + angle);
         }
     }
 
@@ -424,7 +434,7 @@ public class VillagerController : EnemyController
 
 
 
-   
+
 
     public void PathFind()  // only find path, not execute
     {
@@ -465,7 +475,7 @@ public class VillagerController : EnemyController
                 {   // Tile, 1: what tile, 2: altitude
                     Vector2Int position = new Vector2Int(x, y);
                     TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
-                    if (IsLadder(x ,y)) { healthGrid[x - minX, y - minY] = 1; continue; }
+                    if (IsLadder(x, y)) { healthGrid[x - minX, y - minY] = 1; continue; }
                     else if (IsNeighborTileReachable(x, y)) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
                     else if (y < startY) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
                     else if (y >= startY) { healthGrid[x - minX, y - minY] = 99; continue; }
@@ -483,7 +493,7 @@ public class VillagerController : EnemyController
         if (path.Count > 0)
         {
             int totalPathCost = CalculatePathCost(path, healthGrid, minX, minY);
-            if (totalPathCost >= 99) { PathToTarget.Clear();  return; }
+            if (totalPathCost >= 99) { PathToTarget.Clear(); return; }
             PathToTarget = PathPointToCenter(path);      // update Path
             PathCounter = 0;         // reset ticker
 
@@ -495,42 +505,6 @@ public class VillagerController : EnemyController
         {
             Debug.Log("No path found.");
         }
-    }
-    public int DistanceToGround(int x, int y){
-        Vector2Int position = new Vector2Int(x, y);
-        if (y == 0 || WorldGenerator.GetDataFromWorldPos(position) != null)
-        {
-            return 0;
-        }
-        for (int i = y - 1; i >= 0; i--) {
-            Vector2Int position1 = new Vector2Int(x, i);
-            if (WorldGenerator.GetDataFromWorldPos(position1) != null)
-            {
-                return (y - i);
-            }
-        }
-        return -1;  // false value: input y is invalid
-    }
-    public bool IsNeighborOfTile(int x, int y)
-    {   // check the left and right side of position is a tile object
-        Vector2Int position = new Vector2Int(x+1, y);
-        TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
-        if (tile != null) { return true; }
-        position = new Vector2Int(x-1, y);
-        tile = WorldGenerator.GetDataFromWorldPos(position);
-        if (tile != null) { return true; }
-        return false;
-    }
-    public bool IsLadder(int x, int y) { return false; }
-    public bool IsNeighborTileReachable(int x, int y)
-    {
-        Vector2Int position = new Vector2Int(x + 1, y - 1);
-        TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
-        if (tile != null) { return true;}
-        position = new Vector2Int(x-1, y-1);
-        tile = WorldGenerator.GetDataFromWorldPos(position);
-        if (tile != null) { return true;} 
-        return false;
     }
     public void PathExecute()       // execute path to target
     {
@@ -550,7 +524,7 @@ public class VillagerController : EnemyController
 
             Vector2 direction = target.transform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-     
+
             if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
             else if (angle >= -105 && angle <= -75) { Debug.Log("Angle: " + angle); BreakObstacles("bottom"); }
             else { BreakObstacles("horizontal"); }
@@ -571,144 +545,52 @@ public class VillagerController : EnemyController
             PathCounter = 0;
         }
     }
-    public List<Vector2> PathPointToCenter(List<Vector2Int> path)
+    public void FinishExistingPath()    // execute the path after visually losed target
     {
-        List<Vector2> convertedPath = new List<Vector2>();
-
-        foreach (Vector2Int point in path)
+        if (ChasingRemainder < 0f)
         {
-            Vector2 newPoint = new Vector2(point.x + 0.5f, point.y + 0.5f);
-            convertedPath.Add(newPoint);
+            TargetRemainder = null; // erase Target Remainder
+            return;
         }
-
-        return convertedPath;
-    }
-
-    public class Node
-    {
-        public Vector2Int Position;
-        public Node Parent;
-        public int G; // Cost from start to the current node
-        public int H; // Estimated cost from the current node to the end
-        public int F; // Total cost (G + H)
-
-        public Node(Vector2Int pos, Node parent = null)
+        if (DistanceToTarget(TargetRemainder) < _atkRange)
         {
-            Position = pos;
-            Parent = parent;
-            G = H = F = 0;
+            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+            return;
         }
-
-        public override bool Equals(object obj)
+        DrawPath();
+        if (PathCounter < PathToTarget.Count)
         {
-            if (obj is Node node)
-                return Position.Equals(node.Position);
-            return false;
-        }
+            Debug.Log("Go to: " + PathToTarget[PathCounter]);
 
-        public override int GetHashCode()
-        {
-            return Position.GetHashCode();
-        }
-    }
+            approach(2 * _movingSpeed, TargetRemainder);
+            SenseFrontBlock();
 
-    public static List<Vector2Int> AstarPath(Vector2Int start, Vector2Int goal, int[,] costGrid, int width, int height, int minX, int minY)
-    {
-        Node startNode = new Node(start);
-        Node endNode = new Node(goal);
-        List<Node> openList = new List<Node>();
-        HashSet<Node> closedList = new HashSet<Node>();
+            Vector2 direction = TargetRemainder.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        openList.Add(startNode);
+            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
+            else if (angle >= -105 && angle <= -75) { Debug.Log("Angle: " + angle); BreakObstacles("bottom"); }
+            else { BreakObstacles("horizontal"); }
 
-        while (openList.Count > 0)
-        {
-            Node currentNode = openList[0];
-            int currentIndex = 0;
-
-            for (int i = 1; i < openList.Count; i++)
+            if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
-                if (openList[i].F < currentNode.F)
-                {
-                    currentNode = openList[i];
-                    currentIndex = i;
-                }
+                PathCounter++;
             }
-
-            openList.RemoveAt(currentIndex);
-            closedList.Add(currentNode);
-
-            if (currentNode.Equals(endNode))
+            else
             {
-                List<Vector2Int> path = new List<Vector2Int>();
-                Node current = currentNode;
-                while (current != null)
-                {
-                    path.Add(new Vector2Int(current.Position.x + minX, current.Position.y + minY));
-                    current = current.Parent;
-                }
-                path.Reverse();
-                return path;
-            }
-
-            List<Node> children = new List<Node>();
-            Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-
-            foreach (var direction in directions)
-            {
-                Vector2Int nodePosition = currentNode.Position + direction;
-                if (nodePosition.x >= 0 && nodePosition.x < width && nodePosition.y >= 0 && nodePosition.y < height)
-                {
-                    Node newNode = new Node(nodePosition, currentNode);
-                    if (!closedList.Contains(newNode))
-                    {
-                        children.Add(newNode);
-                    }
-                }
-            }
-
-            foreach (var child in children)
-            {
-                if (!openList.Contains(child))
-                {
-                    child.G = currentNode.G + costGrid[child.Position.x, child.Position.y];
-                    child.H = (child.Position.x - endNode.Position.x) * (child.Position.x - endNode.Position.x) + (child.Position.y - endNode.Position.y) * (child.Position.y - endNode.Position.y);
-                    child.F = child.G + child.H;
-
-                    openList.Add(child);
-                }
-                else
-                {
-                    int newG = currentNode.G + costGrid[child.Position.x, child.Position.y];
-                    if (newG < child.G) // Check if new path to child is better
-                    {
-                        child.G = newG;
-                        child.F = child.G + child.H;
-                        // Since the child's cost changed, it should be sorted again in the open list, but for simplicity, we just update the node.
-                    }
-                }
+                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
             }
         }
-
-        return new List<Vector2Int>(); // Return empty if no path is found
-    }
-    public static int CalculatePathCost(List<Vector2Int> path, int[,] costGrid, int minX, int minY)
-    {
-        int totalCost = 0;
-
-        // Iterate over the path to sum up the costs
-        foreach (var point in path)
-        {
-            // Adjust the position in the grid by subtracting the minimum X and Y
-            int gridX = point.x - minX;
-            int gridY = point.y - minY;
-
-            // Add the cost of the current path point to the total cost
-            totalCost += costGrid[gridX, gridY];
+        else
+        {   // reset Path
+            approach(2 * _movingSpeed, TargetRemainder);
+            PathToTarget.Clear();
+            PathCounter = 0;
         }
-
-        return totalCost;
     }
+    
+
+
 
     private GameObject lineObj;
     public void DrawPath()
@@ -756,26 +638,7 @@ public class VillagerController : EnemyController
             //Debug.Log("PathLine GameObject does not exist or was already destroyed.");
         }
     }
-    public void LogHealthGrid(int[,] healthGrid)
-    {
-        int width = healthGrid.GetLength(0); // Getting the first dimension size
-        int height = healthGrid.GetLength(1); // Getting the second dimension size
-        System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-        // Loop through each row
-        for (int y = height - 1; y >= 0; y--)
-        {
-            // Loop through each column in the current row
-            for (int x = 0; x < width; x++)
-            {
-                // Append each cell value followed by a space for separation
-                sb.AppendFormat("{0,-2}  ", healthGrid[x, y]);
-            }
-            sb.AppendLine(); // Add a newline after each row
-        }
-
-        Debug.Log(sb.ToString()); // Log the entire grid at once
-    }
+    
 
     public bool CloseToLocation(Vector2 location)
     {
