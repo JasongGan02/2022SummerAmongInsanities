@@ -72,7 +72,13 @@ public abstract class EnemyController : CharacterController
             rb = GetComponent<Rigidbody2D>();
         }
     }
-
+    
+    public override void TakeDamage(float amount, IDamageSource damageSource)
+    {
+        base.TakeDamage(amount, damageSource);
+        _audioEmitter.PlayClipFromCategory("InjureEnemy");
+    }
+    
     protected bool IsTowerSensed()
     {
         if (towerContainer == null) { /*Debug.Log("0");*/ return false; }  // Nathan's only change

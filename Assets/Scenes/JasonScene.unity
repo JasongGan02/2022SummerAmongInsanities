@@ -770,11 +770,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4878420190821419895, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
   m_PrefabInstance: {fileID: 5022870085592352527}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &722572889 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5885483217933147918, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-  m_PrefabInstance: {fileID: 8685695345761983943}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &760687529 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5245653059314779888, guid: 47a6eeaccac8df8478d4abdeabab8867, type: 3}
@@ -785,17 +780,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8692318545455698221, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
   m_PrefabInstance: {fileID: 5022870085592352527}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &788746861 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-  m_PrefabInstance: {fileID: 8685695345761983943}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0fbdfb0e0a5ace49a26ec6c834c38e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &831146460 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
@@ -928,37 +912,26 @@ Transform:
   m_Father: {fileID: 182581677}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1292711032
+--- !u!1 &1374051852 stripped
 GameObject:
+  m_CorrespondingSourceObject: {fileID: 1776182459236102195, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+  m_PrefabInstance: {fileID: 8685695345761983943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1374051855
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1292711034}
-  m_Layer: 0
-  m_Name: EnemyContainer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1292711034
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292711032}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1797734688}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 1374051852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6268737d410576740bef5afa314f5ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipCategories:
+  - {fileID: 11400000, guid: 603869ca963f50c40a3b53c4b3d327cd, type: 2}
+  spatialBlend: 0
 --- !u!1 &1464075472
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,8 +1027,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1292711034}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1286,6 +1258,12 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 35584379846224213, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_text
+      value: 'Reroll
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 1309479451400733569, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1588,15 +1566,15 @@ PrefabInstance:
     - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: playerAudio
       value: 
-      objectReference: {fileID: 722572889}
+      objectReference: {fileID: 0}
     - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: pfPlayerAudio
       value: 
-      objectReference: {fileID: 722572889}
+      objectReference: {fileID: 0}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: am
       value: 
-      objectReference: {fileID: 788746861}
+      objectReference: {fileID: 0}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_Enabled
       value: 1

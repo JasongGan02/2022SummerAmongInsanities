@@ -32,7 +32,7 @@ public class CoreArchitectureController : CharacterController
         player = GameObject.FindWithTag("Player");
         Constructable_Circle = transform.Find("Circle").gameObject;
         InitConstructableCircle();
-
+        _audioEmitter.PlayClipFromCategory("GearRotating", false);
     }
 
     // Update is called once per frame

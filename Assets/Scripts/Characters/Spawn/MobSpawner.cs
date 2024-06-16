@@ -49,6 +49,8 @@ public class MobSpawner : MonoBehaviour
     
     private void StartWaveSpawning(float intensityMultiplier)
     {
+        if (CoreArchitectureController.Instance == null)
+            return;
         float energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance();
         float spawnDistance = energyZoneRadius + 20f;
         Vector3 corePosition = CoreArchitectureController.Instance.transform.position;

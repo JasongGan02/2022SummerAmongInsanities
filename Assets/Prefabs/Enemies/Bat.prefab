@@ -5054,4 +5054,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipCategories:
   - {fileID: 11400000, guid: d91542b85b98a5a4b8c304571aefc763, type: 2}
+  - {fileID: 11400000, guid: d6662f717705df3449878d2b87db6a08, type: 2}
   spatialBlend: 1

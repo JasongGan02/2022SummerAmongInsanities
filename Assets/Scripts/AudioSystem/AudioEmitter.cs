@@ -40,7 +40,7 @@ public class AudioEmitter : MonoBehaviour
         }
     }
 
-    public void PlayClipFromCategory(string categoryName, bool playOneShot = true) //TODO: need audioSource play distinguish from PlayOneShot, extra parameter here
+    public void PlayClipFromCategory(string categoryName, bool playOneShot = true) 
     {
         if (clipCategoryDict.TryGetValue(categoryName, out var category))
         {
