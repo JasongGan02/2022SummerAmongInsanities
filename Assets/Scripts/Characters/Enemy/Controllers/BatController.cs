@@ -126,23 +126,33 @@ public class BatController : EnemyController
         if (GroupApproaching) 
         { 
             transform.position = Vector2.MoveTowards(transform.position, GroupApproachTarget.position, 3 * Time.deltaTime);
+            if (waitTime < 0)
+            {   // update patrol range
+                startX = transform.position.x;
+                startY = transform.position.y;
+            }
         }
         else
-        {
+        {   // start patrol based on current location
             transform.position = Vector2.MoveTowards(transform.position, moveTo.position, 3 * Time.deltaTime);
         }
 
-        if (Vector2.Distance(transform.position, moveTo.position) < 0.2f || waitTime <= 0)
+        //if (Vector2.Distance(transform.position, moveTo.position) < 0.2f || waitTime <= 0)
+        //{
+        //    if (waitTime <= 0)
+        //    {
+        //        moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));  // cause startX I don't know need to change
+        //        waitTime = 3;
+        //    }
+        //    else
+        //    {
+        //        waitTime -= Time.deltaTime;
+        //    }
+        //}
+        if (waitTime < 0) 
         {
-            if (waitTime <= 0)
-            {
-                moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));  // cause startX I don't know need to change
-                waitTime = 3;
-            }
-            else
-            {
-                waitTime -= Time.deltaTime;
-            }
+            moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));
+            waitTime = 3;
         }
 
         waitTime -= Time.deltaTime;
