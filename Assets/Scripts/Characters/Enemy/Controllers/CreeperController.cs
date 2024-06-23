@@ -53,7 +53,7 @@ public class CreeperController : EnemyController
             if (target == null) { patrol(); }
             else
             {
-                if (villager_sight())
+                if (true || villager_sight())
                 {
                     if (DistanceToTarget(target.transform) < _atkRange && !isAttacking)
                     {

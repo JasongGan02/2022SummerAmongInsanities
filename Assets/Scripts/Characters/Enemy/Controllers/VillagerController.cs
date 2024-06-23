@@ -33,6 +33,8 @@ public class VillagerController : EnemyController
     float damage_start_time_0 = 0.17f;
     float TargetTicker = 1f;
     public List<Vector2> PathToTarget = new List<Vector2>();
+    public Vector2 TargetDirection = Vector2.zero;
+    public float TargetAngle = 0f;
     public float PathTicker = 3f;
     public int PathCounter;
     public int bodyHeight = 2;
@@ -541,12 +543,13 @@ public class VillagerController : EnemyController
             approach(2 * _movingSpeed, target.transform);
             SenseFrontBlock();
 
-            Vector2 direction = target.transform.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
-            else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
-            else if (headCheck() == false) { BreakObstacles("horizontal"); }
+            TargetDirection = target.transform.position - transform.position;
+            TargetAngle = Mathf.Atan2(TargetDirection.y, TargetDirection.x) * Mathf.Rad2Deg;
+            if (TargetAngle < 0) { TargetAngle += 360; }
+            Debug.Log("angle: " + TargetAngle);
+            if (TargetAngle >= 75 && TargetAngle <= 105) { BreakObstacles(); }
+            else if (TargetAngle <= -75 && TargetAngle >= -105) { BreakObstacles(); }
+            else { BreakObstacles(); }
 
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
@@ -587,10 +590,10 @@ public class VillagerController : EnemyController
             Vector2 direction = TargetRemainder.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
-            else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
-            else if (headCheck() == false) { BreakObstacles("horizontal"); }
-
+            if (angle >= 75 && angle <= 105) { BreakObstacles(); }
+            else if (angle >= -105 && angle <= -75) { BreakObstacles(); }
+            else if (headCheck() == false) { BreakObstacles(); }
+                
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
                 PathCounter++;
@@ -672,7 +675,7 @@ public class VillagerController : EnemyController
         //Debug.Log("x " + x1 + " y " + y1 + " target x: " + location.x + " target y: " + location.y);
         return false;
     }
-    public void BreakObstacles(string command)
+    public void BreakObstacles()
     {
         BreakObstaclesCD -= Time.deltaTime;
         if (BreakObstaclesCD < 0f)
@@ -689,7 +692,8 @@ public class VillagerController : EnemyController
             }
             float rayLength = 0.05f;
 
-            if (command == "horizontal")
+            if ((TargetAngle > 340 || TargetAngle < 20) ||
+                (TargetAngle > 160 && TargetAngle < 200))  // horizontal
             {
                 RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
                 Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red); // Visualize Raycast
@@ -712,12 +716,10 @@ public class VillagerController : EnemyController
                     }
                 }
             }
-            else if (command == "top")
+            else if (TargetAngle > 65 && TargetAngle < 115) // upward
             {
                 RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
-                Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue); // Visualize Raycast
-                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
-                Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
+                Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
                 if (hitTileDetect3.transform != null)   // check if villager is stopped by this block
                 {
                     var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
@@ -726,7 +728,12 @@ public class VillagerController : EnemyController
                         target = breakable3.gameObject; BreakObstaclesCD = 1f;
                     }
                 }
-                else if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
+            }
+            else if (TargetAngle > 245 && TargetAngle < 295) // downward
+            {
+                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
+                if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
                 {
                     var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
                     if (breakable4 != null)
@@ -735,21 +742,52 @@ public class VillagerController : EnemyController
                     }
                 }
             }
-            else if (command == "bottom")
+            else if ((TargetAngle > 20 && TargetAngle <= 65) || (TargetAngle > 115 && TargetAngle < 160))   // half side upward
             {
-                RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, ground_mask);
-                Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
-                if (hitTileDetect5.transform != null)
+                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green); // Visualize Raycast
+                if (hitTileDetect2.transform != null)
                 {
-                    Debug.Log("check ground");
-                    var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
-                    if (breakable5 != null)
+                    var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
+                    if (breakable1 != null)
                     {
-                        Debug.Log("target at ground");
-                        target = breakable5.gameObject; BreakObstaclesCD = 1f;
+                        target = breakable1.gameObject; BreakObstaclesCD = 1f;
+                    }
+                }
+                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
+                if (hitTileDetect3.transform != null)   // check if villager is stopped by this block
+                {
+                    var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
+                    if (breakable3 != null)
+                    {
+                        target = breakable3.gameObject; BreakObstaclesCD = 1f;
                     }
                 }
             }
+            else if ((TargetAngle > 200 && TargetAngle <= 245) || (TargetAngle > 295 && TargetAngle < 340)) //half side downward
+            {
+                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red);
+                if (hitTileDetect1.transform != null)
+                {
+                    var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
+                    if (breakable2 != null)
+                    {
+                        target = breakable2.gameObject; BreakObstaclesCD = 1f;
+                    }
+                }
+                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
+                Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow); // Visualize Raycast
+                if (hitTileDetect4.transform != null)   // check if villager is stopped by this block
+                {
+                    var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
+                    if (breakable4 != null)
+                    {
+                        target = breakable4.gameObject; BreakObstaclesCD = 1f;
+                    }
+                }
+            }    
         }
     }
 

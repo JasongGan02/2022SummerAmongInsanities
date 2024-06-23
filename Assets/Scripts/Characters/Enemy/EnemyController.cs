@@ -270,6 +270,13 @@ public abstract class EnemyController : CharacterController
     public GameObject WhatToAttack()
     {
         GameObject target = null;
+        if (GroupApproaching && GroupApproachTarget != null)
+        {
+            if (DistanceToTarget(GroupApproachTarget) < 2f * SensingRange) // if the distance to groupTarget is less than 2 * sensingRange, go for it.
+            {
+                return GroupApproachTarget.gameObject;
+            }
+        }
         if (Hatred.Count > 0)
         {
             //Debug.Log(Hatred.Count);
