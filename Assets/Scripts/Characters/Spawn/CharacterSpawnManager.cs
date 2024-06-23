@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using System;
 
 public class CharacterSpawnManager : MonoBehaviour
 {
@@ -108,7 +109,7 @@ public class CharacterSpawnManager : MonoBehaviour
         while (true) // This loop will run indefinitely
         {
             CollectEnemies();
-            yield return new WaitForSeconds(3); // Wait for 20 seconds before the next check
+            yield return new WaitForSeconds(2); // Wait for 20 seconds before the next check
         }
     }
     private List<GameObject> enemies = new List<GameObject>();
@@ -158,11 +159,11 @@ public class CharacterSpawnManager : MonoBehaviour
     {
         foreach (GameObject enemy in enemies)
         {
-            var enemyController = enemy.GetComponent<BatController>();
+            var enemyController = enemy.GetComponent<EnemyController>();
             if (enemyController != null)
             {
                 enemyController.GroupApproaching = true;  // Set the flag when commanding to move
-                enemyController.MoveTowards(targetTransform);  // This function needs to be defined or adjusted accordingly
+                enemyController.GroupApproachTarget = targetTransform;
             }
         }
     }
@@ -170,10 +171,11 @@ public class CharacterSpawnManager : MonoBehaviour
     {
         foreach (GameObject enemy in enemies)
         {
-            var enemyController = enemy.GetComponent<BatController>();
+            var enemyController = enemy.GetComponent<EnemyController>();
             if (enemyController != null)
             {
                 enemyController.GroupApproaching = false;  // Clear the flag to resume normal behavior
+                enemyController.GroupApproachTarget = null;
             }
         }
     }

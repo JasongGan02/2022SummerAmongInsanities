@@ -25,7 +25,6 @@ public class BatController : EnemyController
 
     private float startX;
     private float startY;
-    private Transform GroupApproachTarget;
 
     // Start is called before the first frame update
     protected void Start()
@@ -279,10 +278,5 @@ public class BatController : EnemyController
         return false;
     }
 
-    public override void MoveTowards(Transform targetTransform)
-    {
-        GroupApproachTarget = targetTransform;
-        GroupApproaching = true;
-    }
 }
 

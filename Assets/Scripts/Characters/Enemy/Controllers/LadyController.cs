@@ -159,6 +159,12 @@ public class LadyController : EnemyController, IRangedAttacker
 
     private void patrol()
     {
+        if (GroupApproaching)
+        {
+            patroltime = 0.2f; patrolRest = 0f;
+            if (GroupApproachTarget.position.x > transform.position.x) { patrolToRight = true; }
+            else { patrolToRight = false; }
+        }
         if (patroltime <= 0f)
         {
             animator.SetFloat("movingSpeed", 0);
@@ -317,11 +323,11 @@ public class LadyController : EnemyController, IRangedAttacker
         }
         else { animator.SetFloat("movingSpeed", 0f); }
     }
-    public override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * _movingSpeed;
-    }
+    //public override void MoveTowards(Transform targetTransform)
+    //{
+    //    Vector2 direction = (targetTransform.position - transform.position).normalized;
+    //    rb.velocity = direction * _movingSpeed;
+    //}
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {
         Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);

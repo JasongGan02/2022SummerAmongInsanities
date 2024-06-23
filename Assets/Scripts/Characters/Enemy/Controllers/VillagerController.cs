@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class VillagerController : EnemyController
 {
     bool rest = false;
-    bool facingright = false;
+    bool facingright = true;
     float patroltime = 0f;
     private Animator animator;
     bool patrolToRight = true;
@@ -43,6 +45,9 @@ public class VillagerController : EnemyController
     public float BreakObstaclesCD = 1f;
     public Transform TargetRemainder;
     public float ChasingRemainder = 5f;
+    public Transform groundCheckCorners;
+
+    public float isJumping = 1f;
 
     protected override void Awake()
     {
@@ -65,13 +70,14 @@ public class VillagerController : EnemyController
         tileDetect2 = transform.Find("tileDetect2");
         tileDetect3 = transform.Find("tileDetect3");
         tileDetect4 = transform.Find("tileDetect4");
+        groundCheckCorners = transform.Find("groundCheckCorners");
     }
 
     protected override void EnemyLoop()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
-        { ChangeCollider("Stand"); }
-        else { ChangeCollider("Sit"); }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_attack") == true)
+        { ChangeCollider("villager_attack"); }
+        else { ChangeCollider(" "); }
 
 
         if (target == null || TargetTicker < 0) { target = WhatToAttack(); TargetTicker = 1f; } // if doesn't have target
@@ -79,6 +85,7 @@ public class VillagerController : EnemyController
         else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
         else
         {
+            CheckStuckAndApplyForces();
             TargetRemainder = target.transform;
             ChasingRemainder = 5f;  // chasing time after losing target in visual
             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
@@ -91,7 +98,7 @@ public class VillagerController : EnemyController
                 }
                 else
                 {
-                    Debug.Log("approaching target " + target.transform);
+                    //Debug.Log("approaching target " + target.transform);
                     //flip(target.transform);
                 }
             }
@@ -99,6 +106,7 @@ public class VillagerController : EnemyController
         }
         PathTicker -= Time.deltaTime;  // update ticker for path tracking
         TargetTicker -= Time.deltaTime; // update ticker for target tracking
+        isJumping -= Time.deltaTime; // update isJumping
     }
 
     void attack(Transform target, float frequency)
@@ -168,13 +176,20 @@ public class VillagerController : EnemyController
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
-    public override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * _movingSpeed;
-    }
     void patrol()
     {
+        if (GroupApproaching)
+        {
+            patroltime = 0.2f; patrolRest = 0f;
+            if (GroupApproachTarget.position.x > transform.position.x) { patrolToRight = true; }
+            else { patrolToRight = false; }
+            Debug.Log("Villager is group approach something");
+        }
+        //else
+        //{
+        //    patroltime = 0f;
+        //}
+
         RemovePathLine();
         if (patroltime <= 0f)
         {
@@ -233,14 +248,14 @@ public class VillagerController : EnemyController
     }
     void flip()
     {
+        facingright = !facingright;
+
         if (facingright)
         {
-            facingright = false;
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
         else
         {
-            facingright = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
@@ -256,7 +271,7 @@ public class VillagerController : EnemyController
 
         if (hitCenter.transform != null)
         {
-            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
+            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))  // move forward
             {
                 if (hitFront.transform != null)
                 {
@@ -266,7 +281,7 @@ public class VillagerController : EnemyController
                     }
                 }
             }
-            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
+            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0)) // move back
             {
                 if (hitBack.transform != null)
                 {
@@ -280,20 +295,25 @@ public class VillagerController : EnemyController
     }
     bool headCheck()
     {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, ground_mask);
-        Debug.DrawRay(head.position, direction * 0.34f, Color.red);        // bottom right
-        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
+        Vector2 direction = Vector2.right;
+        if (!facingright) { direction = Vector2.left; }
+        RaycastHit2D footRay = Physics2D.Raycast(tileDetect1.position, direction, 0.05f, ground_mask);
+        RaycastHit2D headRay = Physics2D.Raycast(tileDetect2.position, direction, 0.05f, ground_mask);
+        Debug.DrawRay(tileDetect1.position, direction * 0.05f, Color.red);
+        Debug.DrawRay(tileDetect2.position, direction * 0.05f, Color.blue);
+        if (footRay.collider != null && footRay.collider.gameObject.tag == "ground" &&
+            (headRay.collider == null || headRay.collider.gameObject.tag != "ground"))
         {
-            //Debug.Log("headCheck return false");
-            return false;
+            //Debug.Log("allow jump");
+            return true;
         }
 
-        return true;
+        return false;
     }
     private void Jump(float horizontal)
     {
         rb.velocity = new Vector2(horizontal * 1.0f, _jumpForce);
+        isJumping = 1f;
     }
     private bool villager_sight()
     {
@@ -327,17 +347,17 @@ public class VillagerController : EnemyController
     {
         // Enable or disable the colliders based on the state
         // boxCollider.enabled = !isSitting;
-        if (status == "Stand")
+        if (status == "villager_attack")
         {
-            //boxCollider.size = new Vector2(0.1875544f, 1.0f);
-            capsuleCollider.offset = new Vector2(0.05061817f, -0.03f);
-            capsuleCollider.size = new Vector2(0.1316872f, 0.9791025f);
+            capsuleCollider.offset = new Vector2(-0.005420446f, -0.02473235f);
+            capsuleCollider.size = new Vector2(0.2200007f, 0.9838557f);
+            transform.localScale = new Vector2(2f, 2f);
         }
         else
         {
-            //boxCollider.size = new Vector2(0.1875544f, 0.718245f);
-            capsuleCollider.offset = new Vector2(0.02169657f, -0.05424142f);
-            capsuleCollider.size = new Vector2(0.1895304f, 0.7271314f);
+            capsuleCollider.offset = new Vector2(0.03022671f, -0.04200697f);
+            capsuleCollider.size = new Vector2(0.8412695f, 2.709069f);
+            transform.localScale = new Vector2(0.7f, 0.7f);
         }
     }
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
@@ -360,20 +380,20 @@ public class VillagerController : EnemyController
         // Check the conditions
         if ((angle >= -95f && angle <= -85f) || (angle >= 85 && angle <= 95) && distance < 3f)
         {
-            Debug.Log("Angle and distance conditions met");
+            //Debug.Log("Angle and distance conditions met");
             if (Mathf.Abs(target.transform.position.x - transform.position.x) <= 0.3f)
             {
-                Debug.Log("Within horizontal range");
+                //Debug.Log("Within horizontal range");
                 if (Mathf.Abs(target.transform.position.y - transform.position.y) < 2f)
                 {
-                    Debug.Log("Shaking the player overhead");
+                    //Debug.Log("Shaking the player overhead");
                     if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
                     {
-                        rb.velocity = new Vector2(-12f, rb.velocity.y);
+                        rb.velocity = new Vector2(-40f, rb.velocity.y);
                     }
                     else
                     {
-                        rb.velocity = new Vector2(12f, rb.velocity.y);
+                        rb.velocity = new Vector2(40f, rb.velocity.y);
                     }
                 }
             }
@@ -499,11 +519,11 @@ public class VillagerController : EnemyController
 
             //Debug.Log("start position " + startX + "  " + startY + " target position " + endX + " " + endY);
             string pathString = string.Join(", ", path);
-            Debug.Log(pathString);
+            //Debug.Log(pathString);
         }
         else
         {
-            Debug.Log("No path found.");
+            //Debug.Log("No path found.");
         }
     }
     public void PathExecute()       // execute path to target
@@ -517,8 +537,7 @@ public class VillagerController : EnemyController
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            Debug.Log("Go to: " + PathToTarget[PathCounter]);
-
+            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
             approach(2 * _movingSpeed, target.transform);
             SenseFrontBlock();
 
@@ -526,8 +545,8 @@ public class VillagerController : EnemyController
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
             if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
-            else if (angle >= -105 && angle <= -75) { Debug.Log("Angle: " + angle); BreakObstacles("bottom"); }
-            else { BreakObstacles("horizontal"); }
+            else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
+            else if (headCheck() == false) { BreakObstacles("horizontal"); }
 
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
@@ -535,7 +554,7 @@ public class VillagerController : EnemyController
             }
             else
             {
-                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+                //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
             }
         }
         else
@@ -560,7 +579,7 @@ public class VillagerController : EnemyController
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            Debug.Log("Go to: " + PathToTarget[PathCounter]);
+            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
 
             approach(2 * _movingSpeed, TargetRemainder);
             SenseFrontBlock();
@@ -569,8 +588,8 @@ public class VillagerController : EnemyController
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
             if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
-            else if (angle >= -105 && angle <= -75) { Debug.Log("Angle: " + angle); BreakObstacles("bottom"); }
-            else { BreakObstacles("horizontal"); }
+            else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
+            else if (headCheck() == false) { BreakObstacles("horizontal"); }
 
             if (CloseToLocation(PathToTarget[PathCounter])) // needs testing
             {
@@ -578,7 +597,7 @@ public class VillagerController : EnemyController
             }
             else
             {
-                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+                //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
             }
         }
         else
@@ -733,4 +752,57 @@ public class VillagerController : EnemyController
             }
         }
     }
+
+
+    // NEED TEST!!!!!!!!!!!!!!!!!!!!!!!!
+    public void CheckStuckAndApplyForces()
+    {
+        if (isJumping > 0) { return; }
+
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
+
+        if (hitLeft.collider == null && hitCenter.collider == null && hitRight.collider == null)
+        { // in air
+            //Debug.Log("In the air");
+          // Using horizontal rays to check for ground presence
+            RaycastHit2D hitHorizontalLeft = Physics2D.Raycast(groundCheckCorners.position, Vector2.left, 0.8f, ground_mask);
+            RaycastHit2D hitHorizontalRight = Physics2D.Raycast(groundCheckCorners.position, Vector2.right, 0.8f, ground_mask);
+            Debug.DrawLine(
+                new Vector3(groundCheckCorners.position.x, groundCheckCorners.position.y, 0),
+                new Vector3(groundCheckCorners.position.x, groundCheckCorners.position.y, 0) + new Vector3(Vector2.left.x, Vector2.left.y, 0) * 0.8f,
+                Color.red
+            );
+            Debug.DrawLine(
+                new Vector3(groundCheckCorners.position.x, groundCheckCorners.position.y, 0),
+                new Vector3(groundCheckCorners.position.x, groundCheckCorners.position.y, 0) + new Vector3(Vector2.right.x, Vector2.right.y, 0) * 0.8f,
+                Color.blue
+            );
+            // Check if either horizontal ray hits a ground layer object
+            if (hitHorizontalLeft.collider != null && hitHorizontalLeft.collider.gameObject.layer == LayerMask.NameToLayer("ground") ||
+                hitHorizontalRight.collider != null && hitHorizontalRight.collider.gameObject.layer == LayerMask.NameToLayer("ground"))
+            {
+                //Debug.Log("apply downward force");
+                ApplyDownwardForce();
+            }
+        }
+    }
+
+    public void ApplyDownwardForce()
+    {
+        if (facingright)
+        {
+            rb.velocity = new Vector2(-10f, rb.velocity.y); // Moves left with a specific speed
+            rb.velocity = new Vector2(rb.velocity.x, -10f); // Apply a downward force
+        }
+        else
+        {
+            // Apply horizontal force by setting velocity directly
+            rb.velocity = new Vector2(10f, rb.velocity.y); // Moves right with a specific speed
+            rb.velocity = new Vector2(rb.velocity.x, -10f);
+        }
+        
+    }
+
 }

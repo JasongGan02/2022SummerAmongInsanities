@@ -13,6 +13,7 @@ public abstract class EnemyController : CharacterController
 {
     protected float SensingRange;
     public bool GroupApproaching = false;
+    public Transform GroupApproachTarget;
     protected static int globalEnemyLevel = 1;
     public GameObject tempTarget;
     public Collider2D[] colliders;
@@ -341,7 +342,6 @@ public abstract class EnemyController : CharacterController
             }
         }
     }
-    public abstract void MoveTowards(Transform targetTransform);
 
 
     public class Node
@@ -536,7 +536,7 @@ public abstract class EnemyController : CharacterController
             sb.AppendLine(); // Add a newline after each row
         }
 
-        Debug.Log(sb.ToString()); // Log the entire grid at once
+        //Debug.Log(sb.ToString()); // Log the entire grid at once
     }
 
 

@@ -227,9 +227,4 @@ public class DumbController : EnemyController
         if (hit.collider != null) { return true; }
         return false;
     }
-    public override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * _movingSpeed;
-    }
 }
