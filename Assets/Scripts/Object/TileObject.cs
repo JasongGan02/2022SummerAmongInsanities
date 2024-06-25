@@ -57,9 +57,9 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [Range(0f, 15f)] [SerializeField] private float _lightIntensity = 0;
 
-    public GameObject GetPlacedGameObject()
+    public GameObject GetPlacedGameObject(int spriteNumber, Quaternion rotation, bool flipX)
     {
-        GameObject worldGameObject = GetGeneratedGameObjects();
+        GameObject worldGameObject = GetGeneratedGameObjects(spriteNumber, rotation, flipX);
         worldGameObject.GetComponent<BreakableObjectController>().Initialize(this, HealthPoint, true);
         return worldGameObject;
     }
@@ -178,7 +178,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     }
     
 
-    public GameObject GetGeneratedGameObjects()
+    public GameObject GetGeneratedGameObjects(int spriteNumber, Quaternion rotation, bool flipX)
     {
         GameObject worldGameObject;
         if (Prefabs.Length > 1)
@@ -194,10 +194,16 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         var controller = worldGameObject.AddComponent<BreakableObjectController>();
         controller.Initialize(this, HealthPoint, false);
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
+        if (HasSpecialFunctionality)
+        {
+            spriteRenderer.sprite = TargetSprite[spriteNumber];
+            worldGameObject.transform.rotation = rotation;
+            spriteRenderer.flipX = flipX;
+        }
         spriteRenderer.sortingOrder = TileLayer;
         return worldGameObject;
     }
-    public GameObject GetGeneratedWallGameObjects()
+    public GameObject GetGeneratedWallGameObjects(int spriteNumber, Quaternion rotation, bool flipX)
     {
         GameObject worldGameObject;
         if (Prefabs.Length > 1)
@@ -217,6 +223,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         if (worldGameObject.GetComponent<Collider2D>() != null)
         {
             Destroy(worldGameObject.GetComponent<Collider2D>());
+        }
+        if (HasSpecialFunctionality)
+        {
+            spriteRenderer.sprite = TargetSprite[spriteNumber];
+            worldGameObject.transform.rotation = rotation;
+            spriteRenderer.flipX = flipX;
         }
         return worldGameObject;
     }
@@ -294,4 +306,28 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     }
 
     #endregion
+
+
+   [SerializeField]
+   public TileObject[] SpecifiedTiles;
+
+    [SerializeField]
+    public Sprite[] TargetSprite;
+
+    [SerializeField]
+    private bool hasSpecialFunctionality;
+
+    public bool HasSpecialFunctionality
+    {
+        get => hasSpecialFunctionality;
+        set => hasSpecialFunctionality = value;
+    }
+
+    [SerializeField]
+    private bool isGrassTile;
+    public bool IsGrassTile
+    {
+        get => isGrassTile;
+        set => isGrassTile = value;
+    }
 }
