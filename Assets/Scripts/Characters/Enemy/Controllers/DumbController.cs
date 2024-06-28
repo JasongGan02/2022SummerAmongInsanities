@@ -9,8 +9,6 @@ using UnityEngine;
 
 public class DumbController : EnemyController
 {
-
-    private float maxHP;
     private Rigidbody2D rb;
     private float patrolTime = 0f;
     private bool patrolDirection = false;
@@ -45,14 +43,13 @@ public class DumbController : EnemyController
     }
     private void Start()
     {
-        maxHP = _HP;
-        CurrentHP = _HP;
-        PrevHP = _HP;
+        CurrentHP = currentStats.hp;
+        PrevHP = currentStats.hp;
     }
 
     // Update is called once per frame
     protected override void EnemyLoop(){
-        CurrentHP = _HP;
+        CurrentHP = currentStats.hp;
         SenseFrontBlock();
         if (PrevHP > CurrentHP)
         {
@@ -65,7 +62,7 @@ public class DumbController : EnemyController
         {
             flee();
         }
-        else if(_HP <= maxHP/2){
+        else if(currentStats.hp <= characterObject.maxStats.hp/2){
             //Debug.Log("HP less than 50%");
             animator.Play("dumb_flee");
             Vector2 direction = (player.transform.position - transform.position);
@@ -77,7 +74,7 @@ public class DumbController : EnemyController
             {
                 transform.right = Vector2.right;
             }
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -_movingSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -currentStats.movingSpeed * Time.deltaTime);
         }
         else{
             idle();
@@ -109,7 +106,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
                     if (!facingRight) { flip(); }
                 }
             }
@@ -117,7 +114,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
                     if (facingRight) { flip(); }
                 }
             }
@@ -147,7 +144,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(_movingSpeed * -2, rb.velocity.y);
+                    rb.velocity = new Vector2(currentStats.movingSpeed * -2, rb.velocity.y);
                     if (facingRight) { flip(); }
                 }
             }
@@ -155,7 +152,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(_movingSpeed * 2, rb.velocity.y);
+                    rb.velocity = new Vector2(currentStats.movingSpeed * 2, rb.velocity.y);
                     if (!facingRight) { flip(); }
                 }
             }
@@ -217,7 +214,7 @@ public class DumbController : EnemyController
     }
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
     }
 
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
@@ -230,6 +227,6 @@ public class DumbController : EnemyController
     public override void MoveTowards(Transform targetTransform)
     {
         Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * _movingSpeed;
+        rb.velocity = direction * currentStats.movingSpeed;
     }
 }

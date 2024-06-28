@@ -22,7 +22,7 @@ public class CatapultTowerController : RangedTowerController
         target = WhatToAttack(); // Method from the base class to determine what to attack
         if (target != null && Math.Abs(target.transform.position.x - startPosition.position.x) > NON_DETECTABLE_RANGE)
         {
-            _audioEmitter.PlayClipFromCategory("CatapultShoot");
+            audioEmitter.PlayClipFromCategory("CatapultShoot");
             animator.Play("Catapult_Attack", -1, 0f); // Play the attack animation
             FireProjectile(target); // Fire a projectile at the target
         }

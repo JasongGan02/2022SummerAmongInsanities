@@ -65,7 +65,6 @@ public class TimeSystemManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(currentDay != 0 && currentDay % redMoonNightInterval == 0);
             GameEvents.current.NightStarted(currentDay != 0 && currentDay % redMoonNightInterval == 0);
         }
     }

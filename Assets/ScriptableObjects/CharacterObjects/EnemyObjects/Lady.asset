@@ -15,25 +15,20 @@ MonoBehaviour:
   itemName: Lady
   sizeRatio: 2
   prefab: {fileID: 4495697151584585258, guid: 345388cc160412143bfa73cd1af4625a, type: 3}
-  _HP: 17
-  _armor: 0
-  _atkDamage: 7
-  _atkSpeed: 4
-  _atkRange: 10
-  _criticalMultiplier: 0
-  _criticalChance: 0
-  _movingSpeed: 1.5
-  _jumpForce: 14
-  _totalJumps: 0
-  Drops: []
-  Hatred:
-  - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
-  - {fileID: 11500000, guid: 323d665d458aea646b864ebdb3aeb696, type: 3}
-  - {fileID: 11500000, guid: 5b889914607fafa4f87fd046a99656b8, type: 3}
-  - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
-  - {fileID: 11500000, guid: e2dd652d6364c10489d28f9270515189, type: 3}
-  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
-  SensingRange: 10
+  drops: []
+  hatred: []
+  enemyStats:
+    hp: 100
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    armor: 0
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    sensingRange: 0
   minLightLevel: 0
   maxLightLevel: 6
   spawnWeight: 80

@@ -18,7 +18,7 @@ public class TowerController : CharacterController
         TestDrop();
     }
  
-    protected override void death()
+    protected override void Die()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
         constructionMode.EnergyConsumption(energyCost*-1);
@@ -28,15 +28,15 @@ public class TowerController : CharacterController
 
     public override void ApplyHPChange(float dmg)
     {
-        _HP -= dmg;
+        currentStats.hp -= dmg;
 
-        if (_HP <= 0)
+        if (currentStats.hp <= 0)
         {
-            death();
+            Die();
         }
-        if (_HP > characterStats._HP) //hp cap
+        if (currentStats.hp > characterObject.maxStats.hp) //hp cap
         {
-            _HP = characterStats._HP;
+            currentStats.hp = characterObject.maxStats.hp;
         }
     }
 
@@ -52,7 +52,7 @@ public class TowerController : CharacterController
             {
                 isDestroyedByPlayer = true;
                 // Execute your function here
-                death();
+                Die();
             }
         }
     }

@@ -5,17 +5,8 @@ using System;
 [CreateAssetMenu(menuName = "Effects/Upgrade")]
 public class CharUpgradeEffectObject : EffectObject
 {
-    [Header ("Character Upgrade Effect Settings")]
-    public float dHP;
-    public float dAtkDamage;
-    public float dAtkInterval;
-    public float dAtkRange;
-    public float dMovingSpeed;
-    public float dJumpForce;
-    public int dTotalJumps;
-    public float dArmor;
-    public float dCriticalMultiplier;
-    public float dCriticalChance;
+    [Header("Character Upgrade Effect Settings")]
+    public CharacterStats statModifications;
 
     public override void ExecuteEffect(IEffectableObject effectedGameObject) //Use this when you are unsure about what type of controller will be using.
     {
