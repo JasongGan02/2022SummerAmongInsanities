@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +15,13 @@ public class PlayerMovement : MonoBehaviour, IAudioable
     [SerializeField] 
     public float excavateCoeff = 1f;
     [SerializeField] private float slowDownFactor = 0.1f;
+
+    [SerializeField]
+    private float glideSpeed = 5f;
+
+    private bool isGliding = false;
+    private float glideActivationDelay = 0.2f;
+    private float glideTimer = 0;
 
     public int totalJumps;
     int availableJumps;
@@ -74,7 +81,32 @@ public class PlayerMovement : MonoBehaviour, IAudioable
                 Jump();
             }
         }
-        
+
+        animator.SetFloat("yVelocity", rb.velocity.y);
+
+        if (availableJumps == 0 && !isGrounded)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (!isGliding)
+                {
+                    glideTimer += Time.deltaTime;
+                    if (glideTimer >= glideActivationDelay)
+                    {
+                        StartGliding();
+                        glideTimer = 0;
+                    }
+                }
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            glideTimer = 0;
+            if (isGliding)
+            {
+                StopGliding();
+            }
+        }
         animator.SetFloat("yVelocity", rb.velocity.y);
     }
 
@@ -82,8 +114,16 @@ public class PlayerMovement : MonoBehaviour, IAudioable
     {
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
-            Movement();
-        } else
+            if (isGliding) 
+            {
+                Gliding();
+            }
+            else
+            {
+                Movement();
+            }
+        } 
+        else
         {
             ClearHorizontalVelocity();
         }
@@ -195,6 +235,11 @@ public class PlayerMovement : MonoBehaviour, IAudioable
                 availableJumps = totalJumps;
                 multipleJump = false;
 
+                if (isGliding)
+                {
+                    StopGliding();
+                }
+
             }        
         }
 
@@ -219,5 +264,22 @@ public class PlayerMovement : MonoBehaviour, IAudioable
     public AudioEmitter GetAudioEmitter()
     {
         return _audioEmitter;
+    }
+
+    private void StartGliding()
+    {
+        isGliding = true;
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+    }
+
+    private void StopGliding()
+    {
+        isGliding = false;
+    }
+
+    private void Gliding()
+    {
+        float glideDirection = facingRight ? 1 : -1;
+        rb.velocity = new Vector2(glideSpeed * glideDirection, rb.velocity.y * 0.5f);
     }
 }

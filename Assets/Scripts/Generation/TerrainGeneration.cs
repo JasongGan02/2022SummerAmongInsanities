@@ -367,13 +367,13 @@ public class TerrainGeneration : MonoBehaviour
     {
         if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
         {
-            var tileGameObject = tile.GetGeneratedGameObjects();
+            //var tileGameObject = tile.GetGeneratedGameObjects();
             int chunkCoord = Mathf.RoundToInt(Mathf.Round(x / chunkSize) * chunkSize);
             chunkCoord /= chunkSize;
 
-            tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
-            tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
-            worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
+            //tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
+            //tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+            //worldTilesDictionary.Add(new Vector2Int(x, y), tileGameObject);
         }
     }
 
@@ -381,12 +381,12 @@ public class TerrainGeneration : MonoBehaviour
     {
         if (!worldTilesDictionary.ContainsKey(new Vector2Int(x, y)))
         {
-            var tileGameObject = tile.GetGeneratedWallGameObjects();
+            //var tileGameObject = tile.GetGeneratedWallGameObjects();
             int chunkCoord = Mathf.RoundToInt(Mathf.Round(x / chunkSize) * chunkSize);
             chunkCoord /= chunkSize;
 
-            tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
-            tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+            //tileGameObject.transform.parent = worldChunks[chunkCoord].transform;
+            //tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
         }
     }
     public bool PlaceTileGameObject(GameObject gameObject, Vector2 position)

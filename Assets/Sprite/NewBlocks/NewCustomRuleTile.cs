@@ -5,92 +5,61 @@ using System.Linq;
 [CreateAssetMenu(menuName = "VinTools/Custom Tiles/Advanced Rule Tile")]
 public class NewCustomRuleTile : RuleTile<NewCustomRuleTile.Neighbor>
 {
-    [Header("Advanced Tile")]
-    [Tooltip("If enabled, the tile will connect to these tiles too when the mode is set to \"This\"")]
-    public bool alwaysConnect;
-    [Tooltip("Tiles to connect to")]
-    public TileBase[] tilesToConnect;
-    [Space]
-    [Tooltip("Check itseft when the mode is set to \"any\"")]
-    public bool checkSelf = true;
-
+    public TileBase[] Specified;
+    public TileBase[] Any;
     public class Neighbor : RuleTile.TilingRule.Neighbor
     {
         public const int Any = 3;
         public const int Specified = 4;
-        public const int Nothing = 5;
+        public const int NotSpecified = 5;
+        public const int Nothing = 6;
+
+ 
     }
 
     public override bool RuleMatch(int neighbor, TileBase tile)
     {
         switch (neighbor)
         {
-            case Neighbor.This: return Check_This(tile);
-            case Neighbor.NotThis: return Check_NotThis(tile);
-            case Neighbor.Any: return Check_Any(tile);
-            case Neighbor.Specified: return Check_Specified(tile);
-            case Neighbor.Nothing: return Check_Nothing(tile);
+            case Neighbor.This: return CheckThis(tile);
+            case Neighbor.NotThis: return CheckNotThis(tile);
+            case Neighbor.Any: return CheckAny(tile);
+            case Neighbor.Specified: return CheckSpecified(tile);
+            case Neighbor.NotSpecified: return CheckNotSpecified(tile);
+            case Neighbor.Nothing: return CheckNothing(tile);
+            
         }
         return base.RuleMatch(neighbor, tile);
     }
 
-    /// <summary>
-    /// Returns true if the tile is this, or if the tile is one of the tiles specified if always connect is enabled.
-    /// </summary>
-    /// <param name="tile">Neighboring tile to compare to</param>
-    /// <returns></returns>
-    bool Check_This(TileBase tile)
+    private bool CheckNothing(TileBase tile)
     {
-        if (!alwaysConnect) return tile == this;
-        else return tilesToConnect.Contains(tile) || tile == this;
-
-        //.Contains requires "using System.Linq;"
+        return tile is null;
     }
 
-    /// <summary>
-    /// Returns true if the tile is not this.
-    /// </summary>
-    /// <param name="tile">Neighboring tile to compare to</param>
-    /// <returns></returns>
-    bool Check_NotThis(TileBase tile)
+    private bool CheckSpecified(TileBase tile)
     {
-        if (!alwaysConnect) return tile != this;
-        else return !tilesToConnect.Contains(tile) && tile != this;
-
-        //.Contains requires "using System.Linq;"
+        return Specified.Contains(tile);
     }
 
-    /// <summary>
-    /// Return true if the tile is not empty, or not this if the check self option is disabled.
-    /// </summary>
-    /// <param name="tile">Neighboring tile to compare to</param>
-    /// <returns></returns>
-    bool Check_Any(TileBase tile)
+
+    private bool CheckAny(TileBase tile)
     {
-        if (checkSelf) return tile != null;
-        else return tile != null && tile != this;
+        return Any.Contains(tile);
     }
 
-    /// <summary>
-    /// Returns true if the tile is one of the specified tiles.
-    /// </summary>
-    /// <param name="tile">Neighboring tile to compare to</param>
-    /// <returns></returns>
-    bool Check_Specified(TileBase tile)
+    private bool CheckNotSpecified(TileBase tile)
     {
-        return tilesToConnect.Contains(tile);
-
-        //.Contains requires "using System.Linq;"
+        return !Specified.Contains(tile);
     }
 
-    /// <summary>
-    /// Returns true if the tile is empty.
-    /// </summary>
-    /// <param name="tile">Neighboring tile to compare to</param>
-    /// <param name="tile"></param>
-    /// <returns></returns>
-    bool Check_Nothing(TileBase tile)
+    private bool CheckNotThis(TileBase tile)
     {
-        return tile == null;
+        return tile != this;
+    }
+
+    private bool CheckThis(TileBase tile)
+    {
+        return tile == this;
     }
 }
