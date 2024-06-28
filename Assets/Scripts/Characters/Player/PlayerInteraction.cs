@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     public GameObject[] raycastStartingPoints;
     private float timeStamp = float.MaxValue;
     private GameObject targetObject;
-    private Playermovement playerMovement;
+    private PlayerMovement playerMovement;
     private PlayerController playerController;
     private ConstructionMode constructionMode;
     private Inventory inventory;
@@ -66,7 +66,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     void Awake()
     {
         animator = GetComponent<Animator>();
-        playerMovement = GetComponent<Playermovement>();
+        playerMovement = GetComponent<PlayerMovement>();
         inventory = FindObjectOfType<Inventory>();
         shadowGenerator = FindObjectOfType<ShadowGenerator>();
         terrainGeneration = FindObjectOfType<TerrainGeneration>();
@@ -422,7 +422,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             GameObject newTower = PoolManager.Instance.Get(currentSlotInUse.item as BaseObject);
             newTower.transform.position = transform.position;
             newTower.transform.rotation = transform.rotation;
-            constructionMode.EnergyConsumption((currentSlotInUse.item as TowerObject).energyCost);
+            constructionMode.EnergyConsumption((((TowerStats)(currentSlotInUse.item as TowerObject)?.baseStats)!).energyCost);
             inventory.RemoveItemByOne(indexInUse);
            
         } 

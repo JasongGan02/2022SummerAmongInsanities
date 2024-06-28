@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour, IDamageSource
 
 
     protected GameObject player;
-    protected Playermovement playermovement;
+    protected PlayerMovement playerMovement;
     protected Transform targetEnemy;
     
 
@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     public virtual void Start()
     {
         player = GameObject.Find("Player");
-        playermovement = player.GetComponent<Playermovement>();
+        playerMovement = player.GetComponent<PlayerMovement>();
         _audioEmitter = GetComponent<AudioEmitter>();
         inventory = FindObjectOfType<Inventory>();
     }
@@ -51,8 +51,8 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
-        finalDamage =  weaponObject.BaseDamage + characterController.AtkDamage * weaponObject.DamageCoef ;
-        attackRange = (weaponObject.BaseRange + characterController.AtkRange * weaponObject.RangeCoef)/100;
+        finalDamage =  weaponObject.BaseDamage + characterController.CurrentStats.attackDamage * weaponObject.DamageCoef ;
+        attackRange = (weaponObject.BaseRange + characterController.CurrentStats.attackRange * weaponObject.RangeCoef)/100;
         knockbackForce = weaponObject.KnockBack;
 
     }

@@ -4,7 +4,7 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
 {
     protected ProjectileObject projectileObject;
 
-    public float AttackRange => _atkRange;
+    public float AttackRange => currentStats.attackRange;
     public ProjectileObject ProjectileObject => projectileObject;
 
     protected GameObject target;
@@ -15,7 +15,7 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
         // Common start logic for all ranged towers
         isEnemySpotted = false;
         startPosition = this.transform;
-        InvokeRepeating("Attack", 0f, _atkSpeed);
+        InvokeRepeating("Attack", 0f, currentStats.attackInterval);
     }
 
     protected abstract void Attack();

@@ -58,13 +58,13 @@ public class VillagerWithWeaponController : EnemyController
         {
             if (villager_sight())
             {
-                if (DistanceToTarget(target.transform) < _atkRange)
+                if (DistanceToTarget(target.transform) < currentStats.attackRange)
                 {
-                    attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
+                    attack(target.transform, 1f /  currentStats.attackInterval); // default:1;  lower -> faster
                 }
                 else
                 {
-                    approach(2.0f * _movingSpeed, target.transform);
+                    approach(2.0f *  currentStats.movingSpeed, target.transform);
                     flip(target.transform);
                 }
             }
@@ -120,7 +120,7 @@ public class VillagerWithWeaponController : EnemyController
 
     void approach(float speed, Transform target)
     {
-        if (speed > _movingSpeed)
+        if (speed >  currentStats.movingSpeed)
         {
             animator.Play("villagerWithWeapon_run");
         }
@@ -136,7 +136,7 @@ public class VillagerWithWeaponController : EnemyController
     public override void MoveTowards(Transform targetTransform)
     {
         Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * _movingSpeed;
+        rb.velocity = direction *  currentStats.movingSpeed;
     }
     void patrol()
     {
@@ -166,7 +166,7 @@ public class VillagerWithWeaponController : EnemyController
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2( currentStats.movingSpeed, rb.velocity.y);
                     if (!facingright) { flip(); }
                 }
             }
@@ -174,7 +174,7 @@ public class VillagerWithWeaponController : EnemyController
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(- currentStats.movingSpeed, rb.velocity.y);
                     if (facingright) { flip(); }
                 }
             }
@@ -258,7 +258,7 @@ public class VillagerWithWeaponController : EnemyController
     }
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f,  currentStats.jumpForce);
     }
     private bool villager_sight()
     {
