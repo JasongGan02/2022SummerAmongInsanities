@@ -1,10 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Reflection;
-using System.Threading;
-using UnityEditor.Build;
 
 public class EffectController : MonoBehaviour
 {
@@ -18,30 +13,33 @@ public class EffectController : MonoBehaviour
 
     protected virtual void StartEffect()
     {
-        // Start the effect or perform any necessary setup
-
-        // Start a coroutine to wait for the specified duration and then destroy the component
-        StartCoroutine(DestroyAfterDuration());
+        if (effectObject.duration > 0 && !effectObject.isPermanent)
+        {
+            StartCoroutine(DestroyAfterDuration());
+        }
     }
 
-    protected virtual System.Collections.IEnumerator DestroyAfterDuration()
+    protected virtual IEnumerator DestroyAfterDuration()
     {
         float elapsedTime = 0f;
-
         while (elapsedTime < effectObject.duration)
         {
-            // Perform any necessary updates here if the effect is not a one-time effect
- 
+            DuringEffect();
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        //yield return new WaitForSeconds(duration);
-
+        ResetEffect();
+        Destroy(this);
+    }
+    
+    protected virtual void DuringEffect()
+    {
+        // Perform any necessary updates here if the effect is not a one-time effect
+    }
+    
+    protected virtual void ResetEffect()
+    {
         // Reset any temporary effect-related stats or variables here
-
-        // Destroy the component from the effected controller after the duration has elapsed
-        if (!effectObject.isPermanent)
-            Destroy(this);
     }
 }

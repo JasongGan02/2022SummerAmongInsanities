@@ -16,6 +16,7 @@ MonoBehaviour:
   sizeRatio: 0.5
   prefab: {fileID: 1397927238428654775, guid: 58d2bf9cf2f710d47b4fbe5ab51f3231, type: 3}
   tileLayer: 1
+  tile: {fileID: 11400000, guid: f08dcb9d20356894697595a758dbc8d1, type: 2}
   _maxStack: 99
   _healthPoint: 5
   _drops:

@@ -8,7 +8,7 @@ public interface IGenerationObject
     public bool NeedsBackground { get;}
     public bool IsLit { get; }
     public float LightIntensity { get; }
-    public GameObject GetGeneratedGameObjects();
-    public GameObject GetGeneratedWallGameObjects();
+    public GameObject GetGeneratedGameObjects(int spriteNumber, Quaternion rotation, bool flipX);
+    public GameObject GetGeneratedWallGameObjects(int spriteNumber, Quaternion rotation, bool flipX);
 
 }

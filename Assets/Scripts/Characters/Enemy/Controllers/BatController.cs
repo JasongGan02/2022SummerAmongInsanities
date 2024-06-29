@@ -83,7 +83,7 @@ public class BatController : EnemyController
         {
             if (Vector2.Distance(target.transform.position, transform.position) < SensingRange || planned)
             {
-                if (Vector2.Distance(target.transform.position, transform.position) < _atkRange || planned)
+                if (Vector2.Distance(target.transform.position, transform.position) < currentStats.attackRange || planned)
                 {
                     // atk player
                     DashAttack(target.transform);
@@ -159,7 +159,7 @@ public class BatController : EnemyController
 
     new void ApproachingTarget(Transform target_transform)
     {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, _movingSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, currentStats.movingSpeed * Time.deltaTime);
         if (target_transform.position.x < transform.position.x && facingRight || target_transform.position.x > transform.position.x && !facingRight)
         {
             Flip();
@@ -195,7 +195,7 @@ public class BatController : EnemyController
         {
             BatTimer = 0;
             if (Ps.isPlaying) Ps.Stop();
-            transform.position = Vector2.MoveTowards(transform.position, dash_end, _movingSpeed * 5 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, dash_end, currentStats.movingSpeed * 5 * Time.deltaTime);
             animator.SetBool("is_attacking", true); 
             Tr.emitting = true;
             if (Vector2.Distance(transform.position, destination.position) < 0.4f && !attacked)
@@ -221,7 +221,7 @@ public class BatController : EnemyController
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, stop_point, _movingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, stop_point, currentStats.movingSpeed * Time.deltaTime);
             }
             if (destination.position.x < transform.position.x && facingRight || destination.position.x > transform.position.x && !facingRight)
             {

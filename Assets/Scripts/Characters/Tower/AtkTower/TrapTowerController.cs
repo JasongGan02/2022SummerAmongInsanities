@@ -23,7 +23,7 @@ public class TrapTowerController : RangedTowerController
         {
             // If enemy is spotted, fire a projectile
             FireProjectile(hit.collider.gameObject);
-            _audioEmitter.PlayClipFromCategory("ShootArrow");
+            audioEmitter.PlayClipFromCategory("ShootArrow");
         }
     }
 

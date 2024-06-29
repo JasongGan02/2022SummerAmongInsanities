@@ -65,7 +65,7 @@ public abstract class EnemyController : CharacterController
         { 
             player = GameObject.Find("Player"); 
         }
-        if (this.transform.position.y < -400) death();
+        if (this.transform.position.y < -400) Die();
         SetEnemyContainer();
         EnemyLoop();
         if (rb == null)
@@ -77,7 +77,7 @@ public abstract class EnemyController : CharacterController
     public override void TakeDamage(float amount, IDamageSource damageSource)
     {
         base.TakeDamage(amount, damageSource);
-        _audioEmitter.PlayClipFromCategory("InjureEnemy");
+        audioEmitter.PlayClipFromCategory("InjureEnemy");
     }
     
     protected bool IsTowerSensed()
@@ -108,7 +108,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsTowerInAtkRange()
     {
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
-        if(distance <= _atkRange)
+        if(distance <= currentStats.attackRange)
         {
             return true;
         }else
@@ -138,7 +138,7 @@ public abstract class EnemyController : CharacterController
     protected bool IsPlayerInAtkRange()
     {
         float distance = CalculateDistanceToPlayer();
-        if(distance <= _atkRange)
+        if(distance <= currentStats.attackRange)
         {
             return true;
         }else
@@ -154,7 +154,7 @@ public abstract class EnemyController : CharacterController
 
     protected void ApproachingTarget(Transform target_transform)
     {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, _movingSpeed*Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, currentStats.movingSpeed * Time.deltaTime);
         SenseFrontBlock();
         // transform directiron change
         if(target_transform.position.x >= transform.position.x)
@@ -193,7 +193,7 @@ public abstract class EnemyController : CharacterController
                 bottomLeft.collider.gameObject.tag == "ground" &&
                 bottomRight.collider.gameObject.tag == "ground")
             {
-                Vector2 up_force = new Vector2(0, _jumpForce);
+                Vector2 up_force = new Vector2(0, currentStats.jumpForce);
                 Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
                 rb.AddForce(up_force, ForceMode2D.Impulse);
                 //Debug.Log("up_force: " + up_force);
@@ -260,7 +260,7 @@ public abstract class EnemyController : CharacterController
     
     protected void attack()
     {
-        if(timer >= _atkSpeed)
+        if(timer >= currentStats.attackInterval)
         {
             ApplyDamage(player.GetComponent<CharacterController>());
             timer = 0f;
@@ -280,9 +280,9 @@ public abstract class EnemyController : CharacterController
         if (Hatred.Count > 0)
         {
             //Debug.Log(Hatred.Count);
-            for (int i = 0; i < Hatred.Count; i++)
+            for (int i = 0; i < hatred.Count; i++)
             {
-                if (CouldSense(Hatred[i].name, SensingRange))
+                if (CouldSense(hatred[i].name, SensingRange))
                 {
                     return tempTarget;
                 }

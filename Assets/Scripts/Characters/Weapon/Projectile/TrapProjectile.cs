@@ -51,7 +51,7 @@ public class TrapProjectile : Projectile
 
     protected override void HasReachedLifespan()
     {
-        if (Vector2.Distance(initialSpot, transform.position) >= firingCharacter.AtkRange)
+        if (Vector2.Distance(initialSpot, transform.position) >= firingCharacter.CurrentStats.attackRange)
             PoolManager.Instance.Return(gameObject, projectileObject);
     }
 

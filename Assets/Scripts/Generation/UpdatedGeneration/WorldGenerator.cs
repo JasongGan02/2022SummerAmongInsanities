@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Tilemaps;
@@ -52,7 +53,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         dataCreator = new DataGenerator(this, settings, GetComponent<StructureGenerator>());
 
 
-        
+
     }
     private void RecalculateSeed() { if (seed == 0) seed = UnityEngine.Random.Range(-10000, 10000); }
 
@@ -69,11 +70,11 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         string chunkName = $"Chunk {ChunkCoord}";
 
         GameObject newChunk = new GameObject(chunkName);
-        
+
         newChunk.transform.position = new Vector2(ChunkCoord * ChunkSize.x, 0f);
         newChunk.transform.SetParent(transform, true);
         ActiveChunks.Add(ChunkCoord, newChunk);
-        
+
         SetUpNewChunkWithContainers(newChunk);
 
         TileObject[,,] dataToApply = WorldData.ContainsKey(pos) ? WorldData[pos] : null;
@@ -91,9 +92,9 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         if (!TotalChunks.ContainsKey(ChunkCoord))
             TotalChunks.Add(ChunkCoord, newChunk);
-        
-        
-        
+
+
+
         bool isChunkDrawn = false;
         StartCoroutine(DrawChunk(dataToApply, pos, () =>
         {
@@ -101,11 +102,11 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             isChunkDrawn = true;
         }));
         yield return new WaitUntil(() => isChunkDrawn);
-        
+
         //Process Light; Propogate Light Map Data
 
         float[,] lightDataToApply = WorldLightData.ContainsKey(pos) ? WorldLightData[pos] : null;
-        
+
         if (lightDataToApply == null)
         {
             LightGenerator.Instance.QueueDataToGenerate(new LightGenerator.GenData
@@ -114,14 +115,14 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
                 OnComplete = x =>
                 {
                     lightDataToApply = x;
-                }, 
+                },
                 UpdateNeighbors = true
-                    
+
             });
 
             yield return new WaitUntil(() => lightDataToApply != null);
         }
-        
+
         string lightOverlayName = $"Light Overlay {ChunkCoord}";
         GameObject lightMapOverlay = Instantiate(lightOverlayPrefab);
         lightMapOverlay.name = lightOverlayName;
@@ -133,7 +134,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         lightMap.filterMode = FilterMode.Point; //< remove this line for smooth lighting, keep it for tiled lighting
         if (!WorldLightTexture.ContainsKey(pos))
             WorldLightTexture.Add(pos, lightMap);
-        StartCoroutine(ApplyLightToChunkCoroutine(lightMap, lightDataToApply,  () =>
+        StartCoroutine(ApplyLightToChunkCoroutine(lightMap, lightDataToApply, () =>
         {
             onChunkCreated?.Invoke(); // Call the callback after drawing is complete
             lightMapOverlay.transform.SetParent(newChunk.transform, true);
@@ -142,7 +143,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
             lightMapOverlay.SetActive(true);
             ReadyChunks.Add(ChunkCoord);
         }));
-       
+
     }
 
     private static void SetUpNewChunkWithContainers(GameObject newChunk)
@@ -161,7 +162,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
     public IEnumerator DrawChunk(TileObject[,,] Data, Vector2Int offset, Action onDrawingComplete = null)
     {
-        
+
         for (int x = 0; x < ChunkSize.x; x++)
         {
             for (int y = 0; y < ChunkSize.y; y++)
@@ -169,7 +170,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
                 for (int z = 0; z < Data.GetLength(2); z++)
                 {
                     TileObject tileObject = Data[x, y, z];
-                    if (tileObject != null )
+                    if (tileObject != null)
                     {
                         PlaceTile(tileObject, x + (offset.x * ChunkSize.x), y, offset, z == 0, false);
                     }
@@ -178,6 +179,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         }
 
         onDrawingComplete?.Invoke();
+
         yield return null;
     }
 
@@ -189,24 +191,24 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     {
         yield return new WaitForEndOfFrame();
         float[,] lightDataToApply = null;
-        
+
         LightGenerator.Instance.QueueDataToGenerate(new LightGenerator.GenData
         {
             GenerationPoint = offset,
             OnComplete = x => lightDataToApply = x,
-            UpdateNeighbors =  updateNeighbors
+            UpdateNeighbors = updateNeighbors
         });
 
         yield return new WaitUntil(() => lightDataToApply != null);
         if (WorldLightTexture.ContainsKey(offset))
-            StartCoroutine(ApplyLightToChunkCoroutine(WorldLightTexture[offset], lightDataToApply, () =>  onRefreshComplete?.Invoke() ));
+            StartCoroutine(ApplyLightToChunkCoroutine(WorldLightTexture[offset], lightDataToApply, () => onRefreshComplete?.Invoke()));
     }
 
     public void ApplyLightToChunk(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
     {
-        StartCoroutine(ApplyLightToChunkCoroutine(chunkTexture, LightData, () =>  onDrawingComplete?.Invoke() ));
+        StartCoroutine(ApplyLightToChunkCoroutine(chunkTexture, LightData, () => onDrawingComplete?.Invoke()));
     }
-    
+
     private IEnumerator ApplyLightToChunkCoroutine(Texture2D chunkTexture, float[,] LightData, Action onDrawingComplete = null)
     {
         yield return new WaitForEndOfFrame();
@@ -222,18 +224,39 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     }
 
 
-    public static void PlaceTile(TileObject tile, int x, int y, Vector2Int chunkID, bool isWall, bool placeByPlayer, bool updateLighting = false) 
+    public static void PlaceTile(TileObject tile, int x, int y, Vector2Int chunkID, bool isWall, bool placeByPlayer, bool updateLighting = false)
     {   //change to data needs to be done somewhere else
+
+
         if (y < 0 || y >= ChunkSize.y) return; //we only care about out of scope along y axis
-        GameObject tileGameObject = placeByPlayer ? tile.GetPlacedGameObject() :
-                                isWall ? tile.GetGeneratedWallGameObjects() :
-                                tile.GetGeneratedGameObjects();
+
+        int spriteNumber = 0;
+        Quaternion rotation = Quaternion.identity;
+        bool flipX = false;
+
+        if (tile.HasSpecialFunctionality && tile.SpecifiedTiles.Length > 0)
+        {
+            if (tile.IsGrassTile)
+            {
+                (spriteNumber, rotation, flipX) = TileHelper.GetGrassTileSpriteAndRotation(new Vector2Int(x, y), tile.SpecifiedTiles);
+            }
+            else
+            {
+                 (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(new Vector2Int(x, y), tile.SpecifiedTiles);
+            }
+        }
+
+        GameObject tileGameObject = placeByPlayer ? tile.GetPlacedGameObject(spriteNumber, rotation, flipX) :
+                                isWall ? tile.GetGeneratedWallGameObjects(spriteNumber, rotation, flipX) :
+                                tile.GetGeneratedGameObjects(spriteNumber, rotation, flipX);
         if (!TotalChunks.TryGetValue(chunkID.x, out GameObject game)) Debug.LogError("TotalChunks not found ID: "+chunkID.x);
         tileGameObject.transform.SetParent(TotalChunks[chunkID.x].transform.Find("Tiles").transform, true);
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+
     }
 
-    
+
+
 
     public static int GetChunkCoordsFromPosition(Vector2 WorldPosition)
     {

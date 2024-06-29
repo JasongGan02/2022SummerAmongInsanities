@@ -5,7 +5,7 @@ using UnityEngine;
 public class LadyController : EnemyController, IRangedAttacker
 {
     protected ProjectileObject projectileObject;
-    public float AttackRange => _atkRange; // Implementing the IRangedAttacker interface
+    public float AttackRange => currentStats.attackRange; // Implementing the IRangedAttacker interface
     public ProjectileObject ProjectileObject => projectileObject;
 
     private Transform startPosition;
@@ -115,7 +115,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 transform.right = Vector2.right;
             }
 
-            approach(_movingSpeed, target.transform, AtkRange - 0.4f);   // debug
+            approach(currentStats.movingSpeed, target.transform, currentStats.attackRange - 0.4f);   // debug
             
             // Target Taken Damage
             if (arrow != null)
@@ -127,7 +127,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 }
             }
 
-            if (Vector2.Distance(transform.position, target.transform.position) <= _atkRange && lady_sight())
+            if (Vector2.Distance(transform.position, target.transform.position) <= currentStats.attackRange && lady_sight())
             {
                 // Check if the archer can fire
                 if (canFire)
@@ -136,7 +136,7 @@ public class LadyController : EnemyController, IRangedAttacker
                     FireProjectile(target);
 
                     // Set the next fire time
-                    nextFire = Time.time + _atkSpeed;
+                    nextFire = Time.time + currentStats.attackInterval;
 
                     // Set the canFire flag to false
                     canFire = false;
@@ -191,7 +191,7 @@ public class LadyController : EnemyController, IRangedAttacker
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
                     if (!facingright) { flip(); }
                 }
             }
@@ -199,7 +199,7 @@ public class LadyController : EnemyController, IRangedAttacker
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
                     if (facingright) { flip(); }
                 }
             }
@@ -299,8 +299,9 @@ public class LadyController : EnemyController, IRangedAttacker
     }
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
     }
+    
     void approach(float speed, Transform target, float distance)
     {
         float currentDistance = Mathf.Abs(transform.position.x - target.position.x);
@@ -323,11 +324,13 @@ public class LadyController : EnemyController, IRangedAttacker
         }
         else { animator.SetFloat("movingSpeed", 0f); }
     }
-    //public override void MoveTowards(Transform targetTransform)
-    //{
-    //    Vector2 direction = (targetTransform.position - transform.position).normalized;
-    //    rb.velocity = direction * _movingSpeed;
-    //}
+
+    public override void MoveTowards(Transform targetTransform)
+    {
+        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        rb.velocity = direction * currentStats.movingSpeed;
+    }
+    
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {
         Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);

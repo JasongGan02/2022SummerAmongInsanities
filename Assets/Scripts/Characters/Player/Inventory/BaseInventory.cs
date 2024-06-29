@@ -97,7 +97,7 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
         if (removedItem != null)
         {
             Vector3 dropPosition;
-            if (player.GetComponent<Playermovement>().facingRight)
+            if (player.GetComponent<PlayerMovement>().facingRight)
             {
                 dropPosition = player.transform.position + new Vector3(1, 0, 0);
             }

@@ -12,22 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642ba1d2a3e83fd4786524d331e17b53, type: 3}
   m_Name: Dumb
   m_EditorClassIdentifier: 
-  itemName: dumb
+  itemName: Dumb
   sizeRatio: 2
   prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
-  _HP: 100
-  _armor: 0
-  _atkDamage: 0
-  _atkSpeed: 0
-  _atkRange: 0
-  _criticalMultiplier: 0
-  _criticalChance: 0
-  _movingSpeed: 3
-  _jumpForce: 14
-  _totalJumps: 1
-  Drops: []
-  Hatred: []
-  SensingRange: 0
+  drops: []
+  hatred: []
+  enemyStats:
+    hp: 100
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    armor: 0
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    sensingRange: 0
   minLightLevel: 6
   maxLightLevel: 16
   spawnWeight: 40

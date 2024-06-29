@@ -8,7 +8,7 @@ public class MedicineController : MonoBehaviour
 {
 
     protected GameObject player;
-    protected Playermovement playermovement;
+    protected PlayerMovement playerMovement;
     protected PlayerInteraction playerinteraction;
     protected Inventory inventory;
 
@@ -21,7 +21,7 @@ public class MedicineController : MonoBehaviour
     public virtual void Start()
     {
         player = GameObject.Find("Player");
-        playermovement = player.GetComponent<Playermovement>();
+        playerMovement = player.GetComponent<PlayerMovement>();
         playerinteraction = player.GetComponent<PlayerInteraction>();
         inventory = FindObjectOfType<Inventory>();
     }
@@ -86,7 +86,7 @@ public class MedicineController : MonoBehaviour
     }
     public virtual void PatrolItem()
     {
-        if (playermovement.facingRight)
+        if (playerMovement.facingRight)
         {
             transform.position = player.transform.position + new Vector3(0.8f, 0, 0);
         }
@@ -97,7 +97,7 @@ public class MedicineController : MonoBehaviour
     }
     public virtual void Flip()
     {
-        if (playermovement.facingRight && (transform.localScale.y < 0) || !playermovement.facingRight && (transform.localScale.y > 0))
+        if (playerMovement.facingRight && (transform.localScale.y < 0) || !playerMovement.facingRight && (transform.localScale.y > 0))
         {
             Vector3 transformScale = transform.localScale;
             transformScale.x *= -1;

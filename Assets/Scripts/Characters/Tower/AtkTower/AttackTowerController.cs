@@ -13,7 +13,7 @@ public abstract class AttackTowerController : TowerController
     // Find nearest enemy in the enemy array
     protected virtual GameObject WhatToAttack()
     {
-        if (Hatred.Count == 0)
+        if (hatred.Count == 0)
         {
             Debug.Log("Hatred List is empty");
             isEnemySpotted = false;
@@ -27,7 +27,7 @@ public abstract class AttackTowerController : TowerController
         var enemies = MobSpawner.FindEnemyNearby(transform.position); // Assuming 'Enemy' is your enemy script
 
         // Iterate over each hated type
-        foreach (var hatedType in Hatred)
+        foreach (var hatedType in hatred)
         {
             Type type = Type.GetType(hatedType.name);
             if (type == null) continue;
@@ -38,7 +38,7 @@ public abstract class AttackTowerController : TowerController
                 if (type.IsAssignableFrom(enemy.GetType()) || type.Equals(enemy.GetType()))
                 {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                    if (distance < minDistance && distance < _atkRange)
+                    if (distance < minDistance && distance < currentStats.attackRange)
                     {
                         minDistance = distance;
                         nearestTarget = enemy.gameObject;

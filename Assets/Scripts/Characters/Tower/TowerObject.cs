@@ -8,10 +8,13 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
 public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject, IPoolableObject
 {   
-    [Header("Construction Parameter")]
-    public int energyCost;
-    public Quaternion rotateAngle;//a fixed amount that determines the rotation type of a tower
-    public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
+    [SerializeField] private TowerStats towerStats;
+    
+    protected override void OnEnable()
+    {
+        baseStats = towerStats;  // Ensure the baseStats is set
+        base.OnEnable();
+    }
 
     [Header("Bullet Specification")]
     [SerializeField] public ProjectileObject projectileObject;
@@ -90,8 +93,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         var controller = worldGameObject.AddComponent(type);
         (controller as CharacterController).Initialize(this);
         controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
-        worldGameObject.transform.rotation = curAngle;
-        curAngle = Quaternion.Euler(0, 0, 0);
+        worldGameObject.transform.rotation = towerStats.curAngle;
+        towerStats.curAngle = Quaternion.Euler(0, 0, 0);
         return worldGameObject;
     }
 
@@ -104,7 +107,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         }
         else
         {
-            foreach (Drop drop in Drops)
+            foreach (Drop drop in drops)
             {
                 GameObject droppedGameObject = drop.GetDroppedItem(dropPosition); //drop some of original materials
                 droppedItems.Add(droppedGameObject);
@@ -156,18 +159,10 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         if (controller is CharacterController)
             (controller as CharacterController).Initialize(this);
         controller.gameObject.transform.parent = GameObject.Find("TowerContainer").transform;
-        worldGameObject.transform.rotation = curAngle;
-        curAngle =  Quaternion.Euler(0,0,0);
+        worldGameObject.transform.rotation = towerStats.curAngle;
+        towerStats.curAngle = Quaternion.Euler(0, 0, 0);
         return worldGameObject;
     }
-
-    public Quaternion SetDirection()
-    {
-        curAngle*=rotateAngle;
-
-        return rotateAngle;
-    }
-
 
     /**
  * implementation of ICraftableObject

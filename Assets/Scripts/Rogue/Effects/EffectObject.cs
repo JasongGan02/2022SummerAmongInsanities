@@ -1,84 +1,75 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [CreateAssetMenu(menuName = "Effects")]
-public abstract class EffectObject : BaseObject
+public abstract class EffectObject : ScriptableObject
 {
     [Header("General Effect Settings")]
-
     public int cost;
     public int level;
     public float duration;
     public bool stackable;
-    public bool repeatable; //If the effect can be selected multiple times
+    public bool repeatable;
     public bool isPermanent;
     public string description;
-
-    public virtual void ExecuteEffect(IEffectableObject effectedGameObject) //Use this when you are unsure about what type of controller will be using.
-    {
-        string controllerName = itemName+"Controller";
-        Type type = Type.GetType(controllerName);
-        var controller = (effectedGameObject as MonoBehaviour).gameObject.AddComponent(type);
-        Debug.Log(controller);
-        Debug.Log((effectedGameObject as MonoBehaviour).gameObject);
-        (controller as EffectController).Initialize(this);
-    }
-
-
-    //Types of Effects: Spawn items, [permanent: Change of Character Object Stats, duration/permanent Change of Game Stat or special effects/new game mechanics], 
-    //public abstract void ExecuteEffect(IEffectable character);
-
-    /***
-        IEffectableObject:
-            - Effect List
-
-        Effect
-            
-    ***/
-
-
-    // Reference to the script component type
     public MonoScript applyingControllerType;
 
-    // Get the script component type from the MonoScript reference
+    public virtual void ExecuteEffect(IEffectableObject effectedGameObject)
+    {
+        Type controllerType = GetApplyingControllerType();
+        if (controllerType == null)
+        {
+            Debug.LogError("Controller type not set or invalid.");
+            return;
+        }
+
+        MonoBehaviour monoBehaviour = effectedGameObject as MonoBehaviour;
+        if (monoBehaviour == null)
+        {
+            Debug.LogError("Effected game object is not a MonoBehaviour.");
+            return;
+        }
+
+        EffectController controller = monoBehaviour.gameObject.AddComponent(controllerType) as EffectController;
+        if (controller == null)
+        {
+            Debug.LogError("Failed to add controller component.");
+            return;
+        }
+
+        controller.Initialize(this);
+    }
+
     public Type GetApplyingControllerType()
     {
-        if (applyingControllerType != null)
-        {
-            return applyingControllerType.GetClass();
-        }
-        return null;
+        return applyingControllerType?.GetClass();
     }
 
     #if UNITY_EDITOR
-        [CustomEditor(typeof(EffectObject))]
-        public class EffectObjectEditor : Editor
+    [CustomEditor(typeof(EffectObject))]
+    public class EffectObjectEditor : Editor
+    {
+        private SerializedProperty applyingControllerTypeProperty;
+
+        private void OnEnable()
         {
-            private SerializedProperty applyingControllerTypeProperty;
-
-            private void OnEnable()
-            {
-                applyingControllerTypeProperty = serializedObject.FindProperty("applyingControllerType");
-            }
-
-            public override void OnInspectorGUI()
-            {
-                serializedObject.Update();
-
-                // Draw the default fields of the scriptable object
-                DrawDefaultInspector();
-
-                // Draw a custom object field for selecting the script component type
-                EditorGUILayout.PropertyField(applyingControllerTypeProperty, new GUIContent("Applying Controller Type"), true);
-
-                serializedObject.ApplyModifiedProperties();
-            }
+            applyingControllerTypeProperty = serializedObject.FindProperty("applyingControllerType");
         }
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            DrawDefaultInspector();
+
+            EditorGUILayout.PropertyField(applyingControllerTypeProperty, new GUIContent("Applying Controller Type"));
+
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
     #endif
 }

@@ -94,9 +94,9 @@ public class VillagerController : EnemyController
             else { PathExecute(); }         // continue current path
             if (true || villager_sight())   // see target clearly
             {
-                if (DistanceToTarget(target.transform) < _atkRange || target.transform.GetComponent<BreakableObjectController>() != null)
+                if (DistanceToTarget(target.transform) < currentStats.attackRange || target.transform.GetComponent<BreakableObjectController>() != null)
                 {
-                    attack(target.transform, 1f / _atkSpeed); // default:1;  lower -> faster
+                    attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower -> faster
                 }
                 else
                 {
@@ -165,7 +165,7 @@ public class VillagerController : EnemyController
     }
     void approach(float speed, Transform target)
     {
-        if (speed > _movingSpeed)
+        if (speed > currentStats.movingSpeed)
         {
             animator.Play("villager_run");
         }
@@ -178,6 +178,13 @@ public class VillagerController : EnemyController
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
+
+    public override void MoveTowards(Transform targetTransform)
+    {
+        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        rb.velocity = direction * currentStats.movingSpeed;
+    }
+    
     void patrol()
     {
         if (GroupApproaching)
@@ -221,7 +228,7 @@ public class VillagerController : EnemyController
             {
                 if (MoveForwardDepthCheck() == true) 
                 {
-                    rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
                     if (!facingright) { flip(); }
                 }
             }
@@ -229,7 +236,7 @@ public class VillagerController : EnemyController
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                    rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
                     if (facingright) { flip(); }
                 }
             }
@@ -279,7 +286,7 @@ public class VillagerController : EnemyController
                 {
                     if (headCheck())
                     {
-                        Jump(2 * _movingSpeed);
+                        Jump(2 * currentStats.movingSpeed);
                     }
                 }
             }
@@ -289,7 +296,7 @@ public class VillagerController : EnemyController
                 {
                     if (headCheck())
                     {
-                        Jump(2 * _movingSpeed);
+                        Jump(2 * currentStats.movingSpeed);
                     }
                 }
             }
@@ -312,11 +319,13 @@ public class VillagerController : EnemyController
 
         return false;
     }
+
     private void Jump(float horizontal)
     {
-        rb.velocity = new Vector2(horizontal * 1.0f, _jumpForce);
+        rb.velocity = new Vector2(horizontal * 1.0f, currentStats.jumpForce);
         isJumping = 1f;
     }
+
     private bool villager_sight()
     {
         if (target.transform.GetComponent<BreakableObjectController>() != null) { return true; } // this is tile object, should see by default
@@ -419,7 +428,7 @@ public class VillagerController : EnemyController
 
     void approach(float speed, float x, float y)
     {
-        if (speed > _movingSpeed)
+        if (speed > currentStats.movingSpeed)
         {
             animator.Play("villager_run");
         }
@@ -460,7 +469,7 @@ public class VillagerController : EnemyController
 
     public void PathFind()  // only find path, not execute
     {
-        if (target == null || DistanceToTarget(target.transform) < _atkRange) { PathToTarget.Clear(); PathCounter = 0; return; }
+        if (target == null || DistanceToTarget(target.transform) < currentStats.attackRange) { PathToTarget.Clear(); PathCounter = 0; return; }
 
         float TX = target.transform.position.x; float TY = target.transform.position.y; // target x y
         float CX = transform.position.x; float CY = transform.position.y - 0.25f; // currect x y
@@ -531,7 +540,7 @@ public class VillagerController : EnemyController
     public void PathExecute()       // execute path to target
     {
         //Debug.Log("Path found with steps: " + path.Count);
-        if (DistanceToTarget(target.transform) < _atkRange)
+        if (DistanceToTarget(target.transform) < currentStats.attackRange)
         {
             PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
             return;
@@ -539,8 +548,9 @@ public class VillagerController : EnemyController
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
-            approach(2 * _movingSpeed, target.transform);
+            Debug.Log("Go to: " + PathToTarget[PathCounter]);
+
+            approach(2 * currentStats.movingSpeed, target.transform);
             SenseFrontBlock();
 
             TargetDirection = target.transform.position - transform.position;
@@ -562,7 +572,7 @@ public class VillagerController : EnemyController
         }
         else
         {   // reset Path
-            approach(2 * _movingSpeed, target.transform);
+            approach(2 * currentStats.movingSpeed, target.transform);
             PathToTarget.Clear();
             PathCounter = 0;
         }
@@ -574,7 +584,7 @@ public class VillagerController : EnemyController
             TargetRemainder = null; // erase Target Remainder
             return;
         }
-        if (DistanceToTarget(TargetRemainder) < _atkRange)
+        if (DistanceToTarget(TargetRemainder) < currentStats.attackRange)
         {
             PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
             return;
@@ -584,7 +594,7 @@ public class VillagerController : EnemyController
         {
             //Debug.Log("Go to: " + PathToTarget[PathCounter]);
 
-            approach(2 * _movingSpeed, TargetRemainder);
+            approach(2 * currentStats.movingSpeed, TargetRemainder);
             SenseFrontBlock();
 
             Vector2 direction = TargetRemainder.position - transform.position;
@@ -605,7 +615,7 @@ public class VillagerController : EnemyController
         }
         else
         {   // reset Path
-            approach(2 * _movingSpeed, TargetRemainder);
+            approach(2 * currentStats.movingSpeed, TargetRemainder);
             PathToTarget.Clear();
             PathCounter = 0;
         }

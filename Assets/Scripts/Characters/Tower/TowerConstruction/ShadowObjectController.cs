@@ -49,7 +49,7 @@ public class ShadowObjectController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            RotateObject(towerObject.rotateAngle);
+            RotateObject(((TowerStats)towerObject.baseStats).rotateAngle);
         }
         
         bool isPlacementValid = IsBasePlacementValid() && IsTowerPlacementValid(towerObject);
@@ -78,7 +78,7 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool IsTowerPlacementValid(TowerObject towerObject)
     {
-        return IsConstructionShadowInRange(coreArchitecture) && CheckEnergyAvailable(towerObject.energyCost);
+        return IsConstructionShadowInRange(coreArchitecture) && CheckEnergyAvailable(((TowerStats)towerObject.baseStats).energyCost);
     }
 
     private bool IsChestPlacementValid(ChestObject chestObject)
@@ -120,39 +120,6 @@ public class ShadowObjectController : MonoBehaviour
         return false;
     }
     
-    /*
-    private bool TileObjectCheck(float x, float y)
-    {
-        Vector2Int worldPosition = new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-        return WorldGenerator.IsCurTileEmpty(worldPosition) && CheckAdjcentPos(worldPosition)  && CollisionCount==0 && !IsConstructionShadowInRange(coreArchitecture);
-    }
-
-    private TileGhostPlacementResult TowerObjectCheck(BaseObject objectType)
-    {
-        Vector2 mousePosition = GetMousePosition2D();
-        ConstructionMode constructionMode = FindObjectOfType<ConstructionMode>();
-        Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
-        float x = GetSnappedCoordinate(mousePosition.x);
-        float y = GetComponent<BoxCollider2D>().bounds.size.y/0.9f/2 + 0.03f + downRay.point.y;
-        transform.position = new Vector2(x, y);
-        return new TileGhostPlacementResult(transform, CollisionCount==0 && IsConstructionShadowInRange(coreArchitecture) && downRay && constructionMode.CheckEnergyAvailableForConstruction((objectType as TowerObject).energyCost));
-    }
-
-    private TileGhostPlacementResult ChestObjectCheck(BaseObject objectType)
-    {
-        Vector2 mousePosition = GetMousePosition2D();
-        ConstructionMode constructionMode = FindObjectOfType<ConstructionMode>();
-        Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D downRay = Physics2D.Raycast(rayOrigin, Vector3.down, 100.0f, 1 << Constants.Layer.GROUND);
-        float x = GetSnappedCoordinate(mousePosition.x);
-        float y = GetComponent<BoxCollider2D>().bounds.size.y / 0.9f / 2 + 0.03f + downRay.point.y;
-        transform.position = new Vector2(x, y);
-        return new TileGhostPlacementResult(transform, CollisionCount == 0 && IsConstructionShadowInRange(coreArchitecture) && downRay);
-    }
-    */
-
-
     bool IsConstructionShadowInRange(CoreArchitectureController coreArchitecture)
     {
         float Constructable_Distance = coreArchitecture.GetConstructableDistance();

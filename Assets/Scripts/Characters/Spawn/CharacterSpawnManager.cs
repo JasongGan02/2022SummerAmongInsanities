@@ -72,7 +72,7 @@ public class CharacterSpawnManager : MonoBehaviour
     {
         // Implement the respawn logic here
         // For example, waiting for a certain time before respawning
-        yield return new WaitForSeconds(((PlayerObject)characterAtlas.player).RespwanTimeInterval);
+        yield return new WaitForSeconds(((PlayerStats)characterAtlas.player.maxStats).respawnTimeInterval);
 
         SpawnPlayer();
     }
@@ -135,7 +135,7 @@ public class CharacterSpawnManager : MonoBehaviour
         }
 
         // Debug to see how many enemies were collected
-        Debug.Log("Collected " + enemies.Count + " enemies under EnemyContainer(s).");
+        //Debug.Log("Collected " + enemies.Count + " enemies under EnemyContainer(s).");
     }
 
     public void GroupCommand(string command)

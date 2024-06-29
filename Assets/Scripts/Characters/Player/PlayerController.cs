@@ -4,19 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.PackageManager;
-using Unity.VisualScripting;
-using TMPro;
+
 
 [RequireComponent(typeof(AudioEmitter))]
 public class PlayerController : CharacterController, IDataPersistence, IAudioable
 {
-
-    private float RespwanTimeInterval;
     //Player Run-time only variables
     private float timer;
     private bool isPlayerDead = false; 
-    private Playermovement playermovement_component;
+    private PlayerMovement playerMovementComponent;
     private PlayerHPUIController hpController;
     private CharacterSpawnManager characterSpawnManager;
 
@@ -34,21 +30,21 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     {
         timer = 0f;
         characterSpawnManager = FindObjectOfType<CharacterSpawnManager>();
-        playermovement_component = GetComponent<Playermovement>();
+        playerMovementComponent = GetComponent<PlayerMovement>();
         globalLight = GameObject.Find("BackgroundLight").GetComponent<Light2D>();
         hpController = FindObjectOfType<PlayerHPUIController>();
         hpController.SetupUIElements();
         UpdateHealthUI();
-        EvokeStatsChange();
+        OnStatsChanged();
     }
     
     public AudioEmitter GetAudioEmitter()
     {
-        if (_audioEmitter == null)
+        if (audioEmitter == null)
         {
             Debug.LogError("AudioEmitter is not assigned on " + gameObject.name);
         }
-        return _audioEmitter;
+        return audioEmitter;
     }
 
     public void LoadData(GameData data)
@@ -64,14 +60,14 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     void FixedUpdate()
     {
         if(GetComponent<Transform>().position.y < -100)
-            death();
+            Die();
     }
 
     void OnEnable()
     {
-        if (characterStats == null)
+        if (characterObject == null)
             return;
-        _HP = characterStats._HP;
+        currentStats.hp = characterObject.maxStats.hp;
         UpdateHealthUI();
     }
     protected override void Update()
@@ -86,14 +82,14 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
         
         PlayerSurroundingLight();
     }
-    protected override void death()
+    protected override void Die()
     {
-        _HP = 0;
+        currentStats.hp = 0;
         UpdateHealthUI();
         GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;  
         deathCount++;
-        PoolManager.Instance.Return(this.gameObject, characterStats);
+        PoolManager.Instance.Return(this.gameObject, characterObject);
         OnObjectReturned(true);
         GameObject WeaponInUse = GameObject.FindWithTag("weapon");
         Destroy(WeaponInUse.GetComponent<Weapon>());
@@ -127,13 +123,13 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     {
         if (dmg > 0)
         {
-            if (dmg >= _HP)
+            if (dmg >= currentStats.hp)
             {
-                _audioEmitter.PlayClipFromCategory("PlayerDeath");
+                audioEmitter.PlayClipFromCategory("PlayerDeath");
             }
             else
             {
-                _audioEmitter.PlayClipFromCategory("PlayerInjury");
+                audioEmitter.PlayClipFromCategory("PlayerInjury");
             }
 
         }
@@ -144,10 +140,10 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
 
     public void Heal(float amount)
     {
-        _HP += amount;
-        if (_HP > characterStats._HP)
+        currentStats.hp += amount;
+        if (currentStats.hp > characterObject.maxStats.hp)
         {
-            _HP = characterStats._HP;
+            currentStats.hp = characterObject.maxStats.hp;
         }
         UpdateHealthUI();
     }
@@ -185,20 +181,16 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     {
         if (hpController != null)
         {
-            hpController.UpdateHealthUI(_HP, characterStats._HP);
+            hpController.UpdateHealthUI(currentStats.hp, characterObject.maxStats.hp);
         }
     }
 
-    protected override void EvokeStatsChange()
+    protected override void OnStatsChanged()
     {
-        playermovement_component.StatsChange(_movingSpeed, _jumpForce, _totalJumps);
+        Debug.Log(currentStats.movingSpeed);
+        playerMovementComponent.StatsChange(currentStats.movingSpeed, currentStats.jumpForce, currentStats.totalJumps);
     }
     
-    public float GetPersonalLight() { return personalLight.intensity; }
-
-
-
-
     public int GetLevel() { return playerLevel; }
     public float GetEXP() { return playerExperience; }
     public void SetLevel(int newLevel) { playerLevel = newLevel; }

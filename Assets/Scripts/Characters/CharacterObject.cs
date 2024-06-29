@@ -1,38 +1,28 @@
 using UnityEngine;
-using System.IO;
-using UnityEditor;
 using System;
-using System.Reflection;
 using System.Collections.Generic;
-
 
 public class CharacterObject : BaseObject, IPoolableObject
 {
     [Header("Character Stats")]
-    public float _HP;
-    public float _armor;
-    public float _atkDamage;
-    public float _atkSpeed;
-    public float _atkRange;
-    public float _criticalMultiplier;
-    public float _criticalChance;
-    public float _movingSpeed;
-    public float _jumpForce;
-    public int _totalJumps;
-
-    public Drop[] Drops;
-    public List<TextAsset> Hatred;
+    public CharacterStats baseStats;  // Initial template stats
+    [HideInInspector] public CharacterStats maxStats;  // Runtime template stats
+    public Drop[] drops;
+    public List<TextAsset> hatred;
+    
     protected string controllerName;
     
-    public virtual GameObject GetSpawnedGameObject<T>()  where T : CharacterController //Spawn the actual game object through calling this function. 
+    protected virtual void OnEnable()
     {
-        GameObject worldGameObject = Instantiate(prefab);
-        worldGameObject.name = itemName;
-        var controller = worldGameObject.AddComponent<T>();
-        controller.Initialize(this);
-        return worldGameObject;
+        // Ensure runtimeTemplateStats is a copy of initialTemplateStats at the start
+        if (baseStats == null) return;
+        if (maxStats == null || maxStats.GetType() != baseStats.GetType())
+        {
+            maxStats = (CharacterStats)Activator.CreateInstance(baseStats.GetType());
+        }
+        maxStats.CopyFrom(baseStats);
     }
-
+    
     public virtual GameObject GetSpawnedGameObject() //Use this when you are unsure about what type of controller will be using.
     {
         GameObject worldGameObject = Instantiate(prefab);
@@ -47,7 +37,7 @@ public class CharacterObject : BaseObject, IPoolableObject
     public virtual List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer, Vector3 dropPosition)
     {
         List<GameObject> droppedItems = new();
-        foreach (Drop drop in Drops)
+        foreach (Drop drop in drops)
         {
             GameObject droppedGameObject = drop.GetDroppedItem(dropPosition);
             droppedItems.Add(droppedGameObject);
@@ -62,8 +52,8 @@ public class CharacterObject : BaseObject, IPoolableObject
         worldGameObject.name = itemName;
         controllerName = itemName + "Controller";
         Type type = Type.GetType(controllerName);
-        var controller = worldGameObject.AddComponent(type);
-        (controller as CharacterController).Initialize(this);
+        var controller = worldGameObject.AddComponent(type) as CharacterController;
+        controller?.Initialize(this);
         return worldGameObject;
     }
 }

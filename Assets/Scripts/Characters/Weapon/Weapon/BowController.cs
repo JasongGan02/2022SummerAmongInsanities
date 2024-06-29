@@ -85,9 +85,8 @@ public class BowController : RangedWeaponController
             return;
         // Calculate the force and damage based on charge time
 
-        float force =  AttackRange/8;
-        float damage =  characterController.AtkDamage;
-        //GameObject arrow = ProjectilePoolManager.Instance.GetProjectile(projectileObject.getPrefab());
+        float force = AttackRange/8;
+        float damage = characterController.CurrentStats.attackDamage;
         
         GameObject arrow = PoolManager.Instance.Get(projectileObject);
         arrow.transform.SetParent(transform, true);
@@ -96,7 +95,7 @@ public class BowController : RangedWeaponController
       
         if (playerBowArrow != null)
         {
-            playerBowArrow.Initialize(characterController, projectileObject, force, damage,knockbackForce);
+            playerBowArrow.Initialize(characterController, projectileObject, force, damage, knockbackForce);
             _audioEmitter.PlayClipFromCategory("ShootArrow");
             playerBowArrow.Launch(target,startPosition); 
             isAttacking = false;
