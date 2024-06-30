@@ -31,3 +31,15 @@ MonoBehaviour:
   _needsBackground: 1
   _isLit: 0
   _lightIntensity: 0
+  SpecifiedTiles:
+  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  - {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
+  TargetSprite:
+  - {fileID: 21300000, guid: 57ccad14ccc3f9b4c83e85faf534d334, type: 3}
+  - {fileID: 21300000, guid: c9cddc5414d792a469e45320490263af, type: 3}
+  - {fileID: 21300000, guid: 779a2bc26b3a9744ca37b5895a797720, type: 3}
+  - {fileID: 21300000, guid: bee5b453993b46546ae435d4b45cba8a, type: 3}
+  - {fileID: 21300000, guid: 16fabdeec16a06b418e02601bd43fc80, type: 3}
+  - {fileID: 21300000, guid: 106d3bfd66a1f504598201c68647247f, type: 3}
+  hasSpecialFunctionality: 1
+  isGrassTile: 0

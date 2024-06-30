@@ -21,7 +21,8 @@ public class RogueManager : MonoBehaviour
     private GameObject buffContainer;
     private GameObject rogueBackground;
     private Inventory inventory;
-
+    private AudioEmitter _audioEmitter;
+    
     public List<RogueGraphNode> selectedNodes = new();
 
     public List<RogueGraphNode> DebugList = new();
@@ -35,7 +36,7 @@ public class RogueManager : MonoBehaviour
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleRogueUI;
         inventory = FindObjectOfType<Inventory>();
-
+        _audioEmitter = GetComponent<AudioEmitter>();
         selectedNodes.Add(graph.rootNode);
         SetupUI();
     }
@@ -60,7 +61,7 @@ public class RogueManager : MonoBehaviour
 
     private void OnLevelUpButtonClicked()
     {
-        
+        _audioEmitter.PlayClipFromCategory("PlayerSelecting");
         if (buffContainer.transform.childCount == 0)
         {
             if(inventory.SpendExp(levelUpCost))
@@ -172,7 +173,7 @@ public class RogueManager : MonoBehaviour
         if (!inventory.SpendExp((node.effect?.cost ?? 0))) return;
         selectedNodes.Add(node);
         selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
-
+        _audioEmitter.PlayClipFromCategory("PlayerSelecting");
         
         // Get the script component type from the EffectObject
         Type applyingControllerType = node.effect?.GetApplyingControllerType();
