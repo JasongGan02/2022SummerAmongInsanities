@@ -39,8 +39,8 @@ public class Projectile : MonoBehaviour, IDamageSource
     {
         this.projectileObject = projectileObject;
         this.firingCharacter = firingCharacter;
-        hatredList = firingCharacter.GetCharacterObject().Hatred;
-        finalDamage = firingCharacter.AtkDamage * projectileObject.DamageCoef;
+        hatredList = firingCharacter.CharacterObject.hatred;
+        finalDamage = firingCharacter.CurrentStats.attackDamage * projectileObject.DamageCoef;
         timeOfLaunch = Time.time;
     }
 

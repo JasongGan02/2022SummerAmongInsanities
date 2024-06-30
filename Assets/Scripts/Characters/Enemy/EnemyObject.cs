@@ -2,16 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 
 public class EnemyObject : CharacterObject, ISpawnable
 {
-    public float SensingRange;
-    //public int 
+    [SerializeField] private EnemyStats enemyStats;
+    
+    protected override void OnEnable()
+    {
+        baseStats = enemyStats;  // Ensure the baseStats is set
+        base.OnEnable();
+    }
+    
     public void LevelUp()
     {
-        _HP *= 1.1f;
-        _atkDamage *= 1.1f;
+        maxStats.hp *= 1.1f;
+        maxStats.attackDamage *= 1.1f;
     }
 
     [Header("ISpawnable Fields")] 

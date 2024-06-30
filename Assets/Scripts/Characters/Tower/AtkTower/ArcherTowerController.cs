@@ -11,7 +11,7 @@ public class ArcherTowerController : RangedTowerController
         target = WhatToAttack();
         if (target != null)
         {
-            _audioEmitter.PlayClipFromCategory("ShootArrow");
+            audioEmitter.PlayClipFromCategory("ShootArrow");
             //Vector2 direction = (target.transform.position - transform.position).normalized;
             FireProjectile(target);
             

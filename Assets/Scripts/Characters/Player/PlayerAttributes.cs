@@ -33,7 +33,7 @@ public class PlayerAttributes : MonoBehaviour
     [SerializeField] float RespwanTimeInterval;
 
     SpriteRenderer spriteRenderer_component;
-    Playermovement playermovement_component;
+    PlayerMovement playerMovementComponent;
     CoreArchitectureController coreArchitecture;
     Image healthBar;
     
@@ -43,7 +43,7 @@ public class PlayerAttributes : MonoBehaviour
         timer = 0f;
         isPlayerDead = false;
         spriteRenderer_component = GetComponent<SpriteRenderer>();
-        playermovement_component = GetComponent<Playermovement>();
+        playerMovementComponent = GetComponent<PlayerMovement>();
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         healthBar = GameObject.Find(Constants.Name.HEALTH_BAR).transform.GetChild(1).GetComponent<Image>();
     }
@@ -76,14 +76,14 @@ public class PlayerAttributes : MonoBehaviour
         
         isPlayerDead = true;
         spriteRenderer_component.enabled = false;
-        playermovement_component.enabled = false;
+        playerMovementComponent.enabled = false;
     }
 
     void PlayerRespawn()
     {
         isPlayerDead = false;
         spriteRenderer_component.enabled = true;
-        playermovement_component.enabled = true;
+        playerMovementComponent.enabled = true;
 
         PlayerHP = MaxPlayerHP;
         

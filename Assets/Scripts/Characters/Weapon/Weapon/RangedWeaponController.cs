@@ -5,7 +5,7 @@ using UnityEngine;
 public class RangedWeaponController : Weapon, IRangedAttacker
 {
     protected ProjectileObject projectileObject;
-    public float AttackRange => characterController.AtkRange;
+    public float AttackRange => characterController.CurrentStats.attackRange;
 
     public ProjectileObject ProjectileObject => projectileObject;
 

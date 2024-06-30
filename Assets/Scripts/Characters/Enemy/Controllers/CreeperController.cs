@@ -55,13 +55,13 @@ public class CreeperController : EnemyController
             {
                 if (villager_sight())
                 {
-                    if (DistanceToTarget(target.transform) < _atkRange && !isAttacking)
+                    if (DistanceToTarget(target.transform) < currentStats.attackRange && !isAttacking)
                     {
-                        attack(target.transform, _atkSpeed); // default:1;  lower -> faster
+                        attack(target.transform, currentStats.attackInterval); // default:1;  lower -> faster
                     }
                     else if (!booming)
                     {
-                        approach(2.0f * _movingSpeed, target.transform);
+                        approach(2.0f * currentStats.movingSpeed, target.transform);
                         flip(target.transform);
                     }
                 }
@@ -102,25 +102,25 @@ public class CreeperController : EnemyController
         //ChangeCollider("creeper_boom");
         yield return new WaitForSeconds(0.3f);
         float checkD = Vector2.Distance(transform.position, player.transform.position);
-        if (checkD < _atkRange) // hurt target successfully
+        if (checkD < currentStats.attackRange) // hurt target successfully
         {
             ApplyDamage(target.GetComponent<CharacterController>());
             Vector2 direction = player.transform.position - transform.position;
             direction.Normalize();
-            player.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(2f * direction.x * _jumpForce, 2f * direction.y * _jumpForce); // effect on player
+            player.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(2f * direction.x * currentStats.jumpForce, 2f * direction.y * currentStats.jumpForce); // effect on player
             rest = true;
-            Wait = 1.0f * _atkSpeed;
+            Wait = 1.0f * currentStats.attackInterval;
         }
         else // didn't hurt target
         {
             rest = true;
-            Wait = 1.0f * _atkSpeed;
+            Wait = 1.0f * currentStats.attackInterval;
         }
-        BreakSurrounding(_atkRange, _atkDamage);
+        BreakSurrounding(currentStats.attackRange, currentStats.attackDamage);
         animator.Play("creeper_posBoom");
         //ChangeCollider("creeper_posBoom");
         yield return new WaitForSeconds(0.8f);
-        death();
+        Die();
     }
 
     void BreakSurrounding(float range, float Damage)
@@ -180,7 +180,7 @@ public class CreeperController : EnemyController
     public override void MoveTowards(Transform targetTransform)
     {
         Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * _movingSpeed;
+        rb.velocity = direction * currentStats.movingSpeed;
     }
     void patrol()
     {
@@ -208,12 +208,12 @@ public class CreeperController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(_movingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
                 if (!facingright) { flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-_movingSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
                 if (facingright) { flip(); }
             }
         }
@@ -290,7 +290,7 @@ public class CreeperController : EnemyController
     }
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, _jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
     }
     private bool villager_sight()
     {

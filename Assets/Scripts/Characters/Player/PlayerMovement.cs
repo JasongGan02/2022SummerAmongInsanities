@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class Playermovement : MonoBehaviour, IAudioable
+public class PlayerMovement : MonoBehaviour, IAudioable
 {
     [SerializeField]
-    private float MS;
+    private float ms;
     [SerializeField]
     private float runningModifier = 2f;
     [SerializeField]
@@ -137,7 +138,7 @@ public class Playermovement : MonoBehaviour, IAudioable
 
     public void Movement()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal") * MS * excavateCoeff;
+        float moveInput = Input.GetAxisRaw("Horizontal") * ms * excavateCoeff;
         Vector2 direction = facingRight == true ? Vector2.right : Vector2.left;
         RaycastHit2D frontEnemyCheck = Physics2D.Raycast(transform.position, direction, 0.7f, LayerMask.GetMask("enemy"));
         Debug.DrawLine(transform.position, transform.position + (Vector3)direction * 0.7f, Color.red);
@@ -255,7 +256,7 @@ public class Playermovement : MonoBehaviour, IAudioable
 
     public void StatsChange(float MS, float jumpForce, int totalJumps)
     {
-        this.MS = MS;
+        ms = MS;
         this.jumpForce = jumpForce;
         this.totalJumps = totalJumps;
     }
