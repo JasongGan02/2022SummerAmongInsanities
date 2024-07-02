@@ -134,11 +134,6 @@ public class VillagerWithWeaponController : EnemyController
     }
 
 
-    public override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction *  currentStats.movingSpeed;
-    }
     
     void patrol()
     {

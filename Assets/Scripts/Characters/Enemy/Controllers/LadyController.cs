@@ -325,11 +325,6 @@ public class LadyController : EnemyController, IRangedAttacker
         else { animator.SetFloat("movingSpeed", 0f); }
     }
 
-    public override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
-    }
     
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {

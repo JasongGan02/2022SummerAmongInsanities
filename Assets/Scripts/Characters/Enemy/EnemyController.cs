@@ -277,7 +277,7 @@ public abstract class EnemyController : CharacterController
                 return GroupApproachTarget.gameObject;
             }
         }
-        if (Hatred.Count > 0)
+        if (hatred.Count > 0)
         {
             //Debug.Log(Hatred.Count);
             for (int i = 0; i < hatred.Count; i++)

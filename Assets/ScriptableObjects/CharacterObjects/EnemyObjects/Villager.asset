@@ -16,7 +16,8 @@ MonoBehaviour:
   sizeRatio: 2
   prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
   drops: []
-  hatred: []
+  hatred:
+  - {fileID: 0}
   enemyStats:
     hp: 100
     attackDamage: 0

@@ -178,11 +178,6 @@ public class CreeperController : EnemyController
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
 
-    public override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
-    }
 
     void patrol()
     {
