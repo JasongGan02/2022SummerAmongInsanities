@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public abstract class CharacterStats
+public  class CharacterStats
 {
     public float hp;
     public float attackDamage;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class CharacterObject : BaseObject, IPoolableObject
 {
     [Header("Character Stats")]
-    public CharacterStats baseStats;  // Initial template stats
+    [HideInInspector] public CharacterStats baseStats;  // Initial template stats
     [HideInInspector] public CharacterStats maxStats;  // Runtime template stats
     public Drop[] drops;
     public List<TextAsset> hatred;

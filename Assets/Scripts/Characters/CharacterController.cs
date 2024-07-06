@@ -5,7 +5,7 @@ using System;
 using System.Reflection;
 
 [RequireComponent(typeof(AudioEmitter))]
-public abstract class CharacterController : MonoBehaviour, IEffectableObject, IPoolableObjectController, IDamageable, IDamageSource, IAudioable
+public abstract class CharacterController : MonoBehaviour, IEffectableController, IPoolableObjectController, IDamageable, IDamageSource, IAudioable
 {
     protected CharacterObject characterObject; //characterObject.runtimeTemplateStats is the template max stats
     protected CharacterStats currentStats; //current stats

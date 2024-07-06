@@ -8,18 +8,32 @@ public class EffectController : MonoBehaviour
     public virtual void Initialize(EffectObject effectObject)
     {
         this.effectObject = effectObject;
-        StartEffect();
+        OnEffectStarted();
     }
 
+    protected virtual void OnEffectStarted()
+    {
+        //Preparation like special effect or one time instant change
+        StartEffect();
+        
+        //Duration
+        StartCoroutine(EffectDurationCoroutine());
+        
+        //Reset if temporary
+        if (effectObject.requiresReset)
+            ResetEffect();
+        
+        //Destroy if not permanent
+        if (!effectObject.isPermanent)
+            Destroy(this);
+    }
+    
     protected virtual void StartEffect()
     {
-        if (effectObject.duration > 0 && !effectObject.isPermanent)
-        {
-            StartCoroutine(DestroyAfterDuration());
-        }
+        // Perform any necessary updates here
     }
-
-    protected virtual IEnumerator DestroyAfterDuration()
+    
+    protected virtual IEnumerator EffectDurationCoroutine()
     {
         float elapsedTime = 0f;
         while (elapsedTime < effectObject.duration)
@@ -28,9 +42,6 @@ public class EffectController : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
-        ResetEffect();
-        Destroy(this);
     }
     
     protected virtual void DuringEffect()

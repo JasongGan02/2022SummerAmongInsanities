@@ -149,7 +149,7 @@ public class RogueManager : MonoBehaviour
 
     private bool CanAddNodeToCandidates(RogueGraphNode node, List<RogueGraphNode> candidateNodes)
     {
-        if (selectedNodes.Contains(node) && !(node.effect?.repeatable ?? false)) return false;
+        if (selectedNodes.Contains(node) && !(node.effect?.isRepeatable ?? false)) return false;
 
         if (candidateNodes.Contains(node)) return false;
 
@@ -176,14 +176,14 @@ public class RogueManager : MonoBehaviour
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
         
         // Get the script component type from the EffectObject
-        Type applyingControllerType = node.effect?.GetApplyingControllerType();
+        Type applyingControllerType = node.effect?.GetEffectControllerType();
 
         if (applyingControllerType != null)
         {
             // Find all game objects with the specified script component type
-            IEffectableObject[] controllers = FindObjectsOfType(applyingControllerType) as IEffectableObject[];
+            IEffectableController[] controllers = FindObjectsOfType(applyingControllerType) as IEffectableController[];
 
-            foreach (IEffectableObject controller in controllers)
+            foreach (IEffectableController controller in controllers)
             {
                 // Add the effect to the found game objects
                 controller.Effects.Add(node.effect);

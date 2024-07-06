@@ -4,7 +4,7 @@ public class CharUpgradeEffectController : EffectController
 {
     private CharUpgradeEffectObject upgradeEffect;
 
-    protected override void StartEffect()
+    protected override void OnEffectStarted()
     {
         upgradeEffect = effectObject as CharUpgradeEffectObject;
         if (upgradeEffect != null)

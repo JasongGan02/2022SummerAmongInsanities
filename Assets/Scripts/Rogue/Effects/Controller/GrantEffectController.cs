@@ -6,7 +6,7 @@ public class GrantEffectController : EffectController
 {
     protected BaseObject[] items;
     protected int[] nums;
-    protected override void StartEffect()
+    protected override void OnEffectStarted()
     {
         // Start the effect or perform any necessary setup
         if(items == null || items.Length == 0)
