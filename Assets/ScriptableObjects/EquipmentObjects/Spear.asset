@@ -21,7 +21,7 @@ MonoBehaviour:
   _maxStack: 1
   damageCoef: 1
   rangeCoef: 0.5
-  baseDamage: 1
+  baseDamage: 10
   baseRange: 300
   knockBack: 50
   farm: 0

@@ -18,17 +18,17 @@ MonoBehaviour:
   drops: []
   hatred: []
   enemyStats:
-    hp: 100
-    attackDamage: 0
-    attackInterval: 0
-    attackRange: 0
-    armor: 0
-    criticalChance: 0
-    criticalMultiplier: 0
-    movingSpeed: 0
-    jumpForce: 0
-    totalJumps: 0
-    sensingRange: 0
+    hp: 32
+    attackDamage: 10
+    attackInterval: 1.2
+    attackRange: 700
+    armor: 5
+    criticalChance: 5
+    criticalMultiplier: 1.5
+    movingSpeed: 5
+    jumpForce: 15
+    totalJumps: 1
+    sensingRange: 200
   minLightLevel: 0
   maxLightLevel: 0
   spawnWeight: 0
