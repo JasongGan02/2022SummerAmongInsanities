@@ -18,14 +18,14 @@ MonoBehaviour:
   drops: []
   hatred: []
   playerStats:
-    hp: 1000
-    attackDamage: 0
-    attackInterval: 0
-    attackRange: 0
-    armor: 0
-    criticalChance: 0
-    criticalMultiplier: 0
+    hp: 100
+    attackDamage: 7
+    attackInterval: 1.2
+    attackRange: 7
+    armor: 15
+    criticalChance: 5
+    criticalMultiplier: 1.2
     movingSpeed: 5
-    jumpForce: 20
+    jumpForce: 15
     totalJumps: 2
     respawnTimeInterval: 5
