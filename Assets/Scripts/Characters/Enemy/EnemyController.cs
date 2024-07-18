@@ -30,7 +30,7 @@ public abstract class EnemyController : CharacterController
 
     Type type;
 
-    new public virtual void Initialize(CharacterObject characterObject)
+    override public void Initialize(CharacterObject characterObject)
     {
         base.Initialize(characterObject);
         enemyStats = (EnemyStats)currentStats;
