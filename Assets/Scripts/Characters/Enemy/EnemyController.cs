@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Constants;
 using System;
-using System.Linq;
-using System.Linq.Expressions;
-using static UnityEngine.GraphicsBuffer;
-using Mono.Cecil;
 
 public abstract class EnemyController : CharacterController
 {
-    protected float SensingRange;
+    public EnemyStats EnemyStats => (EnemyStats)currentStats;
+    //protected float SensingRange = 10f;
     public bool GroupApproaching = false;
     public Transform GroupApproachTarget;
     protected static int globalEnemyLevel = 1;
@@ -42,7 +37,6 @@ public abstract class EnemyController : CharacterController
         //towerContainer = FindObjectOfType<TowerContainer>();
         base.Awake();
         timer = 0;
-        
     }
 
 
@@ -50,8 +44,6 @@ public abstract class EnemyController : CharacterController
     {
         Reinitialize();
     }
-
-
 
     void FixedUpdate()
     {
@@ -94,7 +86,7 @@ public abstract class EnemyController : CharacterController
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
         //Debug.Log("distance: " + distance.ToString()); 
-        if(distance <= SensingRange)
+        if(distance <= EnemyStats.sensingRange)
         {
             //Debug.Log("2");
             return true;
@@ -125,7 +117,7 @@ public abstract class EnemyController : CharacterController
         }
 
         float distance = CalculateDistanceToPlayer();
-        if(distance <= SensingRange)
+        if(distance <= EnemyStats.sensingRange)
         {
             return true;
         }else
@@ -272,17 +264,17 @@ public abstract class EnemyController : CharacterController
         GameObject target = null;
         if (GroupApproaching && GroupApproachTarget != null)
         {
-            if (DistanceToTarget(GroupApproachTarget) < 2f * SensingRange) // if the distance to groupTarget is less than 2 * sensingRange, go for it.
+            if (DistanceToTarget(GroupApproachTarget) < 2f * EnemyStats.sensingRange) // if the distance to groupTarget is less than 2 * sensingRange, go for it.
             {
                 return GroupApproachTarget.gameObject;
             }
         }
         if (hatred.Count > 0)
         {
-            //Debug.Log(Hatred.Count);
+            //Debug.Log(hatred.Count);
             for (int i = 0; i < hatred.Count; i++)
             {
-                if (CouldSense(hatred[i].name, SensingRange))
+                if (CouldSense(hatred[i].name, EnemyStats.sensingRange))
                 {
                     return tempTarget;
                 }

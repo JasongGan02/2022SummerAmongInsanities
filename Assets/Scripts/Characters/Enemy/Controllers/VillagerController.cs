@@ -81,12 +81,13 @@ public class VillagerController : EnemyController
         { ChangeCollider("villager_attack"); }
         else { ChangeCollider(" "); }
 
-
+        Debug.Log("target is " + target);
         if (target == null || TargetTicker < 0) { target = WhatToAttack(); TargetTicker = 1f; } // if doesn't have target
         if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
         else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
         else
         {
+            Debug.Log("target " + target);
             CheckStuckAndApplyForces();
             TargetRemainder = target.transform;
             ChasingRemainder = 5f;  // chasing time after losing target in visual
