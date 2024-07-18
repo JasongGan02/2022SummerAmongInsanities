@@ -5,8 +5,8 @@ using System;
 
 public abstract class EnemyController : CharacterController
 {
-    public EnemyStats EnemyStats => (EnemyStats)currentStats;
-    //protected float SensingRange = 10f;
+    //public EnemyStats EnemyStats => (EnemyStats)currentStats;
+    //public EnemyStats EnemyStats;
     public bool GroupApproaching = false;
     public Transform GroupApproachTarget;
     protected static int globalEnemyLevel = 1;
@@ -39,7 +39,6 @@ public abstract class EnemyController : CharacterController
         timer = 0;
     }
 
-
     public void LevelUp()
     {
         Reinitialize();
@@ -52,6 +51,12 @@ public abstract class EnemyController : CharacterController
 
     protected override void Update()
     {
+        //if (currentStats != null) {
+        //    if (currentStats is EnemyStats stats)
+        //    {
+        //        EnemyStats = stats;
+        //    }
+        //}
         base.Update();
         if (player == null) 
         { 
