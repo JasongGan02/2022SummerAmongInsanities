@@ -81,7 +81,7 @@ public class BatController : EnemyController
         }
         else 
         {
-            if (Vector2.Distance(target.transform.position, transform.position) < EnemyStats.sensingRange || planned)
+            if (Vector2.Distance(target.transform.position, transform.position) < enemyStats.sensingRange || planned)
             {
                 if (Vector2.Distance(target.transform.position, transform.position) < currentStats.attackRange || planned)
                 {

@@ -23,8 +23,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
     public CharacterStats CurrentStats => currentStats;
     public CharacterObject CharacterObject => characterObject;
 
-    public EnemyStats EnemyStats;
-
 
     protected virtual void Awake()
     {
@@ -46,10 +44,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableObject, IP
         currentStats.CopyFrom(characterObject.maxStats);
         hatred = characterObject.hatred;
         //CopyFieldsFromCharacterObject(characterObject);
-        if (currentStats is EnemyStats stats)
-        {
-            EnemyStats = stats;
-        }
     }
 
     private void CopyFieldsFromCharacterObject(CharacterObject characterObject)

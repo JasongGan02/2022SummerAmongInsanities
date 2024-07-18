@@ -6,7 +6,7 @@ using System;
 public abstract class EnemyController : CharacterController
 {
     //public EnemyStats EnemyStats => (EnemyStats)currentStats;
-    //public EnemyStats EnemyStats;
+    public EnemyStats enemyStats;
     public bool GroupApproaching = false;
     public Transform GroupApproachTarget;
     protected static int globalEnemyLevel = 1;
@@ -30,7 +30,11 @@ public abstract class EnemyController : CharacterController
 
     Type type;
 
-    
+    new public virtual void Initialize(CharacterObject characterObject)
+    {
+        base.Initialize(characterObject);
+        enemyStats = (EnemyStats)currentStats;
+    }
 
     protected override void Awake()
     {
@@ -41,7 +45,8 @@ public abstract class EnemyController : CharacterController
 
     public void LevelUp()
     {
-        Reinitialize();
+        //Reinitialize();
+        Initialize(characterObject);
     }
 
     void FixedUpdate()
@@ -51,12 +56,6 @@ public abstract class EnemyController : CharacterController
 
     protected override void Update()
     {
-        //if (currentStats != null) {
-        //    if (currentStats is EnemyStats stats)
-        //    {
-        //        EnemyStats = stats;
-        //    }
-        //}
         base.Update();
         if (player == null) 
         { 
@@ -91,7 +90,7 @@ public abstract class EnemyController : CharacterController
         }
         float distance = CalculateDistanceFromEnemyToTower(NearestTowerTransform);
         //Debug.Log("distance: " + distance.ToString()); 
-        if(distance <= EnemyStats.sensingRange)
+        if(distance <= enemyStats.sensingRange)
         {
             //Debug.Log("2");
             return true;
@@ -122,7 +121,7 @@ public abstract class EnemyController : CharacterController
         }
 
         float distance = CalculateDistanceToPlayer();
-        if(distance <= EnemyStats.sensingRange)
+        if(distance <= enemyStats.sensingRange)
         {
             return true;
         }else
@@ -269,7 +268,7 @@ public abstract class EnemyController : CharacterController
         GameObject target = null;
         if (GroupApproaching && GroupApproachTarget != null)
         {
-            if (DistanceToTarget(GroupApproachTarget) < 2f * EnemyStats.sensingRange) // if the distance to groupTarget is less than 2 * sensingRange, go for it.
+            if (DistanceToTarget(GroupApproachTarget) < 2f * enemyStats.sensingRange) // if the distance to groupTarget is less than 2 * sensingRange, go for it.
             {
                 return GroupApproachTarget.gameObject;
             }
@@ -279,7 +278,7 @@ public abstract class EnemyController : CharacterController
             //Debug.Log(hatred.Count);
             for (int i = 0; i < hatred.Count; i++)
             {
-                if (CouldSense(hatred[i].name, EnemyStats.sensingRange))
+                if (CouldSense(hatred[i].name, enemyStats.sensingRange))
                 {
                     return tempTarget;
                 }
@@ -543,7 +542,4 @@ public abstract class EnemyController : CharacterController
         //Debug.Log(sb.ToString()); // Log the entire grid at once
     }
 
-
-
-    
 }
