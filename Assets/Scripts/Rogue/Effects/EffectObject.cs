@@ -15,7 +15,7 @@ public abstract class EffectObject : ScriptableObject
     public float duration;
     public bool requiresReset = false;
     public bool isStackable = false;
-    public bool isRepeatable = true;
+    public bool isReselectable = true;
     public bool isPermanent = false;
     public string description; 
     public MonoScript effectControllerType;
@@ -32,7 +32,7 @@ public abstract class EffectObject : ScriptableObject
         MonoBehaviour monoBehaviour = effectedGameController as MonoBehaviour;
         if (monoBehaviour == null)
         {
-            Debug.LogError("Effected game object is not a MonoBehaviour.");
+            Debug.LogError("Effected game object is not set or invalid.");
             return;
         }
 
@@ -52,23 +52,38 @@ public abstract class EffectObject : ScriptableObject
     }
 
     #if UNITY_EDITOR
-    [CustomEditor(typeof(EffectObject))]
+    [CustomEditor(typeof(EffectObject), true)]
     public class EffectObjectEditor : Editor
     {
         private SerializedProperty effectControllerTypeProperty;
-        
+
         private void OnEnable()
         {
-            effectControllerTypeProperty = serializedObject.FindProperty("effectControllerTypeProperty");
+            effectControllerTypeProperty = serializedObject.FindProperty("effectControllerType");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            DrawDefaultInspector();
-            
-            EditorGUILayout.PropertyField(effectControllerTypeProperty, new GUIContent("Effect Controller Type"));
+            DrawDefaultInspectorExcept("effectControllerType");
+        
+            EditorGUILayout.PropertyField(effectControllerTypeProperty, new GUIContent("Effect Controller Type"), true);
+        
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DrawDefaultInspectorExcept(string propertyToExclude)
+        {
+            SerializedProperty prop = serializedObject.GetIterator();
+            bool enterChildren = true;
+            while (prop.NextVisible(enterChildren))
+            {
+                if (prop.name != propertyToExclude)
+                {
+                    EditorGUILayout.PropertyField(prop, true);
+                }
+                enterChildren = false;
+            }
         }
     }
     #endif

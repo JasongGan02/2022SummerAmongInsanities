@@ -5,7 +5,7 @@ using System;
 
 public class StatsEffectController : EffectController
 {
-    private StatsEffectObject statsEffectObject;
+    protected StatsEffectObject statsEffectObject;
 
     public override void Initialize(EffectObject effectObject)
     {
@@ -21,18 +21,5 @@ public class StatsEffectController : EffectController
         }
         
         base.Initialize(effectObject);
-    }
-
-    protected override void StartEffect()
-    {
-        if (statsEffectObject != null)
-        {
-            this.gameObject.GetComponent<CharacterController>().ChangeCurrentStats(statsEffectObject.statChanges);
-        }
-    }
-
-    protected override void DuringEffect()
-    {
-        // Perform any necessary updates here if the effect is not a one-time effect
     }
 }
