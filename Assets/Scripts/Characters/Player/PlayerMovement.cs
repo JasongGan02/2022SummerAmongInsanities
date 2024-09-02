@@ -279,7 +279,15 @@ public class PlayerMovement : MonoBehaviour, IAudioable
 
     private void Gliding()
     {
-        float glideDirection = facingRight ? 1 : -1;
-        rb.velocity = new Vector2(glideSpeed * glideDirection, rb.velocity.y * 0.5f);
+        float moveInput = Input.GetAxisRaw("Horizontal");
+        if (moveInput != 0)
+        {
+            if (moveInput > 0 && !facingRight || moveInput < 0 && facingRight)
+            {
+                Flip();
+            }
+            facingRight = moveInput > 0;
+        }
+        rb.velocity = new Vector2(glideSpeed * moveInput, rb.velocity.y * 0.5f);
     }
 }
