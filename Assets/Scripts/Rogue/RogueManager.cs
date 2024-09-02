@@ -176,19 +176,23 @@ public class RogueManager : MonoBehaviour
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
         
         // Get the script component type from the EffectObject
-        Type applyingControllerType = node.effect?.GetEffectControllerType();
-
+        Type applyingControllerType = node.effect?.GetComponentToApply();
         if (applyingControllerType != null)
         {
             // Find all game objects with the specified script component type
-            IEffectableController[] controllers = FindObjectsOfType(applyingControllerType) as IEffectableController[];
+            MonoBehaviour[] objectsWithComponent = FindObjectsOfType(applyingControllerType) as MonoBehaviour[];
 
-            foreach (IEffectableController controller in controllers)
+            foreach (MonoBehaviour obj in objectsWithComponent)
             {
-                // Add the effect to the found game objects
-                controller.Effects.Add(node.effect);
-                Debug.Log("Added effect " + node.effect.name + " to " + (controller as MonoBehaviour).name);
-                
+                IEffectableController controller = obj as IEffectableController;
+
+                if (controller != null)
+                {
+                    // Add the effect to the found game objects
+                    // Assuming `AddComponent()` is meant to add some effect, you'll need to specify what component to add
+                    obj.gameObject.AddComponent(applyingControllerType);
+                    Debug.Log("Added effect " + node.effect.name + " to " + obj.name);
+                }
             }
         }
 

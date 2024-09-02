@@ -59,7 +59,6 @@ public abstract class EnemyController : CharacterController
 
     protected override void Update()
     {
-        base.Update();
         if (player == null) 
         { 
             player = GameObject.Find("Player"); 

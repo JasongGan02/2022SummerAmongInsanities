@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 #endif
 
@@ -18,11 +19,12 @@ public abstract class EffectObject : ScriptableObject
     public bool isReselectable = true;
     public bool isPermanent = false;
     public string description; 
+    public MonoScript componentToApply;
     public MonoScript effectControllerType;
     
     public virtual void ExecuteEffect(IEffectableController effectedGameController)
     {
-        Type controllerType = GetEffectControllerType();
+        Type controllerType = effectControllerType?.GetClass();
         if (controllerType == null)
         {
             Debug.LogError("Effect controller type not set or invalid.");
@@ -46,45 +48,8 @@ public abstract class EffectObject : ScriptableObject
         controller.Initialize(this);
     }
 
-    public Type GetEffectControllerType()
+    public Type GetComponentToApply()
     {
-        return effectControllerType?.GetClass();
+        return componentToApply?.GetClass();
     }
-
-    #if UNITY_EDITOR
-    [CustomEditor(typeof(EffectObject), true)]
-    public class EffectObjectEditor : Editor
-    {
-        private SerializedProperty effectControllerTypeProperty;
-
-        private void OnEnable()
-        {
-            effectControllerTypeProperty = serializedObject.FindProperty("effectControllerType");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-            DrawDefaultInspectorExcept("effectControllerType");
-        
-            EditorGUILayout.PropertyField(effectControllerTypeProperty, new GUIContent("Effect Controller Type"), true);
-        
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        private void DrawDefaultInspectorExcept(string propertyToExclude)
-        {
-            SerializedProperty prop = serializedObject.GetIterator();
-            bool enterChildren = true;
-            while (prop.NextVisible(enterChildren))
-            {
-                if (prop.name != propertyToExclude)
-                {
-                    EditorGUILayout.PropertyField(prop, true);
-                }
-                enterChildren = false;
-            }
-        }
-    }
-    #endif
 }

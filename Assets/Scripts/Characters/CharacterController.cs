@@ -12,32 +12,24 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     protected AudioEmitter audioEmitter;
     protected DamageDisplay damageDisplay;
     protected List<TextAsset> hatred;
-    private List<EffectObject> effects;
 
-    public List<EffectObject> Effects
-    {
-        get => effects;
-        set => effects = value;
-    }
     public BaseObject PoolableObject => characterObject;
     public CharacterStats CurrentStats => currentStats;
     public CharacterObject CharacterObject => characterObject;
 
-
+    protected virtual void Update()
+    {
+        
+    }
 
     protected virtual void Awake()
     {
-        effects = new List<EffectObject>();
         audioEmitter = GetComponent<AudioEmitter>();
         
         damageDisplay = gameObject.AddComponent<DamageDisplay>();
        
     }
     
-    protected virtual void Update()
-    {
-        ExecuteEffects();
-    }
     public virtual void Initialize(CharacterObject characterObject)
     {
         this.characterObject = characterObject;
@@ -74,16 +66,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
             }
         }
     }
-
-    public void ExecuteEffects()
-    {
-        foreach (var effect in Effects)
-        {
-            effect?.ExecuteEffect(this);
-        }
-        Effects.Clear();
-    }
-
 
     public virtual void ApplyHPChange(float dmg)
     {

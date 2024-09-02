@@ -19,7 +19,8 @@ MonoBehaviour:
   isStackable: 1
   isReselectable: 1
   isPermanent: 0
-  description: "\u6301\u7EED\u6CBB\u7597\u73A9\u5BB6"
+  description: "\u6301\u7EED\u6062\u590D\u4E00\u5B9A\u8840\u91CF"
+  componentToApply: {fileID: 11500000, guid: 20b478fb6b87c9643ac12f758d3dccae, type: 3}
   effectControllerType: {fileID: 0}
   statChanges:
     hp: 0

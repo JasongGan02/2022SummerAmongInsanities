@@ -14,7 +14,6 @@ public class TowerController : CharacterController
 
     protected override void Update()
     {
-        base.Update();
         TestDrop();
     }
  

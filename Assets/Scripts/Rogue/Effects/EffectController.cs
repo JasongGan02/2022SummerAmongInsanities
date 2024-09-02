@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public abstract class EffectController : MonoBehaviour
+public class EffectController : MonoBehaviour
 {
     protected EffectObject effectObject;
 

@@ -15,11 +15,12 @@ MonoBehaviour:
   cost: 0
   level: 0
   duration: 0
-  stackable: 0
-  repeatable: 1
+  requiresReset: 0
+  isStackable: 0
+  isReselectable: 1
   isPermanent: 0
   description: "\u63D0\u9AD83\u70B9\u653B\u51FB\u529B"
-  effectControllerType: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  effectControllerType: {fileID: 0}
   statModifications:
     hp: 0
     attackDamage: 0
