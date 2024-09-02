@@ -19,14 +19,12 @@ public class BuffSelectionController : MonoBehaviour, IPointerClickHandler, IPoi
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Create and display the buff description UI
-        Debug.Log("Hovering over buff card");
         OnBuffHoverEnterEvent?.Invoke(this, new OnBuffEventArgs(node, this.gameObject));
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // Destroy the buff description UI when the pointer exits the buff card
-        Debug.Log("Exit buff card");
         OnBuffHoverExitEvent?.Invoke(this, new OnBuffEventArgs(node, this.gameObject));
     }
     public void Init(RogueGraphNode node, Transform parent, Vector2 position)

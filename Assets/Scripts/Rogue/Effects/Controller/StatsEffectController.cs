@@ -5,15 +5,21 @@ using System;
 
 public class StatsEffectController : EffectController
 {
-    protected float dHP;
-    
-    protected override void DuringEffect()
+    protected StatsEffectObject statsEffectObject;
+
+    public override void Initialize(EffectObject effectObject)
     {
-        // Perform any necessary updates here if the effect is not a one-time effect
-    }
-    private void CharacterCurrentHPChange(float amount)
-    {
-        Type type = effectObject.GetApplyingControllerType();
-        this.gameObject.GetComponent<CharacterController>().ApplyHPChange(-amount);
+        statsEffectObject = effectObject as StatsEffectObject;
+
+        if (statsEffectObject == null)
+        {
+            Type type = effectObject.GetType();
+            if (type.IsSubclassOf(typeof(StatsEffectObject)))
+            {
+                statsEffectObject = (StatsEffectObject)Convert.ChangeType(effectObject, type);
+            }
+        }
+        
+        base.Initialize(effectObject);
     }
 }

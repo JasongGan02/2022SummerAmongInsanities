@@ -149,7 +149,7 @@ public class RogueManager : MonoBehaviour
 
     private bool CanAddNodeToCandidates(RogueGraphNode node, List<RogueGraphNode> candidateNodes)
     {
-        if (selectedNodes.Contains(node) && !(node.effect?.repeatable ?? false)) return false;
+        if (selectedNodes.Contains(node) && !(node.effect?.isReselectable ?? false)) return false;
 
         if (candidateNodes.Contains(node)) return false;
 
@@ -176,19 +176,23 @@ public class RogueManager : MonoBehaviour
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
         
         // Get the script component type from the EffectObject
-        Type applyingControllerType = node.effect?.GetApplyingControllerType();
-
+        Type applyingControllerType = node.effect?.GetComponentToApply();
         if (applyingControllerType != null)
         {
             // Find all game objects with the specified script component type
-            IEffectableObject[] controllers = FindObjectsOfType(applyingControllerType) as IEffectableObject[];
+            MonoBehaviour[] objectsWithComponent = FindObjectsOfType(applyingControllerType) as MonoBehaviour[];
 
-            foreach (IEffectableObject controller in controllers)
+            foreach (MonoBehaviour obj in objectsWithComponent)
             {
-                // Add the effect to the found game objects
-                controller.Effects.Add(node.effect);
-                Debug.Log("Added effect " + node.effect.name + " to " + (controller as MonoBehaviour).name);
-                
+                IEffectableController controller = obj as IEffectableController;
+
+                if (controller != null)
+                {
+                    // Add the effect to the found game objects
+                    // Assuming `AddComponent()` is meant to add some effect, you'll need to specify what component to add
+                    obj.gameObject.AddComponent(applyingControllerType);
+                    Debug.Log("Added effect " + node.effect.name + " to " + obj.name);
+                }
             }
         }
 

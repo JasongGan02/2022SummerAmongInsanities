@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System.Reflection;
 
 [Serializable]
-public abstract class CharacterStats
+public  class CharacterStats
 {
     public float hp;
     public float attackDamage;
@@ -50,6 +51,33 @@ public abstract class CharacterStats
         armor += mods.armor;
         criticalMultiplier += mods.criticalMultiplier;
         criticalChance += mods.criticalChance;
+    }
+    
+    // Overload the unary - operator to negate all fields using reflection
+    public static CharacterStats operator -(CharacterStats stats)
+    {
+        // Create an instance of the same type as the input stats
+        CharacterStats negatedStats = (CharacterStats)Activator.CreateInstance(stats.GetType());
+
+        // Get all public instance fields of the type
+        FieldInfo[] fields = stats.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            // Check the field type and negate its value if it's float or int
+            if (field.FieldType == typeof(float))
+            {
+                float value = (float)field.GetValue(stats);
+                field.SetValue(negatedStats, -value);
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                int value = (int)field.GetValue(stats);
+                field.SetValue(negatedStats, -value);
+            }
+        }
+
+        return negatedStats;
     }
 }
 

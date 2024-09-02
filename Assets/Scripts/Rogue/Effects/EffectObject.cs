@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 #endif
 
@@ -12,25 +14,27 @@ public abstract class EffectObject : ScriptableObject
     public int cost;
     public int level;
     public float duration;
-    public bool stackable;
-    public bool repeatable;
-    public bool isPermanent;
-    public string description;
-    public MonoScript applyingControllerType;
-
-    public virtual void ExecuteEffect(IEffectableObject effectedGameObject)
+    public bool requiresReset = false;
+    public bool isStackable = false;
+    public bool isReselectable = true;
+    public bool isPermanent = false;
+    public string description; 
+    public MonoScript componentToApply;
+    public MonoScript effectControllerType;
+    
+    public virtual void ExecuteEffect(IEffectableController effectedGameController)
     {
-        Type controllerType = GetApplyingControllerType();
+        Type controllerType = effectControllerType?.GetClass();
         if (controllerType == null)
         {
-            Debug.LogError("Controller type not set or invalid.");
+            Debug.LogError("Effect controller type not set or invalid.");
             return;
         }
 
-        MonoBehaviour monoBehaviour = effectedGameObject as MonoBehaviour;
+        MonoBehaviour monoBehaviour = effectedGameController as MonoBehaviour;
         if (monoBehaviour == null)
         {
-            Debug.LogError("Effected game object is not a MonoBehaviour.");
+            Debug.LogError("Effected game object is not set or invalid.");
             return;
         }
 
@@ -44,32 +48,8 @@ public abstract class EffectObject : ScriptableObject
         controller.Initialize(this);
     }
 
-    public Type GetApplyingControllerType()
+    public Type GetComponentToApply()
     {
-        return applyingControllerType?.GetClass();
+        return componentToApply?.GetClass();
     }
-
-    #if UNITY_EDITOR
-    [CustomEditor(typeof(EffectObject))]
-    public class EffectObjectEditor : Editor
-    {
-        private SerializedProperty applyingControllerTypeProperty;
-
-        private void OnEnable()
-        {
-            applyingControllerTypeProperty = serializedObject.FindProperty("applyingControllerType");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            DrawDefaultInspector();
-
-            EditorGUILayout.PropertyField(applyingControllerTypeProperty, new GUIContent("Applying Controller Type"));
-
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-    #endif
 }

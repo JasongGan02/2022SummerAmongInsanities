@@ -36,7 +36,7 @@ public class TimeSystemManager : MonoBehaviour
     void Awake()
     {
         timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
-        calendarText = GameObject.Find(Constants.Name.CALENDAR_TEXT).GetComponent<Text>();
+        //calendarText = GameObject.Find(Constants.Name.CALENDAR_TEXT).GetComponent<Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
         _audioEmitter = GetComponent<AudioEmitter>();
         
@@ -164,7 +164,7 @@ public class TimeSystemManager : MonoBehaviour
         string formattedHour = currentHour.ToString("D2");
         string formattedMinute = ((int)currentMinute).ToString("D2");
         timeText.text = $"{formattedHour}:{formattedMinute}";
-        calendarText.text = $"{currentDay+1}";
+        //calendarText.text = $"{currentDay+1}";
     }
     public float GetCurrentTime() => currentHour + currentMinute / 60f;
     public void CalculateAndUpdateSunlight()
