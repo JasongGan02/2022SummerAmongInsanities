@@ -9,19 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c1cfae4369b6ea46afba00be827b9d3, type: 3}
-  m_Name: PlayerAtkUpgrade
+  m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
+  m_Name: Heal
   m_EditorClassIdentifier: 
-  cost: 0
+  cost: 3
   level: 0
-  duration: 0
+  duration: 10
   requiresReset: 0
-  isStackable: 0
+  isStackable: 1
   isReselectable: 1
   isPermanent: 0
-  description: "\u63D0\u9AD83\u70B9\u653B\u51FB\u529B"
-  effectControllerType: {fileID: 0}
-  statModifications:
+  description: "\u6301\u7EED\u6062\u590D\u4E00\u5B9A\u8840\u91CF"
+  componentToApply: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
+  effectControllerType: {fileID: 11500000, guid: 9a26d0b237cb24447aa26a04b8ca862d, type: 3}
+  statChanges:
     hp: 0
     attackDamage: 0
     attackInterval: 0
