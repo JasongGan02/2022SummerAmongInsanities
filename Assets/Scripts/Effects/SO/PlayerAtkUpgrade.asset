@@ -24,7 +24,7 @@ MonoBehaviour:
   effectControllerType: {fileID: 11500000, guid: 2ceffa28c15de9443be06a6b117e3cd7, type: 3}
   statModifications:
     hp: 0
-    attackDamage: 0
+    attackDamage: 3
     attackInterval: 0
     attackRange: 0
     armor: 0

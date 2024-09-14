@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class GrantEffectController : EffectController
 {
-    protected BaseObject[] items;
-    protected int[] nums;
+    protected GrantEffectObject grantEffectObject => (GrantEffectObject) effectObject;
+    
     protected override void OnEffectStarted()
     {
         // Start the effect or perform any necessary setup
-        if(items == null || items.Length == 0)
+        if(grantEffectObject.items == null || grantEffectObject.items.Length == 0)
         {
             Debug.Log("Null");
             return;
         }
-        for (int i = 0; i < items.Length; i++) 
+        for (int i = 0; i < grantEffectObject.items.Length; i++) 
         {
-            GameObject drop = ((IInventoryObject)items[i]).GetDroppedGameObject(nums[i], transform.position);
+            GameObject drop = ((IInventoryObject)grantEffectObject.items[i]).GetDroppedGameObject(grantEffectObject.nums[i], transform.position);
         }
     }
 }

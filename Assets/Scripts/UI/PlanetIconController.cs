@@ -24,7 +24,7 @@ public class PlanetIconController : MonoBehaviour
 
     private void ChangeToMoon(bool isRedMoon)
     {
-        Debug.Log("Change to MOON IS :" + isRedMoon);
+        //Debug.Log("Change to MOON IS :" + isRedMoon);
         if (isRedMoon)
         {
             icon.sprite = iconList[2];

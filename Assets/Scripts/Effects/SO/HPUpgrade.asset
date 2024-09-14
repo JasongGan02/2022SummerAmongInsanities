@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c1cfae4369b6ea46afba00be827b9d3, type: 3}
-  m_Name: PlayerHPUpgrade
+  m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
+  m_Name: HPUpgrade
   m_EditorClassIdentifier: 
   cost: 0
   level: 0
@@ -22,8 +22,8 @@ MonoBehaviour:
   description: "\u63D0\u9AD85\u70B9\u6700\u5927\u751F\u547D\u503C"
   componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   effectControllerType: {fileID: 11500000, guid: 2294a9200214cfc4aa7d381765f308cd, type: 3}
-  statModifications:
-    hp: 0
+  statChanges:
+    hp: 5
     attackDamage: 0
     attackInterval: 0
     attackRange: 0

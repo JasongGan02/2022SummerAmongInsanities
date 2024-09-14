@@ -10,7 +10,7 @@ public class StatsEffectController : EffectController
     public override void Initialize(EffectObject effectObject)
     {
         statsEffectObject = effectObject as StatsEffectObject;
-
+        Debug.Log("Initalize: " + effectObject);
         if (statsEffectObject == null)
         {
             Type type = effectObject.GetType();

@@ -21,6 +21,7 @@ public abstract class EffectObject : ScriptableObject
     public string description; 
     public MonoScript componentToApply;
     public MonoScript effectControllerType;
+    //TODO: Sprite 2DIcon, Potential VFX
     
     public virtual void ExecuteEffect(IEffectableController effectedGameController)
     {
@@ -51,5 +52,10 @@ public abstract class EffectObject : ScriptableObject
     public Type GetComponentToApply()
     {
         return componentToApply?.GetClass();
+    }
+    
+    public Type GetEffectComponent()
+    {
+        return effectControllerType?.GetClass();
     }
 }

@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: 28625c8156787074b808cc6ed9ea90a6, type: 2}
+  effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
   isRoot: 0
   childNodes:
   - {fileID: -986583957479573979}
