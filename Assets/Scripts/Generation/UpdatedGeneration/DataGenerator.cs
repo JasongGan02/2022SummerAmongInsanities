@@ -18,7 +18,7 @@ public class DataGenerator
     private WorldGenerator GeneratorInstance;
     private Queue<GenData> DataToGenerate;
     private TerrainSettings[] terrainSettings;
-    private float seed;
+    private float seed; 
     float noiseOffsetX; 
     float noiseOffsetY; 
     public bool Terminate;
