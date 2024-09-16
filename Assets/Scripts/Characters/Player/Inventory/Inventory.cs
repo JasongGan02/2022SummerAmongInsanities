@@ -194,7 +194,9 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         {
             UseItemInHotbarSlot(9);
         }
+       
     }
+
 
     private void UseItemInHotbarSlot(int index)
     {

@@ -224,7 +224,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             Destroy(worldGameObject.GetComponent<Collider2D>());
         }
-        if (HasSpecialFunctionality)
+        if (HasSpecialFunctionality && spriteNumber < 6)
         {
             spriteRenderer.sprite = TargetSprite[spriteNumber];
             worldGameObject.transform.rotation = rotation;
@@ -310,6 +310,9 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
    [SerializeField]
    public TileObject[] SpecifiedTiles;
+
+    [SerializeField]
+    public TileObject[] AnotherSpecifiedTiles;
 
     [SerializeField]
     public Sprite[] TargetSprite;

@@ -151,11 +151,19 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     #region
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        Transform damagedTransfrom = this.transform;
-        if (damageDisplay != null)
-            damageDisplay.ShowDamage(amount, damagedTransfrom);
-        else
-            Debug.Log("displayNullDamage");
+        if (currentStats.hp > 0)
+        {
+            Transform damagedTransform = this.transform;
+
+            if (damageDisplay != null)
+            {
+                damageDisplay.ShowDamage(amount, damagedTransform);
+            }
+            else
+            {
+                Debug.Log("Damage display is null");
+            }
+        }
 
         ApplyHPChange(amount);
     }
