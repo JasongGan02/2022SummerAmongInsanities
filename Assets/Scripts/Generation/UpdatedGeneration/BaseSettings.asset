@@ -17,7 +17,7 @@ MonoBehaviour:
   <heightAddition>k__BackingField: 60
   <dirtLayerHeight>k__BackingField: 5
   <terrainFrequency>k__BackingField: 0
-  <caveFrequency>k__BackingField: 0.105
+  <caveFrequency>k__BackingField: 0
   <tallGrassChance>k__BackingField: 10
   <treeChance>k__BackingField: 20
   <vineChance>k__BackingField: 0

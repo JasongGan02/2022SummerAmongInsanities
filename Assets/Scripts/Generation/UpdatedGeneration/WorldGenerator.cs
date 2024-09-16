@@ -18,6 +18,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public static Dictionary<int, GameObject> ActiveChunks;
     public static Dictionary<int, GameObject> TotalChunks;
     public static Dictionary<int, int[,]> AdditiveWorldData;
+    [SerializeField] private int worldSizeInChunks = 5;
     public static HashSet<int> ReadyChunks = new HashSet<int>();
     public static readonly Vector2Int ChunkSize = new Vector2Int(32, 100);
     public static int TileLayers = 4; // 0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)
@@ -51,11 +52,32 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         TotalChunks = new Dictionary<int, GameObject>();
         RecalculateSeed();
         dataCreator = new DataGenerator(this, settings, GetComponent<StructureGenerator>());
-
-
+        dataCreator.GenerateAllWorldData(worldSizeInChunks);
+        InitializeWorld();
 
     }
     private void RecalculateSeed() { if (seed == 0) seed = UnityEngine.Random.Range(-10000, 10000); }
+    
+    public void InitializeWorld()
+    {
+        StartCoroutine(InitializeWorldCoroutine());
+    }
+
+    private IEnumerator InitializeWorldCoroutine()
+    {
+        for (int x = -worldSizeInChunks; x <= worldSizeInChunks; x++)
+        {
+            int chunkCoord = x;
+            // Start creating each chunk
+            yield return StartCoroutine(CreateChunk(chunkCoord, () =>
+            {
+                if (chunkCoord == 0)
+                {
+                    AddCoreArchitectureToChunk(chunkCoord);
+                }
+            }));
+        }
+    }
 
     public IEnumerator CreateChunk(int ChunkCoord, Action onChunkCreated = null)
     {
@@ -77,23 +99,11 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         SetUpNewChunkWithContainers(newChunk);
 
-        TileObject[,,] dataToApply = WorldData.ContainsKey(pos) ? WorldData[pos] : null;
-
-        if (dataToApply == null)
-        {
-            dataCreator.QueueDataToGenerate(new DataGenerator.GenData
-            {
-                GenerationPoint = pos,
-                OnComplete = x => dataToApply = x
-            });
-
-            yield return new WaitUntil(() => dataToApply != null);
-        }
+        yield return new WaitUntil(() => WorldData.ContainsKey(pos));
+        TileObject[,,] dataToApply = WorldData[pos];
 
         if (!TotalChunks.ContainsKey(ChunkCoord))
             TotalChunks.Add(ChunkCoord, newChunk);
-
-
 
         bool isChunkDrawn = false;
         StartCoroutine(DrawChunk(dataToApply, pos, () =>
