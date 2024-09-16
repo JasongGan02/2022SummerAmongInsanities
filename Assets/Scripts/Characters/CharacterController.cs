@@ -128,6 +128,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public void ChangeMaxStats(CharacterStats mods)
     {
         characterObject.maxStats.AddStats(mods);
+        ChangeCurrentStats(mods);
     }
 
     //Implementation of IDamageSource

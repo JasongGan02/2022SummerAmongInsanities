@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 1.1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes:
@@ -26,8 +22,8 @@ MonoBehaviour:
   - {fileID: -7251734177019941377}
   rect:
     serializedVersion: 2
-    x: -100
-    y: 578
+    x: -628
+    y: 591
     width: 200
     height: 100
 --- !u!114 &-8692208508223869133
@@ -42,10 +38,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 1.1.1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -53,8 +45,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: -281
-    y: 787
+    x: -809
+    y: 800
     width: 200
     height: 100
 --- !u!114 &-8185062224839343926
@@ -69,10 +61,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 4
-    level: 0
-    canRepeat: 0
   effect: {fileID: 11400000, guid: 65b4b0816f81a1a4eb8eacbe3892206b, type: 2}
   isRoot: 0
   childNodes:
@@ -81,8 +69,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1376
-    y: 356
+    x: 848
+    y: 369
     width: 200
     height: 100
 --- !u!114 &-7251734177019941377
@@ -97,10 +85,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 0
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes:
@@ -109,8 +93,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: -356
-    y: 359
+    x: -884
+    y: 372
     width: 200
     height: 100
 --- !u!114 &-6014722271346273671
@@ -125,10 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 1.1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -152,10 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 3.1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -163,8 +139,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 761
-    y: 580
+    x: 233
+    y: 593
     width: 200
     height: 100
 --- !u!114 &-1684480885411025288
@@ -179,10 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 2.1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -190,8 +162,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 301
-    y: 582
+    x: -227
+    y: 595
     width: 200
     height: 100
 --- !u!114 &-1210576560814337855
@@ -206,10 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 2
-    level: 0
-    canRepeat: 0
   effect: {fileID: 11400000, guid: 375d2b27f98eb4a44964430a541e5571, type: 2}
   isRoot: 0
   childNodes:
@@ -219,8 +187,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 476
-    y: 370
+    x: -52
+    y: 383
     width: 200
     height: 100
 --- !u!114 &-986583957479573979
@@ -235,10 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
   effect: {fileID: 11400000, guid: a14b5d6283400de4491b091a4eac63ed, type: 2}
   isRoot: 0
   childNodes: []
@@ -246,8 +210,8 @@ MonoBehaviour:
   - {fileID: 6407617651943876954}
   rect:
     serializedVersion: 2
-    x: 2085
-    y: 567
+    x: 1557
+    y: 580
     width: 200
     height: 100
 --- !u!114 &-821460624157284328
@@ -262,10 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 2.2
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -273,8 +233,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 507
-    y: 584
+    x: -21
+    y: 597
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -322,10 +282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 3.3
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -333,8 +289,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 1250
-    y: 581
+    x: 722
+    y: 594
     width: 200
     height: 100
 --- !u!114 &579058131076162650
@@ -349,10 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 1
   childNodes:
@@ -366,8 +318,8 @@ MonoBehaviour:
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 701
-    y: 115
+    x: 173
+    y: 128
     width: 200
     height: 100
 --- !u!114 &883222154243436308
@@ -382,10 +334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 1.1.2
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -393,8 +341,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: 48
-    y: 788
+    x: -480
+    y: 801
     width: 200
     height: 100
 --- !u!114 &3374202019692122354
@@ -409,10 +357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes:
@@ -421,8 +365,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 113
-    y: 377
+    x: -415
+    y: 390
     width: 200
     height: 100
 --- !u!114 &3430983906398004119
@@ -437,10 +381,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 5
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -464,10 +404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 4.1
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -475,8 +411,8 @@ MonoBehaviour:
   - {fileID: -8185062224839343926}
   rect:
     serializedVersion: 2
-    x: 1615
-    y: 563
+    x: 1087
+    y: 576
     width: 200
     height: 100
 --- !u!114 &4609158443660531679
@@ -491,10 +427,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 3.2
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes: []
@@ -502,8 +434,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 1001
-    y: 580
+    x: 473
+    y: 593
     width: 200
     height: 100
 --- !u!114 &4669440942681246395
@@ -518,10 +450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
   effect: {fileID: 11400000, guid: c1f8074f16f20d940993f0b36670e75b, type: 2}
   isRoot: 0
   childNodes: []
@@ -529,8 +457,8 @@ MonoBehaviour:
   - {fileID: 8025022266278908958}
   rect:
     serializedVersion: 2
-    x: 2379
-    y: 562
+    x: 1851
+    y: 575
     width: 200
     height: 100
 --- !u!114 &6407617651943876954
@@ -545,11 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
-  effect: {fileID: 11400000, guid: 28625c8156787074b808cc6ed9ea90a6, type: 2}
+  effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
   isRoot: 0
   childNodes:
   - {fileID: -986583957479573979}
@@ -557,8 +481,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1791
-    y: 384
+    x: 1263
+    y: 397
     width: 200
     height: 100
 --- !u!114 &7370120939698119193
@@ -573,10 +497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 3
-    level: 0
-    canRepeat: 0
   effect: {fileID: 0}
   isRoot: 0
   childNodes:
@@ -587,8 +507,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 977
-    y: 359
+    x: 449
+    y: 372
     width: 200
     height: 100
 --- !u!114 &8025022266278908958
@@ -603,10 +523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
   effect: {fileID: 11400000, guid: bc81abb98a9ba9d499eba7035315c890, type: 2}
   isRoot: 0
   childNodes:
@@ -615,7 +531,7 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 2119
-    y: 369
+    x: 1591
+    y: 382
     width: 200
     height: 100

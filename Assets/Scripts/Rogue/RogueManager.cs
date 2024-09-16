@@ -189,8 +189,7 @@ public class RogueManager : MonoBehaviour
                 if (controller != null)
                 {
                     // Add the effect to the found game objects
-                    // Assuming `AddComponent()` is meant to add some effect, you'll need to specify what component to add
-                    obj.gameObject.AddComponent(applyingControllerType);
+                   node.effect.ExecuteEffect(controller);
                     Debug.Log("Added effect " + node.effect.name + " to " + obj.name);
                 }
             }

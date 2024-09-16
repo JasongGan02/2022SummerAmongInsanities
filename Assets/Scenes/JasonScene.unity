@@ -135,26 +135,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldGenerator
       objectReference: {fileID: 0}
-    - target: {fileID: 4677015888933098897, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: seed
-      value: 101
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: lightShader
-      value: 
-      objectReference: {fileID: 2100000, guid: dd8922b4327b5354aa4e22162a778da3, type: 2}
-    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: coreArchitectureSO
-      value: 
-      objectReference: {fileID: 11400000, guid: f0c7faabb5db2d24b967f8e0319d6e47, type: 2}
-    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: lightOverlayPrefab
-      value: 
-      objectReference: {fileID: 7325007939855369766, guid: 44c402f0ecdb61d47a800e538bf62e8a, type: 3}
     - target: {fileID: 4677015888933098899, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -200,8 +180,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4677015888933098900, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
-      propertyPath: RenderDistance
-      value: 2
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1276,6 +1256,10 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
+    - target: {fileID: 874315881319129764, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1309479451400733569, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1508,6 +1492,10 @@ PrefabInstance:
       propertyPath: m_Value
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8475015525451595364, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8893792939380236300, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1671,6 +1659,10 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 831146460}
+    - target: {fileID: 3730011587222673553, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryNumbers.Array.size
       value: 8

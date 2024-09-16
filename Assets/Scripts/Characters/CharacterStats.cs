@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using System.Reflection;
+using System.Text;
 
 [Serializable]
 public  class CharacterStats
@@ -78,6 +79,23 @@ public  class CharacterStats
         }
 
         return negatedStats;
+    }
+    
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"{GetType().Name}:");
+
+        // Get all public instance fields, including those from derived classes
+        FieldInfo[] fields = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            object value = field.GetValue(this);
+            sb.AppendLine($"{field.Name}: {value}");
+        }
+
+        return sb.ToString();
     }
 }
 
