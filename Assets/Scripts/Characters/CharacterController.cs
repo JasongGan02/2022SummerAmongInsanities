@@ -7,38 +7,82 @@ using System.Reflection;
 [RequireComponent(typeof(AudioEmitter))]
 public abstract class CharacterController : MonoBehaviour, IEffectableController, IPoolableObjectController, IDamageable, IDamageSource, IAudioable
 {
-    protected CharacterObject characterObject; //characterObject.runtimeTemplateStats is the template max stats
-    protected CharacterStats currentStats; //current stats
+    #region Fields
+
+    protected CharacterObject characterObject; // Holds the character's base object
+    protected CharacterStats currentStats;     // Holds the character's current stats
     protected AudioEmitter audioEmitter;
     protected DamageDisplay damageDisplay;
     protected List<TextAsset> hatred;
+        
+    #endregion
+
+    #region Properties
 
     public BaseObject PoolableObject => characterObject;
     public CharacterStats CurrentStats => currentStats;
     public CharacterObject CharacterObject => characterObject;
-
-    protected virtual void Update()
+    private float previousHealth;
+    public float Health
     {
-        
+        get => currentStats.hp;
+        private set
+        {
+            // Clamp the new health value
+            float clampedValue = Mathf.Clamp(value, 0, characterObject.maxStats.hp);
+
+            // Calculate the HP change
+            float hpChange = clampedValue - currentStats.hp;
+
+            // Update the previous health
+            previousHealth = currentStats.hp;
+
+            // Set the new health
+            currentStats.hp = clampedValue;
+
+            // Call OnHealthChanged with the HP change amount
+            OnHealthChanged(hpChange);
+        }
     }
+
+
+    #endregion
+
+    #region Unity Methods
 
     protected virtual void Awake()
     {
         audioEmitter = GetComponent<AudioEmitter>();
-        
         damageDisplay = gameObject.AddComponent<DamageDisplay>();
-       
     }
+
+    protected virtual void Update()
+    {
+        // Implement in derived classes
+        if (transform.position.y < -400f)
+        {
+            Die();
+            return;
+        }
+    }
+
+    #endregion
     
+    #region Initialization
+
     public virtual void Initialize(CharacterObject characterObject)
     {
         this.characterObject = characterObject;
         currentStats = (CharacterStats)Activator.CreateInstance(characterObject.baseStats.GetType());
         currentStats.CopyFrom(characterObject.maxStats);
         hatred = characterObject.hatred;
-        //CopyFieldsFromCharacterObject(characterObject);
     }
 
+    public virtual void Reinitialize()
+    {
+        Initialize(characterObject);
+    }
+    /*
     private void CopyFieldsFromCharacterObject(CharacterObject characterObject)
     {
         Type controllerType = GetType();
@@ -66,63 +110,43 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
             }
         }
     }
+    */
+    #endregion
+    
+    #region Health Management
 
-    public virtual void ApplyHPChange(float dmg)
+    public virtual void ChangeHealth(float amount)
     {
-        currentStats.hp -= dmg;
-
-        if (currentStats.hp <= 0)
+        Health -= amount;
+        if (Health <= 0)
         {
             Die();
         }
-        else if (currentStats.hp > characterObject.maxStats.hp)
+        else if (amount > 0 && gameObject.activeSelf)
         {
-            currentStats.hp = characterObject.maxStats.hp;
-        }
-
-        if (dmg > 0 && gameObject.activeSelf)
-        {
-            StartCoroutine(FlashRed());
+            //StartCoroutine(FlashRed());
         }
     }
-    
+
+    protected virtual void OnHealthChanged(float hpChange)
+    {
+        // Logic for health change, e.g., update UI
+    }
+
     protected virtual void Die()
     {
-        PoolManager.Instance.Return(this.gameObject, characterObject);
+        PoolManager.Instance.Return(gameObject, characterObject);
         OnObjectReturned(false);
     }
 
-    protected virtual void OnObjectReturned(bool isDestroyedByPlayer)
-    {
-        var drops = characterObject.GetDroppedGameObjects(isDestroyedByPlayer, transform.position);
-    }
+    #endregion
+    
+    #region Stats Management
 
-    public virtual void Reinitialize()
-    {
-        Initialize(characterObject);
-    }
-    
-    public IEnumerator FlashRed()
-    {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        for (int i = 0; i < 5; i++)
-        {
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(0.2f);
-            spriteRenderer.color = Color.white;
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
-    
-    public void ChangeCurrentStats(CharacterStats  mods)
+    public void ChangeCurrentStats(CharacterStats mods)
     {
         currentStats.AddStats(mods);
         OnStatsChanged();
-    }
-
-    protected virtual void OnStatsChanged()
-    {
-        // Custom logic for handling stat changes
     }
 
     public void ChangeMaxStats(CharacterStats mods)
@@ -131,56 +155,92 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         ChangeCurrentStats(mods);
     }
 
-    //Implementation of IDamageSource
-    #region
+    protected virtual void OnStatsChanged()
+    {
+        // Custom logic for handling stat changes
+    }
 
+    #endregion
+    
+    #region Damage Handling
+
+    // Implementation of IDamageSource
     public GameObject SourceGameObject => gameObject;
     public float DamageAmount => currentStats.attackDamage;
     public float CriticalChance => currentStats.criticalChance;
     public float CriticalMultiplier => currentStats.criticalMultiplier;
-    
+
     public virtual void ApplyDamage(IDamageable target)
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
     }
-    #endregion
-
-    //----------------------------------------------------------------------------------------------------------
 
     // Implementation of IDamageable
-    #region
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        if (currentStats.hp > 0)
-        {
-            Transform damagedTransform = this.transform;
-
-            if (damageDisplay != null)
-            {
-                damageDisplay.ShowDamage(amount, damagedTransform);
-            }
-            else
-            {
-                Debug.Log("Damage display is null");
-            }
-        }
-
-        ApplyHPChange(amount);
+        damageDisplay?.ShowDamage(amount, transform);
+        ChangeHealth(amount);
     }
 
-    public virtual float CalculateDamage(float incomingAtkDamage, float attackerCritChance, float attackerCritDmgCoef)
+    public virtual float CalculateDamage(float incomingDamage, float attackerCritChance, float attackerCritMultiplier)
     {
         bool isCritical = UnityEngine.Random.value < attackerCritChance;
-        float baseDamage = isCritical ? incomingAtkDamage * attackerCritDmgCoef : incomingAtkDamage;
+        float baseDamage = isCritical ? incomingDamage * attackerCritMultiplier : incomingDamage;
         float damageReduction = currentStats.armor / (currentStats.armor + 100);
         return baseDamage * (1 - damageReduction);
     }
+
     #endregion
-    
+   
+    #region Visual Effects
+
+    private Coroutine flashCoroutine;
+
+    private IEnumerator FlashRed()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null) yield break;
+
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+        }
+        flashCoroutine = StartCoroutine(FlashRedRoutine(spriteRenderer));
+    }
+
+    private IEnumerator FlashRedRoutine(SpriteRenderer spriteRenderer)
+    {
+        const int flashCount = 5;
+        const float flashDuration = 0.2f;
+        for (int i = 0; i < flashCount; i++)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(flashDuration);
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(flashDuration);
+        }
+        flashCoroutine = null;
+    }
+
+    #endregion
+
+    #region Pooling
+
+    protected virtual void OnObjectReturned(bool isDestroyedByPlayer)
+    {
+        var drops = characterObject.GetDroppedGameObjects(isDestroyedByPlayer, transform.position);
+    }
+
+    #endregion
+
+    #region Audio
+
     public AudioEmitter GetAudioEmitter()
     {
         return audioEmitter;
     }
+
+    #endregion
 }
 

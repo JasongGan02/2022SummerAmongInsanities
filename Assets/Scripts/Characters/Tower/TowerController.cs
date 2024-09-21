@@ -24,21 +24,7 @@ public class TowerController : CharacterController
         Destroy(gameObject);
         OnObjectReturned(isDestroyedByPlayer);
     }
-
-    public override void ApplyHPChange(float dmg)
-    {
-        currentStats.hp -= dmg;
-
-        if (currentStats.hp <= 0)
-        {
-            Die();
-        }
-        if (currentStats.hp > characterObject.maxStats.hp) //hp cap
-        {
-            currentStats.hp = characterObject.maxStats.hp;
-        }
-    }
-
+    
 
     public void TestDrop() 
     {
