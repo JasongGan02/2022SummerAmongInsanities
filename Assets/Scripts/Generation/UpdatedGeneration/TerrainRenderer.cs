@@ -6,22 +6,13 @@ public class TerrainRenderer : MonoBehaviour
     [SerializeField] private Transform Player;
     [SerializeField] private int RenderDistance;
     private WorldGenerator GeneratorInstance;
+    private HashSet<int> chunksBeingGenerated = new HashSet<int>();
 
     void Start()
     {
         GeneratorInstance = GetComponent<WorldGenerator>();
-        //InitializeFiniteWorld();
     }
-
-    /*void InitializeFiniteWorld()
-    {
-        // Generate data for all chunks within the finite world size
-        GeneratorInstance.dataCreator.GenerateAllWorldData(worldSizeInChunks);
-
-        // Optionally, generate light data for all chunks
-        LightGenerator.Instance.GenerateAllLightData(worldSizeInChunks);
-    }*/
-
+    
     void Update()
     {
         // Only handle rendering of chunks when the player is near them
@@ -34,9 +25,11 @@ public class TerrainRenderer : MonoBehaviour
         int plrChunkX = (int)(Player.position.x / WorldGenerator.ChunkSize.x);
         for (int x = plrChunkX - RenderDistance; x <= plrChunkX + RenderDistance; x++)
         {
-            if (!WorldGenerator.ActiveChunks.ContainsKey(x))
+            int xIndex = x;
+            if (!WorldGenerator.ActiveChunks.ContainsKey(xIndex) && !chunksBeingGenerated.Contains(xIndex))
             {
-                StartCoroutine(GeneratorInstance.CreateChunk(x));
+                chunksBeingGenerated.Add(xIndex);
+                StartCoroutine(GeneratorInstance.CreateChunk(xIndex, () => { chunksBeingGenerated.Remove(xIndex); }));
             }
         }
 

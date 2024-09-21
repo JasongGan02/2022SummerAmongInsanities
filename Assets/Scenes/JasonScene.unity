@@ -1661,7 +1661,7 @@ PrefabInstance:
       objectReference: {fileID: 831146460}
     - target: {fileID: 3730011587222673553, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryNumbers.Array.size

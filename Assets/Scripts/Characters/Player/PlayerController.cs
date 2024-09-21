@@ -117,13 +117,14 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
             inventory.RemoveAllItemsAndDrops();
         }
     }
-
-
-    public override void ApplyHPChange(float dmg)
+    
+    protected override void OnHealthChanged(float hpChange)
     {
-        if (dmg > 0)
+        if (hpChange < 0) // Damage taken
         {
-            if (dmg >= currentStats.hp)
+            float damageAmount = -hpChange; // Convert to positive value
+
+            if (currentStats.hp <= 0)
             {
                 audioEmitter.PlayClipFromCategory("PlayerDeath");
             }
@@ -131,10 +132,12 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
             {
                 audioEmitter.PlayClipFromCategory("PlayerInjury");
             }
-
         }
-        base.ApplyHPChange(dmg);
-        hpController.ShowDamageEffect();
+        else if (hpChange > 0) // Healed
+        {
+            // Play healing sound or effects if needed
+        }
+
         UpdateHealthUI();
     }
 

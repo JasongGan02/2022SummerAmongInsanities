@@ -82,6 +82,9 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public IEnumerator CreateChunk(int ChunkCoord, Action onChunkCreated = null)
     {
         Vector2Int pos = new Vector2Int(ChunkCoord, 0);
+        if (ActiveChunks.ContainsKey(ChunkCoord))
+            yield break;
+        
         if (TotalChunks.ContainsKey(ChunkCoord))
         {
             TotalChunks[ChunkCoord].SetActive(true);

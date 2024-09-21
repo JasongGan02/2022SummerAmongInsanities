@@ -159,10 +159,10 @@ public class MobSpawner : MonoBehaviour
     {
         if (category.categoryName == "WaveEnemy")
         {
-            Debug.Log($"Checking if can spawn category: {category.categoryName}");
+            /*Debug.Log($"Checking if can spawn category: {category.categoryName}");
             Debug.Log($"Current mob count: {category.currentMob}");
             Debug.Log($"Base mob cap: {category.baseMobCap}");
-            Debug.Log($"Can spawn? {category.currentMob < category.baseMobCap}");
+            Debug.Log($"Can spawn? {category.currentMob < category.baseMobCap}");*/
         }
         return category.currentMob < category.baseMobCap; // Placeholder change baseMob to global mob for multiple players
     }
