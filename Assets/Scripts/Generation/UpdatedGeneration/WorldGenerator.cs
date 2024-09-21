@@ -238,35 +238,59 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
 
     public static void PlaceTile(TileObject tile, int x, int y, Vector2Int chunkID, bool isWall, bool placeByPlayer, bool updateLighting = false)
-    {   //change to data needs to be done somewhere else
-
-
-        if (y < 0 || y >= ChunkSize.y) return; //we only care about out of scope along y axis
+    {
+        
+        if (y < 0 || y >= ChunkSize.y) return;
 
         int spriteNumber = 0;
         Quaternion rotation = Quaternion.identity;
         bool flipX = false;
 
+        // 检查方块是否有特殊功能
         if (tile.HasSpecialFunctionality && tile.SpecifiedTiles.Length > 0)
         {
+            Vector2Int worldPosition = new Vector2Int(x, y);
+
+            // 如果是草地方块，获取草地的特定 sprite 和旋转信息
             if (tile.IsGrassTile)
             {
-                (spriteNumber, rotation, flipX) = TileHelper.GetGrassTileSpriteAndRotation(new Vector2Int(x, y), tile.SpecifiedTiles);
+                (spriteNumber, rotation, flipX) = TileHelper.GetGrassTileSpriteAndRotation(worldPosition, tile.SpecifiedTiles);
+            }
+            // 否则，检查其他特殊方块
+            else if (tile.AnotherSpecifiedTiles.Length > 0)
+            {
+                // 尝试获取主要的 sprite 和旋转
+                (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(worldPosition, tile.SpecifiedTiles);
+
+                // 如果 spriteNumber 为 0，使用备用的 sprite 获取方法
+                if (spriteNumber == 0)
+                {
+                    (spriteNumber, rotation) = TileHelper.GetAnotherSpriteNumberAndRotation(worldPosition, tile.TileLayer, tile.AnotherSpecifiedTiles);
+                }
             }
             else
             {
-                 (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(new Vector2Int(x, y), tile.SpecifiedTiles);
+                // 没有其他特殊情况时，使用默认的 sprite 获取逻辑
+                (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(worldPosition, tile.SpecifiedTiles);
             }
         }
 
-        GameObject tileGameObject = placeByPlayer ? tile.GetPlacedGameObject(spriteNumber, rotation, flipX) :
-                                isWall ? tile.GetGeneratedWallGameObjects(spriteNumber, rotation, flipX) :
-                                tile.GetGeneratedGameObjects(spriteNumber, rotation, flipX);
-        if (!TotalChunks.TryGetValue(chunkID.x, out GameObject game)) Debug.LogError("TotalChunks not found ID: "+chunkID.x);
-        tileGameObject.transform.SetParent(TotalChunks[chunkID.x].transform.Find("Tiles").transform, true);
-        tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        GameObject tileGameObject = placeByPlayer
+            ? tile.GetPlacedGameObject(spriteNumber, rotation, flipX)
+            : isWall
+                ? tile.GetGeneratedWallGameObjects(spriteNumber, rotation, flipX)
+                : tile.GetGeneratedGameObjects(spriteNumber, rotation, flipX);
 
+        if (!TotalChunks.TryGetValue(chunkID.x, out GameObject chunk))
+        {
+            Debug.LogError("TotalChunks not found ID: " + chunkID.x);
+            return;
+        }
+
+        tileGameObject.transform.SetParent(chunk.transform.Find("Tiles").transform, true);
+        tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
     }
+
 
 
 

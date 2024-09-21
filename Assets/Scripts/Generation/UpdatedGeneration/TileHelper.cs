@@ -5,8 +5,8 @@ public static class TileHelper
     private static TileObject GetTileAtPosition(Vector2Int worldPosition, int layer)
     {
         int chunkCoordX = WorldGenerator.GetChunkCoordsFromPosition(worldPosition);
-        Vector2Int chunkCoord = new Vector2Int(chunkCoordX, 0);
-        Vector2Int localPosition = WorldGenerator.WorldToLocalCoords(worldPosition, chunkCoordX);
+        Vector2Int chunkCoord = new Vector2Int(chunkCoordX, 0);  // 获取相邻 chunk 的坐标
+        Vector2Int localPosition = WorldGenerator.WorldToLocalCoords(worldPosition, chunkCoordX);  // 获取本地坐标
 
         if (WorldGenerator.WorldData.ContainsKey(chunkCoord))
         {
@@ -18,9 +18,19 @@ public static class TileHelper
                 return chunkData[localPosition.x, localPosition.y, layer];
             }
         }
+     
 
         return null;
     }
+
+
+    private static TileObject GetTile(Vector2Int worldPosition, int layer)
+    {
+        int chunkCoordX = WorldGenerator.GetChunkCoordsFromPosition(worldPosition);
+        Vector2Int localPosition = WorldGenerator.WorldToLocalCoords(worldPosition, chunkCoordX);
+        return GetTileAtPosition(worldPosition, layer);
+    }
+
     private static bool IsSpecifiedTile(TileObject tile, TileObject[] specifiedTiles)
     {
         foreach (var specifiedTile in specifiedTiles)
@@ -32,6 +42,9 @@ public static class TileHelper
         }
         return false;
     }
+
+    
+
     public static (int spriteNumber, Quaternion rotation) GetSpriteNumberAndRotation(Vector2Int worldPosition, TileObject[] specifiedTiles)
     {
         
@@ -48,11 +61,12 @@ public static class TileHelper
 
         for (int layer = 0; layer < WorldGenerator.TileLayers; layer++)
             {
-                hasAbove |= IsSpecifiedTile(GetTileAtPosition(abovePosition, layer), specifiedTiles);
-                hasBelow |= IsSpecifiedTile(GetTileAtPosition(belowPosition, layer), specifiedTiles);
-                hasLeft |= IsSpecifiedTile(GetTileAtPosition(leftPosition, layer), specifiedTiles);
-                hasRight |= IsSpecifiedTile(GetTileAtPosition(rightPosition, layer), specifiedTiles);
-            }
+                hasAbove |= IsSpecifiedTile(GetTile(abovePosition, layer), specifiedTiles);
+                hasBelow |= IsSpecifiedTile(GetTile(belowPosition, layer), specifiedTiles);
+                hasLeft |= IsSpecifiedTile(GetTile(leftPosition, layer), specifiedTiles);
+                hasRight |= IsSpecifiedTile(GetTile(rightPosition, layer), specifiedTiles);
+
+        }
 
 
 
@@ -137,7 +151,72 @@ public static class TileHelper
         return (spriteNumber, rotation);
     }
 
+    public static (int spriteNumber, Quaternion rotation) GetAnotherSpriteNumberAndRotation(Vector2Int worldPosition,int layer, TileObject[] specifiedTiles)
+    {
 
+        Vector2Int abovePosition = new Vector2Int(worldPosition.x, worldPosition.y + 1);
+        Vector2Int belowPosition = new Vector2Int(worldPosition.x, worldPosition.y - 1);
+        Vector2Int leftPosition = new Vector2Int(worldPosition.x - 1, worldPosition.y);
+        Vector2Int rightPosition = new Vector2Int(worldPosition.x + 1, worldPosition.y);
+
+        bool hasAbove = IsSpecifiedTile(GetTile(abovePosition, layer), specifiedTiles);
+        bool hasBelow = IsSpecifiedTile(GetTile(belowPosition, layer), specifiedTiles);
+        bool hasLeft = IsSpecifiedTile(GetTile(leftPosition, layer), specifiedTiles);
+        bool hasRight = IsSpecifiedTile(GetTile(rightPosition, layer), specifiedTiles);
+
+
+
+
+
+        int spriteNumber = 0;
+        Quaternion rotation = Quaternion.identity;
+
+
+
+        if (hasAbove && hasRight && hasBelow && hasLeft)
+        {
+            spriteNumber = 0;
+
+        }
+        else if (hasRight && hasBelow && hasLeft)
+        {
+            spriteNumber = 6;
+        }
+        else if (hasBelow && hasLeft && hasAbove)
+        {
+            spriteNumber = 7;
+        }
+        else if (hasLeft && hasAbove && hasRight)
+        {
+            spriteNumber = 8;
+        }
+        else if (hasAbove && hasRight && hasBelow)
+        {
+            spriteNumber = 9;
+        }
+        else if (hasBelow && hasLeft)
+        {
+            spriteNumber = 10;
+
+        }
+        else if (hasAbove && hasLeft)
+        {
+            spriteNumber = 11;
+        }
+        else if (hasAbove && hasRight)
+        {
+            spriteNumber = 12;
+
+        }
+        else if (hasBelow && hasRight)
+        {
+            spriteNumber = 13;
+        }
+
+
+
+        return (spriteNumber, rotation);
+    }
     public static (int spriteNumber, Quaternion rotation, bool flipX) GetGrassTileSpriteAndRotation(Vector2Int worldPosition, TileObject[] specifiedTiles)
     {
         Vector2Int abovePosition = new Vector2Int(worldPosition.x, worldPosition.y + 1);
@@ -145,36 +224,36 @@ public static class TileHelper
         Vector2Int leftPosition = new Vector2Int(worldPosition.x - 1, worldPosition.y);
         Vector2Int rightPosition = new Vector2Int(worldPosition.x + 1, worldPosition.y);
 
-        bool hasAbove = IsSpecifiedTile(GetTileAtPosition(abovePosition, 1), specifiedTiles);
-        bool hasBelow = IsSpecifiedTile(GetTileAtPosition(belowPosition, 1), specifiedTiles);
-        bool hasLeft = IsSpecifiedTile(GetTileAtPosition(leftPosition, 1), specifiedTiles);
-        bool hasRight = IsSpecifiedTile(GetTileAtPosition(rightPosition, 1), specifiedTiles);
+        bool hasAbove = IsSpecifiedTile(GetTile(abovePosition, 1), specifiedTiles);
+        bool hasBelow = IsSpecifiedTile(GetTile(belowPosition, 1), specifiedTiles);
+        bool hasLeft = IsSpecifiedTile(GetTile(leftPosition, 1), specifiedTiles);
+        bool hasRight = IsSpecifiedTile(GetTile(rightPosition, 1), specifiedTiles);
 
 
         int spriteNumber = 0;
         Quaternion rotation = Quaternion.identity;
         bool flipX = false;
 
-        if(hasLeft && hasBelow && hasRight)
+        if (hasLeft && hasBelow && hasRight)
         {
-            spriteNumber = Random.Range(0, 4);
+            spriteNumber = 0;
         }
-        else if (hasLeft && hasBelow && hasAbove) 
+        else if (hasLeft && hasBelow && hasAbove)
         {
-            spriteNumber = 4;
+            spriteNumber = 1;
         }
-        else if(hasRight && hasBelow && hasAbove)
+        else if (hasRight && hasBelow && hasAbove)
         {
-            spriteNumber = 4;
+            spriteNumber = 1;
             flipX = true;
         }
-        else if(hasLeft && hasBelow)
+        else if (hasLeft && hasBelow)
         {
-            spriteNumber = Random.Range(5, 7);
+            spriteNumber = 2;
         }
-        else if(hasRight && hasBelow)
+        else if (hasRight && hasBelow)
         {
-            spriteNumber = Random.Range(5, 7);
+            spriteNumber = 2;
             flipX = true;
         }
         
