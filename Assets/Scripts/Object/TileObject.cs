@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
@@ -81,7 +82,6 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         var controller = ghost.AddComponent<Rigidbody2D>();
         controller.simulated = true;
         controller.isKinematic = true; //so that it does not fall and collide with everything
-
         return ghost;
     }
 
@@ -191,8 +191,11 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         }
 
         worldGameObject.name = itemName;
-        var controller = worldGameObject.AddComponent<BreakableObjectController>();
-        controller.Initialize(this, HealthPoint, false);
+        if (itemName != "Block")
+        {
+            var controller = worldGameObject.AddComponent<BreakableObjectController>();
+            controller.Initialize(this, HealthPoint, false);
+        }
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
         if (HasSpecialFunctionality)
         {

@@ -19,22 +19,22 @@ MonoBehaviour:
     hp: 25
     attackDamage: 11
     attackInterval: 7
-    attackRange: 2100
+    attackRange: 6
     armor: 3
     criticalChance: 0
     criticalMultiplier: 0
-    movingSpeed: 5
+    movingSpeed: 2
     jumpForce: 10
     totalJumps: 1
   maxStats:
     hp: 25
     attackDamage: 11
     attackInterval: 7
-    attackRange: 2100
+    attackRange: 6
     armor: 3
     criticalChance: 0
     criticalMultiplier: 0
-    movingSpeed: 5
+    movingSpeed: 2
     jumpForce: 10
     totalJumps: 1
   drops: []
@@ -45,14 +45,14 @@ MonoBehaviour:
     hp: 25
     attackDamage: 11
     attackInterval: 7
-    attackRange: 2100
+    attackRange: 6
     armor: 3
     criticalChance: 0
     criticalMultiplier: 0
-    movingSpeed: 5
+    movingSpeed: 2
     jumpForce: 10
     totalJumps: 1
-    sensingRange: 400
+    sensingRange: 8
   minLightLevel: 0
   maxLightLevel: 6
   spawnWeight: 80
