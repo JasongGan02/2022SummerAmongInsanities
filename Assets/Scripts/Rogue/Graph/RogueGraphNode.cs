@@ -5,7 +5,6 @@ using UnityEditor;
 
 public class RogueGraphNode : ScriptableObject
 {
-    public Buff buff;
     public EffectObject effect;
     private RogueGraph containerGraph;
     public bool isRoot = false;

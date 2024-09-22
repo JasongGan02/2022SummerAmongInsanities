@@ -71,7 +71,7 @@ public class BatController : EnemyController
         if (target == null)
         {
             // Patrol
-            Debug.Log("Bat is patroling");
+            //Debug.Log("Bat is patroling");
             if(animator.GetBool("is_attacking") == true) { animator.SetBool("is_attacking", false); }
             if(Tr.emitting == true) { Tr.emitting = false; }
             Patrol();
@@ -82,7 +82,7 @@ public class BatController : EnemyController
         }
         else 
         {
-            if (Vector2.Distance(target.transform.position, transform.position) < SensingRange || planned)
+            if (Vector2.Distance(target.transform.position, transform.position) < enemyStats.sensingRange || planned)
             {
                 if (Vector2.Distance(target.transform.position, transform.position) < currentStats.attackRange || planned)
                 {

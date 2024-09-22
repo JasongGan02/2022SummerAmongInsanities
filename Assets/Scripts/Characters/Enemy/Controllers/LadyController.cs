@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class LadyController : EnemyController, IRangedAttacker
 {
-    protected ProjectileObject projectileObject;
     public float AttackRange => currentStats.attackRange; // Implementing the IRangedAttacker interface
-    public ProjectileObject ProjectileObject => projectileObject;
+    public ProjectileObject ProjectileObject =>  ((LadyObject)characterObject).projectileObject;
 
     private Transform startPosition;
 
@@ -71,7 +70,7 @@ public class LadyController : EnemyController, IRangedAttacker
         }
 
         // Instantiate the arrow
-        GameObject projectileGameObject = PoolManager.Instance.Get(projectileObject);
+        GameObject projectileGameObject = PoolManager.Instance.Get(ProjectileObject);
         projectileGameObject.transform.position = startPosition.position;
         projectileGameObject.transform.SetParent(transform, true);
         Projectile projectileComponent = projectileGameObject.GetComponent<Projectile>();
@@ -97,6 +96,7 @@ public class LadyController : EnemyController, IRangedAttacker
         // Approaches and escapes from the player
 
         target = WhatToAttack();
+
         if (rb.velocity.x != 0) SenseFrontBlock();
         if (target == null)
         {
@@ -132,6 +132,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 // Check if the archer can fire
                 if (canFire)
                 {
+                    Debug.Log(target);
                     // Fire an arrow
                     FireProjectile(target);
 

@@ -37,13 +37,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
   - {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
   - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  AnotherSpecifiedTiles: []
   TargetSprite:
-  - {fileID: 21300000, guid: 2ecee29648eae1f44b88c42748e142cd, type: 3}
-  - {fileID: 21300000, guid: 83c133bed21ac6d4b88a201b2ee9e736, type: 3}
-  - {fileID: 21300000, guid: abae324cde87f124089eaa575db6f1aa, type: 3}
-  - {fileID: 21300000, guid: bd558bbbfcafb3e46bce037779bdffed, type: 3}
-  - {fileID: 21300000, guid: d1df11aac09756f4b949d6086f0ad5f0, type: 3}
-  - {fileID: 21300000, guid: ff751428888a7be438b1834a70166cec, type: 3}
-  - {fileID: 21300000, guid: 75591f1a22ef24e40a0ee6cc66fe6758, type: 3}
+  - {fileID: 1782302812, guid: ee34dca5de208924aadac9e103bd28ff, type: 3}
+  - {fileID: -354022892, guid: ee34dca5de208924aadac9e103bd28ff, type: 3}
+  - {fileID: 164228472, guid: ee34dca5de208924aadac9e103bd28ff, type: 3}
   hasSpecialFunctionality: 1
   isGrassTile: 1

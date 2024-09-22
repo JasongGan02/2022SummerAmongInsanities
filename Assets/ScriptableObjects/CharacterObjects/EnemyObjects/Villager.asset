@@ -15,8 +15,32 @@ MonoBehaviour:
   itemName: Villager
   sizeRatio: 2
   prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
+  baseStats:
+    hp: 32
+    attackDamage: 10
+    attackInterval: 1.2
+    attackRange: 700
+    armor: 5
+    criticalChance: 5
+    criticalMultiplier: 1.5
+    movingSpeed: 5
+    jumpForce: 15
+    totalJumps: 1
+  maxStats:
+    hp: 32
+    attackDamage: 10
+    attackInterval: 1.2
+    attackRange: 700
+    armor: 5
+    criticalChance: 5
+    criticalMultiplier: 1.5
+    movingSpeed: 5
+    jumpForce: 15
+    totalJumps: 1
   drops: []
-  hatred: []
+  hatred:
+  - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   enemyStats:
     hp: 32
     attackDamage: 10

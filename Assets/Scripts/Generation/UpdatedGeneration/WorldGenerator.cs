@@ -18,6 +18,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public static Dictionary<int, GameObject> ActiveChunks;
     public static Dictionary<int, GameObject> TotalChunks;
     public static Dictionary<int, int[,]> AdditiveWorldData;
+    [SerializeField] private int worldSizeInChunks = 5;
     public static HashSet<int> ReadyChunks = new HashSet<int>();
     public static readonly Vector2Int ChunkSize = new Vector2Int(32, 100);
     public static int TileLayers = 4; // 0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)
@@ -51,15 +52,39 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         TotalChunks = new Dictionary<int, GameObject>();
         RecalculateSeed();
         dataCreator = new DataGenerator(this, settings, GetComponent<StructureGenerator>());
-
-
+        dataCreator.GenerateAllWorldData(worldSizeInChunks);
+        InitializeWorld();
 
     }
     private void RecalculateSeed() { if (seed == 0) seed = UnityEngine.Random.Range(-10000, 10000); }
+    
+    public void InitializeWorld()
+    {
+        StartCoroutine(InitializeWorldCoroutine());
+    }
+
+    private IEnumerator InitializeWorldCoroutine()
+    {
+        for (int x = -worldSizeInChunks; x <= worldSizeInChunks; x++)
+        {
+            int chunkCoord = x;
+            // Start creating each chunk
+            yield return StartCoroutine(CreateChunk(chunkCoord, () =>
+            {
+                if (chunkCoord == 0)
+                {
+                    AddCoreArchitectureToChunk(chunkCoord);
+                }
+            }));
+        }
+    }
 
     public IEnumerator CreateChunk(int ChunkCoord, Action onChunkCreated = null)
     {
         Vector2Int pos = new Vector2Int(ChunkCoord, 0);
+        if (ActiveChunks.ContainsKey(ChunkCoord))
+            yield break;
+        
         if (TotalChunks.ContainsKey(ChunkCoord))
         {
             TotalChunks[ChunkCoord].SetActive(true);
@@ -77,23 +102,11 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         SetUpNewChunkWithContainers(newChunk);
 
-        TileObject[,,] dataToApply = WorldData.ContainsKey(pos) ? WorldData[pos] : null;
-
-        if (dataToApply == null)
-        {
-            dataCreator.QueueDataToGenerate(new DataGenerator.GenData
-            {
-                GenerationPoint = pos,
-                OnComplete = x => dataToApply = x
-            });
-
-            yield return new WaitUntil(() => dataToApply != null);
-        }
+        yield return new WaitUntil(() => WorldData.ContainsKey(pos));
+        TileObject[,,] dataToApply = WorldData[pos];
 
         if (!TotalChunks.ContainsKey(ChunkCoord))
             TotalChunks.Add(ChunkCoord, newChunk);
-
-
 
         bool isChunkDrawn = false;
         StartCoroutine(DrawChunk(dataToApply, pos, () =>
@@ -225,35 +238,59 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
 
     public static void PlaceTile(TileObject tile, int x, int y, Vector2Int chunkID, bool isWall, bool placeByPlayer, bool updateLighting = false)
-    {   //change to data needs to be done somewhere else
-
-
-        if (y < 0 || y >= ChunkSize.y) return; //we only care about out of scope along y axis
+    {
+        
+        if (y < 0 || y >= ChunkSize.y) return;
 
         int spriteNumber = 0;
         Quaternion rotation = Quaternion.identity;
         bool flipX = false;
 
+        // 检查方块是否有特殊功能
         if (tile.HasSpecialFunctionality && tile.SpecifiedTiles.Length > 0)
         {
+            Vector2Int worldPosition = new Vector2Int(x, y);
+
+            // 如果是草地方块，获取草地的特定 sprite 和旋转信息
             if (tile.IsGrassTile)
             {
-                (spriteNumber, rotation, flipX) = TileHelper.GetGrassTileSpriteAndRotation(new Vector2Int(x, y), tile.SpecifiedTiles);
+                (spriteNumber, rotation, flipX) = TileHelper.GetGrassTileSpriteAndRotation(worldPosition, tile.SpecifiedTiles);
+            }
+            // 否则，检查其他特殊方块
+            else if (tile.AnotherSpecifiedTiles.Length > 0)
+            {
+                // 尝试获取主要的 sprite 和旋转
+                (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(worldPosition, tile.SpecifiedTiles);
+
+                // 如果 spriteNumber 为 0，使用备用的 sprite 获取方法
+                if (spriteNumber == 0)
+                {
+                    (spriteNumber, rotation) = TileHelper.GetAnotherSpriteNumberAndRotation(worldPosition, tile.TileLayer, tile.AnotherSpecifiedTiles);
+                }
             }
             else
             {
-                 (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(new Vector2Int(x, y), tile.SpecifiedTiles);
+                // 没有其他特殊情况时，使用默认的 sprite 获取逻辑
+                (spriteNumber, rotation) = TileHelper.GetSpriteNumberAndRotation(worldPosition, tile.SpecifiedTiles);
             }
         }
 
-        GameObject tileGameObject = placeByPlayer ? tile.GetPlacedGameObject(spriteNumber, rotation, flipX) :
-                                isWall ? tile.GetGeneratedWallGameObjects(spriteNumber, rotation, flipX) :
-                                tile.GetGeneratedGameObjects(spriteNumber, rotation, flipX);
-        if (!TotalChunks.TryGetValue(chunkID.x, out GameObject game)) Debug.LogError("TotalChunks not found ID: "+chunkID.x);
-        tileGameObject.transform.SetParent(TotalChunks[chunkID.x].transform.Find("Tiles").transform, true);
-        tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        GameObject tileGameObject = placeByPlayer
+            ? tile.GetPlacedGameObject(spriteNumber, rotation, flipX)
+            : isWall
+                ? tile.GetGeneratedWallGameObjects(spriteNumber, rotation, flipX)
+                : tile.GetGeneratedGameObjects(spriteNumber, rotation, flipX);
 
+        if (!TotalChunks.TryGetValue(chunkID.x, out GameObject chunk))
+        {
+            Debug.LogError("TotalChunks not found ID: " + chunkID.x);
+            return;
+        }
+
+        tileGameObject.transform.SetParent(chunk.transform.Find("Tiles").transform, true);
+        tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
     }
+
 
 
 
