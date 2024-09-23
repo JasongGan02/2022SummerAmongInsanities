@@ -15,24 +15,45 @@ MonoBehaviour:
   itemName: TrapTower
   sizeRatio: 1
   prefab: {fileID: 2844561520478345549, guid: 4f96f8a328f0b924d8869dba2e24555d, type: 3}
-  _HP: 30
-  _armor: 0
-  _atkDamage: 20
-  _atkSpeed: 2
-  _atkRange: 10
-  _criticalMultiplier: 0
-  _criticalChance: 0
-  _movingSpeed: 0
-  _jumpForce: 0
-  _totalJumps: 0
-  Drops:
-  - droppedItem: {fileID: 0}
-    chance: 0
-  Hatred:
+  baseStats:
+    hp: 150
+    attackDamage: 10
+    attackInterval: 0.85
+    attackRange: 8
+    armor: 5
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  maxStats:
+    hp: 150
+    attackDamage: 10
+    attackInterval: 0.85
+    attackRange: 8
+    armor: 5
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  drops: []
+  hatred:
   - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
-  energyCost: 10
-  rotateAngle: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
-  curAngle: {x: 0, y: 0, z: 0, w: 1}
+  towerStats:
+    hp: 150
+    attackDamage: 10
+    attackInterval: 0.85
+    attackRange: 8
+    armor: 5
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    energyCost: 30
+    rotateAngle: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+    curAngle: {x: 0, y: 0, z: 0, w: 1}
   projectileObject: {fileID: 11400000, guid: 5235d283be36ad04b8a1b0dee576417f, type: 2}
   _maxStack: 3
   _recipe: []

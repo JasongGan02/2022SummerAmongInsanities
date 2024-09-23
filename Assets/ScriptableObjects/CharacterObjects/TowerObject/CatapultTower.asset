@@ -15,25 +15,48 @@ MonoBehaviour:
   itemName: CatapultTower
   sizeRatio: 0.25
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
-  _HP: 200
-  _armor: 0
-  _atkDamage: 20
-  _atkSpeed: 4
-  _atkRange: 30
-  _criticalMultiplier: 0
-  _criticalChance: 0
-  _movingSpeed: 0
-  _jumpForce: 0
-  _totalJumps: 0
-  Drops: []
-  Hatred:
+  baseStats:
+    hp: 200
+    attackDamage: 20
+    attackInterval: 4
+    attackRange: 25
+    armor: 5
+    criticalChance: 0.01
+    criticalMultiplier: 2
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  maxStats:
+    hp: 200
+    attackDamage: 20
+    attackInterval: 4
+    attackRange: 25
+    armor: 5
+    criticalChance: 0.01
+    criticalMultiplier: 2
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  drops: []
+  hatred:
   - {fileID: 11500000, guid: 69b6b525e8c81b04da0bfa469c041619, type: 3}
-  - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
   - {fileID: 11500000, guid: 8b74acae23f4451438386d98028bcf25, type: 3}
+  - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
   - {fileID: 11500000, guid: 611155adb19289445a79bf5069e9adb9, type: 3}
-  energyCost: 30
-  rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  curAngle: {x: 0, y: 0, z: 0, w: 1}
+  towerStats:
+    hp: 200
+    attackDamage: 20
+    attackInterval: 4
+    attackRange: 25
+    armor: 5
+    criticalChance: 0.01
+    criticalMultiplier: 2
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    energyCost: 50
+    rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    curAngle: {x: 0, y: 0, z: 0, w: 1}
   projectileObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
   _maxStack: 2
   _recipe:

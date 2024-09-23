@@ -145,12 +145,12 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         else
         {
             // 如果当前格子不是武器，清除当前装备的武器
-            if (gameObjectInUse != null)
+            /*if (gameObjectInUse != null)
             {
                 Destroy(gameObjectInUse);
                 gameObjectInUse = null;
                 currentWeapon = null;
-            }
+            }*/
         }
     }
     private void playAnim()
