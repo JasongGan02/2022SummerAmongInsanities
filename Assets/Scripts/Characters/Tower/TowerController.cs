@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class TowerController : CharacterController
 {
-    //SO variables
-    protected int energyCost;
-    protected Quaternion rotateAngle;
+
+    protected TowerStats TowerStats => (TowerStats)currentStats;
     
     //run-time variables
     protected ConstructionMode constructionMode;
@@ -20,7 +19,7 @@ public class TowerController : CharacterController
     protected override void Die()
     {
         constructionMode = FindObjectOfType<ConstructionMode>();
-        constructionMode.EnergyConsumption(energyCost*-1);
+        constructionMode.EnergyConsumption(TowerStats.energyCost*-1);
         Destroy(gameObject);
         OnObjectReturned(isDestroyedByPlayer);
     }

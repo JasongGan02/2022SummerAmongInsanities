@@ -20,3 +20,4 @@ MonoBehaviour:
   coal: {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}
   iron: {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
   gold: {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
+  block: {fileID: 11400000, guid: d045d561017e746468db52a94e386e94, type: 2}

@@ -15,22 +15,45 @@ MonoBehaviour:
   itemName: ArcherTower
   sizeRatio: 0.5
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
-  _HP: 50
-  _armor: 0
-  _atkDamage: 10
-  _atkSpeed: 1
-  _atkRange: 20
-  _criticalMultiplier: 0
-  _criticalChance: 0
-  _movingSpeed: 0
-  _jumpForce: 0
-  _totalJumps: 0
-  Drops: []
-  Hatred:
+  baseStats:
+    hp: 100
+    attackDamage: 5
+    attackInterval: 0.8
+    attackRange: 15
+    armor: 3
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  maxStats:
+    hp: 100
+    attackDamage: 5
+    attackInterval: 0.8
+    attackRange: 15
+    armor: 3
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  drops: []
+  hatred:
   - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
-  energyCost: 10
-  rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  curAngle: {x: 0, y: 0, z: 0, w: 1}
+  towerStats:
+    hp: 100
+    attackDamage: 5
+    attackInterval: 0.8
+    attackRange: 15
+    armor: 3
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    energyCost: 10
+    rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    curAngle: {x: 0, y: 0, z: 0, w: 1}
   projectileObject: {fileID: 11400000, guid: 923b64dd2880121489b1f446a8da6b66, type: 2}
   _maxStack: 5
   _recipe:

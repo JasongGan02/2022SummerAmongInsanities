@@ -1529,7 +1529,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.size
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[14].poolableObject
@@ -1544,6 +1544,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[17].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[14].initialPoolSize
       value: 10
       objectReference: {fileID: 0}
@@ -1553,6 +1557,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[16].initialPoolSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[17].initialPoolSize
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 743307866621241656, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
