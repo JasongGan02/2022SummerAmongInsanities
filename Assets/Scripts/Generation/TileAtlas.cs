@@ -16,5 +16,7 @@ public class TileAtlas : ScriptableObject
     public TileObject coal;
     public TileObject iron;
     public TileObject gold;
-   
+
+    [Header("Special")] public TileObject block;
+
 }

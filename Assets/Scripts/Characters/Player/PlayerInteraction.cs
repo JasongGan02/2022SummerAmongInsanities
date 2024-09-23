@@ -144,13 +144,13 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         }
         else
         {
-            // 如果当前格子不是武器，清除当前装备的武器
-            if (gameObjectInUse != null)
+            // 濡傛灉褰撳墠鏍煎瓙涓嶆槸姝﹀櫒锛屾竻闄ゅ綋鍓嶈澶囩殑姝﹀櫒
+            /*if (gameObjectInUse != null)
             {
                 Destroy(gameObjectInUse);
                 gameObjectInUse = null;
                 currentWeapon = null;
-            }
+            }*/
         }
     }
     private void playAnim()
@@ -218,6 +218,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         if (currentSlotInUse.item is IShadowObject)
         {
             gameObjectInUse = (currentSlotInUse.item as IShadowObject).GetShadowGameObject();
+            Debug.Log(gameObjectInUse);
         }
 
         if (currentSlotInUse.item is WeaponObject)

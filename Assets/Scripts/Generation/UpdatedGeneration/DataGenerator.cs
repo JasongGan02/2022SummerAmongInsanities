@@ -36,25 +36,6 @@ public class DataGenerator
         sysRandom = new System.Random(seed.GetHashCode());
         //worldGen.StartCoroutine(DataGenLoop());
     }
-
-    public void QueueDataToGenerate(GenData data)
-    {
-        DataToGenerate.Enqueue(data);
-    }
-
-    public IEnumerator DataGenLoop()
-    {
-        while (Terminate == false)
-        {
-            if (DataToGenerate.Count > 0)
-            {
-                GenData gen = DataToGenerate.Dequeue();
-                yield return GeneratorInstance.StartCoroutine(GenerateData(gen.GenerationPoint, gen.OnComplete));
-            }
-
-            yield return null;
-        }
-    }
     
     public void GenerateAllWorldData(int worldSizeInChunks)
     {
@@ -167,6 +148,20 @@ public class DataGenerator
             }
         }
         
+        // After generating the terrain, check if we need to add air blocks at the edges
+        int chunkCoord = offset.x;
+
+        if (chunkCoord == -WorldGenerator.worldSizeInChunks)
+        {
+            // Leftmost chunk; add air blocks on the left edge
+            AddAirBlocksToChunkEdges(TempData, chunkCoord, true);
+        }
+        else if (chunkCoord == WorldGenerator.worldSizeInChunks)
+        {
+            // Rightmost chunk; add air blocks on the right edge
+            AddAirBlocksToChunkEdges(TempData, chunkCoord, false);
+        }
+        
         return TempData;
     }
     
@@ -224,4 +219,18 @@ public class DataGenerator
         return curBiomeSettings.heightAddition + Mathf.CeilToInt(curBiomeSettings.heightMultiplier * noiseValue);
     }
 
+    private void AddAirBlocksToChunkEdges(TileObject[,,] chunkData, int chunkCoord, bool isLeftEdge)
+    {
+        TerrainSettings curBiome = GetCurBiome(chunkCoord);
+        int edgeX = isLeftEdge ? 0 : WorldGenerator.ChunkSize.x - 1;
+
+        for (int y = 0; y < WorldGenerator.ChunkSize.y; y++)
+        {
+            for (int z = 0; z < WorldGenerator.TileLayers; z++)
+            {
+                TileObject airBlock = curBiome.tileAtlas.block;
+                chunkData[edgeX, y, z] = airBlock;
+            }
+        }
+    }
 }

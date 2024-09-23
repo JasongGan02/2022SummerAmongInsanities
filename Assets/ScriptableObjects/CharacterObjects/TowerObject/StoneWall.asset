@@ -15,23 +15,44 @@ MonoBehaviour:
   itemName: StoneWall
   sizeRatio: 2
   prefab: {fileID: 2428287790915297841, guid: 292f7e07e0f609143bfec8555f92a6b6, type: 3}
-  _HP: 0
-  _armor: 0
-  _atkDamage: 0
-  _atkSpeed: 0
-  _atkRange: 0
-  _criticalMultiplier: 0
-  _criticalChance: 0
-  _movingSpeed: 0
-  _jumpForce: 0
-  _totalJumps: 0
-  Drops:
-  - droppedItem: {fileID: 11400000}
-    chance: 1
-  Hatred: []
-  energyCost: 5
-  rotateAngle: {x: 0, y: 0, z: 0, w: 0}
-  curAngle: {x: 0, y: 0, z: 0, w: 1}
+  baseStats:
+    hp: 150
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    armor: 10
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  maxStats:
+    hp: 150
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    armor: 10
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+  drops: []
+  hatred: []
+  towerStats:
+    hp: 150
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    armor: 10
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    energyCost: 7
+    rotateAngle: {x: 0, y: 0, z: 0, w: 0}
+    curAngle: {x: 0, y: 0, z: 0, w: 1}
   projectileObject: {fileID: 0}
   _maxStack: 5
   _recipe:

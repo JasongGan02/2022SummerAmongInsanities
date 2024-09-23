@@ -6,24 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Villager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Villager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Bat.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Bat.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Bat.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Bat.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Creeper.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Creeper.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Lady.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Lady.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/VillagerWithWeapon.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/VillagerWithWeapon.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/BatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/BatController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/LadyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/LadyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Block.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Block.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Village.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Village.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/RangedTowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/AtkTower/RangedTowerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainRenderer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/Rogue Graph.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/Rogue Graph.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,29 +46,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Attach to Unity Editor.Attach to Unity Editor &amp; Play.executor&quot;: &quot;Debug&quot;,
-    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Standalone Player.Start Unity.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Jason&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Attach to Unity Editor.Attach to Unity Editor & Play.executor": "Debug",
+    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Standalone Player.Start Unity.executor": "Debug",
+    "XThreadsFramesViewSplitterKey": "0.43457943",
+    "git-widget-placeholder": "Jason",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\34061\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\34061\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\34061\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.1.3f1\Editor\Unity.exe" />
@@ -106,10 +97,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12228">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="38984">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="12228" />
+      <option name="pid" value="38984" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -153,7 +144,7 @@
       <workItem from="1724460336811" duration="9590000" />
       <workItem from="1724503003056" duration="1265000" />
       <workItem from="1726345934729" duration="10442000" />
-      <workItem from="1726874578726" duration="14993000" />
+      <workItem from="1726874578726" duration="25662000" />
     </task>
     <servers />
   </component>
@@ -198,10 +189,10 @@
           <line>90</line>
           <properties documentPath="C:\Dev\UnityProjects\2022SummerAmongInsanities\Assets\Scripts\Generation\UpdatedGeneration\WorldGenerator.cs" initialLine="87" containingFunctionPresentation="Method 'CreateChunk'">
             <startOffsets>
-              <option value="3371" />
+              <option value="3360" />
             </startOffsets>
             <endOffsets>
-              <option value="3425" />
+              <option value="3414" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
