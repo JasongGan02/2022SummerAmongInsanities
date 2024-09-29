@@ -13,8 +13,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     protected CharacterStats currentStats;     // Holds the character's current stats
     protected AudioEmitter audioEmitter;
     protected DamageDisplay damageDisplay;
-    protected List<TextAsset> hatred;
-        
+
     #endregion
 
     #region Properties
@@ -22,6 +21,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public BaseObject PoolableObject => characterObject;
     public CharacterStats CurrentStats => currentStats;
     public CharacterObject CharacterObject => characterObject;
+    public List<Type> Hatred { get; set; } = new List<Type>();
     private float previousHealth;
     public float Health
     {
@@ -58,11 +58,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
 
     protected virtual void Update()
     {
-        // Implement in derived classes
         if (transform.position.y < -400f)
         {
             Die();
-            return;
         }
     }
 
@@ -75,7 +73,10 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         this.characterObject = characterObject;
         currentStats = (CharacterStats)Activator.CreateInstance(characterObject.baseStats.GetType());
         currentStats.CopyFrom(characterObject.maxStats);
-        hatred = characterObject.hatred;
+        for (int i = 0; i < characterObject.hatred.Count; i++)
+        {
+            Hatred.Add(Type.GetType(characterObject.hatred[i].name));
+        }
     }
 
     public virtual void Reinitialize()

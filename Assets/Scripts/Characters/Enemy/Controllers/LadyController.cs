@@ -88,14 +88,14 @@ public class LadyController : EnemyController, IRangedAttacker
     }
 
 
-    protected override void EnemyLoop() 
+    protected override void UpdateEnemyBehavior() 
     {
         // Escape from the tower
         //
 
         // Approaches and escapes from the player
 
-        target = WhatToAttack();
+        target = SearchForTargetObject();
 
         if (rb.velocity.x != 0) SenseFrontBlock();
         if (target == null)

@@ -48,7 +48,7 @@ public class DumbController : EnemyController
     }
 
     // Update is called once per frame
-    protected override void EnemyLoop(){
+    protected override void UpdateEnemyBehavior(){
         CurrentHP = currentStats.hp;
         SenseFrontBlock();
         if (PrevHP > CurrentHP)

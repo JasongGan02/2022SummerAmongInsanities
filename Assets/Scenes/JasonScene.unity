@@ -1571,6 +1571,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1927551329, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551329, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.size
       value: 18

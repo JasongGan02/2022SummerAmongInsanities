@@ -161,7 +161,7 @@ public class CharacterSpawnManager : MonoBehaviour
             var enemyController = enemy.GetComponent<BatController>();
             if (enemyController != null)
             {
-                enemyController.GroupApproaching = true;  // Set the flag when commanding to move
+                enemyController.IsGroupAttacking = true;  // Set the flag when commanding to move
                 enemyController.MoveTowards(targetTransform);  // This function needs to be defined or adjusted accordingly
             }
         }
@@ -173,7 +173,7 @@ public class CharacterSpawnManager : MonoBehaviour
             var enemyController = enemy.GetComponent<BatController>();
             if (enemyController != null)
             {
-                enemyController.GroupApproaching = false;  // Clear the flag to resume normal behavior
+                enemyController.IsGroupAttacking = false;  // Clear the flag to resume normal behavior
             }
         }
     }

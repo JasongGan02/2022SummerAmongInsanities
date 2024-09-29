@@ -35,7 +35,6 @@ public class VillagerWithWeaponController : EnemyController
     {
         base.Awake();
         animator = GetComponent<Animator>();
-        towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
         groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");
@@ -48,11 +47,11 @@ public class VillagerWithWeaponController : EnemyController
         rb = GetComponent<Rigidbody2D>();
     }
 
-    protected override void EnemyLoop()
+    protected override void UpdateEnemyBehavior()
     {
         SenseFrontBlock();
 
-        target = WhatToAttack();
+        target = SearchForTargetObject();
         if (target == null) { patrol(); }
         else
         {

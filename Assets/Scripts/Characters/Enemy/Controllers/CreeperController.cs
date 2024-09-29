@@ -33,7 +33,6 @@ public class CreeperController : EnemyController
     {
         base.Awake();
         animator = GetComponent<Animator>();
-        towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
         enemy_mask = LayerMask.GetMask("enemy");
         flyEnemy_mask = LayerMask.GetMask("flyenemy");
@@ -44,12 +43,12 @@ public class CreeperController : EnemyController
         rb = GetComponent<Rigidbody2D>();
     }
 
-    protected override void EnemyLoop()
+    protected override void UpdateEnemyBehavior()
     {
         if (!booming) { 
             SenseFrontBlock();
 
-            target = WhatToAttack();
+            target = SearchForTargetObject();
             if (target == null) { patrol(); }
             else
             {

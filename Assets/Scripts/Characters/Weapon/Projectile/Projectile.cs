@@ -3,6 +3,7 @@ using System.Net;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using System;
+
 public class Projectile : MonoBehaviour, IDamageSource
 {
     protected ProjectileObject projectileObject;
@@ -12,7 +13,7 @@ public class Projectile : MonoBehaviour, IDamageSource
     protected float lifespanInSeconds = 8.0f; // Maximum lifespan of the projectile in seconds
     protected float timeOfLaunch;
     protected Rigidbody2D rb;
-    protected List<TextAsset> hatredList;
+    protected List<Type> hatredList;
     public float firingAngle = 45.0f; // Angle of firing
     public float speed = 20f; // Speed of the projectile
     public float gravityScale = 0.1f; // Scaled down gravity effect
@@ -39,7 +40,7 @@ public class Projectile : MonoBehaviour, IDamageSource
     {
         this.projectileObject = projectileObject;
         this.firingCharacter = firingCharacter;
-        hatredList = firingCharacter.CharacterObject.hatred;
+        hatredList = firingCharacter.Hatred;
         finalDamage = firingCharacter.CurrentStats.attackDamage * projectileObject.DamageCoef;
         timeOfLaunch = Time.time;
     }
@@ -108,7 +109,6 @@ public class Projectile : MonoBehaviour, IDamageSource
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
-        Debug.Log("damaging!");
     }
 
     protected virtual bool IsInHatredList(Collider2D collider)
@@ -117,10 +117,9 @@ public class Projectile : MonoBehaviour, IDamageSource
             return false;
         foreach (var hatedType in hatredList)   
         {
-            Type type = Type.GetType(hatedType.name);
-            if (type == null) continue;
+            if (hatedType == null) continue;
 
-            var target = collider.GetComponent(type) as CharacterController;
+            var target = collider.GetComponent(hatedType) as CharacterController;
             if (target != null)
             {
                 return true; // Target is in hatred list

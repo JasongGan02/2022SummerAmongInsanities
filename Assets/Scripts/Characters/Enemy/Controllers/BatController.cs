@@ -30,9 +30,6 @@ public class BatController : EnemyController
     // Start is called before the first frame update
     protected void Start()
     {
-        // these 3 lines from EnemyBasics
-        towerContainer = FindObjectOfType<TowerContainer>();
-
         GameObject destination = new GameObject("newObject");
         moveTo = destination.transform;
         // initial moveTo
@@ -63,10 +60,10 @@ public class BatController : EnemyController
     }
     
 
-    protected override void EnemyLoop()
+    protected override void UpdateEnemyBehavior()
     {
-        if (!planned) { target = WhatToAttack(); } // attacking behavior is uninterruptable
-        else if (target == null) { target = WhatToAttack(); } // once target is destroied but an attack is planned
+        if (!planned) { target = SearchForTargetObject(); } // attacking behavior is uninterruptable
+        else if (target == null) { target = SearchForTargetObject(); } // once target is destroied but an attack is planned
 
         if (target == null)
         {
@@ -107,23 +104,9 @@ public class BatController : EnemyController
         }
     }
 
-
-    protected new bool IsPlayerInAtkRange()
-    {
-        float distance = CalculateDistanceToPlayer();
-        if (distance <= 3)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     void Patrol()
     {
-        if (GroupApproaching) 
+        if (IsGroupAttacking) 
         { 
             transform.position = Vector2.MoveTowards(transform.position, GroupApproachTarget.position, 3 * Time.deltaTime);
         }
@@ -272,7 +255,7 @@ public class BatController : EnemyController
     public override void MoveTowards(Transform targetTransform)
     {
         GroupApproachTarget = targetTransform;
-        GroupApproaching = true;
+        IsGroupAttacking = true;
     }
 }
 
