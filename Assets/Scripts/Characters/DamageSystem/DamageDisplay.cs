@@ -3,19 +3,24 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using static UnityEditorInternal.ReorderableList;
 
 public class DamageDisplay : MonoBehaviour
 {
-    private Canvas canvas;
-    private GameObject damageTextPrefab;
+    private float floatUpDistance = 1f;
+    private float duration = 0.5f;
 
-    void Awake()
-    {
+    private Color RedColor = Color.red;
+    private Color BlueColor = Color.blue;
+    private Color GreenColor = Color.green;
+    private Color DefaultColor = Color.white;
 
-    }
+
+    private GameObject DamageTextContainer;
 
     public void ShowDamage(float amount,Transform enemyTransform)
     {
+        DamageTextContainer = GameObject.Find("DamageTextContainer");
         var damageTextMeshPrefab = Resources.Load<TextMeshPro>("DamageDisplay");
 
         if (damageTextMeshPrefab == null)
@@ -24,32 +29,62 @@ public class DamageDisplay : MonoBehaviour
             return;
         }
 
-        // Instantiate the text mesh as a child of the enemy's transform
-        TextMeshPro textMesh = Instantiate(damageTextMeshPrefab, enemyTransform.position, Quaternion.identity, enemyTransform);
+        bool isPlayer = enemyTransform.name == "Player";
 
-        // Set the text to the damage amount
-        textMesh.text = Mathf.RoundToInt(amount).ToString();
+        TextMeshPro textMesh = Instantiate(damageTextMeshPrefab, enemyTransform.position, Quaternion.identity, DamageTextContainer.transform);
 
-        // You may want to adjust the local position to offset the text from the enemy's center
-        textMesh.transform.localPosition = new Vector3(0, 0.5f, 0);
 
-        // Start the animation coroutine on the TextMeshPro component
-        StartCoroutine(AnimateDamageText(textMesh));
+        if (isPlayer)
+        {
+            textMesh.text = "-" + Mathf.RoundToInt(amount).ToString();
+            textMesh.color = Color.red;
+        }
+        else
+        {
+            textMesh.text = Mathf.RoundToInt(amount).ToString();
+            textMesh.color = Color.white;
+        }
+
+        
+        DamageTextContainer.GetComponent<MonoBehaviour>().StartCoroutine(AnimateDamageText(textMesh));
+        
+
+
     }
+
+
     private IEnumerator AnimateDamageText(TextMeshPro textMesh)
     {
-        float duration = 1f; // Duration of the animation
-        Vector3 startPos = textMesh.transform.localPosition;
-        Vector3 endPos = startPos + new Vector3(0, 1f, 0); // Move text up over time
+        Color startColor = textMesh.color;
+        float startSize = textMesh.fontSize;
+        float elapsedTime = 0f;
 
-        for (float t = 0; t < duration; t += Time.deltaTime)
+        
+        while (elapsedTime < duration)
         {
-            textMesh.transform.localPosition = Vector3.Lerp(startPos, endPos, t / duration);
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+
+
+            textMesh.fontSize = Mathf.Lerp(startSize, startSize * 0.75f, progress);
+            textMesh.color = new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(1, 0, progress));
+
             yield return null;
         }
 
         Destroy(textMesh.gameObject);
+
+   
     }
+
+
+
+
+
+
+
+
+
 }
 
 
