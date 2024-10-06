@@ -48,7 +48,6 @@ public class VillagerController : EnemyController
     {
         base.Awake();
         animator = GetComponent<Animator>();
-        towerContainer = FindObjectOfType<TowerContainer>();
         ground_mask = LayerMask.GetMask("ground");
         groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");
@@ -67,14 +66,14 @@ public class VillagerController : EnemyController
         tileDetect4 = transform.Find("tileDetect4");
     }
 
-    protected override void EnemyLoop()
+    protected override void UpdateEnemyBehavior()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
         { ChangeCollider("Stand"); }
         else { ChangeCollider("Sit"); }
 
 
-        if (target == null || TargetTicker < 0) { target = WhatToAttack(); TargetTicker = 1f; } // if doesn't have target
+        if (target == null || TargetTicker < 0) { target = SearchForTargetObject(); TargetTicker = 1f; } // if doesn't have target
         if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
         else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
         else
@@ -168,7 +167,8 @@ public class VillagerController : EnemyController
         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
-    public override void MoveTowards(Transform targetTransform)
+
+    protected override void MoveTowards(Transform targetTransform)
     {
         Vector2 direction = (targetTransform.position - transform.position).normalized;
         rb.velocity = direction * currentStats.movingSpeed;
@@ -383,35 +383,7 @@ public class VillagerController : EnemyController
             //Debug.Log("distance: " + distance + " angle: " + angle);
         }
     }
-
-    public float DistanceToPoint(Vector2Int a)
-    {
-        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
-
-        // Convert Vector2Int 'a' to Vector2 for distance calculation
-        Vector2 targetPosition = new Vector2(a.x, a.y);
-
-        // Calculate and return the Euclidean distance
-        return Vector2.Distance(currentPosition, targetPosition);
-    }
-
-    void approach(float speed, float x, float y)
-    {
-        if (speed > currentStats.movingSpeed)
-        {
-            animator.Play("villager_run");
-        }
-        else
-        {
-            animator.Play("villager_walk");
-        }
-        if (x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
-        if ((x > transform.position.x && !facingright) || (x < transform.position.x && facingright))
-        {
-            flip();
-        }
-    }
+    
 
     public GameObject GetTileGameObject(Vector2Int tilePosition)
     {

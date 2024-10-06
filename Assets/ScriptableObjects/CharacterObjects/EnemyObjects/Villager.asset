@@ -18,7 +18,7 @@ MonoBehaviour:
   baseStats:
     hp: 32
     attackDamage: 10
-    attackInterval: 5
+    attackInterval: 1
     attackRange: 1
     armor: 5
     criticalChance: 5
@@ -29,7 +29,7 @@ MonoBehaviour:
   maxStats:
     hp: 32
     attackDamage: 10
-    attackInterval: 5
+    attackInterval: 1
     attackRange: 1
     armor: 5
     criticalChance: 5
@@ -44,7 +44,7 @@ MonoBehaviour:
   enemyStats:
     hp: 32
     attackDamage: 10
-    attackInterval: 5
+    attackInterval: 1
     attackRange: 1
     armor: 5
     criticalChance: 5

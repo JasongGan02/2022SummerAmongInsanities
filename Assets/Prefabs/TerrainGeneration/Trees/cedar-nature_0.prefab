@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1415664617004931593}
   - component: {fileID: 3351908576213982749}
   - component: {fileID: 8995697520714515962}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: cedar-nature_0
   m_TagString: tree
   m_Icon: {fileID: 0}

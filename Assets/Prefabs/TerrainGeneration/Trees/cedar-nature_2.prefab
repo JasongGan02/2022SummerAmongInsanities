@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6501609725464200435}
   - component: {fileID: 6501609725464200432}
   - component: {fileID: 6501609725464200433}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: cedar-nature_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

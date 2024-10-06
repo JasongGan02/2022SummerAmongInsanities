@@ -55,6 +55,9 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private bool _isLit; // determine if this tile is a source of light
+    
+    [SerializeField]
+    private bool _isDynamic; // determine if this tile is a source of light
 
     [Range(0f, 15f)] [SerializeField] private float _lightIntensity = 0;
 
@@ -62,6 +65,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         GameObject worldGameObject = GetGeneratedGameObjects(spriteNumber, rotation, flipX);
         worldGameObject.GetComponent<BreakableObjectController>().Initialize(this, HealthPoint, true);
+        
         return worldGameObject;
     }
     
@@ -74,10 +78,13 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         spriteColor.a = 100 / 255f; // Set the alpha value to 100 (out of 255)
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
         spriteRenderer.sortingOrder = 10;
-        var collider = ghost.GetComponent<BoxCollider2D>();
-        collider.isTrigger = true;
-        
-        collider.size = new Vector2(collider.size.x*0.5f, collider.size.y*0.5f);
+        var collider = ghost.GetComponent<BoxCollider2D>(); //TODO: not all tile is with box 2d or change all tile collider to box 2d
+        if (collider != null)
+        {
+            collider.isTrigger = true;
+            
+            collider.size = new Vector2(collider.size.x*0.5f, collider.size.y*0.5f);
+        }
         ghost.AddComponent<ShadowObjectController>();
         var controller = ghost.AddComponent<Rigidbody2D>();
         controller.simulated = true;
@@ -196,6 +203,13 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
             var controller = worldGameObject.AddComponent<BreakableObjectController>();
             controller.Initialize(this, HealthPoint, false);
         }
+
+        if (_isDynamic)
+        {
+            var controller = worldGameObject.AddComponent<DynamicLightController>();
+        }
+        
+        
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
         if (HasSpecialFunctionality)
         {
