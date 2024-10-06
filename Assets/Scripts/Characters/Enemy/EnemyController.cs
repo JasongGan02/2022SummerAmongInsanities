@@ -2,71 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Serialization;
 
 
 public abstract class EnemyController : CharacterController
 {
-
-    protected EnemyStats enemyStats => (EnemyStats) currentStats;
-    
-    public bool GroupApproaching = false;
-    protected static int globalEnemyLevel = 1;
-    public GameObject tempTarget;
-    public Collider2D[] colliders;
-
-    //run-time variables
-    public TowerContainer towerContainer;   // Changed from protected to public
+    protected EnemyStats enemyStats => (EnemyStats)currentStats;
     protected GameObject player;
-    protected GameObject nearestTower;
-    protected float timer;
-    protected Transform NearestTowerTransform;
-
     protected Rigidbody2D rb;
-    protected bool isFindTower;
-    protected bool isTouchTower;
-    protected bool isFindPlayer;
-    protected bool isTouchPlayer;
-
-    protected int layerMask = (1 << 8) | (1 << 9) | (1 << 10);
-
-    Type type;
-
+    protected Animator animator;
+    protected bool facingRight = true;
     
-
+    protected float lastAttackTime = -Mathf.Infinity;
+    
+    private Vector2? lastKnownPosition = null;
+    private float lastSeenTimestamp = 0f;
+    
+    protected LayerMask groundLayerMask;
+    protected LayerMask targetLayerMask;
+    
+    protected Vector2? LastKnownPosition => lastKnownPosition;
+    protected bool HasLastKnownPosition => lastKnownPosition.HasValue && (Time.time - lastSeenTimestamp < 3f);
+    public bool IsGroupAttacking { get; set; } = false;
+    
     protected override void Awake()
     {
-        //towerContainer = FindObjectOfType<TowerContainer>();
         base.Awake();
-        timer = 0;
-        
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        groundLayerMask = LayerMask.GetMask("ground");
+        targetLayerMask = LayerMask.GetMask("player", "tower");
     }
-
-
+    
+    protected virtual void Start()
+    {
+        FindPlayer();
+    }
+    
+    protected override void Update()
+    {
+        base.Update();
+        FindPlayer();
+        SetEnemyContainer();
+        UpdateEnemyBehavior();
+    }
+    
     public void LevelUp()
     {
         Reinitialize();
-    }
-
-
-
-    void FixedUpdate()
-    {
-        timer += Time.fixedDeltaTime;
-    }
-
-    protected override void Update()
-    {
-        if (player == null) 
-        { 
-            player = GameObject.Find("Player"); 
-        }
-        if (this.transform.position.y < -400) Die();
-        SetEnemyContainer();
-        EnemyLoop();
-        if (rb == null)
-        {
-            rb = GetComponent<Rigidbody2D>();
-        }
     }
     
     public override void TakeDamage(float amount, IDamageSource damageSource)
@@ -75,56 +58,224 @@ public abstract class EnemyController : CharacterController
         audioEmitter.PlayClipFromCategory("InjureEnemy");
     }
     
-    protected bool IsPlayerSensed()
+    protected abstract void UpdateEnemyBehavior();
+    
+    protected float DistanceToTarget(Transform target)
+    {
+        return Vector2.Distance(transform.position, target.position);
+    }
+    
+    #region Search For Target
+    protected GameObject SearchForTargetObject()
+    {
+        if (Hatred == null || Hatred.Count == 0)
+        {
+            Debug.LogError("Hatred list is empty.");
+            return null;
+        }
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, enemyStats.sensingRange, targetLayerMask);
+
+        // List to hold potential targets with their priority and distance
+        List<PotentialTarget> potentialTargets = new List<PotentialTarget>();
+
+        foreach (Collider2D collider in colliders)
+        {
+            var targetComponent = collider.GetComponent<IDamageable>();
+            if (targetComponent != null)
+            {
+                Type targetType = targetComponent.GetType();
+                int typePriority = Hatred.FindIndex(hatredType => hatredType == targetType);
+                
+                // If the type is not directly in the list, check inheritance
+                if (typePriority == -1)
+                {
+                    for (int i = 0; i < Hatred.Count; i++)
+                    {
+                        Type hatredType = Hatred[i];
+                        if (hatredType.IsAssignableFrom(targetType))
+                        {
+                            typePriority = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (typePriority != -1)
+                {
+                    float distanceSquared = ((Vector2)(collider.transform.position - transform.position)).sqrMagnitude;
+                    potentialTargets.Add(new PotentialTarget
+                    {
+                        GameObject = collider.gameObject,
+                        TypePriority = typePriority,
+                        DistanceSquared = distanceSquared
+                    });
+                }
+            }
+        }
+
+        if (potentialTargets.Count == 0)
+        {
+            return null;
+        }
+
+        // Sort the potential targets first by type priority, then by distance
+        potentialTargets.Sort((a, b) =>
+        {
+            int priorityComparison = a.TypePriority.CompareTo(b.TypePriority);
+            if (priorityComparison == 0)
+            {
+                return a.DistanceSquared.CompareTo(b.DistanceSquared);
+            }
+            return priorityComparison;
+        });
+
+        // Perform line-of-sight check
+        foreach (var potentialTarget in potentialTargets)
+        {
+            if (HasLineOfSightToTarget(potentialTarget.GameObject))
+            {
+                // Target is visible
+                return potentialTarget.GameObject;
+            }
+        }
+
+        // No visible targets; keep last known position if within memory duration
+        if (HasLastKnownPosition)
+        {
+            return null; // No current target, but we have a last known position
+        }
+        else
+        {
+            // Reset last known position if memory duration has passed
+            lastKnownPosition = null;
+            return null;
+        }
+    }
+    
+    private Vector2 GetEyePosition()
+    {
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            Bounds bounds = collider.bounds;
+            float eyeHeight = bounds.max.y - 0.1f; // Adjust 0.1f to place the eye slightly below the top
+            return new Vector2(transform.position.x, eyeHeight);
+        }
+        // Fallback if no collider is found
+        return transform.position;
+        
+    }
+    
+    private bool HasLineOfSightToTarget(GameObject target)
+    {
+        Vector2 eyePosition = GetEyePosition();
+        Vector2 targetPosition = target.transform.position;
+
+        Vector2 direction = targetPosition - eyePosition;
+        float distance = direction.magnitude;
+        direction.Normalize();
+
+        RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, groundLayerMask);
+        //Debug.DrawLine(eyePosition, targetPosition, Color.red);
+        if (hit.collider == null)
+        {
+            // Line of sight is clear
+            return true;
+            
+        }
+        // Line of sight is obstructed
+        return false;
+    }
+    
+    private class PotentialTarget
+    {
+        public GameObject GameObject { get; set; }
+        public int TypePriority { get; set; }
+        public float DistanceSquared { get; set; }
+    }
+    #endregion
+
+    protected abstract void MoveTowards(Transform targetTransform);
+
+    protected virtual void Approach(Transform targetTransform)
+    {
+        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        rb.velocity = direction * currentStats.movingSpeed;
+        Flip(rb.velocity.x);
+    }
+
+    protected virtual void Attack(Transform targetTransform, String attackAnimationName)
+    {
+        if (Time.time >= lastAttackTime + enemyStats.attackInterval)
+        {
+            lastAttackTime = Time.time;
+            
+            if (animator != null)
+            {
+                animator.speed = characterObject.baseStats.attackInterval / enemyStats.attackInterval;
+                // Play the attack animation
+                animator.Play(attackAnimationName, -1, 0f);
+            }
+
+            // Implement attack logic here
+            //Debug.Log($"{gameObject.name} is attacking {target.name}");
+        }
+    }
+    
+    protected float GetAnimationClipLength(string clipName)
+    {
+        if (animator == null || animator.runtimeAnimatorController == null)
+            return 0;
+
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName)
+            {
+                return clip.length;
+            }
+        }
+        return 0;
+    }
+    
+    protected virtual void Flip(float moveDirection)
+    {
+        switch (moveDirection)
+        {
+            case > 0 when !facingRight:
+                facingRight = true;
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                break;
+            case < 0 when facingRight:
+                facingRight = false;
+                transform.eulerAngles = new Vector3(0, 180, 0);
+                break;
+        }
+    }
+    
+    private void SetEnemyContainer()
+    {
+        var chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(transform.position);
+        if (!WorldGenerator.ActiveChunks.TryGetValue(chunkCoord, out var chunk)) return;
+        var enemyContainer = chunk.transform.Find("MobContainer/EnemyContainer");
+        if (enemyContainer != null)
+        {
+            transform.SetParent(enemyContainer, true);
+        }
+        else
+        {
+            Debug.LogError("EnemyContainer not found in chunk.");
+        }
+    }
+    private void FindPlayer()
     {
         if (player == null) 
         { 
-            return false;
-        }
-
-        float distance = CalculateDistanceToPlayer();
-        if(distance <= enemyStats.sensingRange)
-        {
-            return true;
-        }else
-        {
-            return false;
-        }
-        
-    }
-
-    protected bool IsPlayerInAtkRange()
-    {
-        float distance = CalculateDistanceToPlayer();
-        if(distance <= currentStats.attackRange)
-        {
-            return true;
-        }else
-        {
-            timer =0;
-            return false;
+            player = GameObject.FindWithTag("Player");
         }
     }
-
-    protected abstract void EnemyLoop();
     
-    // protected abstract void Patrol();
-
-    protected void ApproachingTarget(Transform target_transform)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, currentStats.movingSpeed * Time.deltaTime);
-        SenseFrontBlock();
-        // transform directiron change
-        if(target_transform.position.x >= transform.position.x)
-        {
-            transform.eulerAngles = new Vector3(0,180,0);
-        }else{
-            transform.eulerAngles = new Vector3(0,0,0);
-        }
-    }
-
-    // Shooting a 2D rayline, if sense a ground tag, then jump
-    protected void SenseFrontBlock()    
+    /*protected void SenseFrontBlock()    
     {
         Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
         Vector3 origin = transform.position - new Vector3(0, 0.5f, 0);
@@ -164,129 +315,5 @@ public abstract class EnemyController : CharacterController
     {
         yield return new WaitForSeconds(duration);
         rb.velocity = new Vector2(rb.velocity.x, 0);
-    }
-
-    protected void UpdateNearestTower() 
-    {
-        Transform[] towerTransforms = towerContainer.GetComponentsInChildren<Transform>();
-        Transform nearest_Transform = towerTransforms[0];
-        float min_distance = Vector2.Distance(towerTransforms[0].position, transform.position);
-        foreach(Transform e in towerTransforms)
-        {
-            Debug.Log(e);
-            if (e.transform.gameObject.CompareTag("tower"))
-            {
-                Debug.Log(e);
-
-                if ((Vector2.Distance(e.position, transform.position) < min_distance) && (e.name != "FiringPoint"))
-                {
-                    nearest_Transform = e;
-                    min_distance = Vector2.Distance(e.position, transform.position);
-                }
-            }
-        }
-        NearestTowerTransform = nearest_Transform;
-    }
-
-    protected float CalculateDistanceFromEnemyToTower(Transform towerTransform)
-    {
-        Vector3 enemyPosition = transform.position;
-        Vector3 towerPosition = towerTransform.position;
-        float distance = Mathf.Sqrt(Mathf.Pow((towerPosition.x - enemyPosition.x),2) + Mathf.Pow((towerPosition.y - enemyPosition.y),2));
-        return distance;
-    }
-
-    protected float DistanceToTarget(Transform target)
-    {
-        Vector2 targetPosition = target.position;
-        Vector2 transformPosition = transform.position;
-        float distance = Mathf.Sqrt(Mathf.Pow((targetPosition.x - transformPosition.x), 2) + Mathf.Pow((targetPosition.y - transformPosition.y), 2));
-        return distance;
-    }
-
-    protected float CalculateDistanceToPlayer()
-    {
-        Vector3 player_position = player.gameObject.transform.position;
-        float x1 = transform.position.x;
-        float y1 = transform.position.y;
-        float x2 = player_position.x;
-        float y2 = player_position.y;
-        float distance = Mathf.Sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-
-        return distance;
-    }
-    
-
-    public GameObject WhatToAttack()
-    {
-        GameObject target = null;
-        if (hatred.Count > 0)
-        {
-            //Debug.Log(Hatred.Count);
-            for (int i = 0; i < hatred.Count; i++)
-            {
-                if (CouldSense(hatred[i].name, enemyStats.sensingRange))
-                {
-                    return tempTarget;
-                }
-            }
-        }
-        else { //Debug.Log("Hatred is empty");
-               }
-        return target;
-    }
-
-    public bool CouldSense(string name, float range)
-    {
-        type = Type.GetType(name);
-
-        colliders = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
-        //Debug.Log(colliders.Length);
-        foreach (Collider2D collider in colliders)
-        {
-            MonoBehaviour[] components = collider.gameObject.GetComponents<CharacterController>();
-            foreach (MonoBehaviour component in components)
-            {
-                if (component != null )
-                {
-                    if (type.IsAssignableFrom(component.GetType()) || type.Equals(component.GetType()))
-                    {
-                        tempTarget = collider.gameObject;
-                        return true;
-                    }
-                }
-            }
-
-        }
-        //Debug.Log("didn't find target");
-        return false; 
-    }
-    
-    protected void SetEnemyContainer()
-    {
-        int chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(transform.position);
-        if (WorldGenerator.ActiveChunks.ContainsKey(chunkCoord))
-            transform.SetParent(WorldGenerator.ActiveChunks[chunkCoord].transform.Find("MobContainer").Find("EnemyContainer"), true);
-    }
-
-    public void ShakePlayerOverHead()
-    {
-        if (Math.Abs(player.transform.position.x - this.transform.position.x) < 0.1f)
-        {
-            if (Math.Abs(player.transform.position.y - this.transform.position.y) < 0.3f)
-            {
-                Debug.Log("shaking the player over head");
-                if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
-                {
-                    this.rb.velocity = new Vector2(-2, rb.velocity.y);
-                }
-                else
-                {
-                    this.rb.velocity = new Vector2(2, rb.velocity.y);
-                }
-            }
-        }
-    }
-    
-    public abstract void MoveTowards(Transform targetTransform);
+    }*/
 }

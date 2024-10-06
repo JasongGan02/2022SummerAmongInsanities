@@ -21,7 +21,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
     public static int worldSizeInChunks = 5;
     public static HashSet<int> ReadyChunks = new HashSet<int>();
     public static readonly Vector2Int ChunkSize = new Vector2Int(32, 100);
-    public static int TileLayers = 4; // 0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)
+    public static int TileLayers = 5; // 0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)
     public float seed;
     public TerrainSettings[] settings;
     public static WorldGenerator Instance { get; private set; }
@@ -289,6 +289,14 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
 
         tileGameObject.transform.SetParent(chunk.transform.Find("Tiles").transform, true);
         tileGameObject.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+        var dynamicLightController = tileGameObject.GetComponent<DynamicLightController>();
+        if (dynamicLightController != null)
+        {
+            dynamicLightController.Initialize(tile, new Vector2(x + 0.5f, y + 0.5f));
+        }
+
+        if (updateLighting)
+            Instance.RefreshChunkLight(chunkID, true);
     }
 
 

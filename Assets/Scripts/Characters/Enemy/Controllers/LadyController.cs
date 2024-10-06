@@ -88,14 +88,14 @@ public class LadyController : EnemyController, IRangedAttacker
     }
 
 
-    protected override void EnemyLoop() 
+    protected override void UpdateEnemyBehavior() 
     {
         // Escape from the tower
         //
 
         // Approaches and escapes from the player
 
-        target = WhatToAttack();
+        target = SearchForTargetObject();
 
         if (rb.velocity.x != 0) SenseFrontBlock();
         if (target == null)
@@ -319,7 +319,8 @@ public class LadyController : EnemyController, IRangedAttacker
         }
         else { animator.SetFloat("movingSpeed", 0f); }
     }
-    public override void MoveTowards(Transform targetTransform)
+
+    protected override void MoveTowards(Transform targetTransform)
     {
         Vector2 direction = (targetTransform.position - transform.position).normalized;
         rb.velocity = direction * currentStats.movingSpeed;
