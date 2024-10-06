@@ -1724,12 +1724,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: testCase.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: testCase.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryNumbers.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryNumbers.Array.data[0]
@@ -1762,6 +1770,10 @@ PrefabInstance:
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryNumbers.Array.data[7]
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: inventoryNumbers.Array.data[8]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[0]
@@ -1798,7 +1810,7 @@ PrefabInstance:
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[8]
       value: 
-      objectReference: {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
+      objectReference: {fileID: 11400000, guid: 22f638505dcd61b4e8ba673d4ccb8c5a, type: 2}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[9]
       value: 

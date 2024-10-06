@@ -162,7 +162,7 @@ public class CharacterSpawnManager : MonoBehaviour
             if (enemyController != null)
             {
                 enemyController.IsGroupAttacking = true;  // Set the flag when commanding to move
-                enemyController.MoveTowards(targetTransform);  // This function needs to be defined or adjusted accordingly
+                //enemyController.MoveTowards(targetTransform);  // This function needs to be defined or adjusted accordingly
             }
         }
     }

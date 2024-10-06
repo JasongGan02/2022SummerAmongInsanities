@@ -128,7 +128,7 @@ public class LightGenerator : MonoBehaviour
                         
                         //Air Block
                         if (chunkData[x, y, 0] is null && chunkData[x, y, 1] is null &&
-                            chunkData[x, y, 2] is null)
+                            chunkData[x, y, 2] is null && chunkData[x, y, 4])
                         {
                             lightLevel = Mathf.Max(sunlightBrightness, maxNeighborLightLevel);
                         } 
@@ -193,7 +193,7 @@ public class LightGenerator : MonoBehaviour
                         
                         //Air Block
                         if (chunkData[x, y, 0] is null && chunkData[x, y, 1] is null &&
-                            chunkData[x, y, 2] is null)
+                            chunkData[x, y, 2] is null && chunkData[x, y, 4] is null)
                         {
                             lightLevel = Mathf.Max(sunlightBrightness, maxNeighborLightLevel);
                         } 
@@ -310,7 +310,7 @@ public class LightGenerator : MonoBehaviour
                 
                 //Air Block
                 if (chunkData[columnIndex, y, 0] is null && chunkData[columnIndex, y, 1] is null &&
-                    chunkData[columnIndex, y, 2] is null)
+                    chunkData[columnIndex, y, 2] is null && chunkData[columnIndex, y, 4])
                 {
                     lightLevel = Mathf.Max(sunlightBrightness, maxNeighborLightLevel);
                 } 

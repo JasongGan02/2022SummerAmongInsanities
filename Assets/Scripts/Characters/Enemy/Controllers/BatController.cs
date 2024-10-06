@@ -252,7 +252,7 @@ public class BatController : EnemyController
         return false;
     }
 
-    public override void MoveTowards(Transform targetTransform)
+    protected override void MoveTowards(Transform targetTransform)
     {
         GroupApproachTarget = targetTransform;
         IsGroupAttacking = true;

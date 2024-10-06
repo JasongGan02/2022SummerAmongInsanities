@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public class EnemyObject : CharacterObject, ISpawnable
 {
     [SerializeField] private EnemyStats enemyStats;
-    
+   
     protected override void OnEnable()
     {
         baseStats = enemyStats;  // Ensure the baseStats is set

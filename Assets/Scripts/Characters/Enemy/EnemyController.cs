@@ -10,28 +10,28 @@ public abstract class EnemyController : CharacterController
     protected EnemyStats enemyStats => (EnemyStats)currentStats;
     protected GameObject player;
     protected Rigidbody2D rb;
+    protected Animator animator;
+    protected bool facingRight = true;
+    
+    protected float lastAttackTime = -Mathf.Infinity;
+    
     private Vector2? lastKnownPosition = null;
     private float lastSeenTimestamp = 0f;
     
     protected LayerMask groundLayerMask;
     protected LayerMask targetLayerMask;
-    protected LayerMask lineOfSightLayerMask;
     
     protected Vector2? LastKnownPosition => lastKnownPosition;
     protected bool HasLastKnownPosition => lastKnownPosition.HasValue && (Time.time - lastSeenTimestamp < 3f);
     public bool IsGroupAttacking { get; set; } = false;
     
-    
-    
-
-    
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("ground");
         targetLayerMask = LayerMask.GetMask("player", "tower");
-        lineOfSightLayerMask = LayerMask.GetMask("ground", "resource");
     }
     
     protected virtual void Start()
@@ -47,14 +47,6 @@ public abstract class EnemyController : CharacterController
         UpdateEnemyBehavior();
     }
     
-    private void FindPlayer()
-    {
-        if (player == null) 
-        { 
-            player = GameObject.FindWithTag("Player");
-        }
-    }
-
     public void LevelUp()
     {
         Reinitialize();
@@ -68,53 +60,12 @@ public abstract class EnemyController : CharacterController
     
     protected abstract void UpdateEnemyBehavior();
     
-    /*protected void SenseFrontBlock()    
-    {
-        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position - new Vector3(0, 0.5f, 0);
-
-        LayerMask ground_mask = LayerMask.GetMask("ground");
-
-        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 0.5f, ground_mask);
-        Debug.DrawRay(origin, shooting_direction * 0.5f, Color.green); // infront
-        Vector3 left = transform.position - new Vector3(-0.3f, 0.2f, 0);
-        RaycastHit2D bottomLeft = Physics2D.Raycast(left, Vector3.down, 0.2f, ground_mask);
-        Debug.DrawRay(left, Vector3.down * 0.2f, Color.blue);        // bottom left
-        Vector3 right = transform.position + new Vector3(0.2f, 0.2f, 0);
-        RaycastHit2D bottomRight = Physics2D.Raycast(right, Vector3.down, 0.2f, ground_mask);
-        Debug.DrawRay(right, Vector3.down * 0.2f, Color.blue);        // bottom right
-
-        if (hit.collider != null && 
-            bottomLeft.collider != null && 
-            bottomRight.collider != null)
-        {
-            //Vector2 up_force = new Vector2(0, JumpForce);
-            //gameObject.GetComponent<Rigidbody2D>().AddForce(up_force); 
-            //Debug.Log("up_force: " + up_force);
-            if (hit.collider.gameObject.tag == "ground" &&
-                bottomLeft.collider.gameObject.tag == "ground" &&
-                bottomRight.collider.gameObject.tag == "ground")
-            {
-                Vector2 up_force = new Vector2(0, currentStats.jumpForce);
-                Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
-                rb.AddForce(up_force, ForceMode2D.Impulse);
-                //Debug.Log("up_force: " + up_force);
-                StartCoroutine(StopJump(rb, 0.5f)); //stop the jump after 0.5 seconds
-            }
-        }
-        
-    }
-    IEnumerator StopJump(Rigidbody2D rb, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-    }*/
-
     protected float DistanceToTarget(Transform target)
     {
         return Vector2.Distance(transform.position, target.position);
     }
-
+    
+    #region Search For Target
     protected GameObject SearchForTargetObject()
     {
         if (Hatred == null || Hatred.Count == 0)
@@ -225,22 +176,82 @@ public abstract class EnemyController : CharacterController
         float distance = direction.magnitude;
         direction.Normalize();
 
-        RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, lineOfSightLayerMask);
-        Debug.DrawLine(eyePosition, targetPosition, Color.red, 0.1f);
-        if (hit.collider != null)
+        RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, groundLayerMask);
+        //Debug.DrawLine(eyePosition, targetPosition, Color.red);
+        if (hit.collider == null)
         {
-            if (hit.collider.gameObject == target)
-            {
-                // Line of sight is clear
-                return true;
-            }
+            // Line of sight is clear
+            return true;
+            
         }
-
         // Line of sight is obstructed
         return false;
     }
+    
+    private class PotentialTarget
+    {
+        public GameObject GameObject { get; set; }
+        public int TypePriority { get; set; }
+        public float DistanceSquared { get; set; }
+    }
+    #endregion
 
+    protected abstract void MoveTowards(Transform targetTransform);
 
+    protected virtual void Approach(Transform targetTransform)
+    {
+        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        rb.velocity = direction * currentStats.movingSpeed;
+        Flip(rb.velocity.x);
+    }
+
+    protected virtual void Attack(Transform targetTransform, String attackAnimationName)
+    {
+        if (Time.time >= lastAttackTime + enemyStats.attackInterval)
+        {
+            lastAttackTime = Time.time;
+            
+            if (animator != null)
+            {
+                animator.speed = characterObject.baseStats.attackInterval / enemyStats.attackInterval;
+                // Play the attack animation
+                animator.Play(attackAnimationName, -1, 0f);
+            }
+
+            // Implement attack logic here
+            //Debug.Log($"{gameObject.name} is attacking {target.name}");
+        }
+    }
+    
+    protected float GetAnimationClipLength(string clipName)
+    {
+        if (animator == null || animator.runtimeAnimatorController == null)
+            return 0;
+
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName)
+            {
+                return clip.length;
+            }
+        }
+        return 0;
+    }
+    
+    protected virtual void Flip(float moveDirection)
+    {
+        switch (moveDirection)
+        {
+            case > 0 when !facingRight:
+                facingRight = true;
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                break;
+            case < 0 when facingRight:
+                facingRight = false;
+                transform.eulerAngles = new Vector3(0, 180, 0);
+                break;
+        }
+    }
     
     private void SetEnemyContainer()
     {
@@ -256,14 +267,53 @@ public abstract class EnemyController : CharacterController
             Debug.LogError("EnemyContainer not found in chunk.");
         }
     }
-    
-    
-    public abstract void MoveTowards(Transform targetTransform);
-    
-    private class PotentialTarget
+    private void FindPlayer()
     {
-        public GameObject GameObject { get; set; }
-        public int TypePriority { get; set; }
-        public float DistanceSquared { get; set; }
+        if (player == null) 
+        { 
+            player = GameObject.FindWithTag("Player");
+        }
     }
+    
+    /*protected void SenseFrontBlock()    
+    {
+        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position - new Vector3(0, 0.5f, 0);
+
+        LayerMask ground_mask = LayerMask.GetMask("ground");
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 0.5f, ground_mask);
+        Debug.DrawRay(origin, shooting_direction * 0.5f, Color.green); // infront
+        Vector3 left = transform.position - new Vector3(-0.3f, 0.2f, 0);
+        RaycastHit2D bottomLeft = Physics2D.Raycast(left, Vector3.down, 0.2f, ground_mask);
+        Debug.DrawRay(left, Vector3.down * 0.2f, Color.blue);        // bottom left
+        Vector3 right = transform.position + new Vector3(0.2f, 0.2f, 0);
+        RaycastHit2D bottomRight = Physics2D.Raycast(right, Vector3.down, 0.2f, ground_mask);
+        Debug.DrawRay(right, Vector3.down * 0.2f, Color.blue);        // bottom right
+
+        if (hit.collider != null && 
+            bottomLeft.collider != null && 
+            bottomRight.collider != null)
+        {
+            //Vector2 up_force = new Vector2(0, JumpForce);
+            //gameObject.GetComponent<Rigidbody2D>().AddForce(up_force); 
+            //Debug.Log("up_force: " + up_force);
+            if (hit.collider.gameObject.tag == "ground" &&
+                bottomLeft.collider.gameObject.tag == "ground" &&
+                bottomRight.collider.gameObject.tag == "ground")
+            {
+                Vector2 up_force = new Vector2(0, currentStats.jumpForce);
+                Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+                rb.AddForce(up_force, ForceMode2D.Impulse);
+                //Debug.Log("up_force: " + up_force);
+                StartCoroutine(StopJump(rb, 0.5f)); //stop the jump after 0.5 seconds
+            }
+        }
+        
+    }
+    IEnumerator StopJump(Rigidbody2D rb, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+    }*/
 }
