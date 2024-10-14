@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class AxeController : Weapon
 {
+
+
+
+
+
+
+
+
+
     protected override void DetectAndAttackEnemy()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);
@@ -42,7 +51,7 @@ public class AxeController : Weapon
         float raisedAngleAdjustment = 150f;
 
         Vector2 currentTargetPosition = targetPosition; 
-        Vector2 targetDirection = (currentTargetPosition - (Vector2)player.transform.position).normalized;
+        Vector2 targetDirection = (currentTargetPosition - (Vector2)transform.position).normalized;
         bool shouldFlip = currentTargetPosition.x < player.transform.position.x;
 
         while (Time.time - startRotationTime < rotationDuration)
@@ -58,8 +67,7 @@ public class AxeController : Weapon
             float rotateTime = (Time.time - startRotationTime) / rotationDuration;
             transform.rotation = Quaternion.Lerp(transform.rotation, endRotation, rotateTime);
 
-            
-            transform.position = player.transform.position;
+           
 
             yield return null;
         }
