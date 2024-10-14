@@ -29,6 +29,10 @@ public class CreeperController : EnemyController
     bool isAttacking = false;
     bool booming = false;
 
+    protected override string IdleAnimationState { get; }
+    protected override string AttackAnimationState { get; }
+    protected override string MoveAnimationState { get; }
+
     protected override void Awake()
     {
         base.Awake();

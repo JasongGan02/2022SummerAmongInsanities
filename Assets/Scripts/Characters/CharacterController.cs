@@ -13,6 +13,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     protected CharacterStats currentStats;     // Holds the character's current stats
     protected AudioEmitter audioEmitter;
     protected DamageDisplay damageDisplay;
+    protected Animator animator;
+    protected string currentAnimationState;
 
     #endregion
 
@@ -53,6 +55,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     protected virtual void Awake()
     {
         audioEmitter = GetComponent<AudioEmitter>();
+        animator = GetComponent<Animator>();
         damageDisplay = gameObject.AddComponent<DamageDisplay>();
     }
 
@@ -240,6 +243,19 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public AudioEmitter GetAudioEmitter()
     {
         return audioEmitter;
+    }
+
+    #endregion
+    
+    #region Animator
+
+    protected void ChangeAnimationState(string newState)
+    {
+        if (currentAnimationState == newState) return;
+        
+        animator.Play(newState);
+
+        currentAnimationState = newState;
     }
 
     #endregion

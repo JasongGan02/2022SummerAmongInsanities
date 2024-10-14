@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.Serialization;
 
 
 public abstract class EnemyController : CharacterController
@@ -10,26 +9,28 @@ public abstract class EnemyController : CharacterController
     protected EnemyStats enemyStats => (EnemyStats)currentStats;
     protected GameObject player;
     protected Rigidbody2D rb;
-    protected Animator animator;
     protected bool facingRight = true;
-    
-    protected float lastAttackTime = -Mathf.Infinity;
-    
-    private Vector2? lastKnownPosition = null;
-    private float lastSeenTimestamp = 0f;
     
     protected LayerMask groundLayerMask;
     protected LayerMask targetLayerMask;
     
+    protected GameObject target;
+    private Vector2? lastKnownPosition = null;
+    private float lastSeenTimestamp = 0f;
     protected Vector2? LastKnownPosition => lastKnownPosition;
-    protected bool HasLastKnownPosition => lastKnownPosition.HasValue && (Time.time - lastSeenTimestamp < 3f);
-    public bool IsGroupAttacking { get; set; } = false;
+    protected bool HasLastKnownPosition => lastKnownPosition.HasValue && (Time.time - lastSeenTimestamp < 5f);
+    public bool IsGroupAttacking { get; set; }
     
+    //Animation Properties
+    protected abstract string IdleAnimationState { get; }
+    protected abstract string AttackAnimationState { get; }
+    protected abstract string MoveAnimationState { get; }
+    //protected abstract string DeathAnimationState { get; }
+
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("ground");
         targetLayerMask = LayerMask.GetMask("player", "tower");
     }
@@ -136,10 +137,11 @@ public abstract class EnemyController : CharacterController
             if (HasLineOfSightToTarget(potentialTarget.GameObject))
             {
                 // Target is visible
+                lastSeenTimestamp = Time.time;
                 return potentialTarget.GameObject;
             }
         }
-
+        
         // No visible targets; keep last known position if within memory duration
         if (HasLastKnownPosition)
         {
@@ -198,44 +200,52 @@ public abstract class EnemyController : CharacterController
 
     protected abstract void MoveTowards(Transform targetTransform);
 
-    protected virtual void Approach(Transform targetTransform)
+    protected virtual void Approach(Vector2? targetPosition, bool isRunning)
     {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
-        Flip(rb.velocity.x);
-    }
-
-    protected virtual void Attack(Transform targetTransform, String attackAnimationName)
-    {
-        if (Time.time >= lastAttackTime + enemyStats.attackInterval)
+        if (targetPosition != null)
         {
-            lastAttackTime = Time.time;
-            
-            if (animator != null)
-            {
-                animator.speed = characterObject.baseStats.attackInterval / enemyStats.attackInterval;
-                // Play the attack animation
-                animator.Play(attackAnimationName, -1, 0f);
-            }
-
-            // Implement attack logic here
-            //Debug.Log($"{gameObject.name} is attacking {target.name}");
+            Vector2 direction = (targetPosition.Value - (Vector2) transform.position).normalized;
+            direction = new Vector2(direction.x,  rb.velocity.y).normalized;
+            float speed = isRunning ? currentStats.movingSpeed : currentStats.movingSpeed / 2f;
+            rb.velocity = direction * speed;
+            //Debug.Log(speed);
+            Flip(direction.x);
+            ChangeAnimationState(MoveAnimationState);
+        }
+        else
+        {
+            Debug.LogError("targetPosition is null");
         }
     }
     
-    protected float GetAnimationClipLength(string clipName)
-    {
-        if (animator == null || animator.runtimeAnimatorController == null)
-            return 0;
+    protected bool isAttacking;
+    protected bool isGrounded;
 
-        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+    protected virtual void Attack(GameObject target)
+    {
+        if (!(DistanceToTarget(target.transform) < currentStats.attackRange)) return; //没进攻击距离
+        if (!isAttacking)
         {
-            if (clip.name == clipName)
+            isAttacking = true;
+            if (isGrounded)
             {
-                return clip.length;
+                //TODO: 要不就有空中伤害动画要不就没有这段
             }
+                    
+            animator.speed = currentStats.attackInterval / characterObject.baseStats.attackInterval;
+            ChangeAnimationState(AttackAnimationState);
+            var damageable = target.GetComponent<IDamageable>();
+            ApplyDamage(damageable);
         }
-        return 0;
+                
+        Invoke(nameof(AttackComplete), currentStats.attackInterval);
+    }
+    
+    private void AttackComplete()
+    {
+        isAttacking = false;
+        animator.speed = 1.0f;
+        ChangeAnimationState(IdleAnimationState);
     }
     
     protected virtual void Flip(float moveDirection)

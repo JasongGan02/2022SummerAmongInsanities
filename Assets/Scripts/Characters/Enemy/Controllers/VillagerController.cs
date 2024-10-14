@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class VillagerController : EnemyController
@@ -11,7 +9,7 @@ public class VillagerController : EnemyController
     private Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
-    GameObject target;
+    
 
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
@@ -21,7 +19,6 @@ public class VillagerController : EnemyController
     public Transform attackStart;
     public Transform attackEnd;
     public Transform head;
-    LayerMask ground_mask;
 
     //private BoxCollider2D boxCollider;
     private CapsuleCollider2D capsuleCollider;
@@ -33,8 +30,6 @@ public class VillagerController : EnemyController
     public List<Vector2> PathToTarget = new List<Vector2>();
     public float PathTicker = 3f;
     public int PathCounter;
-    public int bodyHeight = 2;
-    public int bodyWidth = 1;
     public LineRenderer lineRenderer;
     public Transform tileDetect1;
     public Transform tileDetect2;
@@ -43,12 +38,16 @@ public class VillagerController : EnemyController
     public float BreakObstaclesCD = 1f;
     public Transform TargetRemainder;
     public float ChasingRemainder = 5f;
+    
+    protected override string IdleAnimationState => "villager_idle";
+    protected override string AttackAnimationState => "villager_attack";
+    protected override string MoveAnimationState => "villager_walk";
+    //protected override string DeathAnimationState => "Zombie_Death";
 
     protected override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
-        ground_mask = LayerMask.GetMask("ground");
         groundCheckLeft = transform.Find("groundCheckLeft");
         groundCheckCenter = transform.Find("groundCheckCenter");
         groundCheckRight = transform.Find("groundCheckRight");
@@ -57,7 +56,6 @@ public class VillagerController : EnemyController
         attackStart = transform.Find("attackStart");
         attackEnd = transform.Find("attackEnd");
         head = transform.Find("head");
-        //boxCollider = GetComponent<BoxCollider2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         tileDetect1 = transform.Find("tileDetect1");
@@ -66,6 +64,32 @@ public class VillagerController : EnemyController
         tileDetect4 = transform.Find("tileDetect4");
     }
 
+    
+    
+    /*protected override void UpdateEnemyBehavior()
+    {
+        target = SearchForTargetObject(); //attempt to search for target
+        if (target == null && !HasLastKnownPosition) //如果现在既没有找到目标也没有上一个目标遗留的地址，则脱离仇恨，开始散步。
+        {
+            Patrol();
+        }
+        else if (target == null && HasLastKnownPosition) //如果现在没有目标但是有上一个目标遗留的地址，则继续前进。
+        {
+            Approach(LastKnownPosition, true);
+        }
+        else //有目标，追就完事了
+        {
+            Approach(target.transform.position, true);
+            Attack(target);
+        }
+    }*/
+
+    protected void Patrol()
+    {
+        
+    }
+
+    
     protected override void UpdateEnemyBehavior()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
@@ -82,23 +106,23 @@ public class VillagerController : EnemyController
             ChasingRemainder = 5f;  // chasing time after losing target in visual
             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
             else { PathExecute(); }         // continue current path
-            if (true || villager_sight())   // see target clearly
+           
+            if (DistanceToTarget(target.transform) < currentStats.attackRange || target.transform.GetComponent<BreakableObjectController>() != null)
             {
-                if (DistanceToTarget(target.transform) < currentStats.attackRange || target.transform.GetComponent<BreakableObjectController>() != null)
-                {
-                    attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower -> faster
-                }
-                else
-                {
-                    Debug.Log("approaching target " + target.transform);
-                    //flip(target.transform);
-                }
+                attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower -> faster
             }
+            else
+            {
+                Debug.Log("approaching target " + target.transform);
+                //flip(target.transform);
+            }
+            
             ShakePlayerOverHead();
         }
         PathTicker -= Time.deltaTime;  // update ticker for path tracking
         TargetTicker -= Time.deltaTime; // update ticker for target tracking
     }
+    
 
     void attack(Transform target, float frequency)
     {
@@ -202,7 +226,7 @@ public class VillagerController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                if (MoveForwardDepthCheck() == true) 
+                if (MoveForwardDepthCheck()) 
                 {
                     rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
                     if (!facingright) { flip(); }
@@ -210,7 +234,7 @@ public class VillagerController : EnemyController
             }
             else
             {
-                if (MoveForwardDepthCheck() == true)
+                if (MoveForwardDepthCheck())
                 {
                     rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
                     if (facingright) { flip(); }
@@ -248,11 +272,11 @@ public class VillagerController : EnemyController
     {
         if (MoveForwardDepthCheck() == false) { return; }
         headCheck();
-        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, groundLayerMask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, groundLayerMask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
 
         if (hitCenter.transform != null)
         {
@@ -281,7 +305,7 @@ public class VillagerController : EnemyController
     bool headCheck()
     {
         Vector3 direction = transform.TransformDirection(-Vector3.right);
-        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, ground_mask);
+        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
         Debug.DrawRay(head.position, direction * 0.34f, Color.red);        // bottom right
         if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
         {
@@ -295,34 +319,7 @@ public class VillagerController : EnemyController
     {
         rb.velocity = new Vector2(horizontal * 1.0f, currentStats.jumpForce);
     }
-    private bool villager_sight()
-    {
-        if (target.transform.GetComponent<BreakableObjectController>() != null) { return true; } // this is tile object, should see by default
-         
-        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
-        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-
-        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
-        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
-
-        float distance1 = Vector2.Distance(targetTop, villagerTop);
-        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
-
-        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
-        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
-        if (checkTop.collider != null &&
-            checkBottom.collider != null &&
-            checkTop.collider.gameObject.CompareTag("ground") &&
-            checkBottom.collider.gameObject.CompareTag("ground"))
-        {
-            //Debug.Log("there is ground block");
-            return false;
-        }
-        return true;
-    }
+    
     public void ChangeCollider(string status)
     {
         // Enable or disable the colliders based on the state
@@ -343,7 +340,7 @@ public class VillagerController : EnemyController
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {
         Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
         if (hit.collider != null) { return true; }
 
         return false;
@@ -382,20 +379,6 @@ public class VillagerController : EnemyController
         {
             //Debug.Log("distance: " + distance + " angle: " + angle);
         }
-    }
-    
-
-    public GameObject GetTileGameObject(Vector2Int tilePosition)
-    {
-        Vector2 rayOrigin = tilePosition;
-        Vector2 rayDirection = Vector2.down;
-        float rayLength = 1.0f;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, ground_mask);
-        if (hit.collider != null)
-        {
-            return hit.collider.gameObject;
-        }
-        return null;
     }
     
     public void PathFind()
@@ -619,9 +602,9 @@ public class VillagerController : EnemyController
 
             if (command == "horizontal")
             {
-                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, ground_mask);
+                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, groundLayerMask);
                 Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red);
-                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, ground_mask);
+                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, groundLayerMask);
                 Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green);
                 if (hitTileDetect2.transform != null)
                 {
@@ -642,9 +625,9 @@ public class VillagerController : EnemyController
             }
             else if (command == "top")
             {
-                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, ground_mask);
+                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, groundLayerMask);
                 Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
-                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, ground_mask);
+                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, groundLayerMask);
                 Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow);
                 if (hitTileDetect3.transform != null)
                 {
@@ -665,7 +648,7 @@ public class VillagerController : EnemyController
             }
             else if (command == "bottom")
             {
-                RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, ground_mask);
+                RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, groundLayerMask);
                 Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
                 if (hitTileDetect5.transform != null)
                 {

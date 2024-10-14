@@ -31,6 +31,10 @@ public class VillagerWithWeaponController : EnemyController
     private float attacking_animation_timer = 0f;
     float damage_start_time_0 = 0.30f;
 
+    protected override string IdleAnimationState { get; }
+    protected override string AttackAnimationState { get; }
+    protected override string MoveAnimationState { get; }
+
     protected override void Awake()
     {
         base.Awake();

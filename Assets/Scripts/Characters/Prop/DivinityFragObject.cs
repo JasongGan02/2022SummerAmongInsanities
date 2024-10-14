@@ -34,7 +34,6 @@ public class DivinityFragObject : BaseObject, IInventoryObject
         drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         var controller = drop.AddComponent<DroppedObjectController>();
         drop.transform.position = dropPosition;
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         controller.Initialize(this, amount);
 
         return drop;

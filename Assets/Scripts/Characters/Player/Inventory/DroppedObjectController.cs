@@ -6,9 +6,11 @@ public class DroppedObjectController : MonoBehaviour
 {
     public IInventoryObject item;
     public float speed = 0.2f;
-    public float distanceThreshold = 3f;
+    public float distanceThreshold = 0.6f;
     public int amount = 1;
-
+    public float pickupDelay = 1f;
+    public float timeSinceDrop = 0f;
+    
     private bool shouldFlyToPlayer = false;
     private GameObject player;
     private Inventory inventory;
@@ -27,7 +29,13 @@ public class DroppedObjectController : MonoBehaviour
             
             Debug.LogError("Drop Position's chunk is not initialized yet");
         }
-
+        Collider2D collider = GetComponent<Collider2D>();
+        float universalSize = 1.0f;  // Target universal size
+        if (collider != null)
+        {
+            
+            transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+        }
         GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
@@ -39,12 +47,13 @@ public class DroppedObjectController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        timeSinceDrop += Time.fixedDeltaTime;
         if (player==null)
         {
             player = GameObject.FindWithTag("Player");
         }
         else{
-            if (shouldFlyToPlayer)
+            if (shouldFlyToPlayer && timeSinceDrop >= pickupDelay)
             {
                 // TODO should let player own this logic
                 transform.position = Vector2.Lerp(transform.position, player.transform.position, speed);
@@ -85,7 +94,7 @@ public class DroppedObjectController : MonoBehaviour
 
     private void PickedUp()
     {
-        shouldFlyToPlayer = false;
+        shouldFlyToPlayer = false;      
 
         inventory.AddItem(item, amount);
         if (item is IPoolableObject)

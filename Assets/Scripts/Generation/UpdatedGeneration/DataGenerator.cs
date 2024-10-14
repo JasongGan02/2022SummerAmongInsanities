@@ -48,6 +48,7 @@ public class DataGenerator
                 var data = GenerateDataSync(chunkCoord);
                 lock (WorldGenerator.WorldData)
                 {
+                    Debug.Log(chunkCoord + " is created.");
                     WorldGenerator.WorldData[chunkCoord] = data;
                 }
             }));

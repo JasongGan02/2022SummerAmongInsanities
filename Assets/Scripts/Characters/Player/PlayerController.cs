@@ -191,7 +191,6 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     protected override void OnStatsChanged()
     {
         UpdateHealthUI();
-        Debug.Log(currentStats.movingSpeed);
         playerMovementComponent.StatsChange(currentStats.movingSpeed, currentStats.jumpForce, currentStats.totalJumps);
     }
     

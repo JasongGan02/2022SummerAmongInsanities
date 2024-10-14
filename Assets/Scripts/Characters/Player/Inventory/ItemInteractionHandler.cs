@@ -72,7 +72,7 @@ public class ItemInteractionHandler : MonoBehaviour, IDragHandler, IEndDragHandl
         shouldListenForRightClick = false;
         PlayerStatusRepository.SetIsViewingUi(false);
         originatingInventory.RemoveSlotRightClickedHandler(HandleSlotRightClickEvent);
-        Invoke("RemoveItemFromInventoryIfNotInSlot", 0.01f);
+        Invoke(nameof(RemoveItemFromInventoryIfNotInSlot), 0.01f);
     }
 
     private void RemoveItemFromInventoryIfNotInSlot()

@@ -48,7 +48,6 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
         }
         controller.Initialize(this, amount);
         drop.transform.position = dropPosition;
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
 
         return drop;
     }

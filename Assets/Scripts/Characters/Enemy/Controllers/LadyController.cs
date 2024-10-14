@@ -47,6 +47,10 @@ public class LadyController : EnemyController, IRangedAttacker
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
+    protected override string IdleAnimationState { get; }
+    protected override string AttackAnimationState { get; }
+    protected override string MoveAnimationState { get; }
+
     protected override void Awake()
     {
         base.Awake();

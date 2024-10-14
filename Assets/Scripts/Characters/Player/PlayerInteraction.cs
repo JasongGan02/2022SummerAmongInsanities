@@ -379,10 +379,10 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
         if (hit.transform != null && hit.transform.gameObject.GetComponent<DroppedObjectController>())
         {
-            DroppedObjectController resoureObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
-            if (inventory.CanAddItem(resoureObject.item))
+            DroppedObjectController resourceObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
+            if (resourceObject.timeSinceDrop >= resourceObject.pickupDelay && inventory.CanAddItem(resourceObject.item))
             {
-                resoureObject.PickingUp();
+                resourceObject.PickingUp();
                 _audioEmitter.PlayClipFromCategory("ItemPickUp");
             }
         }

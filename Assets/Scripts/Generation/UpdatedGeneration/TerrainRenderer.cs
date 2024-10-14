@@ -6,7 +6,6 @@ public class TerrainRenderer : MonoBehaviour
     [SerializeField] private Transform Player;
     [SerializeField] private int RenderDistance;
     private WorldGenerator GeneratorInstance;
-    private HashSet<int> chunksBeingGenerated = new HashSet<int>();
 
     void Start()
     {
@@ -26,10 +25,10 @@ public class TerrainRenderer : MonoBehaviour
         for (int x = plrChunkX - RenderDistance; x <= plrChunkX + RenderDistance; x++)
         {
             int xIndex = x;
-            if (!WorldGenerator.ActiveChunks.ContainsKey(xIndex) && !chunksBeingGenerated.Contains(xIndex))
+            if (!WorldGenerator.ActiveChunks.ContainsKey(xIndex))
             {
-                chunksBeingGenerated.Add(xIndex);
-                StartCoroutine(GeneratorInstance.CreateChunk(xIndex, () => { chunksBeingGenerated.Remove(xIndex); }));
+                Debug.Log("turn on ");
+                StartCoroutine(GeneratorInstance.CreateChunk(xIndex));
             }
         }
 
@@ -38,6 +37,7 @@ public class TerrainRenderer : MonoBehaviour
         foreach (var activeChunk in WorldGenerator.ActiveChunks)
         {
             int chunkX = activeChunk.Key;
+            //Debug.Log();
             if (chunkX < plrChunkX - RenderDistance || chunkX > plrChunkX + RenderDistance)
             {
                 chunksToDisable.Add(chunkX);

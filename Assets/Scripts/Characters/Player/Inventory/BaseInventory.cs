@@ -96,17 +96,14 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
         InventorySlot removedItem = database.RemoveItem(index);
         if (removedItem != null)
         {
-            Vector3 dropPosition;
-            if (player.GetComponent<PlayerMovement>().facingRight)
-            {
-                dropPosition = player.transform.position + new Vector3(1, 0, 0);
-            }
-            else
-            {
-                dropPosition = player.transform.position + new Vector3(-1, 0, 0);
-            }
             // TODO refactor collectible object to set the amount when getting the dropped item
-            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count, dropPosition);
+            GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count, player.transform.position);
+            Vector2 throwDirection = player.GetComponent<PlayerMovement>().facingRight ? Vector2.right : Vector2.left;
+            float throwForceX = 5f;  // Forward force
+            float throwForceY = 1f;  // Upward force
+            Vector2 throwForce = new Vector2(throwDirection.x * throwForceX, throwForceY);
+            var rb = droppedItem.GetComponent<Rigidbody2D>();
+            rb.AddForce(throwForce, ForceMode2D.Impulse);
             droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
         }
 
