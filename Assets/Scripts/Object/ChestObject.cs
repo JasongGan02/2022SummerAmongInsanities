@@ -56,11 +56,9 @@ public class ChestObject : BaseObject, IInventoryObject, ICraftableObject, IShad
             drop.GetComponent<Collider2D>().isTrigger = false;
 
         }
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         drop.transform.position = dropPosition;
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
 
         return drop;
     }

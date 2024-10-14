@@ -343,11 +343,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be6f15fb708d6e44860c1a3ccb633df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MS: 3.5
+  ms: 0
   runningModifier: 2
   jumpForce: 7
   excavateCoeff: 1
   slowDownFactor: 0.1
+  glideSpeed: 5
   totalJumps: 2
   groundCheckLeft: {fileID: 6647711790814027598}
   groundCheckCenter: {fileID: 1012655923350585124}
@@ -370,7 +371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactRange: 3
-  pickUpRange: 0.6
+  pickUpRange: 1.5
   resourceLayer:
     serializedVersion: 2
     m_Bits: 128

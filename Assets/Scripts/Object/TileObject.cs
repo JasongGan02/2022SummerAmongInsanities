@@ -115,12 +115,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             drop.AddComponent<Rigidbody2D>();
         }
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         
-
         return drop;
     }
     #endregion

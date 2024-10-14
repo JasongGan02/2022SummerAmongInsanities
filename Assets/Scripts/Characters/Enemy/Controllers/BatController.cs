@@ -50,6 +50,10 @@ public class BatController : EnemyController
 
     }
 
+    protected override string IdleAnimationState { get; }
+    protected override string AttackAnimationState { get; }
+    protected override string MoveAnimationState { get; }
+
     protected override void Awake()
     {
         base.Awake();

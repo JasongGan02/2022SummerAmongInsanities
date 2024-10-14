@@ -67,12 +67,9 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
             drop.GetComponent<Collider2D>().isTrigger = false;
         
         }
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
-
         return drop;
     }
     #endregion

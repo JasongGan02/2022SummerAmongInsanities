@@ -7,8 +7,26 @@
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animation/MonsterAnimation/Villager/villager.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/MonsterAnimation/Villager/villager.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/ArcherTower 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/ArcherTower 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/CatapultTower 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/CatapultTower 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/TrapTower 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/TrapTower 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/Walls/StoneWall.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/Walls/StoneWall.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/Walls/WoodenWall.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Towers/Walls/WoodenWall.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Bow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Bow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Dagger.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Dagger.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/PlayerBowArrow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/PlayerBowArrow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Spear.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/Spear.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapons/shovel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Weapons/shovel.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Mobs (Monsters)/NewVillager/villager-001-walk.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Mobs (Monsters)/NewVillager/villager-001-walk.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Mobs (Monsters)/NewVillager/villager-002-attack.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Mobs (Monsters)/NewVillager/villager-002-attack.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Rampart (walls)/stonewall-0001.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Rampart (walls)/stonewall-0001.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Rampart (walls)/woodwall-0001.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Rampart (walls)/woodwall-0001.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Towers/archerTower-architecture.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Towers/archerTower-architecture.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Towers/catapult-architecture.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Towers/catapult-architecture.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Towers/wooden-boobytrap.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Towers/wooden-boobytrap.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Lady.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Lady.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/BatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/BatController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/CreeperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/CreeperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/DumbController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/DumbController.cs" afterDir="false" />
@@ -16,12 +34,24 @@
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerWithWeaponController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerWithWeaponController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/CharacterSpawnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/CharacterSpawnManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/LightGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/LightGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/BaseInventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/BaseInventory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/DroppedObjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/DroppedObjectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/ItemInteractionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/ItemInteractionHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Prop/DivinityFragObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Prop/DivinityFragObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/DroppableObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/DroppableObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/DataGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/DataGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainRenderer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Nathan's Scripts/fire-torch.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Nathan's Scripts/fire-torch.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Object/ChestObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Object/ChestObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Object/EquipmentObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Object/EquipmentObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Object/ProjectileObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Object/ProjectileObject.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Object/TileObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Object/TileObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/Rogue Graph.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/Rogue Graph.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +68,10 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/CharacterStats.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/GroundEnemyController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Pathfinding.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/SoulObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerLevelSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/DynamicLightController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Object/Interface/IDroppable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Settings/FrameRateController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Spawn/ISpawnable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PlanetIconController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -107,10 +140,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="24904">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="1464">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="24904" />
+      <option name="pid" value="1464" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -158,7 +191,8 @@
       <workItem from="1727459382712" duration="15435000" />
       <workItem from="1727575207519" duration="596000" />
       <workItem from="1727635599063" duration="13469000" />
-      <workItem from="1728241392677" duration="6459000" />
+      <workItem from="1728241392677" duration="11517000" />
+      <workItem from="1728783022118" duration="18353000" />
     </task>
     <servers />
   </component>
@@ -197,6 +231,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs</url>
+          <line>95</line>
+          <properties documentPath="C:\Dev\UnityProjects\2022SummerAmongInsanities\Assets\Scripts\Characters\Enemy\Controllers\VillagerController.cs" initialLine="94" containingFunctionPresentation="Method 'UpdateEnemyBehavior'">
+            <startOffsets>
+              <option value="3133" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3157" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

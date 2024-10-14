@@ -83,11 +83,9 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
         {
             drop.AddComponent<Rigidbody2D>();
         }
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
         drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
-        drop.transform.localScale = new Vector2(sizeRatio, sizeRatio);
 
         return drop;
     }

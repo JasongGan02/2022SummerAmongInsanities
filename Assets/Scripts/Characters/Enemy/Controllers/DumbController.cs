@@ -30,6 +30,10 @@ public class DumbController : EnemyController
 
 
     // Start is called before the first frame update
+    protected override string IdleAnimationState { get; }
+    protected override string AttackAnimationState { get; }
+    protected override string MoveAnimationState { get; }
+
     protected override void Awake()
     {
         base.Awake();
