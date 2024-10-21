@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 7023852002014492416}
   - component: {fileID: 6647711791749533991}
   - component: {fileID: 4038972269979073815}
+  - component: {fileID: 1249995124370240717}
   - component: {fileID: 1120449656137656567}
   - component: {fileID: 2012019307616880249}
   - component: {fileID: 4399184682783356512}
@@ -390,6 +391,20 @@ MonoBehaviour:
   equipmentTemplate: {fileID: 5703799991536060000, guid: cc327834c14524b41af052db4d6824cb, type: 3}
   handFarm: 0.5
   handFrequency: 1
+--- !u!114 &1249995124370240717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647711791749533985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d7ad4d6b7dc2c40aad5d6b8aeb2c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentExperience: 0
+  experienceToNextLevel: 100
 --- !u!114 &1120449656137656567
 MonoBehaviour:
   m_ObjectHideFlags: 0
