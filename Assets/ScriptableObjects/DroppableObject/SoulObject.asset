@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed44c8fe0e6035043b72c9196eaba7af, type: 3}
+  m_Name: SoulObject
+  m_EditorClassIdentifier: 
+  itemName: SoulObject
+  sizeRatio: 1
+  prefab: {fileID: 4192573540381174803, guid: 6ac9a4039ffefaf4281ee7bf7874f8bc, type: 3}
+  soulUnitValue: 10

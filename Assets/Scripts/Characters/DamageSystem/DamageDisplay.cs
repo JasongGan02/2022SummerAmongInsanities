@@ -18,7 +18,7 @@ public class DamageDisplay : MonoBehaviour
 
     private GameObject DamageTextContainer;
 
-    public void ShowDamage(float amount,Transform enemyTransform)
+    public void ShowDamage(float amount,Transform enemyTransform, float Health)
     {
         DamageTextContainer = GameObject.Find("DamageTextContainer");
         var damageTextMeshPrefab = Resources.Load<TextMeshPro>("DamageDisplay");
@@ -46,13 +46,13 @@ public class DamageDisplay : MonoBehaviour
         }
 
 
-        float minDamage = 1f;  // 最小伤害值
-        float maxDamage = 20f;  // 最大伤害值
+       
+        float damageRatio = amount / Health;  
         float minFontSize = 3f;  // 最小字体大小
         float maxFontSize = 8f;  // 最大字体大小
 
         // 将伤害值映射到字体大小范围内
-        textMesh.fontSize = Mathf.Lerp(minFontSize, maxFontSize, Mathf.InverseLerp(minDamage, maxDamage, amount));
+        textMesh.fontSize = Mathf.Lerp(minFontSize, maxFontSize, damageRatio);
 
         DamageTextContainer.GetComponent<MonoBehaviour>().StartCoroutine(AnimateDamageText(textMesh));
         

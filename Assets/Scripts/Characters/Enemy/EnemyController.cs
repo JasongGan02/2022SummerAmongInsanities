@@ -59,6 +59,12 @@ public abstract class EnemyController : CharacterController
         audioEmitter.PlayClipFromCategory("InjureEnemy");
     }
     
+    protected override void OnObjectReturned(bool isDestroyedByPlayer)
+    {
+        base.OnObjectReturned(isDestroyedByPlayer);
+        (characterObject as EnemyObject)?.soulObject.GetDroppedSoul(enemyStats.soulValue, transform.position);
+    }
+    
     protected abstract void UpdateEnemyBehavior();
     
     protected float DistanceToTarget(Transform target)

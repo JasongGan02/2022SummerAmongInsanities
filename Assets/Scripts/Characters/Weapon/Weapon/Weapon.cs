@@ -1,15 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static Constants;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.Rendering.DebugUI;
-using Animator = UnityEngine.Animator;
 
 public class Weapon : MonoBehaviour, IDamageSource
 {
@@ -20,24 +10,26 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected float attackRange;
     protected float knockbackForce;
 
-
     protected GameObject player;
     protected PlayerMovement playerMovement;
     protected Transform targetEnemy;
-    
-
     protected Inventory inventory;
+
     protected bool isAttacking = false;
     protected float attackDelay = 1f;
     protected Vector2 targetDirection;
     protected float speed = 15f;
 
+    // 新增用于浮动的参数
+    protected Vector3 idleOffset = new Vector3(0, 1.5f, 0); // Idle时武器相对于玩家的偏移位置（上方）
+    protected float idleBobSpeed = 2f; // 上下摆动速度
+    protected float idleBobAmount = 0.5f; // 上下摆动幅度
+    private float idleBobTime;
+
     public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
-
-
 
     public virtual void Start()
     {
@@ -51,45 +43,68 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
-        finalDamage =  weaponObject.BaseDamage + characterController.CurrentStats.attackDamage * weaponObject.DamageCoef ;
-        attackRange = (weaponObject.BaseRange + characterController.CurrentStats.attackRange * weaponObject.RangeCoef)/100;
+        finalDamage = weaponObject.BaseDamage + characterController.CurrentStats.attackDamage * weaponObject.DamageCoef;
+        attackRange = (weaponObject.BaseRange + characterController.CurrentStats.attackRange * weaponObject.RangeCoef) / 100;
         knockbackForce = weaponObject.KnockBack;
 
-    }
-
-    
-    public virtual void Update()
-    {
-
-        if (!isAttacking)
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
         {
-            transform.position = player.transform.position;
-            DetectAndAttackEnemy();  
+            spriteRenderer.sortingOrder = 12;
         }
     }
 
+    public virtual void Update()
+    {
+        if (!isAttacking)
+        {
+            FollowPlayerWithFloat();
+            DetectAndAttackEnemy();
+        }
+    }
+
+    // 新增函数，用于武器平滑跟随玩家并保持上下摆动
+    protected void FollowPlayerWithFloat()
+    {
+        // 计算idle状态下的上下摆动
+        idleBobTime += Time.deltaTime * idleBobSpeed;
+        float bobOffset = Mathf.Sin(idleBobTime) * idleBobAmount;
+
+        // 计算武器应该跟随的位置
+        Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
+
+        // 平滑移动到该位置
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
+    }
 
     protected virtual void DetectAndAttackEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange);
         foreach (Collider2D hit in hits)
         {
             if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
             {
-
                 targetEnemy = hit.transform;
-                
                 StartCoroutine(PrepareAttack(hit.transform.position));
                 break;
             }
         }
-        if(targetEnemy == null)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 270);
-        }
-        
-    }
 
+        if (targetEnemy == null)
+        {
+            if (player.GetComponent<PlayerMovement>().facingRight)
+            {
+                // 玩家朝右，武器也朝右
+                transform.rotation = Quaternion.Euler(0, 0, 270); // 正常朝向
+            }
+            else
+            {
+                // 玩家朝左，武器也朝左
+                transform.rotation = Quaternion.Euler(0, 0, 90); // 水平翻转
+            }
+            
+        }
+    }
 
     IEnumerator PrepareAttack(Vector2 targetPosition)
     {
@@ -98,13 +113,13 @@ public class Weapon : MonoBehaviour, IDamageSource
 
         isAttacking = true;
 
-        float rotationDuration = 0.2f; // Duration for rotation
+        float rotationDuration = 0.2f; // 旋转时间
         float rotateTime = 0.0f;
 
         while (rotateTime < 1.0f)
         {
-            // Update target position in case it moves
-            targetDirection = (targetPosition - (Vector2)player.transform.position).normalized;
+            // 更新目标方向
+            targetDirection = (targetPosition - (Vector2)transform.position).normalized;
             float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
 
             Quaternion startRotation = transform.rotation;
@@ -113,10 +128,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             rotateTime += Time.deltaTime / rotationDuration;
             transform.rotation = Quaternion.Lerp(startRotation, endRotation, rotateTime);
 
-            // Update weapon position to follow the player's movement
-            transform.position = player.transform.position;
-
-            yield return null; // Wait for the next frame
+            yield return null; // 等待下一帧
         }
 
         StartCoroutine(PerformAttack());
@@ -130,10 +142,9 @@ public class Weapon : MonoBehaviour, IDamageSource
         float journeyLength = attackRange;
         float fracJourney = 0f;
 
-        Vector2 startPosition = player.transform.position; 
-        Vector2 endPosition = startPosition + targetDirection * attackRange; 
+        Vector2 startPosition = transform.position;
+        Vector2 endPosition = startPosition + targetDirection * attackRange;
 
-       
         while (fracJourney < 1.0f)
         {
             float distCovered = (Time.time - startTime) * speed * 2;
@@ -142,11 +153,9 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-     
         yield return new WaitForSeconds(0.1f);
 
-     
-        startTime = Time.time; 
+        startTime = Time.time;
         fracJourney = 0f;
         while (fracJourney < 1.0f)
         {
@@ -156,10 +165,9 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-        isAttacking = false; 
+        isAttacking = false;
         targetEnemy = null;
     }
-
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
@@ -189,5 +197,4 @@ public class Weapon : MonoBehaviour, IDamageSource
             enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
     }
-
 }

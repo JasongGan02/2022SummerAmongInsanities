@@ -14,11 +14,25 @@ public class DroppedObjectController : MonoBehaviour
     private bool shouldFlyToPlayer = false;
     private GameObject player;
     private Inventory inventory;
+    private readonly float targetWorldSize = 0.25f;
+    
+    // Floating effect parameters
+    public float floatAmplitude = 0.1f;  // How far up and down the object moves
+    public float floatFrequency = 1f;    // How fast the object oscillates
 
+    private Vector3 originalPosition;
+    
     public void Initialize(IInventoryObject item, int amount)
     {
         this.amount = amount;
         this.item = item;
+        UpdateChunk();
+        NormalizeObjectSize();
+        GetComponent<SpriteRenderer>().sortingOrder = 5;
+    }
+
+    private void UpdateChunk()
+    {
         if (WorldGenerator.TotalChunks.ContainsKey(WorldGenerator.GetChunkCoordsFromPosition(transform.position)))
         {
             GameObject currentChunk = WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
@@ -29,14 +43,6 @@ public class DroppedObjectController : MonoBehaviour
             
             Debug.LogError("Drop Position's chunk is not initialized yet");
         }
-        Collider2D collider = GetComponent<Collider2D>();
-        float universalSize = 1.0f;  // Target universal size
-        if (collider != null)
-        {
-            
-            transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-        }
-        GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
     private void Start()
@@ -48,6 +54,8 @@ public class DroppedObjectController : MonoBehaviour
     private void FixedUpdate()
     {
         timeSinceDrop += Time.fixedDeltaTime;
+        UpdateChunk();
+        //ApplyFloatingEffect();
         if (player==null)
         {
             player = GameObject.FindWithTag("Player");
@@ -115,5 +123,43 @@ public class DroppedObjectController : MonoBehaviour
             Destroy(gameObject);
         }
         
+    }
+    
+    private void NormalizeObjectSize()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            Sprite sprite = spriteRenderer.sprite;
+            if (sprite != null)
+            {
+                // Get the sprite's current size in world units
+                Vector2 spriteSize = sprite.bounds.size; // World size of the sprite in units
+            
+                // Find the largest dimension of the sprite (width or height)
+                float maxDimension = Mathf.Max(spriteSize.x, spriteSize.y);
+            
+                // Calculate the scale factor to make the largest dimension equal to targetWorldSize
+                float scaleFactor = targetWorldSize / maxDimension;
+            
+                // Apply the scale factor to the object's local scale
+                transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+            }
+            else
+            {
+                Debug.LogError("Sprite is missing on the object.");
+            }
+        }
+        else
+        {
+            Debug.LogError("SpriteRenderer is missing on the object.");
+        }
+    }
+    
+    private void ApplyFloatingEffect()
+    {
+        // Sinusoidal oscillation for floating effect
+        float newY = originalPosition.y + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
+        transform.position = new Vector3(originalPosition.x, newY, originalPosition.z);
     }
 }

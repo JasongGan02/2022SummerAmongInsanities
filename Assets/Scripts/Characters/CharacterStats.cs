@@ -129,6 +129,7 @@ public class PlayerStats : CharacterStats
 public class EnemyStats : CharacterStats
 {
     public float sensingRange;
+    public float soulValue;
 
     // Copy the values from another VillagerStats instance
     public override void CopyFrom(CharacterStats source)
@@ -137,6 +138,7 @@ public class EnemyStats : CharacterStats
         if (source is EnemyStats enemySource)
         {
             sensingRange = enemySource.sensingRange;
+            soulValue = enemySource.soulValue;
         }
     }
     
@@ -147,6 +149,7 @@ public class EnemyStats : CharacterStats
         if (mods is EnemyStats enemySource)
         {
             sensingRange += enemySource.sensingRange;
+            soulValue += enemySource.soulValue;
         }
     }
 }
