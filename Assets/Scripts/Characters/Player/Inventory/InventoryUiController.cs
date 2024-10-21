@@ -20,7 +20,7 @@ public class InventoryUiController
 
     private GameObject inventoryContainer;
     private GameObject actionsContainer;
-    private UIViewStateManager uiViewStateManager;
+    protected UIViewStateManager uiViewStateManager;
 
     public InventoryUiController(
         int defaultNumberOfRow, 
@@ -71,11 +71,31 @@ public class InventoryUiController
         this.uiViewStateManager.UpdateUiBeingViewedEvent += UpdateChestInventoryUi;
     }
 
+    public InventoryUiController(
+        int defaultNumberOfRow,
+        GameObject defaultRow,
+        GameObject inventoryGrid,
+        GameObject template,
+        UIViewStateManager uiViewStateManager
+        )
+    {
+        this.defaultNumberOfRow = defaultNumberOfRow;
+        this.defaultRow = defaultRow;
+        this.inventoryGrid = inventoryGrid;
+        this.template = template;
+
+        this.inventoryContainer = this.inventoryGrid.transform.Find("WeaponInventory").gameObject;
+
+        this.uiViewStateManager = uiViewStateManager;
+
+    }
+
 
     ~InventoryUiController()
     {
         this.uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateInventoryUi;
         this.uiViewStateManager.UpdateUiBeingViewedEvent -= UpdateChestInventoryUi;
+
     }
 
     public virtual void SetupUi()
@@ -130,6 +150,21 @@ public class InventoryUiController
         SetChestUiActive(false);
     }
 
+    public void SetupWeaponUi()
+    {
+        GameObject row = GameObject.Instantiate(defaultRow);
+        for (int j = 0; j < 2; j++) // Only two slots for weapons
+        {
+            GameObject slot = row.transform.GetChild(j).gameObject;
+            slot.name = "weaponSlot" + j;
+            slotIndex++;
+        }
+        row.transform.SetParent(inventoryContainer.transform);
+        RectTransform rowRectTransform = row.GetComponent<RectTransform>();
+        rowRectTransform.anchoredPosition = new Vector2(100, -40);
+        SetWeaponUiActive(true);
+    }
+
 
     public void UpdateSlotUi(int index, InventorySlot slot)
     {
@@ -168,6 +203,8 @@ public class InventoryUiController
     }
 
 
+
+
     public void SetUiActive(bool isInventoryActive, bool isHotbarActive = true)
     {
         inventoryContainer.SetActive(isInventoryActive);
@@ -186,49 +223,56 @@ public class InventoryUiController
         actionsContainer.SetActive(isChestInventoryActive);
     }
 
-   /*
-    public void UpdateDatabase(InventoryDatabase newDatabase)
+    public void SetWeaponUiActive(bool isWeaponInventoryActive)
     {
-        // Assuming each row has a fixed number of slots, which is the child count of a row
-        int slotsPerRow = defaultRow.transform.childCount;
-
-        // Iterate over each slot in the new database and update the UI
-        for (int i = 0; i < newDatabase.GetSize(); i++)
-        {
-            // Calculate the row and position in the row for the current slot
-            int row = i / slotsPerRow;
-            int positionInRow = i % slotsPerRow;
-
-            // Find the corresponding UI slot GameObject
-            GameObject rowGameObject = inventoryContainer.transform.GetChild(row).gameObject;
-            GameObject slotUi = rowGameObject.transform.GetChild(positionInRow).gameObject;
-
-            // Update the slot UI with the item from the new database
-            UpdateSlotUiFromDatabase(slotUi, newDatabase.GetInventorySlotAtIndex(i));
-        }
+        PlayerStatusRepository.SetIsViewingUi(isWeaponInventoryActive);
+        inventoryContainer.SetActive(isWeaponInventoryActive);
     }
 
-    // Helper method to update a single slot UI from an inventory slot
-    private void UpdateSlotUiFromDatabase(GameObject slotUi, InventorySlot slot)
-    {
-        // Clear existing slot contents
-        foreach (Transform child in slotUi.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
 
-        // If the slot is not empty, create and position the new item UI
-        if (!slot.IsEmpty)
-        {
-            GameObject slotContent = GameObject.Instantiate(template);
-            slotContent.transform.SetParent(slotUi.transform, false);
-            slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.GetSpriteForInventory();
-            slotContent.GetComponent<ItemInteractionHandler>().item = slot.item;
-            slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = slot.count.ToString();
-        }
-    }
+    /*
+     public void UpdateDatabase(InventoryDatabase newDatabase)
+     {
+         // Assuming each row has a fixed number of slots, which is the child count of a row
+         int slotsPerRow = defaultRow.transform.childCount;
 
-    */
+         // Iterate over each slot in the new database and update the UI
+         for (int i = 0; i < newDatabase.GetSize(); i++)
+         {
+             // Calculate the row and position in the row for the current slot
+             int row = i / slotsPerRow;
+             int positionInRow = i % slotsPerRow;
+
+             // Find the corresponding UI slot GameObject
+             GameObject rowGameObject = inventoryContainer.transform.GetChild(row).gameObject;
+             GameObject slotUi = rowGameObject.transform.GetChild(positionInRow).gameObject;
+
+             // Update the slot UI with the item from the new database
+             UpdateSlotUiFromDatabase(slotUi, newDatabase.GetInventorySlotAtIndex(i));
+         }
+     }
+
+     // Helper method to update a single slot UI from an inventory slot
+     private void UpdateSlotUiFromDatabase(GameObject slotUi, InventorySlot slot)
+     {
+         // Clear existing slot contents
+         foreach (Transform child in slotUi.transform)
+         {
+             GameObject.Destroy(child.gameObject);
+         }
+
+         // If the slot is not empty, create and position the new item UI
+         if (!slot.IsEmpty)
+         {
+             GameObject slotContent = GameObject.Instantiate(template);
+             slotContent.transform.SetParent(slotUi.transform, false);
+             slotContent.transform.Find("Icon").GetComponent<Image>().sprite = slot.item.GetSpriteForInventory();
+             slotContent.GetComponent<ItemInteractionHandler>().item = slot.item;
+             slotContent.transform.Find("Count").GetComponent<TMP_Text>().text = slot.count.ToString();
+         }
+     }
+
+     */
 
     public void Upgrade()
     {
