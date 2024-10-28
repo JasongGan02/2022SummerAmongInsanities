@@ -94,8 +94,10 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
     public void RemoveItemAndDrop(int index)
     {
         InventorySlot removedItem = database.RemoveItem(index);
+
         if (removedItem != null)
         {
+            DestroySpawnedWeapon(index);
             // TODO refactor collectible object to set the amount when getting the dropped item
             GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count, player.transform.position);
             Vector2 throwDirection = player.GetComponent<PlayerMovement>().facingRight ? Vector2.right : Vector2.left;
