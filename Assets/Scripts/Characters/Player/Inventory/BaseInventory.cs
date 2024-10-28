@@ -126,13 +126,48 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
         UpdateSlotUi(index2);
     }
 
-    public void SwapItemsBetweenInventory(BaseInventory targetInventory,int index1, int index2)
+    
+    public void SwapItemsBetweenInventory(BaseInventory targetInventory, int index1, int index2)
     {
-        this.database.TransferItemToOtherInventory(targetInventory.database,index1, index2);
-        UpdateSlotUi(index1);
-        targetInventory.UpdateSlotUi(index2);
-    }
+        InventorySlot sourceSlot = this.GetInventorySlotAtIndex(index1);
+        if (targetInventory is WeaponInventory)
+        {
+            if (sourceSlot != null && sourceSlot.item is WeaponObject)
+            {
+                
+                this.database.TransferItemToOtherInventory(targetInventory.database, index1, index2);
+                UpdateSlotUi(index1);
+                targetInventory.UpdateSlotUi(index2);
+                targetInventory.SpawnWeaponIfAvailable();
+            }
+            else
+            {
+                UpdateSlotUi(index1);
+                targetInventory.UpdateSlotUi(index2);
+                return;
+            }
+        }
+        else
+        {
+            if (sourceSlot != null && sourceSlot.item is WeaponObject)
+            {
+                this.DestroySpawnedWeapon(index1);
+            }
 
+            this.database.TransferItemToOtherInventory(targetInventory.database, index1, index2);
+            UpdateSlotUi(index1);
+            targetInventory.UpdateSlotUi(index2);
+
+        }
+    }
+    public virtual void DestroySpawnedWeapon(int slotIndex)
+    {
+        
+    }
+    public virtual void SpawnWeaponIfAvailable()
+    {
+            
+    }
 
     public int MoveItems(int fromIndex, int toIndex, int amount, bool shouldUpdateFromSlot)
     {

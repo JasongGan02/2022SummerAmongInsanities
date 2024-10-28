@@ -156,7 +156,7 @@ public class InventoryUiController
         for (int j = 0; j < 2; j++) // Only two slots for weapons
         {
             GameObject slot = row.transform.GetChild(j).gameObject;
-            slot.name = "weaponSlot" + j;
+            slot.name = "slot" + j;
             slotIndex++;
         }
         row.transform.SetParent(inventoryContainer.transform);
