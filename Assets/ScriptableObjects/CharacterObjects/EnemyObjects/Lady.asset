@@ -37,9 +37,7 @@ MonoBehaviour:
     movingSpeed: 2
     jumpForce: 10
     totalJumps: 1
-  drops:
-  - droppedItem: {fileID: 0}
-    chance: 0
+  drops: []
   hatred:
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
@@ -55,7 +53,7 @@ MonoBehaviour:
     jumpForce: 10
     totalJumps: 1
     sensingRange: 8
-    soulValue: 0
+    soulValue: 50
   soulObject: {fileID: 11400000, guid: e0e44c120cb18f046905d57b784e8903, type: 2}
   minLightLevel: 0
   maxLightLevel: 6

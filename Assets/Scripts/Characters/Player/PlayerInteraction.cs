@@ -6,7 +6,7 @@ using System;
 public class PlayerInteraction : MonoBehaviour, IAudioable
 {
     public float interactRange = 1f;
-    public float pickUpRange = 1f;
+    public float pickUpRange = 1.5f;
     public LayerMask resourceLayer;
     public LayerMask groundLayer;
     private Animator animator;
@@ -377,7 +377,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     private void PickUpItemCheck()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
-        if (hit.transform != null && hit.transform.gameObject.GetComponent<DroppedObjectController>())
+        if (hit.transform != null)
         {
             // If the object is a Soul, trigger its collection behavior
             if (hit.transform.gameObject.GetComponent<SoulController>() != null)

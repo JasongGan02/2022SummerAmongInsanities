@@ -1,20 +1,26 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class SoulController : MonoBehaviour
 {
-    public float speed = 0.2f;
+    public float initialSpeed = 4f;
+    public float maxSpeed = 12f;
+    public float acceleration = 2.5f;
     public float distanceThreshold = 0.6f;
     public float floatAmplitude = 0.1f;
     public float floatFrequency = 1f;
-    public float pickupDelay = 1f;
+    public float pickupDelay = 0.2f;
     public float timeSinceSpawn = 0f;
-    private float experienceValue = 0; // Value of experience or resource the Soul gives
+    public float hoverHeight = 0.5f; // Height to float above the ground
+    private float experienceValue = 0;
 
     private bool shouldFlyToPlayer = false;
     private GameObject player;
     private PlayerExperience playerExperience;
     private Vector3 originalPosition;
+    private float currentSpeed;
+    private Rigidbody rb;
 
     public void Initialize(float experienceValue)
     {
@@ -22,9 +28,11 @@ public class SoulController : MonoBehaviour
         playerExperience = player.GetComponent<PlayerExperience>();
         this.experienceValue = experienceValue;
         originalPosition = transform.position;
+        currentSpeed = initialSpeed;
+        rb = GetComponent<Rigidbody>();
         UpdateChunk();
     }
-    
+
     private void UpdateChunk()
     {
         if (WorldGenerator.TotalChunks.ContainsKey(WorldGenerator.GetChunkCoordsFromPosition(transform.position)))
@@ -34,15 +42,15 @@ public class SoulController : MonoBehaviour
         }
         else
         {
-            
             Debug.LogError("Drop Position's chunk is not initialized yet");
         }
     }
+
     private void FixedUpdate()
     {
         UpdateChunk();
         timeSinceSpawn += Time.fixedDeltaTime;
-        
+
         if (timeSinceSpawn >= pickupDelay)
         {
             if (player == null)
@@ -56,21 +64,26 @@ public class SoulController : MonoBehaviour
                     MoveTowardsPlayer();
                 }
             }
-
-            ApplyFloatingEffect();
         }
 
-        // Destroy the object if it falls below a certain threshold
         if (transform.position.y < -100)
         {
             Destroy(gameObject);
         }
     }
 
+    private void Update()
+    {
+        //if (!shouldFlyToPlayer)
+            //ApplyFloatingEffect();
+    }
+
     private void MoveTowardsPlayer()
     {
-        transform.position = Vector2.Lerp(transform.position, player.transform.position, speed);
-        if (Vector2.Distance(transform.position, player.transform.position) < distanceThreshold)
+        currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.deltaTime, maxSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, currentSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, player.transform.position) < distanceThreshold)
         {
             GrantExperience();
         }
@@ -78,9 +91,13 @@ public class SoulController : MonoBehaviour
 
     private void ApplyFloatingEffect()
     {
-        // Sinusoidal oscillation for floating effect
-        float newY = originalPosition.y + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
-        transform.position = new Vector3(originalPosition.x, newY, originalPosition.z);
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down,out hit))
+        {
+            float targetY = hit.point.y + hoverHeight + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
+            Vector3 targetPosition = new Vector3(transform.position.x, targetY, transform.position.z);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * floatFrequency);
+        }
     }
 
     public void StartTrackingPlayer()
@@ -93,6 +110,6 @@ public class SoulController : MonoBehaviour
     private void GrantExperience()
     {
         playerExperience.AddExperience(experienceValue);
-        Destroy(gameObject); // Remove the Soul after it's collected.
+        Destroy(gameObject);
     }
 }
