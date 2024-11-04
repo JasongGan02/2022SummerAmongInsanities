@@ -97,7 +97,7 @@ public class AxeController : Weapon
     {
         _audioEmitter.PlayClipFromCategory("WeaponAttack");
 
-        Vector2 startPosition = transform.position;
+        Vector2 startPosition = player.transform.position + idleOffset;
         bool shouldFlip = transform.localScale.x < 0; 
 
         
@@ -128,8 +128,6 @@ public class AxeController : Weapon
 
             yield return null;
         }
-
-
         isAttacking = false;
         targetEnemy = null;
     }
