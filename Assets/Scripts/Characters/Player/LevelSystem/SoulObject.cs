@@ -16,7 +16,7 @@ public class SoulObject : BaseObject
             Vector3 randomOffset = Random.insideUnitCircle * 0.5f; // Randomize the drop position a little
             var soulObject = Instantiate(prefab, dropPosition + randomOffset, Quaternion.identity);
             var controller = soulObject.AddComponent<SoulController>();
-            controller.Initialize(soulValue);
+            controller.Initialize(soulValue/soulUnitValue);
         }
         
     }

@@ -17,6 +17,8 @@ public class UIViewStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentUI == UIBeingViewed.LevelUp)
+            return; 
         if (Input.GetKeyDown(KeyCode.B))
         {
             ToggleUI(UIBeingViewed.Inventory);
@@ -24,10 +26,6 @@ public class UIViewStateManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.C))
         {
             ToggleUI(UIBeingViewed.Construction);
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            ToggleUI(UIBeingViewed.Rogue);
         }
         else if (Input.GetKeyDown(KeyCode.P)) 
         {
@@ -65,13 +63,19 @@ public class UIViewStateManager : MonoBehaviour
         ToggleUI(UIBeingViewed.Chest);
     }
 
+    public void ToggleLevelUpUI()
+    {
+        ToggleUI(UIBeingViewed.LevelUp);
+    }
+
 }
 
 public enum UIBeingViewed {
     Null,
     Construction,
     Inventory,
-    Rogue,
+    LevelUp,
+    Sacrifice,
     Craft,
     Chest
 }

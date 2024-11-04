@@ -11,7 +11,7 @@ public class GameEvents : MonoBehaviour
     {
         if (current != null && current != this)
         {
-            // If a duplicate exists, destroy it
+            // If a duplicate exists, destroy it    
             Destroy(gameObject);
         }
         else
@@ -57,5 +57,19 @@ public class GameEvents : MonoBehaviour
     public void DayUpdated(int day)
     {
         OnDayUpdated?.Invoke(day);
+    }
+    
+    public event Action OnPlayerLevelUp;
+
+    public void PlayerLevelUp()
+    {
+        OnPlayerLevelUp?.Invoke();
+    }
+    
+    public event Action OnOpenSacrificeStore;
+
+    public void OpenSacrificeStore()
+    {
+        OnOpenSacrificeStore?.Invoke();
     }
 }
