@@ -6,8 +6,10 @@ using UnityEditor;
 public class RogueGraphNode : ScriptableObject
 {
     public EffectObject effect;
-    private RogueGraph containerGraph;
     public bool isRoot = false;
+    public Quality quality;
+    public Sprite rogueNodeGraph;
+    private RogueGraph containerGraph;
 
     [SerializeField]
     public List<RogueGraphNode> childNodes = new();

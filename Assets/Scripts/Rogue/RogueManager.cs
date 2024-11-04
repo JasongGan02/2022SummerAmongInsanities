@@ -165,7 +165,7 @@ public class RogueManager : MonoBehaviour
 
     private void ToggleRogueUI(object sender, UIBeingViewed ui)
     {
-        rogueUI.SetActive(ui == UIBeingViewed.Rogue);
+        //rogueUI.SetActive(ui == UIBeingViewed.Rogue);
     }
 
     private void HandleBuffSelectedEvent(object sender, RogueGraphNode node)

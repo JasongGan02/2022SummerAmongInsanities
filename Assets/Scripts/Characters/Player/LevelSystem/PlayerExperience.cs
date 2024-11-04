@@ -40,7 +40,16 @@ public class PlayerExperience : MonoBehaviour
         currentExperience -= experienceToNextLevel;
         experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.1f); // Example scaling
         Level++;
-        // Level up logic (increase stats, etc.)
         Debug.Log("Leveled up!");
+        
+        // Fire the LevelUp event via GameEvents
+        if (GameEvents.current != null)
+        {
+            GameEvents.current.PlayerLevelUp();
+        }
+        else
+        {
+            Debug.LogError("GameEvents instance not found in the scene.");
+        }
     }
 }

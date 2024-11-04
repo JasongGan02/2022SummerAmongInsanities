@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentExperience: 0
-  experienceToNextLevel: 100
+  experienceToNextLevel: 5
 --- !u!114 &1120449656137656567
 MonoBehaviour:
   m_ObjectHideFlags: 0

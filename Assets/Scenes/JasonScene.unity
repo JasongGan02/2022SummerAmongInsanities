@@ -948,6 +948,11 @@ Transform:
   m_Father: {fileID: 182581677}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1145532857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8317769674019627682, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1374051852 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1776182459236102195, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
@@ -968,6 +973,23 @@ MonoBehaviour:
   clipCategories:
   - {fileID: 11400000, guid: 603869ca963f50c40a3b53c4b3d327cd, type: 2}
   spatialBlend: 0
+--- !u!114 &1374051858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374051852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e49e27b839b3344971d734842c44df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000, guid: 2907d8ed1a2b7a0409ab7c2b5ff561f0, type: 2}
+  buffSelectionTemplate: {fileID: 6587848129468446497, guid: c851780859352734abdf15d1d379e44f, type: 3}
+  hoveringBuffUIPrefab: {fileID: 5543895213065968985, guid: ca5034d77d7cf6d49b25921cd96385ba, type: 3}
+  rerollButton: {fileID: 1145532857}
+  baseRerollCost: 5
 --- !u!1 &1464075472
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,6 +1534,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.0000060796738
       objectReference: {fileID: 0}
+    - target: {fileID: 5960334214529887733, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5960334214529887733, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5960334214529887733, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1374051852}
+    - target: {fileID: 5960334214529887733, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6157647836379953240, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1551,6 +1589,10 @@ PrefabInstance:
     - target: {fileID: 7983123536436347764, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317769674019627682, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_Name
+      value: RerollButton
       objectReference: {fileID: 0}
     - target: {fileID: 8475015525451595364, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1719,6 +1761,10 @@ PrefabInstance:
       propertyPath: enemyTypes.Array.data[5]
       value: 
       objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
+    - target: {fileID: 1776182459236102194, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1932488204404519316, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_Name
       value: AudioManager
