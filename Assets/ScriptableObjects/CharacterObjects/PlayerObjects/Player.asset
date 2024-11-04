@@ -19,7 +19,7 @@ MonoBehaviour:
     hp: 1000
     attackDamage: 7
     attackInterval: 1.2
-    attackRange: 10
+    attackRange: 7
     armor: 15
     criticalChance: 5
     criticalMultiplier: 1.2
@@ -27,10 +27,10 @@ MonoBehaviour:
     jumpForce: 15
     totalJumps: 2
   maxStats:
-    hp: 1000
+    hp: 100
     attackDamage: 7
     attackInterval: 1.2
-    attackRange: 5
+    attackRange: 7
     armor: 15
     criticalChance: 5
     criticalMultiplier: 1.2
@@ -43,7 +43,7 @@ MonoBehaviour:
     hp: 1000
     attackDamage: 7
     attackInterval: 1.2
-    attackRange: 10
+    attackRange: 7
     armor: 15
     criticalChance: 5
     criticalMultiplier: 1.2

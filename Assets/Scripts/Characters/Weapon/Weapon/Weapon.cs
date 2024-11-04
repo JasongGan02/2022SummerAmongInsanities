@@ -20,9 +20,10 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected Vector2 targetDirection;
     protected float speed = 15f;
 
-    protected Vector3 idleOffset = new Vector3(0, 1.5f, 0); 
-    protected float idleBobSpeed = 2f; 
-    protected float idleBobAmount = 0.5f; 
+    // 新增用于浮动的参数
+    protected Vector3 idleOffset = new Vector3(0, 1.5f, 0); // Idle时武器相对于玩家的偏移位置（上方）
+    protected float idleBobSpeed = 2f; // 上下摆动速度
+    protected float idleBobAmount = 0.5f; // 上下摆动幅度
     private float idleBobTime;
 
     public GameObject SourceGameObject => gameObject;
@@ -62,6 +63,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         }
     }
 
+    // 新增函数，用于武器平滑跟随玩家并保持上下摆动
     protected void FollowPlayerWithFloat()
     {
         // 计算idle状态下的上下摆动
@@ -140,7 +142,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         float journeyLength = attackRange;
         float fracJourney = 0f;
 
-        Vector2 startPosition = player.transform.position + idleOffset;
+        Vector2 startPosition = transform.position;
         Vector2 endPosition = startPosition + targetDirection * attackRange;
 
         while (fracJourney < 1.0f)

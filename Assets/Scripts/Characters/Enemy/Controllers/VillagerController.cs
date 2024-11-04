@@ -306,7 +306,7 @@ public class VillagerController : EnemyController
     {
         Vector3 direction = transform.TransformDirection(-Vector3.right);
         RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
-        //Debug.DrawRay(head.position, direction * 0.34f, Color.red);        // bottom right
+        Debug.DrawRay(head.position, direction * 0.34f, Color.red);        // bottom right
         if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
         {
             //Debug.Log("headCheck return false");
@@ -454,7 +454,7 @@ public class VillagerController : EnemyController
             PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
             return;
         }
-       // DrawPath();
+        DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
             Debug.Log("Go to: " + PathToTarget[PathCounter]);
@@ -498,7 +498,7 @@ public class VillagerController : EnemyController
             PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
             return;
         }
-        //DrawPath();
+        DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
             Debug.Log("Go to: " + PathToTarget[PathCounter]);
@@ -603,9 +603,9 @@ public class VillagerController : EnemyController
             if (command == "horizontal")
             {
                 RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, groundLayerMask);
-                //Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red);
+                Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red);
                 RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, groundLayerMask);
-               //Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green);
+                Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green);
                 if (hitTileDetect2.transform != null)
                 {
                     var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
@@ -626,9 +626,9 @@ public class VillagerController : EnemyController
             else if (command == "top")
             {
                 RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, groundLayerMask);
-                //Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
+                Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
                 RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, groundLayerMask);
-                //Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow);
+                Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow);
                 if (hitTileDetect3.transform != null)
                 {
                     var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
@@ -649,7 +649,7 @@ public class VillagerController : EnemyController
             else if (command == "bottom")
             {
                 RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, groundLayerMask);
-                //Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
+                Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
                 if (hitTileDetect5.transform != null)
                 {
                     var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();

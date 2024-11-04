@@ -132,7 +132,6 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
     public void SwapItemsBetweenInventory(BaseInventory targetInventory, int index1, int index2)
     {
         InventorySlot sourceSlot = this.GetInventorySlotAtIndex(index1);
-        InventorySlot targetSlot = targetInventory.GetInventorySlotAtIndex(index2);
         if (targetInventory is WeaponInventory)
         {
             if (sourceSlot != null && sourceSlot.item is WeaponObject)
@@ -154,15 +153,9 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
         {
             if (sourceSlot != null && sourceSlot.item is WeaponObject)
             {
-                if (targetSlot.item != null)
-                {
-                    UpdateSlotUi(index1);
-                    targetInventory.UpdateSlotUi(index2);
-                    return;
-                }
-
                 this.DestroySpawnedWeapon(index1);
             }
+
             this.database.TransferItemToOtherInventory(targetInventory.database, index1, index2);
             UpdateSlotUi(index1);
             targetInventory.UpdateSlotUi(index2);

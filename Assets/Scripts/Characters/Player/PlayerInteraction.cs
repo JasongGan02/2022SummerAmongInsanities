@@ -94,6 +94,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     // Update is called once per frame
     void Update()
     {
+        CheckAndSpawnWeaponInSlot(9);
         if (IsMouseOverInventoryUI())
         {
             return;
@@ -113,7 +114,45 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         playAnim();
     }
 
+    private void CheckAndSpawnWeaponInSlot(int slotIndex)
+    {
+       
+        InventorySlot slot = inventory.GetInventorySlotAtIndex(slotIndex);
 
+        
+        if (slot != null && slot.item is WeaponObject weaponObject)
+        {
+            
+            if (currentWeapon == weaponObject)
+            {
+                return;
+            }
+
+            
+            if (gameObjectInUse != null)
+            {
+                Destroy(gameObjectInUse);
+                gameObjectInUse = null;
+            }
+
+            
+            playerController = GetComponent<PlayerController>();
+            gameObjectInUse = weaponObject.GetSpawnedGameObject(playerController);
+
+            
+            currentWeapon = weaponObject;
+        }
+        else
+        {
+            // 如果当前格子不是武器，清除当前装备的武器
+            /*if (gameObjectInUse != null)
+            {
+                Destroy(gameObjectInUse);
+                gameObjectInUse = null;
+                currentWeapon = null;
+            }*/
+        }
+    }
     private void playAnim()
     {
         if (GetCurrentInUseItem() == null)
