@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public abstract class RogueManagerBase : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public abstract class RogueManagerBase : MonoBehaviour
         selectedBuffText = rogueUI.transform.Find(NAME_SELECTED_BUFF_TEXT).GetComponent<TMP_Text>();
         buffContainer = rogueUI.transform.Find(NAME_BUFF_CONTAINER).gameObject;
         rerollButton = rogueUI.transform.Find(NAME_LEVEL_UP_BUTTON).GetComponent<Button>();
-        rerollButton.onClick.AddListener(OnRerollButtonClick);
+        rerollButton.onClick.AddListener(OnRerollButtonClicked);
         rogueUI.SetActive(false);
     }
 
@@ -212,33 +213,43 @@ public abstract class RogueManagerBase : MonoBehaviour
         Destroy(GameObject.FindGameObjectWithTag(NAME_HOVERING_BUFF));
     }
 
-    protected void OnRerollButtonClick()
+    private void OnRerollButtonClicked()
     {
-        
         int currentCost = CalculateRerollCost();
-        if (buffContainer.transform.childCount == 0)
+
+        // Check if the player has enough EXP
+        if (inventory.SpendExp(currentCost))
         {
-            if(inventory.SpendExp(currentCost))
+            // Increment the reroll count for the next consecutive reroll
+            rerollCount++;
+
+            // Play reroll sound effect
+            _audioEmitter.PlayClipFromCategory("PlayerReroll");
+
+            // Remove existing buff cards
+            foreach (Transform child in buffContainer.transform)
             {
-                AddBuffs();
-            }
-            
-        }
-        else
-        {
-            if(inventory.SpendExp(currentCost))
-            {
-                for(int i = 0; i < buffContainer.transform.childCount; i++)
+                BuffSelectionController buffSelectionController = child.GetComponent<BuffSelectionController>();
+                if (buffSelectionController != null)
                 {
-                    GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
-                    BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
                     buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
                     buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
                     buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
-                    Destroy(buffCard);
                 }
-                AddBuffs();
+                Destroy(child.gameObject);
             }
+
+            // Add new buffs
+            AddBuffs();
+
+            // Update reroll cost UI
+            UpdateRerollUI(currentCost);
+        }
+        else
+        {
+            // Inform the player that they don't have enough EXP
+            Debug.Log("Not enough EXP to reroll.");
+            // You can also trigger a UI notification here
         }
     }
 
@@ -251,6 +262,17 @@ public abstract class RogueManagerBase : MonoBehaviour
     {
         // Exponential increase: cost = baseCost * 2^rerollCount
         return baseRerollCost * (int)Mathf.Pow(2, rerollCount);
+    }
+    
+    private void UpdateRerollUI(int lastCost)
+    {
+        // Example: Update a TMP_Text element to show the next reroll cost
+        TMP_Text rerollCostText = rogueUI.transform.Find(NAME_LEVEL_UP_BUTTON).Find("RerollCostText").GetComponent<TMP_Text>();
+        if (rerollCostText != null)
+        {
+            int nextCost = CalculateRerollCost();
+            rerollCostText.text = $"Next Reroll Cost: {nextCost} EXP";
+        }
     }
 
     

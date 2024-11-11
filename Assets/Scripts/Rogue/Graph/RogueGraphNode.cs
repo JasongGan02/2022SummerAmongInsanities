@@ -120,7 +120,7 @@ public class RogueGraphNode : ScriptableObject
     {
         Vector2 start = rect.center;
 
-        Handles.DrawBezier(start, end, start, end, Color.white, null, connectingLineWidth);
+        Handles.DrawBezier(start, end, start, end, Color.white, null, ConnectingLineWidth);
 
         GUI.changed = true;
     }
@@ -129,16 +129,16 @@ public class RogueGraphNode : ScriptableObject
     {
         Vector2 start = rect.center;
         Vector2 end = childNode.rect.center;
-        Handles.DrawBezier(start, end, start, end, Color.white, null, connectingLineWidth);
+        Handles.DrawBezier(start, end, start, end, Color.white, null, ConnectingLineWidth);
 
         Vector2 direction = end - start;
         Vector2 midPoint = (start + end) / 2;
-        Vector2 arrowHead = midPoint + direction.normalized * connectingLineArrowSize;
-        Vector2 arrowTail1 = midPoint + new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
-        Vector2 arrowTail2 = midPoint - new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
+        Vector2 arrowHead = midPoint + direction.normalized * ConnectingLineArrowSize;
+        Vector2 arrowTail1 = midPoint + new Vector2(-direction.y, direction.x).normalized * ConnectingLineArrowSize;
+        Vector2 arrowTail2 = midPoint - new Vector2(-direction.y, direction.x).normalized * ConnectingLineArrowSize;
 
-        Handles.DrawBezier(arrowHead, arrowTail1, arrowHead, arrowTail1, Color.white, null, connectingLineWidth);
-        Handles.DrawBezier(arrowHead, arrowTail2, arrowHead, arrowTail2, Color.white, null, connectingLineWidth);
+        Handles.DrawBezier(arrowHead, arrowTail1, arrowHead, arrowTail1, Color.white, null, ConnectingLineWidth);
+        Handles.DrawBezier(arrowHead, arrowTail2, arrowHead, arrowTail2, Color.white, null, ConnectingLineWidth);
     }
 
     public bool HasAncester(RogueGraphNode node)
@@ -160,9 +160,38 @@ public class RogueGraphNode : ScriptableObject
 
         return false;
     }
+    
+    private static readonly Dictionary<ItemRarity, (Color color, float weight)> RarityMappings = new()
+    {
+        { ItemRarity.Common, (Color.gray, 1f) },
+        { ItemRarity.Uncommon, (Color.green, 2f) },
+        { ItemRarity.Rare, (Color.blue, 3f) },
+        { ItemRarity.Epic, (new Color(0.58f, 0, 0.83f), 4f) }, // Purple
+        { ItemRarity.Legendary, (Color.yellow, 5f) }
+    };
+    
+    private void OnValidate()
+    {
+        quality ??= new Quality();
 
-    private const float connectingLineWidth = 3f;
-    private const float connectingLineArrowSize = 6f;
+        if (RarityMappings.TryGetValue(quality.rarity, out var mapping))
+        {
+            // Only update if the current values differ to prevent unnecessary changes
+            if (quality.color != mapping.color || Mathf.Abs(quality.weight - mapping.weight) > Mathf.Epsilon)
+            {
+                quality.color = mapping.color;
+                quality.weight = mapping.weight;
+                EditorUtility.SetDirty(this);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"No mapping defined for ItemRarity: {quality.rarity}");
+        }
+    }
+
+    private const float ConnectingLineWidth = 3f;
+    private const float ConnectingLineArrowSize = 6f;
 #endif
 }
 
