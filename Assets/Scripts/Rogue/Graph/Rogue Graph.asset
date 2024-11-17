@@ -16,8 +16,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -28,8 +29,8 @@ MonoBehaviour:
   - {fileID: -7251734177019941377}
   rect:
     serializedVersion: 2
-    x: -308
-    y: 743
+    x: 617
+    y: 535
     width: 200
     height: 100
 --- !u!114 &-8692208508223869133
@@ -48,8 +49,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -57,8 +59,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: -489
-    y: 952
+    x: 436
+    y: 744
     width: 200
     height: 100
 --- !u!114 &-8185062224839343926
@@ -77,8 +79,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -87,8 +90,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1162
-    y: 535
+    x: 2087
+    y: 327
     width: 200
     height: 100
 --- !u!114 &-7251734177019941377
@@ -107,8 +110,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -117,8 +121,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: -564
-    y: 524
+    x: 361
+    y: 316
     width: 200
     height: 100
 --- !u!114 &-6014722271346273671
@@ -137,8 +141,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -166,8 +171,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -175,8 +181,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 553
-    y: 745
+    x: 1478
+    y: 537
     width: 200
     height: 100
 --- !u!114 &-1684480885411025288
@@ -195,8 +201,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -204,8 +211,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 93
-    y: 747
+    x: 1018
+    y: 539
     width: 200
     height: 100
 --- !u!114 &-1210576560814337855
@@ -224,8 +231,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -235,8 +243,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 268
-    y: 535
+    x: 1193
+    y: 327
     width: 200
     height: 100
 --- !u!114 &-986583957479573979
@@ -251,12 +259,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: a14b5d6283400de4491b091a4eac63ed, type: 2}
+  effect: {fileID: 11400000, guid: 44e595ca85f0cf949acea088ec8d1a6a, type: 2}
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -264,8 +273,8 @@ MonoBehaviour:
   - {fileID: 6407617651943876954}
   rect:
     serializedVersion: 2
-    x: 1877
-    y: 732
+    x: 2802
+    y: 524
     width: 200
     height: 100
 --- !u!114 &-821460624157284328
@@ -284,8 +293,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -293,8 +303,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 299
-    y: 749
+    x: 1224
+    y: 541
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -346,8 +356,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -355,8 +366,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 1042
-    y: 746
+    x: 1967
+    y: 538
     width: 200
     height: 100
 --- !u!114 &579058131076162650
@@ -371,12 +382,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 0}
+  effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
   isRoot: 1
   quality:
-    rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    rarity: 4
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    weight: 5
+    cost: 10
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -390,8 +402,8 @@ MonoBehaviour:
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 493
-    y: 280
+    x: 1418
+    y: 72
     width: 200
     height: 100
 --- !u!114 &883222154243436308
@@ -410,8 +422,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -419,8 +432,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: -160
-    y: 953
+    x: 765
+    y: 745
     width: 200
     height: 100
 --- !u!114 &3374202019692122354
@@ -439,8 +452,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -449,8 +463,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: -95
-    y: 542
+    x: 830
+    y: 334
     width: 200
     height: 100
 --- !u!114 &3430983906398004119
@@ -469,8 +483,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -498,8 +513,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -507,8 +523,8 @@ MonoBehaviour:
   - {fileID: -8185062224839343926}
   rect:
     serializedVersion: 2
-    x: 1407
-    y: 728
+    x: 2332
+    y: 520
     width: 200
     height: 100
 --- !u!114 &4609158443660531679
@@ -527,8 +543,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -536,8 +553,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 793
-    y: 745
+    x: 1718
+    y: 537
     width: 200
     height: 100
 --- !u!114 &4669440942681246395
@@ -552,12 +569,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: c1f8074f16f20d940993f0b36670e75b, type: 2}
+  effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -565,8 +583,8 @@ MonoBehaviour:
   - {fileID: 8025022266278908958}
   rect:
     serializedVersion: 2
-    x: 2171
-    y: 727
+    x: 3096
+    y: 519
     width: 200
     height: 100
 --- !u!114 &6407617651943876954
@@ -584,9 +602,10 @@ MonoBehaviour:
   effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
   isRoot: 0
   quality:
-    rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    rarity: 4
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    weight: 5
+    cost: 10
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -595,8 +614,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1583
-    y: 549
+    x: 2508
+    y: 341
     width: 200
     height: 100
 --- !u!114 &7370120939698119193
@@ -615,8 +634,9 @@ MonoBehaviour:
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -627,8 +647,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 769
-    y: 524
+    x: 1694
+    y: 316
     width: 200
     height: 100
 --- !u!114 &8025022266278908958
@@ -643,12 +663,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: bc81abb98a9ba9d499eba7035315c890, type: 2}
+  effect: {fileID: 11400000, guid: 6083ac06a01958143819b034bb1e82e9, type: 2}
   isRoot: 0
   quality:
     rarity: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    weight: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -657,7 +678,7 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1911
-    y: 534
+    x: 2836
+    y: 326
     width: 200
     height: 100

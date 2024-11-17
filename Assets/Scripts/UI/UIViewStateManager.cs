@@ -67,6 +67,11 @@ public class UIViewStateManager : MonoBehaviour
     {
         ToggleUI(UIBeingViewed.LevelUp);
     }
+    
+    public void ToggleSacrificeUI()
+    {
+        ToggleUI(UIBeingViewed.Sacrifice);
+    }
 
 }
 

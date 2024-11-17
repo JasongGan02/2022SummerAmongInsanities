@@ -69,8 +69,8 @@ public abstract class RogueManagerBase : MonoBehaviour
     
     protected virtual void AddBuffs()
     {
+        ClearBuffCards();
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
-
         for (int i = 0; i < nodes.Count; i++)
         {
             RogueGraphNode node = nodes[i];
@@ -80,6 +80,22 @@ public abstract class RogueManagerBase : MonoBehaviour
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
             buffSelectionController.OnBuffHoverEnterEvent += ShowHoveringBuffUI;
             buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI;
+        }
+    }
+    
+    protected virtual void ClearBuffCards()
+    {
+        // Remove existing buff cards
+        foreach (Transform child in buffContainer.transform)
+        {
+            BuffSelectionController buffSelectionController = child.GetComponent<BuffSelectionController>();
+            if (buffSelectionController != null)
+            {
+                buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+                buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
+                buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
+            }
+            Destroy(child.gameObject);
         }
     }
 
@@ -108,7 +124,7 @@ public abstract class RogueManagerBase : MonoBehaviour
         }
     }
     
-    protected List<RogueGraphNode> WeightedRandomSelection(List<RogueGraphNode> candidateNodes, int selectionCount)
+    protected virtual List<RogueGraphNode> WeightedRandomSelection(List<RogueGraphNode> candidateNodes, int selectionCount)
     {
         List<RogueGraphNode> selected = new List<RogueGraphNode>();
         List<RogueGraphNode> available = new List<RogueGraphNode>(candidateNodes);
@@ -184,17 +200,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             }
         }
 
-        // Clean up buff cards
-        for (int i = 0; i < buffContainer.transform.childCount; i++)
-        {
-            GameObject buffCard = buffContainer.transform.GetChild(i).gameObject;
-            BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
-            buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
-            buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
-            buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
-            Destroy(buffCard);
-        }
-        
+        ClearBuffCards();
     }
     
 
@@ -225,20 +231,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
             // Play reroll sound effect
             _audioEmitter.PlayClipFromCategory("PlayerReroll");
-
-            // Remove existing buff cards
-            foreach (Transform child in buffContainer.transform)
-            {
-                BuffSelectionController buffSelectionController = child.GetComponent<BuffSelectionController>();
-                if (buffSelectionController != null)
-                {
-                    buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
-                    buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
-                    buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
-                }
-                Destroy(child.gameObject);
-            }
-
+            
             // Add new buffs
             AddBuffs();
 
@@ -261,13 +254,13 @@ public abstract class RogueManagerBase : MonoBehaviour
     private int CalculateRerollCost()
     {
         // Exponential increase: cost = baseCost * 2^rerollCount
-        return baseRerollCost * (int)Mathf.Pow(2, rerollCount);
+        return baseRerollCost * (int)Mathf.Pow(1.132f, rerollCount);
     }
     
     private void UpdateRerollUI(int lastCost)
     {
         // Example: Update a TMP_Text element to show the next reroll cost
-        TMP_Text rerollCostText = rogueUI.transform.Find(NAME_LEVEL_UP_BUTTON).Find("RerollCostText").GetComponent<TMP_Text>();
+        TMP_Text rerollCostText = rerollButton.transform.Find("RerollCostText").GetComponent<TMP_Text>();
         if (rerollCostText != null)
         {
             int nextCost = CalculateRerollCost();
