@@ -15,7 +15,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     protected DamageDisplay damageDisplay;
     protected Animator animator;
     protected string currentAnimationState;
-
+    public event Action OnWeaponStatsChanged;
     #endregion
 
     #region Properties
@@ -161,7 +161,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
 
     protected virtual void OnStatsChanged()
     {
-        // Custom logic for handling stat changes
+        OnWeaponStatsChanged?.Invoke();
     }
 
     #endregion
