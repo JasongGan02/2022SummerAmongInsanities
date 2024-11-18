@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
@@ -14,9 +16,9 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected GameObject buffSelectionTemplate;
     [SerializeField]
     protected GameObject hoveringBuffUIPrefab;
-    [SerializeField]
-    protected Button rerollButton;
 
+    protected Text insufficientFundsText;
+    protected Button rerollButton;
     protected UIViewStateManager uiViewStateManager;
     protected GameObject rogueUI;
     protected TMP_Text selectedBuffText;
@@ -27,7 +29,7 @@ public abstract class RogueManagerBase : MonoBehaviour
     
     
     //For reroll function
-    private Inventory inventory;
+    protected Inventory inventory;
     [SerializeField]
     private int baseRerollCost = 5; // Base cost for the first reroll
 
@@ -57,10 +59,11 @@ public abstract class RogueManagerBase : MonoBehaviour
 
     protected virtual void SetupUI()
     {
-        rogueUI = GameObject.Find(NAME_ROGUE_UI);
+        rogueUI = GameObject.Find(NameRogueUI);
+        insufficientFundsText = rogueUI.transform.Find(NAME_INSUFFICIENCY_TEXT).GetComponent<Text>();
         selectedBuffText = rogueUI.transform.Find(NAME_SELECTED_BUFF_TEXT).GetComponent<TMP_Text>();
         buffContainer = rogueUI.transform.Find(NAME_BUFF_CONTAINER).gameObject;
-        rerollButton = rogueUI.transform.Find(NAME_LEVEL_UP_BUTTON).GetComponent<Button>();
+        rerollButton = rogueUI.transform.Find(NAME_REROLL_BUTTON).GetComponent<Button>();
         rerollButton.onClick.AddListener(OnRerollButtonClicked);
         rogueUI.SetActive(false);
     }
@@ -243,6 +246,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             // Inform the player that they don't have enough EXP
             Debug.Log("Not enough EXP to reroll.");
             // You can also trigger a UI notification here
+            ShowInsufficientFundsNotification(GetRerollInsufficientFundsMessage());
         }
     }
 
@@ -257,7 +261,7 @@ public abstract class RogueManagerBase : MonoBehaviour
         return baseRerollCost * (int)Mathf.Pow(1.132f, rerollCount);
     }
     
-    private void UpdateRerollUI(int lastCost)
+    protected void UpdateRerollUI(int lastCost)
     {
         // Example: Update a TMP_Text element to show the next reroll cost
         TMP_Text rerollCostText = rerollButton.transform.Find("RerollCostText").GetComponent<TMP_Text>();
@@ -268,10 +272,38 @@ public abstract class RogueManagerBase : MonoBehaviour
         }
     }
 
+    protected virtual string GetRerollInsufficientFundsMessage()
+    {
+        return "您沒有足夠的燼獻祭以重新抽取賜福";
+    }
     
-    protected const string NAME_ROGUE_UI = "RogueUI";
+    protected virtual string GetPurchaseInsufficientFundsMessage()
+    {
+        return "您沒有足夠的燼獻祭以獲得該賜福";
+    }
+    
+    protected void ShowInsufficientFundsNotification(string message)
+    {
+        if (insufficientFundsText != null)
+        {
+            insufficientFundsText.text = message;
+            StartCoroutine(HideNotificationAfterTime(2f));
+        }
+    }
+
+    protected IEnumerator HideNotificationAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if (insufficientFundsText != null)
+        {
+            insufficientFundsText.text = "";
+        }
+    }
+    
+    protected abstract string NameRogueUI { get; }
+    protected const string NAME_INSUFFICIENCY_TEXT = "InsuffiencyText";
     protected const string NAME_SELECTED_BUFF_TEXT = "SelectedBuffText";
     protected const string NAME_BUFF_CONTAINER = "BuffContainer";
     protected const string NAME_HOVERING_BUFF = "HoveringBuffUI";
-    protected const string NAME_LEVEL_UP_BUTTON = "RerollButton";
+    protected const string NAME_REROLL_BUTTON = "RerollButton";
 }

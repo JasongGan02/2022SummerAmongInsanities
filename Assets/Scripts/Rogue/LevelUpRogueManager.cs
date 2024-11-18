@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class LevelUpRogueManager : RogueManagerBase
 {
+    protected override string NameRogueUI => "LevelUpUI";
     private Queue<int> levelUpQueue = new Queue<int>();
     private bool isProcessingLevelUp = false;
 

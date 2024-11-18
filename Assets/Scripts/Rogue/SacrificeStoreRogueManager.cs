@@ -2,29 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class SacrificeStoreRogueManager : RogueManagerBase
 {
+    protected override string NameRogueUI => "SacrificeStoreUI";
     [SerializeField] private KeyCode openSacrificeKey = KeyCode.R;
-    [SerializeField] private TMP_Text insufficientFundsText;
     private CoreArchitectureController coreController;
+    
+    private const float CoreControllerTimeout = 10f;
 
     protected override void Start()
     {
         base.Start();
-        coreController = FindObjectOfType<CoreArchitectureController>();
-        if (coreController == null)
-        {
-            Debug.LogError("CoreArchitectureController not found in the scene.");
-        }
-
+        StartCoroutine(InitializeCoreControllerCoroutine());
+        
         if (insufficientFundsText != null)
         {
             insufficientFundsText.text = "";
         }
     }
+    
+    private IEnumerator InitializeCoreControllerCoroutine()
+    {
+        float elapsedTime = 0f;
+        // Attempt to find the CoreArchitectureController every frame until timeout
+        while (coreController == null && elapsedTime < CoreControllerTimeout)
+        {
+            coreController = FindObjectOfType<CoreArchitectureController>();
+            if (coreController == null)
+            {
+                yield return null; // Wait for the next frame
+                elapsedTime += Time.deltaTime;
+            }
+        }
 
-    protected void Update()
+        if (coreController == null)
+        {
+            Debug.LogError("CoreArchitectureController not found in the scene after waiting.");
+            // Optionally, you can disable this manager or handle the missing controller gracefully
+            this.enabled = false;
+        }
+        else
+        {
+            Debug.Log("CoreArchitectureController successfully found.");
+            // You can perform additional initialization here if needed
+        }
+    }
+    
+    protected void Update() 
     {
         if (Input.GetKeyDown(openSacrificeKey) && coreController != null && coreController.IsPlayerInControlRange())
         {
@@ -40,9 +66,10 @@ public class SacrificeStoreRogueManager : RogueManagerBase
     private void OnPlayerOpenSacrificeStore()
     {
         uiViewStateManager.ToggleSacrificeUI();
+        AddBuffs();
     }
 
-    /*protected override void AddBuffs()
+    protected override void AddBuffs()
     {
         ClearBuffCards();
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
@@ -60,17 +87,16 @@ public class SacrificeStoreRogueManager : RogueManagerBase
             buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI;
         }
     }
-    */
 
-    /*private int CalculateAshCost(float baseCost)
+    private int CalculateAshCost(float baseCost)
     {
-        
+        return (int) baseCost + 10;
     }
     
     protected override void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
-        int nodeCost = node.quality.cost;
-        if (inventory.HasEnoughEXP(nodeCost))
+        int nodeCost = CalculateAshCost(node.quality.cost);
+        if (inventory.SpendExp(nodeCost))
         {
             inventory.SpendExp(nodeCost);
             base.HandleBuffSelectedEvent(sender, node);
@@ -79,25 +105,9 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         else
         {
             Debug.Log("Not enough EXP to perform this sacrifice.");
-            ShowInsufficientFundsNotification();
-        }
-    }*/
-
-    private void ShowInsufficientFundsNotification()
-    {
-        if (insufficientFundsText != null)
-        {
-            insufficientFundsText.text = "Not enough EXP to perform this sacrifice.";
-            StartCoroutine(HideNotificationAfterTime(2f));
+            ShowInsufficientFundsNotification(GetPurchaseInsufficientFundsMessage());
         }
     }
-
-    private IEnumerator HideNotificationAfterTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        if (insufficientFundsText != null)
-        {
-            insufficientFundsText.text = "";
-        }
-    }
+    
+   
 }
