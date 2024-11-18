@@ -20,7 +20,7 @@ public class Weapon : MonoBehaviour, IDamageSource
     protected Vector2 targetDirection;
     protected float speed = 15f;
 
-    protected Vector3 idleOffset = new Vector3(0, 1.5f, 0); 
+    protected Vector3 idleOffset = new Vector3(0, 0f, 0); 
     protected float idleBobSpeed = 2f; 
     protected float idleBobAmount = 0.5f; 
     private float idleBobTime;
@@ -36,6 +36,19 @@ public class Weapon : MonoBehaviour, IDamageSource
         playerMovement = player.GetComponent<PlayerMovement>();
         _audioEmitter = GetComponent<AudioEmitter>();
         inventory = FindObjectOfType<Inventory>();
+        characterController.OnWeaponStatsChanged += UpdateWeaponStats;
+    }
+
+
+
+
+
+
+    private void UpdateWeaponStats()
+    {
+        finalDamage = weaponStats.BaseDamage + characterController.CurrentStats.attackDamage * weaponStats.DamageCoef;
+        attackRange = (weaponStats.BaseRange + characterController.CurrentStats.attackRange * weaponStats.RangeCoef) / 100;
+        knockbackForce = weaponStats.KnockBack;
     }
 
     public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
