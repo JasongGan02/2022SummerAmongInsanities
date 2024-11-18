@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8576850313588804174}
   - component: {fileID: 4316457690833839557}
   m_Layer: 5
-  m_Name: BuffSelectionTemplate
+  m_Name: LevelUpSelectionTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

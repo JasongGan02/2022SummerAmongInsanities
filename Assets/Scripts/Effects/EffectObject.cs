@@ -11,8 +11,6 @@ using UnityEditor;
 public abstract class EffectObject : ScriptableObject
 {
     [Header("General Effect Settings")]
-    public int cost;
-    public int level;
     public float duration;
     public bool requiresReset = false;
     public bool isStackable = false;

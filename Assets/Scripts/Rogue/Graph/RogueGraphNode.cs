@@ -20,6 +20,15 @@ public class RogueGraphNode : ScriptableObject
     [SerializeField]
     private Rect rect;
     private Rect headerRect;
+    
+    private static readonly Dictionary<ItemRarity, (Color color, float weight, float cost)> RarityMappings = new()
+    {
+        { ItemRarity.Common, (Color.gray, 1f, 2f) },
+        { ItemRarity.Uncommon, (Color.green, 2f, 4f) },
+        { ItemRarity.Rare, (Color.blue, 3f, 6f) },
+        { ItemRarity.Epic, (new Color(0.58f, 0, 0.83f), 4f, 8f) }, // Purple
+        { ItemRarity.Legendary, (Color.yellow, 5f, 10f) }
+    };
 
     public void Init(Rect rect, RogueGraph containerGraph, bool isRoot)
     {
@@ -28,6 +37,7 @@ public class RogueGraphNode : ScriptableObject
         this.isRoot = isRoot;
         EditorUtility.SetDirty(this);
     }
+    
 
     public void Draw(GUIStyle style)
     {
@@ -161,15 +171,6 @@ public class RogueGraphNode : ScriptableObject
         return false;
     }
     
-    private static readonly Dictionary<ItemRarity, (Color color, float weight)> RarityMappings = new()
-    {
-        { ItemRarity.Common, (Color.gray, 1f) },
-        { ItemRarity.Uncommon, (Color.green, 2f) },
-        { ItemRarity.Rare, (Color.blue, 3f) },
-        { ItemRarity.Epic, (new Color(0.58f, 0, 0.83f), 4f) }, // Purple
-        { ItemRarity.Legendary, (Color.yellow, 5f) }
-    };
-    
     private void OnValidate()
     {
         quality ??= new Quality();
@@ -181,6 +182,7 @@ public class RogueGraphNode : ScriptableObject
             {
                 quality.color = mapping.color;
                 quality.weight = mapping.weight;
+                quality.cost = mapping.cost;
                 EditorUtility.SetDirty(this);
             }
         }

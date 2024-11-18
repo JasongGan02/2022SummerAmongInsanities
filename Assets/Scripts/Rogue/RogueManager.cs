@@ -170,7 +170,7 @@ public class RogueManager : MonoBehaviour
 
     private void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
-        if (!inventory.SpendExp((node.effect?.cost ?? 0))) return;
+        if (!inventory.SpendExp((int) node.quality.cost)) return;
         selectedNodes.Add(node);
         selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");

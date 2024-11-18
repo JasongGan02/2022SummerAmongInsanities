@@ -12,13 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
   m_Name: HPUpgrade
   m_EditorClassIdentifier: 
-  cost: 0
-  level: 0
   duration: 0
   requiresReset: 0
   isStackable: 0
   isReselectable: 1
-  isPermanent: 0
+  isPermanent: 1
   description: "\u63D0\u9AD85\u70B9\u6700\u5927\u751F\u547D\u503C"
   componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   effectControllerType: {fileID: 11500000, guid: 2294a9200214cfc4aa7d381765f308cd, type: 3}

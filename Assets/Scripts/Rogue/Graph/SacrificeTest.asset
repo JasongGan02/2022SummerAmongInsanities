@@ -12,18 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 1
-    level: 0
-    canRepeat: 0
+  effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
   isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
   rect:
     serializedVersion: 2
-    x: 313
-    y: 432
+    x: 426
+    y: 340
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -36,7 +40,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0497db9006aec0b49ba17e608ea610ba, type: 3}
-  m_Name: test
+  m_Name: SacrificeTest
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 1213871549809339633}
@@ -57,18 +61,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 2
-    level: 0
-    canRepeat: 0
+  effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
   isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
   rect:
     serializedVersion: 2
-    x: 704
-    y: 429
+    x: 817
+    y: 337
     width: 200
     height: 100
 --- !u!114 &1213871549809339633
@@ -83,11 +91,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
+  effect: {fileID: 0}
   isRoot: 1
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
   childNodes:
   - {fileID: -559448945933641247}
   - {fileID: 587801222489916781}
@@ -96,8 +108,8 @@ MonoBehaviour:
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 720
-    y: 199
+    x: 833
+    y: 107
     width: 200
     height: 100
 --- !u!114 &2165223946987216395
@@ -112,18 +124,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
+  effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
   isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
   rect:
     serializedVersion: 2
-    x: 1057
-    y: 428
+    x: 1170
+    y: 336
     width: 200
     height: 100
 --- !u!114 &3403298243052216004
@@ -138,18 +154,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 
-    level: 0
-    canRepeat: 0
+  effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
   isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
   rect:
     serializedVersion: 2
-    x: 1398
-    y: 433
+    x: 1511
+    y: 341
     width: 200
     height: 100
 --- !u!114 &8383753535971127198
@@ -164,11 +184,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff:
-    name: 3
-    level: 0
-    canRepeat: 0
+  effect: {fileID: 0}
   isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 1
+    cost: 2
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}

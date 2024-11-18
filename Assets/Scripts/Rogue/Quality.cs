@@ -8,6 +8,7 @@ public class Quality
     public ItemRarity rarity;
     public Color color;
     public float weight;
+    public float cost;
     public Sprite sprite;
 }
 

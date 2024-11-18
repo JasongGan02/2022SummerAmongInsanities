@@ -9,22 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c1cfae4369b6ea46afba00be827b9d3, type: 3}
-  m_Name: PlayerTotalJumpsUpgrade
+  m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
+  m_Name: PlayerAtkUpgrade 1
   m_EditorClassIdentifier: 
-  cost: 3
-  level: 0
   duration: 0
   requiresReset: 0
   isStackable: 0
   isReselectable: 1
-  isPermanent: 0
-  description: "\u589E\u52A0\u4E00\u6B21\u591A\u6BB5\u8DF3"
+  isPermanent: 1
+  description: "\u63D0\u9AD83\u9EDE\u653B\u64CA\u529B"
   componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   effectControllerType: {fileID: 11500000, guid: 2294a9200214cfc4aa7d381765f308cd, type: 3}
-  statModifications:
+  statChanges:
     hp: 0
-    attackDamage: 0
+    attackDamage: 3
     attackInterval: 0
     attackRange: 0
     armor: 0
@@ -32,4 +30,4 @@ MonoBehaviour:
     criticalMultiplier: 0
     movingSpeed: 0
     jumpForce: 0
-    totalJumps: 1
+    totalJumps: 0
