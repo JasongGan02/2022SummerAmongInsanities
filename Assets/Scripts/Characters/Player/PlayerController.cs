@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.Universal;
-
+using System;
 
 [RequireComponent(typeof(AudioEmitter))]
 public class PlayerController : CharacterController, IDataPersistence, IAudioable
@@ -25,7 +25,8 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     Light2D globalLight;
     public float intensityThreshold = 0.3f;
     public float checkRadius = 6f;
-    
+    public event Action OnWeaponStatsChanged;
+
     void Start()
     {
         timer = 0f;
