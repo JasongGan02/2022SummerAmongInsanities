@@ -143,7 +143,7 @@ public class InventoryUiController
             }
             row.transform.SetParent(inventoryContainer.transform);
             RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(500, -200 - 90 * i);
+            // rowRectTransform.anchoredPosition = new Vector2(500, -200 - 90 * i);
         }
         Button sortButton = actionsContainer.transform.Find("ChestSort").GetComponent<Button>();
         sortButton.onClick.AddListener(OnChestSortButtonClicked);
