@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 2
+    weight: 20
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -62,12 +63,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 2
+    weight: 20
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -92,12 +94,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 1
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 2
+    weight: 20
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -125,12 +128,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 2
+    weight: 20
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -155,12 +159,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 2
+    weight: 20
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -185,12 +190,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 2
+    weight: 20
+    cost: 0
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []

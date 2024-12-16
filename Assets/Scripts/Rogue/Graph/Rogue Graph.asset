@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -46,12 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -76,12 +78,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 65b4b0816f81a1a4eb8eacbe3892206b, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -107,12 +110,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -138,12 +142,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -168,12 +173,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -198,12 +204,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -228,12 +235,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 375d2b27f98eb4a44964430a541e5571, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -260,12 +268,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 44e595ca85f0cf949acea088ec8d1a6a, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -290,12 +299,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -353,12 +363,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -383,6 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
+  baseWeight: 0
   isRoot: 1
   quality:
     rarity: 4
@@ -419,11 +431,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
+    weight: 20
     cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
@@ -449,12 +462,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -480,12 +494,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -510,12 +525,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -540,12 +556,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -570,12 +587,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes: []
@@ -600,6 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 4
@@ -631,12 +650,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 0}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:
@@ -664,12 +684,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6083ac06a01958143819b034bb1e82e9, type: 2}
+  baseWeight: 0
   isRoot: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 1
-    cost: 0
+    weight: 20
+    cost: 2
     sprite: {fileID: 0}
   rogueNodeGraph: {fileID: 0}
   childNodes:

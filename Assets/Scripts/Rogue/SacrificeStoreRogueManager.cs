@@ -9,7 +9,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
     protected override string NameRogueUI => "SacrificeStoreUI";
     [SerializeField] private KeyCode openSacrificeKey = KeyCode.R;
     private CoreArchitectureController coreController;
-    
+    private int totalPurchases;
     private const float CoreControllerTimeout = 10f;
 
     protected override void Start()
@@ -78,8 +78,8 @@ public class SacrificeStoreRogueManager : RogueManagerBase
             RogueGraphNode node = nodes[i];
             GameObject buffCard = Instantiate(buffSelectionTemplate);
             Transform ashCostUI = buffCard.transform.Find("AshCostText");
-            int ashCost = CalculateAshCost(node.quality.cost);
-            ashCostUI.GetComponent<TMP_Text>().text = $"{ashCost} EXP";
+            int ashCost = CalculateAshCost(node.quality);
+            ashCostUI.GetComponent<TMP_Text>().text = $"{ashCost} 烬";
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
             buffSelectionController.Init(node, buffContainer.transform, new Vector2(460 + 500 * i, 590f));
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
@@ -88,25 +88,48 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         }
     }
 
-    private int CalculateAshCost(float baseCost)
+    private const float INIT_COST = 10f;
+    private const float GROWTH_RATE = 0.045f;
+    private const float NONLINEAR_FACTOR = 2f;
+
+    private int CalculateAshCost(Quality quality)
     {
-        return (int) baseCost + 10;
+        // Pfinal = Pbase * (1 + Pquality)
+        // Pbase = Pinit * (1 + a * totalPurchase^b)
+    
+        float basePrice = INIT_COST * (1 + GROWTH_RATE * Mathf.Pow(totalPurchases, NONLINEAR_FACTOR));
+        float finalPrice = basePrice * (1 + quality.cost);
+    
+        return Mathf.RoundToInt(finalPrice);
     }
     
     protected override void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
-        int nodeCost = CalculateAshCost(node.quality.cost);
+        int nodeCost = CalculateAshCost(node.quality);
         if (inventory.SpendExp(nodeCost))
         {
             inventory.SpendExp(nodeCost);
             base.HandleBuffSelectedEvent(sender, node);
             UpdateRerollUI(nodeCost);
+            totalPurchases++;
+            
+            // Auto-refill the store after a successful purchase
+            StartCoroutine(RefillStoreCoroutine());
         }
         else
         {
-            Debug.Log("Not enough EXP to perform this sacrifice.");
+            Debug.Log("Not enough ash to perform this sacrifice.");
             ShowInsufficientFundsNotification(GetPurchaseInsufficientFundsMessage());
         }
+    }
+    
+    private IEnumerator RefillStoreCoroutine()
+    {
+        // Wait for a short moment to let any animations or effects finish
+        yield return new WaitForSeconds(0.2f);
+        
+        // Refill the store with new items
+        AddBuffs();
     }
     
    

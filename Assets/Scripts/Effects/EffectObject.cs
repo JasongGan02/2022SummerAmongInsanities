@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,17 +13,18 @@ public abstract class EffectObject : ScriptableObject
 {
     [Header("General Effect Settings")]
     public float duration;
+    public float tickDuration = 0f;
     public bool requiresReset = false;
     public bool isStackable = false;
-    public bool isReselectable = true;
     public bool isPermanent = false;
     public string description; 
     public MonoScript componentToApply;
     public MonoScript effectControllerType;
     //TODO: Sprite 2DIcon, Potential VFX
     
-    public virtual void ExecuteEffect(IEffectableController effectedGameController)
+    public virtual void ExecuteEffect(IEffectableController effectedGameController) //apply effect on a single object
     {
+        // Get the type of the EffectController to be applied
         Type controllerType = effectControllerType?.GetClass();
         if (controllerType == null)
         {
@@ -30,21 +32,24 @@ public abstract class EffectObject : ScriptableObject
             return;
         }
 
-        MonoBehaviour monoBehaviour = effectedGameController as MonoBehaviour;
-        if (monoBehaviour == null)
-        {
-            Debug.LogError("Effected game object is not set or invalid.");
-            return;
-        }
+        // Add the EffectController component to the target game object
+        EffectController effectController = (effectedGameController as MonoBehaviour).gameObject.AddComponent(controllerType) as EffectController;
 
-        EffectController controller = monoBehaviour.gameObject.AddComponent(controllerType) as EffectController;
-        if (controller == null)
+        if (effectController != null)
         {
-            Debug.LogError("Failed to add controller component.");
-            return;
+            // Initialize the EffectController with this EffectObject
+            effectController.Initialize(this);
         }
+        else
+        {
+            Debug.LogError("Failed to add the effect controller component.");
+        }
+    }
 
-        controller.Initialize(this);
+    
+    public virtual void ExecuteEffectOnAType()
+    {
+        EffectEvents.ApplyEffect(this, GetComponentToApply());
     }
 
     public Type GetComponentToApply()
