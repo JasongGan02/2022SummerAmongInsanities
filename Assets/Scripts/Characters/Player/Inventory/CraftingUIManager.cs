@@ -222,8 +222,8 @@ public class CraftingUIManager : MonoBehaviour
             
             RectTransform buttonRect = buttonObj.GetComponent<RectTransform>();
            
-            buttonRect.sizeDelta = new Vector2(120, 120);
-            buttonRect.anchoredPosition = new Vector2(0, -i * 130 + 190);
+            buttonRect.sizeDelta = new Vector2(106, 106);
+            buttonRect.anchoredPosition = new Vector2(0, -i * 112 + 255);
 
             itemButtonToBaseObjectMapping[button] = list[i];
          
@@ -233,6 +233,7 @@ public class CraftingUIManager : MonoBehaviour
             Image image = buttonImage.AddComponent<Image>();
             RectTransform ImageRect = buttonImage.GetComponent<RectTransform>();
             ImageRect.localPosition = new Vector2(0, 0);
+            ImageRect.sizeDelta = new Vector2(78, 78);
 
 
 

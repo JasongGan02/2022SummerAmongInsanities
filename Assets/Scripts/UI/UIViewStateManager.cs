@@ -73,6 +73,14 @@ public class UIViewStateManager : MonoBehaviour
         ToggleUI(UIBeingViewed.Sacrifice);
     }
 
+    // Specific function to toggle CraftUI (CraftMenu and CraftUI)
+    public void ToggleCraftUI()
+    {
+        // Toggle between the Craft Menu and Craft UI
+        currentUI = currentUI == UIBeingViewed.Craft ? UIBeingViewed.Null : UIBeingViewed.Craft;
+        UpdateUiBeingViewedEvent?.Invoke(this, currentUI);
+    }
+
 }
 
 public enum UIBeingViewed {
