@@ -36,11 +36,13 @@ public class EffectController : MonoBehaviour
     protected virtual IEnumerator EffectDurationCoroutine()
     {
         float elapsedTime = 0f;
+        float tickDuration = effectObject.tickDuration > 0 ? effectObject.tickDuration : Time.deltaTime;
+
         while (elapsedTime < effectObject.duration)
         {
-            DuringEffect();
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            DuringEffect(); // Trigger the effect logic
+            yield return new WaitForSeconds(tickDuration); // Wait for the tick duration
+            elapsedTime += tickDuration; // Increment elapsed time by tick duration
         }
     }
     
