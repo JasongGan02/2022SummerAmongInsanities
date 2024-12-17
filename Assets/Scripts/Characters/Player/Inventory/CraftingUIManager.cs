@@ -303,6 +303,7 @@ public class CraftingUIManager : MonoBehaviour
     private void MenuUIOn()
     {
         MenuUI.SetActive(true);
+        CraftUI.SetActive(true);
         PlayerStatusRepository.SetIsViewingUi(true);
     }
 
