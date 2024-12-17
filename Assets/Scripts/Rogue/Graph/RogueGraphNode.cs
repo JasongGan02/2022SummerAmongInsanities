@@ -6,6 +6,8 @@ using UnityEditor;
 public class RogueGraphNode : ScriptableObject
 {
     public EffectObject effect;
+    public float baseWeight;
+    public bool isReselectable = true;
     public bool isRoot = false;
     public Quality quality;
     public Sprite rogueNodeGraph;
@@ -23,11 +25,11 @@ public class RogueGraphNode : ScriptableObject
     
     private static readonly Dictionary<ItemRarity, (Color color, float weight, float cost)> RarityMappings = new()
     {
-        { ItemRarity.Common, (Color.gray, 1f, 2f) },
-        { ItemRarity.Uncommon, (Color.green, 2f, 4f) },
-        { ItemRarity.Rare, (Color.blue, 3f, 6f) },
-        { ItemRarity.Epic, (new Color(0.58f, 0, 0.83f), 4f, 8f) }, // Purple
-        { ItemRarity.Legendary, (Color.yellow, 5f, 10f) }
+        { ItemRarity.Common, (Color.gray, 20f, 0f) },
+        { ItemRarity.Uncommon, (Color.green, 10f, 0.3f) },
+        { ItemRarity.Rare, (Color.blue, 3f, 0.8f) },
+        { ItemRarity.Epic, (new Color(0.58f, 0, 0.83f), 4f, 1.5f) }, // Purple
+        { ItemRarity.Legendary, (Color.yellow, 5f, 2.5f) }
     };
 
     public void Init(Rect rect, RogueGraph containerGraph, bool isRoot)
@@ -190,6 +192,11 @@ public class RogueGraphNode : ScriptableObject
         {
             Debug.LogWarning($"No mapping defined for ItemRarity: {quality.rarity}");
         }
+    }
+
+    public float GetTotalWeight()
+    {
+        return baseWeight + quality.weight;
     }
 
     private const float ConnectingLineWidth = 3f;

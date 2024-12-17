@@ -19,7 +19,7 @@ public class UIViewStateManager : MonoBehaviour
     {
         if (currentUI == UIBeingViewed.LevelUp)
             return; 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleUI(UIBeingViewed.Inventory);
         }
@@ -27,7 +27,7 @@ public class UIViewStateManager : MonoBehaviour
         {
             ToggleUI(UIBeingViewed.Construction);
         }
-        else if (Input.GetKeyDown(KeyCode.P)) 
+        else if (Input.GetKeyDown(KeyCode.F)) 
         {
             ToggleUI(UIBeingViewed.Craft);
         }

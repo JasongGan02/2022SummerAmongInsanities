@@ -149,7 +149,7 @@ public class RogueManager : MonoBehaviour
 
     private bool CanAddNodeToCandidates(RogueGraphNode node, List<RogueGraphNode> candidateNodes)
     {
-        if (selectedNodes.Contains(node) && !(node.effect?.isReselectable ?? false)) return false;
+        if (selectedNodes.Contains(node) && !(node?.isReselectable ?? false)) return false;
 
         if (candidateNodes.Contains(node)) return false;
 
@@ -175,25 +175,8 @@ public class RogueManager : MonoBehaviour
         selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
         
-        // Get the script component type from the EffectObject
-        Type applyingControllerType = node.effect?.GetComponentToApply();
-        if (applyingControllerType != null)
-        {
-            // Find all game objects with the specified script component type
-            MonoBehaviour[] objectsWithComponent = FindObjectsOfType(applyingControllerType) as MonoBehaviour[];
 
-            foreach (MonoBehaviour obj in objectsWithComponent)
-            {
-                IEffectableController controller = obj as IEffectableController;
-
-                if (controller != null)
-                {
-                    // Add the effect to the found game objects
-                   node.effect.ExecuteEffect(controller);
-                    Debug.Log("Added effect " + node.effect.name + " to " + obj.name);
-                }
-            }
-        }
+        node.effect.ExecuteEffectOnAType();
 
         for(int i = 0; i < buffContainer.transform.childCount; i++)
         {

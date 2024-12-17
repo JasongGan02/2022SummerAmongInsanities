@@ -60,7 +60,9 @@ public class WeaponObject : EquipmentObject , ICraftableObject
 
     [Header("Projectile Properties")] 
     public ProjectileObject projectileObject;
-
+    
+    public List<EffectObject> onHitEffects = new List<EffectObject>();
+    
     [Header("Craft")]
     [SerializeField]
     private BaseObject[] _recipe;

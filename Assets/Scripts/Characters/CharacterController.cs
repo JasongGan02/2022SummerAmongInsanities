@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 [RequireComponent(typeof(AudioEmitter))]
 public abstract class CharacterController : MonoBehaviour, IEffectableController, IPoolableObjectController, IDamageable, IDamageSource, IAudioable
@@ -64,6 +65,30 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         if (transform.position.y < -400f)
         {
             Die();
+        }
+    }
+    
+    protected virtual void OnEnable()
+    {
+        EffectEvents.OnEffectApplied += HandleEffectApplied;
+    }
+
+    protected virtual void OnDisable()
+    {
+        EffectEvents.OnEffectApplied -= HandleEffectApplied;
+    }
+    
+    private void HandleEffectApplied(EffectObject effect, Type targetType)
+    {
+        if (targetType == this.GetType())
+        {
+            // Add the appropriate EffectController as defined in the EffectObject
+            Type effectControllerType = effect.GetEffectComponent(); // e.g., returns a subclass of EffectController
+            if (effectControllerType != null)
+            {
+                EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
+                controller.Initialize(effect);
+            }
         }
     }
 

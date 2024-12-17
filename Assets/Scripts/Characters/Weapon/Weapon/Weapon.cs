@@ -188,6 +188,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             if (damageable != null)
             {
                 ApplyDamage(damageable);
+                ApplyEffects(collision.GetComponent<IEffectableController>());
                 KnockbackEnemy(collision);
             }
         }
@@ -197,6 +198,14 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
+    }
+    
+    private void ApplyEffects(IEffectableController target)
+    {
+        foreach (var effect in weaponStats.onHitEffects)
+        {
+            effect.ExecuteEffect(target);
+        }
     }
 
     protected virtual void KnockbackEnemy(Collider2D enemy)

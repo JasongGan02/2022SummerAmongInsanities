@@ -147,7 +147,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
             foreach (var node in available)
             {
-                cumulative += node.quality.weight;
+                cumulative += node.GetTotalWeight();
                 if (randomValue <= cumulative)
                 {
                     selectedNode = node;
@@ -168,7 +168,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
     protected virtual bool CanAddNodeToCandidates(RogueGraphNode node, List<RogueGraphNode> candidateNodes)
     {
-        if (selectedNodes.Contains(node) && !(node.effect?.isReselectable ?? false)) return false;
+        if (selectedNodes.Contains(node) && !(node?.isReselectable ?? false)) return false;
         if (candidateNodes.Contains(node)) return false;
         if (node.parentNodes.Count <= 1) return true;
 
@@ -187,22 +187,9 @@ public abstract class RogueManagerBase : MonoBehaviour
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
 
         // Apply the effect
-        Type applyingControllerType = node.effect?.GetComponentToApply();
-        if (applyingControllerType != null)
-        {
-            MonoBehaviour[] objectsWithComponent = FindObjectsOfType(applyingControllerType) as MonoBehaviour[];
-
-            foreach (MonoBehaviour obj in objectsWithComponent)
-            {
-                IEffectableController controller = obj as IEffectableController;
-                if (controller != null)
-                {
-                    node.effect.ExecuteEffect(controller);
-                    Debug.Log("Added effect " + node.effect.name + " to " + obj.name);
-                }
-            }
-        }
-
+        if (node.effect != null)
+            node.effect.ExecuteEffectOnAType();
+        
         ClearBuffCards();
     }
     

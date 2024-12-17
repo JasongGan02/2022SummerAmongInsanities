@@ -64,8 +64,9 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
             Die();
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         if (characterObject == null)
             return;
         currentStats.hp = characterObject.maxStats.hp;
