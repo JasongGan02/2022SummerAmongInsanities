@@ -30,5 +30,6 @@ public class SwitchTab : MonoBehaviour
     {
         tab1Prefab.SetActive(false); // Hide the first tab
         tab2Prefab.SetActive(true);  // Show the second tab
+        Debug.Log("111");
     }
 }
