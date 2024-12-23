@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class AxeController : Weapon
 {
 
+    protected bool isLeftSide = false;
 
 
 
 
+    protected override void FollowPlayerWithFloat()
+    {
+        transform.position = player.transform.position + idleOffset + new Vector3(0, 1.5f, 0);
+        
+        transform.rotation = Quaternion.Euler(0, 0, isLeftSide ? -45 : 45);
+        transform.localScale = new Vector3(isLeftSide ? -1 : 1, 1, 1);
 
-
-
+    }
 
     protected override void DetectAndAttackEnemy()
     {
@@ -20,21 +27,13 @@ public class AxeController : Weapon
         {
             if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
             {
-
                 targetEnemy = hit.transform;
 
                 StartCoroutine(PrepareAttack(hit.transform.position));
                 break;
             }
         }
-        if (targetEnemy == null)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-
     }
-
-
 
     IEnumerator PrepareAttack(Vector2 targetPosition)
     {
@@ -43,97 +42,80 @@ public class AxeController : Weapon
 
         isAttacking = true;
 
+
+        Vector2 playerCenter = player.transform.position;
+        isLeftSide = targetPosition.x < playerCenter.x;
         
-        float rotationDuration = 0.2f;
-        float aimDuration = 0.3f;
-        float startTime = Time.time;
-        float startRotationTime = Time.time;
-        float raisedAngleAdjustment = 150f;
 
-        Vector2 currentTargetPosition = targetPosition; 
-        Vector2 targetDirection = (currentTargetPosition - (Vector2)transform.position).normalized;
-        bool shouldFlip = currentTargetPosition.x < player.transform.position.x;
 
-        while (Time.time - startRotationTime < rotationDuration)
-        {
-         
-            
-            transform.localScale = shouldFlip ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+        StartCoroutine(PerformAxeAttack(targetPosition));
 
-            
-            float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 45;
-            targetAngle += shouldFlip ? -90 : 0; 
-            Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
-            float rotateTime = (Time.time - startRotationTime) / rotationDuration;
-            transform.rotation = Quaternion.Lerp(transform.rotation, endRotation, rotateTime);
-
-           
-
-            yield return null;
-        }
-
-        
-        float initialAngle = transform.rotation.eulerAngles.z;
-        float raisedAngle = initialAngle + (shouldFlip ? -raisedAngleAdjustment : raisedAngleAdjustment);
-        Vector2 startPosition = transform.position;
-        Vector2 upwardMovement = new Vector2(shouldFlip ? -0.5f : 0.5f, 0.5f);
-
-        while (Time.time - startTime < aimDuration)
-        {
-            float fracJourney = (Time.time - startTime) / aimDuration;
-            transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(initialAngle, raisedAngle, fracJourney));
-            transform.position = Vector2.Lerp(startPosition, startPosition + upwardMovement, fracJourney);
-            yield return null;
-        }
-
-        StartCoroutine(PerformAxeAttack(targetPosition));  
-
-        yield return new WaitForSeconds(0.2f); 
+        yield return new WaitForSeconds(0.5f);
     }
-
-
 
     IEnumerator PerformAxeAttack(Vector2 targetPosition)
     {
         _audioEmitter.PlayClipFromCategory("WeaponAttack");
 
-        Vector2 startPosition = player.transform.position + idleOffset;
-        bool shouldFlip = transform.localScale.x < 0; 
+        Vector2 playerCenter = player.transform.position;
+        isLeftSide = targetPosition.x < playerCenter.x; 
 
-        
-        float startAngle = transform.rotation.eulerAngles.z;
-        float endAngle;
+        float startAngle = isLeftSide ? 90f : 90f; 
+        float endAngle = isLeftSide ? 225f : -45f; 
+        float attackDuration = 0.1f;
+        float resetDuration = 0.3f;
 
-        if (shouldFlip)
+        float axeStartZ = isLeftSide ? -45f : 45f;
+        float axeEndZ = isLeftSide ? 90f : -90f;
+
+        // 攻击阶段
+        float elapsedTime = 0f;
+        while (elapsedTime < attackDuration)
         {
-            endAngle = startAngle + 180;
-        }
-        else
-        {
-            endAngle = startAngle - 180;
-        }
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / attackDuration;
 
-        float journeyTime = 0.0f;
-        float totalDuration = 0.2f; 
-        Vector2 endPosition = targetPosition; 
+            // 角度插值
+            float currentAngle = Mathf.Lerp(startAngle, endAngle, t);
 
-        while (journeyTime < 1.0f)
-        {
-            journeyTime += Time.deltaTime / totalDuration;
-            float heightFactor = Mathf.Sin(journeyTime * Mathf.PI); 
+            // 计算斧头的旋转角度
+            float currentAxeZ = Mathf.Lerp(axeStartZ, axeEndZ, t);
 
+            // 根据角度计算斧头的位置
+            Vector2 offset = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad)) * attackRange;
+            transform.position = playerCenter + offset;
 
-            transform.position = Vector2.Lerp(startPosition, endPosition, journeyTime) + Vector2.up * heightFactor * 0.5f;
-            transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(startAngle, endAngle, journeyTime));
+            // 设置斧头的旋转
+            transform.localScale = new Vector3(isLeftSide ? -1 : 1, 1, 1); // 左侧时翻转 X 轴
+            transform.rotation = Quaternion.Euler(0, 0, currentAxeZ);
 
             yield return null;
         }
+
+        // 重置阶段
+        elapsedTime = 0f;
+        while (elapsedTime < resetDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / resetDuration;
+
+            // 角度插值
+            float currentAngle = Mathf.Lerp(endAngle, startAngle, t);
+
+            // 计算斧头的旋转角度
+            float currentAxeZ = Mathf.Lerp(axeEndZ, axeStartZ, t);
+
+            // 根据角度计算斧头的位置
+            Vector2 offset = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad)) * attackRange;
+            transform.position = playerCenter + offset;
+
+            transform.rotation = Quaternion.Euler(0, 0, currentAxeZ);
+
+
+            yield return null;
+        }
+
         isAttacking = false;
         targetEnemy = null;
     }
-
-
-
-
-
 }
