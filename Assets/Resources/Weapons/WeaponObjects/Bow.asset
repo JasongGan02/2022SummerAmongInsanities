@@ -10,23 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: Spear
+  m_Name: Bow
   m_EditorClassIdentifier: 
-  itemName: Spear
+  itemName: Bow
   sizeRatio: 2
-  prefab: {fileID: 3246375338820597191, guid: 20a952f4910043c46bc0a12cbba8667b, type: 3}
-  level: 3
+  prefab: {fileID: 2776729951293410429, guid: 93fd2fb1f8adffc4db8cbad0c43dbbc8, type: 3}
+  level: 4
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
   damageCoef: 1
-  rangeCoef: 0.5
-  baseDamage: 10
-  baseRange: 300
+  rangeCoef: 1
+  baseDamage: 1
+  baseRange: 500
   knockBack: 50
   farm: 0
   frequency: 1
-  projectileObject: {fileID: 0}
+  projectileObject: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
+  onHitEffects: []
   _recipe:
   - {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
   _quantity: 05000000

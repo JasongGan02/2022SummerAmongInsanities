@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
   m_Name: OnFireEffect
   m_EditorClassIdentifier: 
-  duration: 0
+  duration: 5
+  tickDuration: 1
   requiresReset: 0
-  isStackable: 0
-  isReselectable: 1
+  isStackable: 1
   isPermanent: 0
-  description: 
-  componentToApply: {fileID: 0}
-  effectControllerType: {fileID: 0}
+  description: "\u6BCF\u79D2\u70E75\u6EF4\u8840"
+  componentToApply: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
+  effectControllerType: {fileID: 11500000, guid: 27233eb63a5e63442b0ff43a1c49ff74, type: 3}
   statChanges:
-    hp: 0
+    hp: 5
     attackDamage: 0
     attackInterval: 0
     attackRange: 0

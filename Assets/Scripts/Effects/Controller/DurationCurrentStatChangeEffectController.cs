@@ -14,7 +14,7 @@ public class DurationCurrentStatChangeEffectController : StatsEffectController
             Debug.LogError("Max Stats not attached to a CC");
             return;
         }
-        
-        characterController.ChangeCurrentStats(statsEffectObject.statChanges);
+        Debug.Log("Changed");
+        characterController.AddCurrentStats(statsEffectObject.statChanges);
     }
 }

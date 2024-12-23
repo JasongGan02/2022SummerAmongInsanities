@@ -39,11 +39,6 @@ public class Weapon : MonoBehaviour, IDamageSource
         characterController.OnWeaponStatsChanged += UpdateWeaponStats;
     }
 
-
-
-
-
-
     private void UpdateWeaponStats()
     {
         finalDamage = weaponStats.BaseDamage + characterController.CurrentStats.attackDamage * weaponStats.DamageCoef;
@@ -65,7 +60,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             spriteRenderer.sortingOrder = 12;
         }
     }
-
+   
     public virtual void Update()
     {
         if (!isAttacking)
@@ -75,7 +70,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         }
     }
 
-    protected void FollowPlayerWithFloat()
+    protected virtual void FollowPlayerWithFloat()
     {
         // 计算idle状态下的上下摆动
         idleBobTime += Time.deltaTime * idleBobSpeed;
@@ -148,7 +143,6 @@ public class Weapon : MonoBehaviour, IDamageSource
     IEnumerator PerformAttack()
     {
         _audioEmitter.PlayClipFromCategory("WeaponAttack");
-        Debug.Log(attackRange);
         float startTime = Time.time;
         float journeyLength = attackRange;
         float fracJourney = 0f;
@@ -164,7 +158,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
 
         startTime = Time.time;
         fracJourney = 0f;
@@ -202,8 +196,10 @@ public class Weapon : MonoBehaviour, IDamageSource
     
     private void ApplyEffects(IEffectableController target)
     {
+        Debug.Log("applied effect");
         foreach (var effect in weaponStats.onHitEffects)
         {
+            Debug.Log(effect);
             effect.ExecuteEffect(target);
         }
     }

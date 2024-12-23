@@ -113,7 +113,7 @@ public class VillagerController : EnemyController
             }
             else
             {
-                Debug.Log("approaching target " + target.transform);
+                //Debug.Log("approaching target " + target.transform);
                 //flip(target.transform);
             }
             
@@ -439,7 +439,7 @@ public class VillagerController : EnemyController
             PathCounter = 0;
 
             string pathString = string.Join(", ", path);
-            Debug.Log(pathString);
+            //Debug.Log(pathString);
         }
         else
         {
@@ -457,7 +457,7 @@ public class VillagerController : EnemyController
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            Debug.Log("Go to: " + PathToTarget[PathCounter]);
+            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
 
             approach(2 * currentStats.movingSpeed, target.transform);
             SenseFrontBlock();
@@ -475,7 +475,7 @@ public class VillagerController : EnemyController
             }
             else
             {
-                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+                //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
             }
         }
         else
@@ -501,7 +501,7 @@ public class VillagerController : EnemyController
         DrawPath();
         if (PathCounter < PathToTarget.Count)
         {
-            Debug.Log("Go to: " + PathToTarget[PathCounter]);
+            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
 
             approach(2 * currentStats.movingSpeed, TargetRemainder);
             SenseFrontBlock();
@@ -519,7 +519,7 @@ public class VillagerController : EnemyController
             }
             else
             {
-                Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+                //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
             }
         }
         else

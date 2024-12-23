@@ -98,7 +98,7 @@ public class BatController : EnemyController
             }
             else
             {
-                Debug.Log("Bat is patroling 2");
+                //Debug.Log("Bat is patroling 2");
                 Patrol();
                 if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
                 {

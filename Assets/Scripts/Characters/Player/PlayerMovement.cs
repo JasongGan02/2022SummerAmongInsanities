@@ -254,11 +254,11 @@ public class PlayerMovement : MonoBehaviour, IAudioable
         transform.localScale = transformScale;
     }
 
-    public void StatsChange(float MS, float jumpForce, int totalJumps)
+    public void StatsChange(float MS, float jumpForce, float totalJumps)
     {
         ms = MS;
         this.jumpForce = jumpForce;
-        this.totalJumps = totalJumps;
+        this.totalJumps = (int) totalJumps;
     }
 
     public AudioEmitter GetAudioEmitter()

@@ -7,16 +7,34 @@
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/Rogue Graph.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/Rogue Graph.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/PlayerObjects/Player.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/PlayerObjects/Player.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Axe.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Axe.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Bow.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Bow.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/EquipmentAtlas.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/EquipmentAtlas.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Hand.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Hand.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Shovel.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Shovel.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Spear.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/Spear.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/StoneDagger.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/StoneDagger.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/DamageSystem/DamageDisplay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/DamageSystem/DamageDisplay.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/BatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/BatController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Pathfinding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Pathfinding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/SoulController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/SoulController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Weapon/Weapon/Weapon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Weapon/Weapon/Weapon.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/DurationCurrentStatChangeEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/DurationCurrentStatChangeEffectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/Heal.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/Heal.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnFireEffect.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnFireEffect.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/DataGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/DataGenerator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/SacrificeTest.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/SacrificeTest.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/SacrificeStoreRogueManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/SacrificeStoreRogueManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/UIViewStateManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/UIViewStateManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/MSYHL SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/MSYHL SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +53,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Pathfinding.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/PlayerExperienceUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/SoulObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/WeaponEffectAssignmentController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectEvents.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/DynamicLightController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Object/Interface/IDroppable.cs" root0="FORCE_HIGHLIGHTING" />
@@ -174,7 +194,10 @@
       <workItem from="1733101496860" duration="1116000" />
       <workItem from="1734131332369" duration="3045000" />
       <workItem from="1734145027164" duration="7222000" />
-      <workItem from="1734310612662" duration="597000" />
+      <workItem from="1734310612662" duration="5985000" />
+      <workItem from="1734640382038" duration="6933000" />
+      <workItem from="1734827662495" duration="3657000" />
+      <workItem from="1734908367720" duration="598000" />
     </task>
     <servers />
   </component>

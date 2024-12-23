@@ -29,29 +29,37 @@ public class DamageDisplay : MonoBehaviour
             return;
         }
 
-        bool isPlayer = enemyTransform.name == "Player";
+        bool isPlayer = enemyTransform.CompareTag("Player");
 
         TextMeshPro textMesh = Instantiate(damageTextMeshPrefab, enemyTransform.position, Quaternion.identity, DamageTextContainer.transform);
 
 
-        if (isPlayer)
+        if (amount < 0) // Healing case
         {
-            textMesh.text = "-" + Mathf.RoundToInt(amount).ToString();
-            textMesh.color = Color.red;
+            textMesh.text = "+" + Mathf.Abs(Mathf.RoundToInt(amount)).ToString(); // Show as positive for healing
+            textMesh.color = GreenColor; // Use green color for healing
         }
         else
         {
-            textMesh.text = Mathf.RoundToInt(amount).ToString();
-            textMesh.color = Color.white;
+            if (isPlayer)
+            {
+                textMesh.text = "-" + Mathf.RoundToInt(amount).ToString();
+                textMesh.color = RedColor; // Use red color for damage to the player
+            }
+            else
+            {
+                textMesh.text = Mathf.RoundToInt(amount).ToString();
+                textMesh.color = DefaultColor; // Default white color for damage to others
+            }
         }
 
 
        
         float damageRatio = amount / Health;  
-        float minFontSize = 3f;  // ×îĞ¡×ÖÌå´óĞ¡
-        float maxFontSize = 8f;  // ×î´ó×ÖÌå´óĞ¡
+        float minFontSize = 3f;  // æœ€å°å­—ä½“å¤§å°
+        float maxFontSize = 8f;  // æœ€å¤§å­—ä½“å¤§å°
 
-        // ½«ÉËº¦ÖµÓ³Éäµ½×ÖÌå´óĞ¡·¶Î§ÄÚ
+        // å°†ä¼¤å®³å€¼æ˜ å°„åˆ°å­—ä½“å¤§å°èŒƒå›´å†…
         textMesh.fontSize = Mathf.Lerp(minFontSize, maxFontSize, damageRatio);
 
         DamageTextContainer.GetComponent<MonoBehaviour>().StartCoroutine(AnimateDamageText(textMesh));
@@ -74,7 +82,7 @@ public class DamageDisplay : MonoBehaviour
 
         Vector3 startPos = textMesh.transform.position + new Vector3(0, 0.3f, 0); ;
         Vector3 initialPos = startPos; 
-        Vector3 floatUpPos = startPos + new Vector3(0, 0.6f, 0);  // ÉÏÒÆµÄÄ¿±êÎ»ÖÃ£¨´ïµ½Õâ¸öÎ»ÖÃºó·¢ÉúÉ²³µ£©
+        Vector3 floatUpPos = startPos + new Vector3(0, 0.6f, 0);  // ä¸Šç§»çš„ç›®æ ‡ä½ç½®ï¼ˆè¾¾åˆ°è¿™ä¸ªä½ç½®åå‘ç”Ÿåˆ¹è½¦ï¼‰
 
         textMesh.transform.position = initialPos;
 
