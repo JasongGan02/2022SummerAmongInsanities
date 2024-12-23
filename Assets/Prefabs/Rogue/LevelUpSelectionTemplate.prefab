@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7757063430204684935}
   - component: {fileID: 8047940450440424667}
   - component: {fileID: 8576850313588804174}
+  - component: {fileID: 4389622379325165271}
   - component: {fileID: 4316457690833839557}
   m_Layer: 5
   m_Name: LevelUpSelectionTemplate
@@ -78,6 +79,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4389622379325165271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587848129468446497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8168516f5d801d4090baee62371f675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSprite: {fileID: 21300000, guid: b9d979ac6b78f254f8108ad106039fcc, type: 3}
+  originalSprite: {fileID: 21300000, guid: 278b9bd57c4e41a489886ce346011825, type: 3}
 --- !u!114 &4316457690833839557
 MonoBehaviour:
   m_ObjectHideFlags: 0
