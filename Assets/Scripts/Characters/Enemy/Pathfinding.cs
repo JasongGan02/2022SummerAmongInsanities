@@ -199,6 +199,6 @@ public class Pathfinding
             sb.AppendLine();
         }
 
-        Debug.Log(sb.ToString());
+        //Debug.Log(sb.ToString());
     }
 }

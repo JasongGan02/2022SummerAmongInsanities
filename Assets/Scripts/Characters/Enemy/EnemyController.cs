@@ -52,6 +52,11 @@ public abstract class EnemyController : CharacterController
     {
         Reinitialize();
     }
+
+    public void PrintStats()
+    {
+        Debug.Log(enemyStats.ToString());
+    }
     
     public override void TakeDamage(float amount, IDamageSource damageSource)
     {

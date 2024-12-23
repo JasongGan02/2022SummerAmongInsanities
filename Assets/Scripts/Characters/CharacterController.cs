@@ -172,16 +172,22 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     
     #region Stats Management
 
-    public void ChangeCurrentStats(CharacterStats mods)
+    public void AddCurrentStats(CharacterStats mods)
     {
-        currentStats.AddStats(mods);
+        currentStats += mods;
+        OnStatsChanged();
+    }
+    
+    public void MultiplyCurrentStats(CharacterStats mods)
+    {
+        currentStats *= mods;
         OnStatsChanged();
     }
 
     public void ChangeMaxStats(CharacterStats mods)
     {
-        characterObject.maxStats.AddStats(mods);
-        ChangeCurrentStats(mods);
+        characterObject.maxStats += mods;
+        AddCurrentStats(mods);
     }
 
     protected virtual void OnStatsChanged()

@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
-  m_Name: Bow
+  m_Name: Shovel
   m_EditorClassIdentifier: 
-  itemName: Bow
+  itemName: Shovel
   sizeRatio: 2
-  prefab: {fileID: 2776729951293410429, guid: 93fd2fb1f8adffc4db8cbad0c43dbbc8, type: 3}
-  level: 4
+  prefab: {fileID: 8647004149643055617, guid: 892f0bcaa59dee74fb9367ee4700566c, type: 3}
+  level: 1
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
-  damageCoef: 1
-  rangeCoef: 1
-  baseDamage: 1
-  baseRange: 500
-  knockBack: 50
-  farm: 0
+  damageCoef: 0
+  rangeCoef: 0
+  baseDamage: 0
+  baseRange: 0
+  knockBack: 0
+  farm: 5
   frequency: 1
-  projectileObject: {fileID: 11400000, guid: 58cdc6f7edaf6574bbede5dca798b663, type: 2}
-  _recipe:
-  - {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
-  _quantity: 05000000
-  _isCraftable: 1
-  _isCoreNeeded: 1
-  _craftTime: 3
+  projectileObject: {fileID: 0}
+  onHitEffects: []
+  _recipe: []
+  _quantity: 
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0

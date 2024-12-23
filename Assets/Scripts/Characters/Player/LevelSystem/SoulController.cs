@@ -109,6 +109,10 @@ public class SoulController : MonoBehaviour
 
     private void GrantExperience()
     {
+        if (playerExperience == null)
+        {
+            Destroy(gameObject);
+        }
         playerExperience.AddExperience(experienceValue);
         Destroy(gameObject);
     }

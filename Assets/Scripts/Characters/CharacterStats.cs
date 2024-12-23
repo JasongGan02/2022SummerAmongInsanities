@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 
 [Serializable]
-public  class CharacterStats
+public class CharacterStats
 {
     public float hp;
     public float attackDamage;
@@ -16,21 +16,21 @@ public  class CharacterStats
     public float criticalMultiplier;
     public float movingSpeed;
     public float jumpForce;
-    public int totalJumps;
+    public float totalJumps;
 
     // Copy the values from another CharacterStats instance
     public virtual void CopyFrom(CharacterStats source)
     {
-        hp = source.hp;
-        attackDamage = source.attackDamage;
-        attackInterval = source.attackInterval;
-        movingSpeed = source.movingSpeed;
-        attackRange = source.attackRange;
-        jumpForce = source.jumpForce;
-        totalJumps = source.totalJumps;
-        armor = source.armor;
-        criticalMultiplier = source.criticalMultiplier;
-        criticalChance = source.criticalChance;
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        // Get all public instance fields of the type
+        FieldInfo[] fields = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            // Copy the value from the source to the current instance
+            field.SetValue(this, field.GetValue(source));
+        }
     }
 
     // Reset to the values of another CharacterStats instance
@@ -38,20 +38,60 @@ public  class CharacterStats
     {
         CopyFrom(source);
     }
-
-    // Add stats from another CharacterStats instance
-    public virtual void AddStats(CharacterStats mods)
+    
+    public CharacterStats Inverse()
     {
-        hp += mods.hp;
-        attackDamage += mods.attackDamage;
-        attackInterval += mods.attackInterval;
-        movingSpeed += mods.movingSpeed;
-        attackRange += mods.attackRange;
-        jumpForce += mods.jumpForce;
-        totalJumps += mods.totalJumps;
-        armor += mods.armor;
-        criticalMultiplier += mods.criticalMultiplier;
-        criticalChance += mods.criticalChance;
+        // Create a new instance of the same type as the current instance
+        CharacterStats inverse = (CharacterStats)Activator.CreateInstance(GetType());
+
+        // Get all public instance fields
+        FieldInfo[] fields = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            // Handle numeric fields (float, int, etc.)
+            if (field.FieldType == typeof(float))
+            {
+                float value = (float)field.GetValue(this);
+                field.SetValue(inverse, value != 0 ? 1 / value : 0); // Avoid division by zero
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                int value = (int)field.GetValue(this);
+                field.SetValue(inverse, value != 0 ? 1 / (float)value : 0); // Convert to float for inversion
+            }
+        }
+
+        return inverse;
+    }
+    
+    // Add stats from another CharacterStats instance using reflection
+    public static CharacterStats operator +(CharacterStats stats1, CharacterStats stats2)
+    {
+        // Create a new instance of the same type as stats1
+        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
+
+        // Get all public instance fields of the type
+        FieldInfo[] fields = stats1.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            // Handle float and int fields
+            if (field.FieldType == typeof(float))
+            {
+                float value1 = (float)field.GetValue(stats1);
+                float value2 = (float)field.GetValue(stats2);
+                field.SetValue(result, value1 + value2);
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                int value1 = (int)field.GetValue(stats1);
+                int value2 = (int)field.GetValue(stats2);
+                field.SetValue(result, value1 + value2);
+            }
+        }
+
+        return result;
     }
     
     // Overload the unary - operator to negate all fields using reflection
@@ -79,6 +119,101 @@ public  class CharacterStats
         }
 
         return negatedStats;
+    }
+    
+    // Multiply stats from two CharacterStats instances using reflection
+    public static CharacterStats operator *(CharacterStats stats1, CharacterStats stats2)
+    {
+        // Find the most common base type between stats1 and stats2
+        Type commonBaseType = FindCommonBaseType(stats1.GetType(), stats2.GetType());
+
+        // Create a new instance of the most common base type
+        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
+        result = stats1;
+        
+        // Get all public instance fields of the common base type
+        FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.FieldType == typeof(float))
+            {
+                float value1 = (float)field.GetValue(stats1);
+                float value2 = (float)field.GetValue(stats2);
+                // If value2 is 0, retain value1; otherwise, multiply
+                field.SetValue(result, value2 == 0 ? value1 : value1 * value2);
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                int value1 = (int)field.GetValue(stats1);
+                int value2 = (int)field.GetValue(stats2);
+                // If value2 is 0, retain value1; otherwise, multiply
+                field.SetValue(result, value2 == 0 ? value1 : value1 * value2);
+            }
+        }
+
+        return result;
+    }
+
+    // Helper method to find the most common base type
+    private static Type FindCommonBaseType(Type type1, Type type2)
+    {
+        // Start with the first type and traverse its hierarchy
+        while (type1 != null)
+        {
+            // Check if the second type derives from the current type
+            if (type1.IsAssignableFrom(type2))
+            {
+                return type1;
+            }
+
+            // Move up the inheritance hierarchy
+            type1 = type1.BaseType;
+        }
+
+        return typeof(CharacterStats); // Default to CharacterStats if no common base type is found
+    }
+
+    
+    // Multiply stats or by a scalar using reflection
+    public static CharacterStats operator *(CharacterStats stats, float scalar)
+    {
+        // Create a new instance of the same type as stats
+        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats.GetType());
+
+        // Get all public instance fields of the type
+        FieldInfo[] fields = stats.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.FieldType == typeof(float))
+            {
+                float value = (float)field.GetValue(stats);
+                field.SetValue(result, value * scalar);
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                int value = (int)field.GetValue(stats);
+                field.SetValue(result, (int)(value * scalar)); // Cast back to int after multiplication
+            }
+        }
+
+        return result;
+    }
+
+    public static CharacterStats operator *(CharacterStats stats, int scalar)
+    {
+        return stats * (float)scalar; // Convert int scalar to float and reuse the float overload
+    }
+
+    public static CharacterStats operator *(float scalar, CharacterStats stats)
+    {
+        return stats * scalar; // Reuse the existing implementation
+    }
+
+    public static CharacterStats operator *(int scalar, CharacterStats stats)
+    {
+        return stats * (float)scalar; // Convert int scalar to float and reuse the float overload
     }
     
     public override string ToString()
@@ -113,16 +248,6 @@ public class PlayerStats : CharacterStats
             respawnTimeInterval = playerSource.respawnTimeInterval;
         }
     }
-    
-    // Add stats from another VillagerStats instance
-    public override void AddStats(CharacterStats mods)
-    {
-        base.AddStats(mods);
-        if (mods is PlayerStats playerSource)
-        {
-            respawnTimeInterval += playerSource.respawnTimeInterval;
-        }
-    }
 }
 
 [Serializable]
@@ -130,28 +255,7 @@ public class EnemyStats : CharacterStats
 {
     public float sensingRange;
     public float soulValue;
-
-    // Copy the values from another VillagerStats instance
-    public override void CopyFrom(CharacterStats source)
-    {
-        base.CopyFrom(source);
-        if (source is EnemyStats enemySource)
-        {
-            sensingRange = enemySource.sensingRange;
-            soulValue = enemySource.soulValue;
-        }
-    }
     
-    // Add stats from another VillagerStats instance
-    public override void AddStats(CharacterStats mods)
-    {
-        base.AddStats(mods);
-        if (mods is EnemyStats enemySource)
-        {
-            sensingRange += enemySource.sensingRange;
-            soulValue += enemySource.soulValue;
-        }
-    }
 }
 
 [Serializable]
@@ -162,24 +266,5 @@ public class TowerStats : CharacterStats
     public Quaternion rotateAngle;//a fixed amount that determines the rotation type of a tower
     [HideInInspector] public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
 
-    // Copy the values from another VillagerStats instance
-    public override void CopyFrom(CharacterStats source)
-    {
-        base.CopyFrom(source);
-        if (source is TowerStats towerSource)
-        {
-            energyCost = towerSource.energyCost;
-            rotateAngle = towerSource.rotateAngle;
-        }
-    }
-    
-    // Add stats from another VillagerStats instance
-    public override void AddStats(CharacterStats mods)
-    {
-        base.AddStats(mods);
-        if (mods is TowerStats towerSource)
-        {
-            energyCost += towerSource.energyCost;
-        }
-    }
+
 }

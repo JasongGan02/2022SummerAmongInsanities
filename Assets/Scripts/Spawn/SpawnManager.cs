@@ -1,17 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
     public EquipmentObject[] equipments;
     public TowerObject[] testCase; //to-do just a test. do a list
     public DivinityFragObject divinityFrag;
-    public MedicineObject[] medicineObjects;
-    public ProjectileObject[] projectileObjects;
-    public BaseObject[] inventoryObjects;
-    public int[] inventoryNumbers;
+    public SpawnedObject[] inventoryObjects;
     private Inventory inventory;
 
     private Vector3 coreSpawnPosition;
@@ -22,9 +21,9 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(WaitForCoreArchitectureAndDoSomething());
         
         inventory = FindObjectOfType<Inventory>();
-        for (int i = 0; i< inventoryNumbers.Length; i++)
+        foreach (SpawnedObject spawnedObject in inventoryObjects)
         {
-            inventory.AddItem(inventoryObjects[i] as IInventoryObject, inventoryNumbers[i]);
+            inventory.AddItem(spawnedObject.inventoryObject as IInventoryObject, spawnedObject.number);
         }
     }
     // only a temporary solution
@@ -47,15 +46,6 @@ public class SpawnManager : MonoBehaviour
     {
         GameObject drop = divinityFrag.GetDroppedGameObject(num, coreSpawnPosition);
     }
-
-    public void SpawnProjectile(int num)
-    {
-        foreach (ProjectileObject each in projectileObjects)
-        {
-            GameObject dropProjectile = each.GetDroppedGameObject(1, coreSpawnPosition);
-        }
-    }
-    
     
     IEnumerator WaitForCoreArchitectureAndDoSomething()
     {
@@ -90,9 +80,12 @@ public class SpawnManagerEditor : Editor
         {
             spawnManager.SpawnFrags(10);
         }
-        if (GUILayout.Button("Spawn Projectile"))
-        {
-            spawnManager.SpawnProjectile(10);
-        }
     }
+}
+
+[Serializable]
+public class SpawnedObject
+{
+    public BaseObject inventoryObject;
+    public int number;
 }
