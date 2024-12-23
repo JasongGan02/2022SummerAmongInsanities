@@ -65,18 +65,20 @@ public class CharacterStats
         return inverse;
     }
     
-    // Add stats from another CharacterStats instance using reflection
+    // Add stats from two CharacterStats instances using reflection
     public static CharacterStats operator +(CharacterStats stats1, CharacterStats stats2)
     {
-        // Create a new instance of the same type as stats1
+        // Find the most common base type between stats1 and stats2
+        Type commonBaseType = FindCommonBaseType(stats1.GetType(), stats2.GetType());
+
+        // Create a new instance of the left-hand side type
         CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
 
-        // Get all public instance fields of the type
-        FieldInfo[] fields = stats1.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+        // Get all public instance fields of the common base type
+        FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);
 
         foreach (FieldInfo field in fields)
         {
-            // Handle float and int fields
             if (field.FieldType == typeof(float))
             {
                 float value1 = (float)field.GetValue(stats1);
@@ -94,32 +96,64 @@ public class CharacterStats
         return result;
     }
     
-    // Overload the unary - operator to negate all fields using reflection
+    // Subtract stats from two CharacterStats instances using reflection
+    public static CharacterStats operator -(CharacterStats stats1, CharacterStats stats2)
+    {
+        // Find the most common base type between stats1 and stats2
+        Type commonBaseType = FindCommonBaseType(stats1.GetType(), stats2.GetType());
+
+        // Create a new instance of the left-hand side type
+        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
+
+        // Get all public instance fields of the common base type
+        FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.FieldType == typeof(float))
+            {
+                float value1 = (float)field.GetValue(stats1);
+                float value2 = (float)field.GetValue(stats2);
+                field.SetValue(result, value1 - value2);
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                int value1 = (int)field.GetValue(stats1);
+                int value2 = (int)field.GetValue(stats2);
+                field.SetValue(result, value1 - value2);
+            }
+        }
+
+        return result;
+    }
+
+    
+    // Negate all stats using reflection
     public static CharacterStats operator -(CharacterStats stats)
     {
         // Create an instance of the same type as the input stats
-        CharacterStats negatedStats = (CharacterStats)Activator.CreateInstance(stats.GetType());
+        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats.GetType());
 
-        // Get all public instance fields of the type
+        // Get all public instance fields of the stats's type
         FieldInfo[] fields = stats.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
 
         foreach (FieldInfo field in fields)
         {
-            // Check the field type and negate its value if it's float or int
             if (field.FieldType == typeof(float))
             {
                 float value = (float)field.GetValue(stats);
-                field.SetValue(negatedStats, -value);
+                field.SetValue(result, -value);
             }
             else if (field.FieldType == typeof(int))
             {
                 int value = (int)field.GetValue(stats);
-                field.SetValue(negatedStats, -value);
+                field.SetValue(result, -value);
             }
         }
 
-        return negatedStats;
+        return result;
     }
+
     
     // Multiply stats from two CharacterStats instances using reflection
     public static CharacterStats operator *(CharacterStats stats1, CharacterStats stats2)
