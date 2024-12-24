@@ -2,34 +2,25 @@ using UnityEngine;
 
 public class WeaponEffectAssignmentController : EffectController
 {
-    private bool firstTimeAdded = true;
-
     protected override void OnEffectStarted()
     {
-        // Cast the effectObject to WeaponEffectAssignmentObject
         if (effectObject is WeaponEffectAssignmentObject weaponEffectAssignment)
         {
-            // Find all weapon objects
             WeaponObject[] allWeapons = FindAllWeapons();
             if (allWeapons != null && allWeapons.Length > 0)
             {
                 foreach (WeaponObject weapon in allWeapons)
                 {
-                    // Check if the weapon already has the effect
                     var existingEffect = weapon.onHitEffects.Find(effect =>
                         effect.GetType() == weaponEffectAssignment.targetOnHitEffectObject.GetType());
 
-                    if (firstTimeAdded)
+                    if (existingEffect != null)
                     {
-                        AddNewEffect(weapon, weaponEffectAssignment.targetOnHitEffectObject);
-                        firstTimeAdded = false;
-                       
+                        HandleStacking(existingEffect, weaponEffectAssignment);
                     }
                     else
                     {
-                        // Upgrade the effect by increasing damage over time
-                        UpgradeEffect(existingEffect);
-                       
+                        AddNewEffect(weapon, weaponEffectAssignment);
                     }
                 }
             }
@@ -46,33 +37,33 @@ public class WeaponEffectAssignmentController : EffectController
 
     private WeaponObject[] FindAllWeapons()
     {
-        // Use Resources to load all WeaponObjects
-        return Resources.LoadAll<WeaponObject>("Weapons/WeaponObjects"); // Adjust the path as needed
+        return Resources.LoadAll<WeaponObject>("Weapons/WeaponObjects");
     }
 
-    private void AddNewEffect(WeaponObject weapon, EffectObject newEffect)
+    private void AddNewEffect(WeaponObject weapon, WeaponEffectAssignmentObject assignmentObject)
     {
-        // Configure the new effect with base damage
-        if (newEffect is StatsEffectObject statsEffect)
-        {
-            // Assign the effect
-            weapon.onHitEffects.Add(newEffect);
-            Debug.Log($"Adding new 'on fire' effect to weapon: {weapon.itemName}");
-        }
+        weapon.onHitEffects.Add(assignmentObject.targetOnHitEffectObject);
 
+        // Clone stats to avoid shared state issues
+        var clonedStats = new CharacterStats();
+        clonedStats.CopyFrom(assignmentObject.GetCurrentLevelStats().levelStats);
+
+        ((StatsEffectObject)assignmentObject.targetOnHitEffectObject).statChanges = clonedStats;
+        assignmentObject.targetOnHitEffectObject.duration = assignmentObject.GetCurrentLevelStats().duration;
+        Debug.Log($"Adding new effect to weapon: {weapon.itemName}");
     }
 
-    private void UpgradeEffect(EffectObject existingEffect)
+
+    private void HandleStacking(EffectObject existingEffect, WeaponEffectAssignmentObject assignmentObject)
     {
-        // Upgrade the effect only once
-        if ((effectObject as WeaponEffectAssignmentObject)?.targetOnHitEffectObject is StatsEffectObject statsEffect)
+        if (existingEffect is StatsEffectObject existingStatsEffect)
         {
-            statsEffect.statChanges.hp += ((WeaponEffectAssignmentObject)effectObject).repeatingStats; // Reduce target HP by base damage per second
-            Debug.Log($"Upgrading 'on fire' effect globally: New damage per second = {statsEffect.statChanges.hp}");
-        }
-        else
-        {
-            Debug.LogWarning("The provided effect is not of type StatsEffectObject.");
+            assignmentObject.UpgradeLevel();
+            var clonedStats = new CharacterStats();
+            clonedStats.CopyFrom(assignmentObject.GetCurrentLevelStats().levelStats);
+            existingStatsEffect.statChanges = clonedStats;
+            assignmentObject.targetOnHitEffectObject.duration = assignmentObject.GetCurrentLevelStats().duration;
+            Debug.Log($"Upgraded stats of existing effect on weapon to level {assignmentObject.currentLevel}");
         }
     }
 }

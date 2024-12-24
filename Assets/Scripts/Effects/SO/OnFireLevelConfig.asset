@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5175c7802cd72408bd863d16abe728, type: 3}
+  m_Name: OnFireLevelConfig
+  m_EditorClassIdentifier: 
+  levels:
+  - level: 1
+    levelStats:
+      hp: 3
+      attackDamage: 0
+      attackInterval: 0
+      attackRange: 0
+      armor: 0
+      criticalChance: 0
+      criticalMultiplier: 0
+      movingSpeed: 0
+      jumpForce: 0
+      totalJumps: 0
+    duration: 2
+  - level: 2
+    levelStats:
+      hp: 5
+      attackDamage: 0
+      attackInterval: 0
+      attackRange: 0
+      armor: 0
+      criticalChance: 0
+      criticalMultiplier: 0
+      movingSpeed: 0
+      jumpForce: 0
+      totalJumps: 0
+    duration: 3
+  - level: 3
+    levelStats:
+      hp: 7
+      attackDamage: 0
+      attackInterval: 0
+      attackRange: 0
+      armor: 0
+      criticalChance: 0
+      criticalMultiplier: 0
+      movingSpeed: 0
+      jumpForce: 0
+      totalJumps: 0
+    duration: 5

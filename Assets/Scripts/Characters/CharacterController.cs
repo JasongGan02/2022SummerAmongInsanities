@@ -165,6 +165,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     protected virtual void Die()
     {
         PoolManager.Instance.Return(gameObject, characterObject);
+        var effects = GetComponents<EffectController>();
+        foreach (EffectController effect in effects)
+            effect.OnObjectInactive();
         OnObjectReturned(false);
     }
 

@@ -29,7 +29,7 @@ public class OnChilledEffectController : StatsEffectController
         {
             if (effect != this) // Skip the newly added instance (this)
             {
-                Debug.Log($"Stacked on {effect.GetInstanceID()}");
+                //Debug.Log($"Stacked on {effect.GetInstanceID()}");
                 effect.AddStack(); // Add stack to the existing effect
                 enabled = false; // Disable this instance
                 Destroy(this); // Destroy the new instance
@@ -38,24 +38,24 @@ public class OnChilledEffectController : StatsEffectController
         }
 
         // No existing stackable effect was found
-        Debug.Log($"First effect applied: {GetInstanceID()}");
+        //Debug.Log($"First effect applied: {GetInstanceID()}");
     }
     
     protected override void StartEffect()
     {
         if (!enabled) // Skip execution if the component is disabled
         {
-            Debug.LogWarning($"StartEffect skipped for instance {GetInstanceID()} (component disabled).");
+            //Debug.LogWarning($"StartEffect skipped for instance {GetInstanceID()} (component disabled).");
             return;
         }
 
         CharacterController characterController = GetComponent<CharacterController>();
         if (characterController == null)
         {
-            Debug.LogError("Max Stats not attached to a CC");
+           //Debug.LogError("Max Stats not attached to a CC");
             return;
         }
-        Debug.Log($"StartEffect on {GetInstanceID()}, current stack: {stackCount}");
+        //Debug.Log($"StartEffect on {GetInstanceID()}, current stack: {stackCount}");
         characterController.MultiplyCurrentStats(statsEffectObject.statChanges);
         if (characterController is EnemyController enemyController)
         {
@@ -73,7 +73,7 @@ public class OnChilledEffectController : StatsEffectController
             return;
         }
 
-        Debug.Log("Resetting effect...");
+        //Debug.Log("Resetting effect...");
 
         // Calculate the cumulative factor for all stacks
         float inverseFactor = Mathf.Pow(statsEffectObject.statChanges.movingSpeed, stackCount);
@@ -88,7 +88,7 @@ public class OnChilledEffectController : StatsEffectController
 
         characterController.MultiplyCurrentStats(inverseStats);
 
-        Debug.Log($"After reset: {characterController.CurrentStats}");
+        //Debug.Log($"After reset: {characterController.CurrentStats}");
     }
 
     
@@ -105,13 +105,13 @@ public class OnChilledEffectController : StatsEffectController
         if (stackCount >= onChilledEffectObject.maxStacks)
         {
             RefreshDuration();
-            Debug.Log($"Maximum stacks reached. Current stacks: {stackCount}");
+            //Debug.Log($"Maximum stacks reached. Current stacks: {stackCount}");
             return;
         }
 
         // Increment the stack count and apply the effect
         stackCount++;
-        Debug.Log($"AddStack called on {GetInstanceID()}. Stack added. Current stacks: {stackCount}");
+        //Debug.Log($"AddStack called on {GetInstanceID()}. Stack added. Current stacks: {stackCount}");
         characterController.MultiplyCurrentStats(statsEffectObject.statChanges);
 
         RefreshDuration();
@@ -119,7 +119,7 @@ public class OnChilledEffectController : StatsEffectController
 
     private void RefreshDuration()
     {
-        Debug.Log("Refreshing duration...");
+        //Debug.Log("Refreshing duration...");
         StopAllCoroutines();
         StartCoroutine(EffectDurationCoroutine()); // Restart with a refreshed duration
     }

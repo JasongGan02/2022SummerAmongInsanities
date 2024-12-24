@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd18f88d79582624caa8762d467c9a00, type: 3}
+  m_Script: {fileID: 11500000, guid: 063a9a802ab84554e95a9a301dd09922, type: 3}
   m_Name: OnFireEffect
   m_EditorClassIdentifier: 
   duration: 5
@@ -17,11 +17,11 @@ MonoBehaviour:
   requiresReset: 0
   isStackable: 1
   isPermanent: 0
-  description: "\u6BCF\u79D2\u70E75\u6EF4\u8840"
+  description: "\u6BCF\u5C42\u71C3\u70E7\u6BCF\u79D2\u9020\u6210\u4F24\u5BB3"
   componentToApply: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
   effectControllerType: {fileID: 11500000, guid: 27233eb63a5e63442b0ff43a1c49ff74, type: 3}
   statChanges:
-    hp: 5
+    hp: 7
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -31,3 +31,4 @@ MonoBehaviour:
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
+  maxStacks: 20

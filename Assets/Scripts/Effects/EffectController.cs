@@ -39,7 +39,7 @@ public class EffectController : MonoBehaviour
         float elapsedTime = 0f;
         float tickDuration = effectObject.tickDuration > 0 ? effectObject.tickDuration : Time.deltaTime;
 
-        Debug.Log("Starting effect with duration: " + effectObject.duration);
+        //Debug.Log("Starting effect with duration: " + effectObject.duration);
         while (elapsedTime < effectObject.duration)
         {
             if (this == null || !gameObject.activeInHierarchy)
@@ -50,10 +50,10 @@ public class EffectController : MonoBehaviour
             
             if (Time.timeScale == 0f)
             {
-                Debug.Log("Time.timeScale is 0, waiting for time to resume.");
+                //Debug.Log("Time.timeScale is 0, waiting for time to resume.");
                 yield return new WaitUntil(() => Time.timeScale > 0f); // Wait for timeScale to resume
             }
-            Debug.Log("Effect progress: " + elapsedTime + "/" + effectObject.duration);
+            //Debug.Log("Effect progress: " + elapsedTime + "/" + effectObject.duration);
             DuringEffect(); // Trigger the effect logic
             yield return new WaitForSeconds(tickDuration); // Wait for the tick duration
             elapsedTime += tickDuration; // Increment elapsed time by tick duration
@@ -87,6 +87,16 @@ public class EffectController : MonoBehaviour
     {
         // Override this function in derived classes to specify stacking behavio
         Debug.LogWarning($"Stacking is enabled, but no stacking logic implemented for effect: {effectObject.name}");
+    }
+
+    public virtual void OnObjectInactive()
+    {
+        StopAllCoroutines();
+        if (effectObject.isPermanent)
+        {
+            return;
+        }
+        Destroy(this);
     }
 
 }
