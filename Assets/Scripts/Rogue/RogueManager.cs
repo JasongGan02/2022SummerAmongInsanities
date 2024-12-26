@@ -97,14 +97,14 @@ public class RogueManager : MonoBehaviour
         for (int i = 0; i < nodes.Count; i++)
         {
             RogueGraphNode node = nodes[i];
-            GameObject buffCard = Instantiate(buffSelectionTemplate);
+            GameObject buffCard = Instantiate(buffSelectionTemplate, buffContainer.transform);
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
-            buffSelectionController.Init(node, buffContainer.transform, new Vector2(460 + 500 * i, 590f));
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
             buffSelectionController.OnBuffHoverEnterEvent += ShowHoveringBuffUI;
-            buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI;
+            // buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI();
         }
     }
+
             
     private List<RogueGraphNode> GetRandomBuffNodes()
     {
