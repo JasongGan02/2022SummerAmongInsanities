@@ -143,11 +143,26 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
 
 
-    // TODO: check if there's an existing slot that is not full
     public bool CanAddItem(IInventoryObject item)
     {
+        for (int i = 0; i < database.GetSize(); i++)
+        {
+            InventorySlot slot = database.GetInventorySlotAtIndex(i);
+
+            // Check if slot contains the same item type and is not full
+            if (slot != null && !slot.IsEmpty && (slot.item as BaseObject) == (item as BaseObject))
+            {
+                if (slot.count < slot.item.MaxStack)
+                {
+                    return true;
+                }
+            }
+        }
+
+        // Check if there's an empty slot
         return database.HasEmptySlot();
     }
+
 
     
 
@@ -225,7 +240,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (slot != null && slot.item is DivinityFragObject)
+            if (slot != null && slot.item is AshObject)
             {
                 return slot.count;
             }
@@ -240,7 +255,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
    
-            if (!slot.IsEmpty && slot.item is DivinityFragObject)
+            if (!slot.IsEmpty && slot.item is AshObject)
             {
                 
                 if (cost > slot.count)

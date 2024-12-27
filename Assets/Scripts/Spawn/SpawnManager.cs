@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
     public EquipmentObject[] equipments;
     public TowerObject[] testCase; //to-do just a test. do a list
-    public DivinityFragObject divinityFrag;
+    [FormerlySerializedAs("divinityFrag")] public AshObject ash;
     public SpawnedObject[] inventoryObjects;
     private Inventory inventory;
 
@@ -44,7 +45,7 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnFrags(int num) 
     {
-        GameObject drop = divinityFrag.GetDroppedGameObject(num, coreSpawnPosition);
+        GameObject drop = ash.GetDroppedGameObject(num, coreSpawnPosition);
     }
     
     IEnumerator WaitForCoreArchitectureAndDoSomething()

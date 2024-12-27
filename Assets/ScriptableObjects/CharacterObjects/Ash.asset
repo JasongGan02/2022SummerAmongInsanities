@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa25b707080c74f4db2af72e0bfa6b8c, type: 3}
-  m_Name: DivinityFrag
+  m_Name: Ash
   m_EditorClassIdentifier: 
-  itemName: DivinityFrag
+  itemName: Ash
   sizeRatio: 1
   prefab: {fileID: 2894248192951013740, guid: 72ea33cb856920b48889d7cc1f39ae11, type: 3}
-  _maxStack: 64
+  _maxStack: 99999

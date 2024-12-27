@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DivinityFrag", menuName = "Objects/Divinity Frag Object")]
-public class DivinityFragObject : BaseObject, IInventoryObject 
+public class AshObject : BaseObject, IInventoryObject 
 {
    [SerializeField]
     private int _maxStack;

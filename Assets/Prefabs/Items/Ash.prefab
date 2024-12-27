@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3177992343258819052}
   - component: {fileID: -9115947348901238595}
   m_Layer: 11
-  m_Name: DivinityFrag
+  m_Name: Ash
   m_TagString: resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 306d05163785d5d4898dd0c974335828, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 031f60027408f6349b0d01570900afc5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,16 +98,16 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.05026245, y: -0.014942646}
+  m_Offset: {x: 0.000076293945, y: 0.004360676}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.84375, y: 0.75}
+    oldSize: {x: 1.25, y: 1}
     newSize: {x: 0.78125, y: 0.65625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5829239, y: 0.6426668}
+  m_Size: {x: 1.2469406, y: 1.0287237}
   m_EdgeRadius: 0
