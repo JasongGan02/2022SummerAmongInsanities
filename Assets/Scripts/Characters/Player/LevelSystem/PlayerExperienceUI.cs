@@ -7,7 +7,7 @@ public class PlayerExperienceUI : MonoBehaviour
     public Image experienceFillImage; // Bar to represent experience
     public Text exLightText;
     public Text exDarkText;
-    public TextMeshProUGUI  ashText;
+    public TMP_Text  ashText;
 
     // Update the experience UI to reflect the current experience
     public void UpdateExperienceUI(float currentXP, float maxXP)

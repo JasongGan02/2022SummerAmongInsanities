@@ -8,9 +8,57 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 671218864903593566, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 9ca5ce9a1a2357f41a7bea36e9e8c3da, type: 3}
+    - target: {fileID: 671218864903593566, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 671218864903593566, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 270
+      objectReference: {fileID: 0}
     - target: {fileID: 1479985193638189920, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
       propertyPath: m_Name
       value: RerollButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_text
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b04e7a148a3af7b46b275933824acb04, type: 2}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.7960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.93725497
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 7112362218050851701, guid: b04e7a148a3af7b46b275933824acb04, type: 2}
+    - target: {fileID: 3388903884746284268, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4291555326
       objectReference: {fileID: 0}
     - target: {fileID: 7005953057470082442, guid: d672141d7759d0141ae7ebbc24f6118d, type: 3}
       propertyPath: m_Name

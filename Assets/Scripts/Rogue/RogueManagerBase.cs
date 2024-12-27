@@ -64,6 +64,12 @@ public abstract class RogueManagerBase : MonoBehaviour
         selectedBuffText = rogueUI.transform.Find(NAME_SELECTED_BUFF_TEXT).GetComponent<TMP_Text>();
         buffContainer = rogueUI.transform.Find(NAME_BUFF_CONTAINER).gameObject;
         rerollButton = rogueUI.transform.Find(NAME_REROLL_BUTTON).GetComponent<Button>();
+        TMP_Text rerollCostText = rerollButton.transform.Find("RerollCostText").GetComponent<TMP_Text>();
+        if (rerollCostText != null)
+        {
+            int nextCost = CalculateRerollCost();
+            rerollCostText.text = $"{nextCost}";
+        }
         rerollButton.onClick.AddListener(OnRerollButtonClicked);
         rogueUI.SetActive(false);
     }
@@ -261,18 +267,18 @@ public abstract class RogueManagerBase : MonoBehaviour
         if (rerollCostText != null)
         {
             int nextCost = CalculateRerollCost();
-            rerollCostText.text = $"Next Reroll Cost: {nextCost} EXP";
+            rerollCostText.text = $"刷新 {nextCost}";
         }
     }
 
     protected virtual string GetRerollInsufficientFundsMessage()
     {
-        return "您沒有足夠的燼獻祭以重新抽取賜福";
+        return "您没有足够的烬献祭以获得该赐福";
     }
     
     protected virtual string GetPurchaseInsufficientFundsMessage()
     {
-        return "您沒有足夠的燼獻祭以獲得該賜福";
+        return "您没有足够的烬献祭以获得该赐福";
     }
     
     protected void ShowInsufficientFundsNotification(string message)

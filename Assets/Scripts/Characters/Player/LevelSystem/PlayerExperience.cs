@@ -37,9 +37,11 @@ public class PlayerExperience : MonoBehaviour
 
     public bool SpendAsh(float amount)
     {
-        if (amount >= currentAsh)
+        //Debug.Log("amount: " + amount + " current ash: " + currentAsh);
+        if (amount <= currentAsh)
         {
             currentAsh -= amount;
+            playerExperienceUI.UpdateAshUI(currentAsh);
             return true;
         }
 
