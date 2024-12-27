@@ -1,17 +1,17 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SoulController : PickupController
+public class AshController : PickupController
 {
-    private float experienceValue;
+    private float ashValue;
     private PlayerExperience playerExperience;
-
-    public void Initialize(float experienceValue)
+    
+    public void Initialize(float ashValue)
     {
         player =  player = GameObject.FindGameObjectWithTag("Player");
         playerExperience = player.GetComponent<PlayerExperience>();
-        this.experienceValue = experienceValue;
+        this.ashValue = ashValue;
         UpdateChunk();
         NormalizeObjectSize();
     }
@@ -22,7 +22,7 @@ public class SoulController : PickupController
         {
             Destroy(gameObject);
         }
-        playerExperience.AddExperience(experienceValue);
+        playerExperience.AddAsh(ashValue);
         Destroy(gameObject);
         player.GetComponent<CharacterController>().GetAudioEmitter().PlayClipFromCategory("ItemPickUp");
     }
