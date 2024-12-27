@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa25b707080c74f4db2af72e0bfa6b8c, type: 3}
-  m_Name: DivinityFrag
+  m_Name: Ash
   m_EditorClassIdentifier: 
   itemName: DivinityFrag
   sizeRatio: 1

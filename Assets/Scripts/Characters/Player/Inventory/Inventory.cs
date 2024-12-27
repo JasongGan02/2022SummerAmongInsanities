@@ -225,7 +225,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (slot != null && slot.item is DivinityFragObject)
+            if (slot != null && slot.item is AshObject)
             {
                 return slot.count;
             }
@@ -240,7 +240,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
    
-            if (!slot.IsEmpty && slot.item is DivinityFragObject)
+            if (!slot.IsEmpty && slot.item is AshObject)
             {
                 
                 if (cost > slot.count)
