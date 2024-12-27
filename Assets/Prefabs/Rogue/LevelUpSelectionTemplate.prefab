@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 9040023274674913887}
   - component: {fileID: 2481924526674155326}
   - component: {fileID: 5942849052273056851}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: BuffNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.7794, y: 43.4178}
+  m_AnchoredPosition: {x: -0.7794, y: -26.9}
   m_SizeDelta: {x: 106.0701, y: 33.3936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2481924526674155326
