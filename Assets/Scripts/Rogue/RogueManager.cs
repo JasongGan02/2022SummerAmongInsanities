@@ -90,21 +90,35 @@ public class RogueManager : MonoBehaviour
     }
 
    
-    private void AddBuffs()
+    // private void AddBuffs()
+    // {
+    //     List<RogueGraphNode> nodes = GetRandomBuffNodes();
+
+    //     for (int i = 0; i < nodes.Count; i++)
+    //     {
+    //         RogueGraphNode node = nodes[i];
+    //         GameObject buffCard = Instantiate(buffSelectionTemplate, buffContainer.transform);
+    //         BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
+    //         buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
+    //         buffSelectionController.OnBuffHoverEnterEvent += ShowHoveringBuffUI;
+    //         // buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI();
+    //     }
+    // }
+      private void AddBuffs()
     {
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
 
         for (int i = 0; i < nodes.Count; i++)
         {
             RogueGraphNode node = nodes[i];
-            GameObject buffCard = Instantiate(buffSelectionTemplate, buffContainer.transform);
+            GameObject buffCard = Instantiate(buffSelectionTemplate);
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
             buffSelectionController.OnBuffHoverEnterEvent += ShowHoveringBuffUI;
-            // buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI();
+            buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI;
         }
     }
-
+            
             
     private List<RogueGraphNode> GetRandomBuffNodes()
     {
