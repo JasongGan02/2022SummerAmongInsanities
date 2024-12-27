@@ -106,9 +106,16 @@ public class SacrificeStoreRogueManager : RogueManagerBase
     protected override void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
         int nodeCost = CalculateAshCost(node.quality);
-        if (inventory.SpendExp(nodeCost))
+        if (playerExperience == null)
         {
-            inventory.SpendExp(nodeCost);
+            playerExperience = FindObjectOfType<PlayerExperience>();
+            if (playerExperience == null)
+                return;
+        }
+        
+        // Check if the player has enough EXP
+        if (playerExperience.SpendAsh(nodeCost))
+        {
             base.HandleBuffSelectedEvent(sender, node);
             UpdateRerollUI(nodeCost);
             totalPurchases++;

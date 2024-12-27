@@ -4,8 +4,9 @@ using UnityEngine;
 public class PlayerExperience : MonoBehaviour
 {
     public int Level { get; private set; } = 1;
-    public float currentExperience = 0;
+    public float currentExperience;
     public float experienceToNextLevel = 10;
+    public float currentAsh;
 
     private PlayerExperienceUI playerExperienceUI;
 
@@ -17,6 +18,7 @@ public class PlayerExperience : MonoBehaviour
             Debug.LogError("playerExperience Ui is not in the scene");
         }
         playerExperienceUI.UpdateExperienceUI(currentExperience, experienceToNextLevel);
+        playerExperienceUI.UpdateAshUI(currentAsh);
     }
 
 
@@ -25,6 +27,23 @@ public class PlayerExperience : MonoBehaviour
         currentExperience += amount;
         CheckForLevelUp();
         playerExperienceUI.UpdateExperienceUI(currentExperience, experienceToNextLevel);
+    }
+
+    public void AddAsh(float amount)
+    {
+        currentAsh += amount;
+        playerExperienceUI.UpdateAshUI(currentAsh);
+    }
+
+    public bool SpendAsh(float amount)
+    {
+        if (amount >= currentAsh)
+        {
+            currentAsh -= amount;
+            return true;
+        }
+
+        return false;
     }
 
     private void CheckForLevelUp()
