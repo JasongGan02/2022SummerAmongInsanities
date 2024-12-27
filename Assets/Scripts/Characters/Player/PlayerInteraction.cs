@@ -337,30 +337,11 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     #endregion
     private void PickUpItemCheck()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
-        if (hit.transform != null)
-        {
-            // If the object is a Soul, trigger its collection behavior
-            if (hit.transform.gameObject.GetComponent<SoulController>() != null)
-            {
-                SoulController soul = hit.transform.gameObject.GetComponent<SoulController>();
-                if (soul.timeSinceSpawn >= soul.pickupDelay)
-                {
-                    soul.StartTrackingPlayer();
-                    _audioEmitter.PlayClipFromCategory("ItemPickUp");
-                }
-            }
-            // Handle DroppedObjectController as before
-            else if (hit.transform.gameObject.GetComponent<DroppedObjectController>() != null)
-            {
-                DroppedObjectController resourceObject = hit.transform.gameObject.GetComponent<DroppedObjectController>();
-                if (resourceObject.timeSinceDrop >= resourceObject.pickupDelay && inventory.CanAddItem(resourceObject.item))
-                {
-                    resourceObject.PickingUp();
-                    _audioEmitter.PlayClipFromCategory("ItemPickUp");
-                }
-            }
-        }
+        var hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
+        if (hit.transform == null || hit.transform.gameObject.GetComponent<PickupController>() == null) return;
+        var droppedObject = hit.transform.gameObject.GetComponent<PickupController>();
+        if (!(droppedObject.timeSinceSpawn >= droppedObject.pickupDelay)) return;
+        droppedObject.StartTrackingPlayer();
     }
 
     /***
