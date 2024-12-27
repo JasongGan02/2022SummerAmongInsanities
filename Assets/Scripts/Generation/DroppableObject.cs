@@ -6,17 +6,11 @@ using UnityEngine;
 public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
 {
     [SerializeField] private int maxStack;
-    [SerializeField] private BaseObject[] recipe;
-    [SerializeField] private int[] quantity;
+    [SerializeField] private CraftRecipe[] recipe;
     [SerializeField] private bool isCraftable;
     [SerializeField] private bool isCoreNeeded;
     [SerializeField] private int craftTime;
 
-    public int[] Quantity
-    {
-        get => quantity;
-        set => quantity = value;
-    }
 
     public bool IsCraftable
     {
@@ -35,8 +29,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
         get => craftTime;
         set => craftTime = value;
     }
-
-
+    
 
     public int getCraftTime()
     {
@@ -48,14 +41,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
     {
         return IsCraftable;
     }
-
-    public int[] getQuantity()
-    {
-        return Quantity;
-    }
-
-
-
+    
     public bool getIsCoreNeeded()
     {
         return IsCoreNeeded;
@@ -95,7 +81,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
   * implementation of ICraftableObject
   */
     #region
-    public BaseObject[] Recipe
+    public CraftRecipe[] Recipe
     {
         get => recipe;
         set => recipe = value;
@@ -103,10 +89,10 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
 
     public void Craft(Inventory inventory)
     {
-        inventory.CraftItems(this.Recipe, this.Quantity, this);
+        inventory.CraftItems(this.Recipe, this);
     }
  
-    public BaseObject[] getRecipe()
+    public CraftRecipe[] getRecipe()
     {
         return Recipe;
     }

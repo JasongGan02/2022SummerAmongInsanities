@@ -14,13 +14,13 @@ public class WeaponEffectAssignmentController : EffectController
                     var existingEffect = weapon.onHitEffects.Find(effect =>
                         effect.GetType() == weaponEffectAssignment.targetOnHitEffectObject.GetType());
 
-                    if (existingEffect != null)
-                    {
-                        HandleStacking(existingEffect, weaponEffectAssignment);
-                    }
-                    else
+                    if (existingEffect == null)
                     {
                         AddNewEffect(weapon, weaponEffectAssignment);
+                    }
+                    else if (effectObject.isStackable)
+                    {
+                        HandleStacking(existingEffect, weaponEffectAssignment);
                     }
                 }
             }

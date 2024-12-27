@@ -89,7 +89,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-    public void CraftItems(BaseObject[] items, int[] quantity, BaseObject outputItem)
+    public void CraftItems(CraftRecipe[] recipe, BaseObject outputItem)
     {
         if (queueManager.sizeCraftQueue() >= 4)
         {
@@ -97,21 +97,20 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         }
 
         // First, check if all items are available in required quantities
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < recipe.Length; i++)
         {
             
-            if ((HasEnoughItem(items[i] as IInventoryObject, quantity[i]) == false))
+            if ((HasEnoughItem(recipe[i].material as IInventoryObject, recipe[i].quantity) == false))
             {
-                
                 // If any item is not available in required quantity, exit the method
                 return;
             }
         }
 
         // Since all items are available, consume them
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < recipe.Length; i++)
         {
-            ConsumeItem(items[i] as IInventoryObject, quantity[i]);
+            ConsumeItem(recipe[i].material as IInventoryObject, recipe[i].quantity);
         }
 
         // Add the output item to the crafting queue

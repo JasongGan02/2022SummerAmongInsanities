@@ -36,11 +36,8 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     private GameObject[] _prefabs;
 
     [SerializeField]
-    private BaseObject[] _recipe;
-
-    [SerializeField]
-    private int[] _quantity;
-
+    private CraftRecipe[] _recipe;
+    
     [SerializeField]
     private bool _isCraftable;
 
@@ -255,7 +252,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
      * implementation of ICraftableObject
      */
     #region
-    public BaseObject[] Recipe
+    public CraftRecipe[] Recipe
     {
         get => _recipe;
         set => _recipe = value;
@@ -263,10 +260,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     public void Craft(Inventory inventory)
     {
-        inventory.CraftItems(this.Recipe,this.Quantity,this);
+        inventory.CraftItems(this.Recipe,this);
     }
 
-    public BaseObject[] getRecipe()
+    public CraftRecipe[] getRecipe()
     {
         return Recipe;
     }
@@ -275,17 +272,6 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     #endregion
 
     #region
-    public int[] Quantity
-    {
-        get => _quantity;
-        set => _quantity = value;
-    }
-
-    public int[] getQuantity()
-    {
-        return Quantity;
-    }
-
     public bool IsCraftable
     { 
       get => _isCraftable; 

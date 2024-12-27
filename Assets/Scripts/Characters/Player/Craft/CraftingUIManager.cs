@@ -375,8 +375,7 @@ public class CraftingUIManager : MonoBehaviour
     private void enableInputItems()
     {
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
-        BaseObject[] inputItems = craftableObject.getRecipe();
-        int[] inputQuantities = craftableObject.getQuantity();
+        CraftRecipe[] inputItems = craftableObject.getRecipe();
 
         if (inputItems.Length == 0)
         {
@@ -386,9 +385,9 @@ public class CraftingUIManager : MonoBehaviour
         }
         else
         {
-            inputItem0.sprite = inputItems[0].getPrefabSprite();
+            inputItem0.sprite = inputItems[0].material.getPrefabSprite();
             inputItem0.color = new Color(inputItem0.color.r, inputItem0.color.g, inputItem0.color.b, 1);
-            num0.text = inventory.FindItemCount(inputItems[0]) + "/" + inputQuantities[0];
+            num0.text = inventory.FindItemCount(inputItems[0].material) + "/" + inputItems[0].quantity;
             num0.color = new Color(num0.color.r, num0.color.g, num0.color.b, 1);
         }
 
@@ -400,9 +399,9 @@ public class CraftingUIManager : MonoBehaviour
         }
         else
         {
-            inputItem1.sprite = inputItems[1].getPrefabSprite();
+            inputItem1.sprite = inputItems[1].material.getPrefabSprite();
             inputItem1.color = new Color(inputItem1.color.r, inputItem1.color.g, inputItem1.color.b, 1);
-            num1.text = inventory.FindItemCount(inputItems[1]) + "/" + inputQuantities[1];
+            num1.text = inventory.FindItemCount(inputItems[1].material) + "/" + inputItems[1].quantity;
             num1.color = new Color(num1.color.r, num1.color.g, num1.color.b, 1);
         }
 
@@ -414,9 +413,9 @@ public class CraftingUIManager : MonoBehaviour
         }
         else
         {
-            inputItem2.sprite = inputItems[2].getPrefabSprite();
+            inputItem2.sprite = inputItems[2].material.getPrefabSprite();
             inputItem2.color = new Color(inputItem2.color.r, inputItem2.color.g, inputItem2.color.b, 1);
-            num2.text = inventory.FindItemCount(inputItems[2]) + "/" + inputQuantities[2];
+            num2.text = inventory.FindItemCount(inputItems[2].material) + "/" + inputItems[2].quantity;
             num2.color = new Color(num2.color.r, num2.color.g, num2.color.b, 1);
         }
 
@@ -427,9 +426,9 @@ public class CraftingUIManager : MonoBehaviour
         }
         else
         {
-            inputItem3.sprite = inputItems[3].getPrefabSprite();
+            inputItem3.sprite = inputItems[3].material.getPrefabSprite();
             inputItem3.color = new Color(inputItem3.color.r, inputItem3.color.g, inputItem3.color.b, 1);
-            num3.text = inventory.FindItemCount(inputItems[3]) + "/" + inputQuantities[3];
+            num3.text = inventory.FindItemCount(inputItems[3].material) + "/" + inputItems[3].quantity;
             num3.color = new Color(num3.color.r, num3.color.g, num3.color.b, 1);
         }
 
@@ -440,9 +439,9 @@ public class CraftingUIManager : MonoBehaviour
         }
         else
         {
-            inputItem4.sprite = inputItems[4].getPrefabSprite();
+            inputItem4.sprite = inputItems[4].material.getPrefabSprite();
             inputItem4.color = new Color(inputItem4.color.r, inputItem4.color.g, inputItem4.color.b, 1);
-            num4.text = inventory.FindItemCount(inputItems[4]) + "/" + inputQuantities[4];
+            num4.text = inventory.FindItemCount(inputItems[4].material) + "/" + inputItems[4].quantity;
             num4.color = new Color(num4.color.r, num4.color.g, num4.color.b, 1);
         }
 
@@ -454,9 +453,9 @@ public class CraftingUIManager : MonoBehaviour
         }
         else
         {
-            inputItem5.sprite = inputItems[5].getPrefabSprite();
+            inputItem5.sprite = inputItems[5].material.getPrefabSprite();
             inputItem5.color = new Color(inputItem5.color.r, inputItem5.color.g, inputItem5.color.b, 1);
-            num5.text = inventory.FindItemCount(inputItems[5]) + "/" + inputQuantities[5];
+            num5.text = inventory.FindItemCount(inputItems[5].material) + "/" + inputItems[5].quantity;
             num5.color = new Color(num5.color.r, num5.color.g, num5.color.b, 1);
         }
 

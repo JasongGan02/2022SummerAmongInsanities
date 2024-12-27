@@ -22,6 +22,7 @@ public class OnChilledEffectController : StatsEffectController
         }
         base.Initialize(effectObject);
     }
+    
     protected override void HandleStacking()
     {
         var existingEffects = GetComponents<OnChilledEffectController>();
@@ -101,26 +102,28 @@ public class OnChilledEffectController : StatsEffectController
             return;
         }
 
-        // If at max stacks, refresh duration only
+        stackCount++;
+        
+        // If at max stacks, trigger the frozen effect
         if (stackCount >= onChilledEffectObject.maxStacks)
         {
-            RefreshDuration();
-            //Debug.Log($"Maximum stacks reached. Current stacks: {stackCount}");
+            TryTriggerFrozenEffect();
             return;
         }
+        
 
         // Increment the stack count and apply the effect
-        stackCount++;
         //Debug.Log($"AddStack called on {GetInstanceID()}. Stack added. Current stacks: {stackCount}");
         characterController.MultiplyCurrentStats(statsEffectObject.statChanges);
 
-        RefreshDuration();
+        ResetEffectDuration();
+    }
+    
+    private void TryTriggerFrozenEffect()
+    {
+        Debug.Log("Triggering frozen effect.");
+        onChilledEffectObject.onFrozenEffectObject.ExecuteEffect(GetComponent<CharacterController>());
+        EndEffect();
     }
 
-    private void RefreshDuration()
-    {
-        //Debug.Log("Refreshing duration...");
-        StopAllCoroutines();
-        StartCoroutine(EffectDurationCoroutine()); // Restart with a refreshed duration
-    }
 }
