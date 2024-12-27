@@ -85,7 +85,6 @@ public class EffectController : MonoBehaviour
     
     protected virtual void EndEffect()
     {
-        Debug.Log("end effect on: " + this);
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
 

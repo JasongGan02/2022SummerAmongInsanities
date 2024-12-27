@@ -5,11 +5,8 @@ using UnityEngine;
 
 public interface ICraftableObject
 {
-
-    BaseObject[] Recipe { get; set; }
-
-    int[] Quantity { get; set; }
-
+    CraftRecipe[] Recipe { get; set; }
+    
     bool IsCraftable { get; set; }
 
     bool IsCoreNeeded { get; set; }
@@ -19,9 +16,7 @@ public interface ICraftableObject
     GameObject GetDroppedGameObject(int amount, Vector3 dropPosition);
     public void Craft(Inventory inventory);
 
-    public BaseObject[] getRecipe();
-
-    public int[] getQuantity();
+    public CraftRecipe[] getRecipe();
 
     public bool getIsCraftable();
 

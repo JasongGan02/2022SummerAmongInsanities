@@ -65,23 +65,14 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     
     [Header("Craft")]
     [SerializeField]
-    private BaseObject[] _recipe;
-    [SerializeField]
-    private int[] _quantity;
+    private CraftRecipe[] _recipe;
     [SerializeField]
     private bool _isCraftable;
     [SerializeField]
     private bool _isCoreNeeded;
     [SerializeField]
     private int _craftTime;
-
-
-
-    public float getfarm()
-    {
-        return farm;
-    }
-
+    
 
     public float getfrequency()
     {
@@ -123,36 +114,25 @@ public class WeaponObject : EquipmentObject , ICraftableObject
      * implementation of ICraftableObject
      */
     #region
-    public BaseObject[] Recipe
+    public CraftRecipe[] Recipe
     {
         get => _recipe;
         set => _recipe = value;
     }
 
-    public BaseObject[] getRecipe()
+    public CraftRecipe[] getRecipe()
     {
         return Recipe;
     }
     public void Craft(Inventory inventory)
     {
-        inventory.CraftItems(this.Recipe, this.Quantity, this);
+        inventory.CraftItems(Recipe, this);
     }
 
 
     #endregion
 
     #region
-    public int[] Quantity
-    {
-        get => _quantity;
-        set => _quantity = value;
-    }
-    public int[] getQuantity()
-    {
-        return Quantity;
-    }
-
-
     public bool IsCraftable
     {
         get => _isCraftable;

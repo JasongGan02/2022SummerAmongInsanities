@@ -42,7 +42,7 @@ public class OnFrozenEffectController : EffectController
             rb2D.isKinematic = true;         // Freeze Rigidbody
         }
 
-        Debug.Log($"Object frozen for {effectObject.duration} seconds.");
+        //  Debug.Log($"Object frozen for {effectObject.duration} seconds.");
     }
 
     protected override void ResetEffect()
@@ -61,7 +61,7 @@ public class OnFrozenEffectController : EffectController
             rb2D.velocity = storedVelocity2D; // Restore velocity
         }
 
-        Debug.Log("Object unfrozen.");
+        //Debug.Log("Object unfrozen.");
     }
     
     protected override IEnumerator EffectDurationCoroutine()
@@ -69,7 +69,7 @@ public class OnFrozenEffectController : EffectController
         float elapsedTime = 0f;
         float tickDuration = effectObject.tickDuration > 0 ? effectObject.tickDuration : Time.deltaTime;
 
-        Debug.Log("Starting effect with duration: " + effectObject.duration);
+        //Debug.Log("Starting effect with duration: " + effectObject.duration);
         while (elapsedTime < effectObject.duration)
         {
             if (this == null || !gameObject.activeInHierarchy)
@@ -80,10 +80,10 @@ public class OnFrozenEffectController : EffectController
             
             if (Time.timeScale == 0f)
             {
-                Debug.Log("Time.timeScale is 0, waiting for time to resume.");
+                //Debug.Log("Time.timeScale is 0, waiting for time to resume.");
                 yield return new WaitUntil(() => Time.timeScale > 0f); // Wait for timeScale to resume
             }
-            Debug.Log("Effect progress: " + elapsedTime + "/" + effectObject.duration);
+            //Debug.Log("Effect progress: " + elapsedTime + "/" + effectObject.duration);
             DuringEffect(); // Trigger the effect logic
             yield return new WaitForSeconds(tickDuration); // Wait for the tick duration
             elapsedTime += tickDuration; // Increment elapsed time by tick duration
@@ -107,17 +107,23 @@ public class OnFrozenEffectController : EffectController
     {
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
-        Debug.Log("unfrozen");
         StartCountDown(); // during this CD wont stack frozen
-        Debug.Log("cd down");
         if (!effectObject.isPermanent)
             Destroy(this); // Destroy the EffectController if it's not permanent
     }
 
     protected override void HandleNonStackable()
     {
-        // No stacking allowed for frozen effect
-        Debug.Log("Frozen effect is non-stackable. Skipping stacking logic.");
-        Destroy(this);
+        var existingControllers = GetComponents<EffectController>();
+
+        foreach (var controller in existingControllers)
+        {
+            // If another instance of the same type exists and it's not this one
+            if (controller != this && controller.GetType() == GetType())
+            {
+                Destroy(this); // Destroy the current instance
+                return;
+            }
+        }
     }
 }
