@@ -42,11 +42,7 @@ public class SpawnManager : MonoBehaviour
             dropTower = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
     }
-
-    public void SpawnFrags(int num) 
-    {
-        GameObject drop = ash.GetDroppedGameObject(num, coreSpawnPosition);
-    }
+    
     
     IEnumerator WaitForCoreArchitectureAndDoSomething()
     {
@@ -60,7 +56,8 @@ public class SpawnManager : MonoBehaviour
         {
             GameObject dropTower = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
-        SpawnFrags(30);
+
+        ash.GetDroppedGameObject(400, coreSpawnPosition);
 
     }
 }
@@ -79,7 +76,7 @@ public class SpawnManagerEditor : Editor
         }
         if (GUILayout.Button("Spawn 10 Frags"))
         {
-            spawnManager.SpawnFrags(10);
+            //spawnManager.SpawnFrags(10);
         }
     }
 }

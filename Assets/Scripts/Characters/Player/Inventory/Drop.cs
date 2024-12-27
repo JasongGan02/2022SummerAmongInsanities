@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Drop
 {
-    public ScriptableObject droppedItem;
+    public BaseObject droppedItem;
     public float chance; // 3.4 means you will certianly get 3 items and 40% chance to get 1 more.
 
     private int GetDroppedItemCount()
@@ -20,7 +20,17 @@ public class Drop
 
     public GameObject GetDroppedItem(Vector3 dropPosition)
     {
-        return (droppedItem as IInventoryObject).GetDroppedGameObject(GetDroppedItemCount(), dropPosition);
+        if (droppedItem is IInventoryObject inventoryObject)
+        {
+            return inventoryObject.GetDroppedGameObject(GetDroppedItemCount(), dropPosition);
+        }
+        
+        if (droppedItem is AshObject ashObject)
+        {
+            return ashObject.GetDroppedGameObject(GetDroppedItemCount(), dropPosition);
+        }
+
+        return null;
     }
 }
 

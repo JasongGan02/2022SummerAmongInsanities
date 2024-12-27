@@ -29,7 +29,7 @@ public abstract class RogueManagerBase : MonoBehaviour
     
     
     //For reroll function
-    protected Inventory inventory;
+    protected PlayerExperience playerExperience;
     [SerializeField]
     private int baseRerollCost = 5; // Base cost for the first reroll
 
@@ -41,7 +41,7 @@ public abstract class RogueManagerBase : MonoBehaviour
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         _audioEmitter = GetComponent<AudioEmitter>();
         selectedNodes.Add(graph.rootNode);
-        inventory = FindObjectOfType<Inventory>();
+        playerExperience = FindObjectOfType<PlayerExperience>();
         SetupUI();
         
         uiViewStateManager.UpdateUiBeingViewedEvent += OnUIUpdated;
@@ -213,8 +213,14 @@ public abstract class RogueManagerBase : MonoBehaviour
     {
         int currentCost = CalculateRerollCost();
 
+        if (playerExperience == null)
+        {
+            playerExperience = FindObjectOfType<PlayerExperience>();
+            if (playerExperience == null)
+                return;
+        }
         // Check if the player has enough EXP
-        if (inventory.SpendExp(currentCost))
+        if (playerExperience.SpendAsh(currentCost))
         {
             // Increment the reroll count for the next consecutive reroll
             rerollCount++;
