@@ -65,7 +65,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
     {
         if (stackCount >= onFireEffectObject.maxStacks)
         {
-            RefreshDuration();
+            ResetEffectDuration();
             return;
         }
 
@@ -73,13 +73,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
         stackCount++;
 
         // Refresh the duration
-        RefreshDuration();
+        ResetEffectDuration();
     }
 
-    private void RefreshDuration()
-    {
-        Debug.Log("Refreshing duration...");
-        StopAllCoroutines();
-        StartCoroutine(EffectDurationCoroutine()); // Restart with a refreshed duration
-    }
 }

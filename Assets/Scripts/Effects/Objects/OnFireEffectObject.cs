@@ -6,5 +6,5 @@ using UnityEngine;
 public class OnFireEffectObject : StatsEffectObject
 {
     [Header("On Fire Effect Object")] 
-    public int maxStacks = 20; // Upper limit for the number of stacks
+    public int maxStacks = 999; // Upper limit for the number of stacks
 }

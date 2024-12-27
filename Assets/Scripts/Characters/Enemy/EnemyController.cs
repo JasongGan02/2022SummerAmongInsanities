@@ -19,7 +19,10 @@ public abstract class EnemyController : CharacterController
     private float lastSeenTimestamp = 0f;
     protected Vector2? LastKnownPosition => lastKnownPosition;
     protected bool HasLastKnownPosition => lastKnownPosition.HasValue && (Time.time - lastSeenTimestamp < 5f);
+    //Status variables
     public bool IsGroupAttacking { get; set; }
+    public bool IsFrozen { get; set; } // Tracks if the enemy is frozen
+    
     
     //Animation Properties
     protected abstract string IdleAnimationState { get; }
@@ -45,7 +48,8 @@ public abstract class EnemyController : CharacterController
         base.Update();
         FindPlayer();
         SetEnemyContainer();
-        UpdateEnemyBehavior();
+        if (!IsFrozen)
+            UpdateEnemyBehavior();
     }
     
     public void LevelUp()

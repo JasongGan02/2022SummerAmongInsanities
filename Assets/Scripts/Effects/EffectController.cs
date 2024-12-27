@@ -21,10 +21,20 @@ public class EffectController : MonoBehaviour
         
         if (effectObject.isStackable)
             HandleStacking();
+        else
+        {
+            // Handle non-stackable behavior
+            HandleNonStackable();
+        }
         
         //Preparation like special effect or one time instant change
         StartEffect();
         
+        if (!gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning($"Cannot start effect on inactive GameObject: {gameObject.name}");
+            return;
+        }
         //Duration
         StartCoroutine(EffectDurationCoroutine());
     }
@@ -88,6 +98,31 @@ public class EffectController : MonoBehaviour
         // Override this function in derived classes to specify stacking behavio
         Debug.LogWarning($"Stacking is enabled, but no stacking logic implemented for effect: {effectObject.name}");
     }
+    
+    protected virtual void HandleNonStackable()
+    {
+        var existingControllers = GetComponents<EffectController>();
+
+        foreach (var controller in existingControllers)
+        {
+            // If another instance of the same type exists and it's not this one
+            if (controller != this && controller.GetType() == GetType())
+            {
+                Debug.Log($"Non-stackable effect already exists. Resetting duration for: {controller}");
+                controller.ResetEffectDuration();
+                Destroy(this); // Destroy the current instance
+                return;
+            }
+        }
+    }
+    
+    protected virtual void ResetEffectDuration()
+    {
+        Debug.Log($"Resetting duration for effect: {this}");
+        StopAllCoroutines();
+        StartCoroutine(EffectDurationCoroutine());
+    }
+
 
     public virtual void OnObjectInactive()
     {
