@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: SoulObject
   sizeRatio: 1
-  prefab: {fileID: 4192573540381174803, guid: 6ac9a4039ffefaf4281ee7bf7874f8bc, type: 3}
+  prefab: {fileID: 5122575218380206683, guid: d6d9b8231593831409ab38129dc64acc, type: 3}
   soulUnitValue: 10
