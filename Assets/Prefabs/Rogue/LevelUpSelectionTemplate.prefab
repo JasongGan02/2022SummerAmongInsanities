@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 9040023274674913887}
   - component: {fileID: 2481924526674155326}
   - component: {fileID: 5942849052273056851}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: BuffNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.7794, y: 43.4178}
+  m_AnchoredPosition: {x: -0.7794, y: -26.9}
   m_SizeDelta: {x: 106.0701, y: 33.3936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2481924526674155326
@@ -173,8 +173,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Buff Name:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 35a9a1c488b86b542b6353a585d9338d, type: 2}
+  m_sharedMaterial: {fileID: 6122063090299378932, guid: 35a9a1c488b86b542b6353a585d9338d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

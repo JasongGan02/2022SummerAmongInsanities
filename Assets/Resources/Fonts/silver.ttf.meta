@@ -10,7 +10,8 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - Silver
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1d12c0a0bdbae624aaaaf0e7b75c6049, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

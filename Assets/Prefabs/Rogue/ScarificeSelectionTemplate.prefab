@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8047940450440424667}
   - component: {fileID: 8576850313588804174}
   - component: {fileID: 4316457690833839557}
-  - component: {fileID: 9167918549133582127}
+  - component: {fileID: 816405449534187355}
   m_Layer: 5
   m_Name: ScarificeSelectionTemplate
   m_TagString: Untagged
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe4c42e3d26e4b4690574802483782b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9167918549133582127
+--- !u!114 &816405449534187355
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,41 +101,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6587848129468446497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: c8168516f5d801d4090baee62371f675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: b9d979ac6b78f254f8108ad106039fcc, type: 3}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 8576850313588804174}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
+  hoverSprite: {fileID: 21300000, guid: b9d979ac6b78f254f8108ad106039fcc, type: 3}
+  originalSprite: {fileID: 21300000, guid: 278b9bd57c4e41a489886ce346011825, type: 3}
 --- !u!1 &7408031918090058929
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +117,7 @@ GameObject:
   - component: {fileID: 9040023274674913887}
   - component: {fileID: 2481924526674155326}
   - component: {fileID: 5942849052273056851}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: BuffNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,8 +141,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 290, y: 50}
+  m_AnchoredPosition: {x: -0.0015, y: 0}
+  m_SizeDelta: {x: 106.9094, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2481924526674155326
 CanvasRenderer:
@@ -196,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -229,8 +199,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -282,7 +252,7 @@ GameObject:
   - component: {fileID: 344651900341027020}
   - component: {fileID: 8936353979118220630}
   - component: {fileID: 2840314106118397280}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: AshCostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,8 +276,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.8, y: -62.9}
-  m_SizeDelta: {x: 290, y: 50}
+  m_AnchoredPosition: {x: -0.0018043, y: -51.7}
+  m_SizeDelta: {x: 106.91, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8936353979118220630
 CanvasRenderer:
@@ -331,7 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -364,8 +334,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -400,7 +370,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 26.51648, y: 0, z: 26.516602, w: 0}
+  m_margin: {x: 0.12818146, y: 0, z: 0.12837219, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
