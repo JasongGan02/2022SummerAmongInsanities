@@ -16,14 +16,20 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected GameObject buffSelectionTemplate;
     [SerializeField]
     protected GameObject hoveringBuffUIPrefab;
+    [SerializeField]
+    protected Color insufficientRerollTextColor;
+    [SerializeField]
+    protected Color sufficientRerollTextColor;
 
-    protected Text insufficientFundsText;
-    protected Button rerollButton;
     protected UIViewStateManager uiViewStateManager;
-    protected GameObject rogueUI;
-    protected TMP_Text selectedBuffText;
     protected GameObject buffContainer;
     protected AudioEmitter _audioEmitter;
+    
+    protected GameObject rogueUI;
+    protected TMP_Text insufficientFundsText;
+    protected Button rerollButton;
+    protected TMP_Text selectedBuffText;
+    
 
     protected List<RogueGraphNode> selectedNodes = new List<RogueGraphNode>();
     
@@ -60,7 +66,7 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected virtual void SetupUI()
     {
         rogueUI = GameObject.Find(NameRogueUI);
-        insufficientFundsText = rogueUI.transform.Find(NAME_INSUFFICIENCY_TEXT).GetComponent<Text>();
+        insufficientFundsText = rogueUI.transform.Find(NAME_INSUFFICIENCY_TEXT).GetComponent<TMP_Text>();
         selectedBuffText = rogueUI.transform.Find(NAME_SELECTED_BUFF_TEXT).GetComponent<TMP_Text>();
         buffContainer = rogueUI.transform.Find(NAME_BUFF_CONTAINER).gameObject;
         rerollButton = rogueUI.transform.Find(NAME_REROLL_BUTTON).GetComponent<Button>();
@@ -267,13 +273,23 @@ public abstract class RogueManagerBase : MonoBehaviour
         if (rerollCostText != null)
         {
             int nextCost = CalculateRerollCost();
-            rerollCostText.text = $"刷新 {nextCost}";
+            rerollCostText.text = $"{nextCost}";
+            /*playerExperience = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerExperience>();
+            if (playerExperience != null)
+            {
+                if (nextCost > playerExperience.currentAsh)
+                    rerollCostText.color = insufficientRerollTextColor;
+                else
+                {
+                    rerollCostText.color = sufficientRerollTextColor;
+                }
+            }*/
         }
     }
 
     protected virtual string GetRerollInsufficientFundsMessage()
     {
-        return "您没有足够的烬献祭以获得该赐福";
+        return "您没有足够的烬献祭以重新抽取赐福";
     }
     
     protected virtual string GetPurchaseInsufficientFundsMessage()

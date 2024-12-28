@@ -15,7 +15,7 @@ MonoBehaviour:
   duration: 10
   tickDuration: 1
   requiresReset: 0
-  isStackable: 1
+  isStackable: 0
   isPermanent: 0
   description: "\u6301\u7EED\u6062\u590D\u73A9\u5BB6\u4E00\u5B9A\u8840\u91CF"
   componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
