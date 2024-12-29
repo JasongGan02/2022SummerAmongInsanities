@@ -30,10 +30,6 @@ public class CraftingUIManager : MonoBehaviour
     private Button chests;
 
     
-    private BaseObject[] weaponObjects;
-    private BaseObject[] towerObjects;
-    private BaseObject[] projectileObjects;
-    private BaseObject[] chestObjects;
 
     public GameObject buttonPrefab;
     public RectTransform content;
@@ -64,50 +60,33 @@ public class CraftingUIManager : MonoBehaviour
     private TMP_Text num5;
     private TMP_Text time;
 
-
-
+    private BaseObject[] weaponObjects;
+    private BaseObject[] towerObjects;
+    private BaseObject[] projectileObjects;
+    private BaseObject[] chestObjects;
+    private BaseObject[] usableObjects;
+    
     void Awake()
     {
-        //TODO: ProjectileObject
-
-        // 使用 AssetDatabase 来查找所有的 WeaponObject
-        string[] weaponguids = AssetDatabase.FindAssets("t:WeaponObject");
-        string[] towerguids = AssetDatabase.FindAssets("t:TowerObject");
-        string[] projectileguids = AssetDatabase.FindAssets("t:ProjectileObject");
-        string[] chestguids = AssetDatabase.FindAssets("t:ChestObject");
-
-        // 根据 GUID 获取对应的路径，并加载 ScriptableObject
-        weaponObjects = new WeaponObject[weaponguids.Length];
-        towerObjects = new TowerObject[towerguids.Length];
-        projectileObjects = new ProjectileObject[projectileguids.Length];
-        chestObjects = new ChestObject[chestguids.Length];
-
-
-
-        for (int i = 0; i < weaponguids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(weaponguids[i]);
-            weaponObjects[i] = AssetDatabase.LoadAssetAtPath<WeaponObject>(path);
-        }
-        for (int i = 0; i < towerguids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(towerguids[i]);
-            towerObjects[i] = AssetDatabase.LoadAssetAtPath<TowerObject>(path);
-        }
-        for (int i = 0; i < projectileguids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(projectileguids[i]);
-            projectileObjects[i] = AssetDatabase.LoadAssetAtPath<ProjectileObject>(path);
-        }
-        for (int i = 0; i < chestguids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(chestguids[i]);
-            chestObjects[i] = AssetDatabase.LoadAssetAtPath<ChestObject>(path);
-        }
-
-
-
+        weaponObjects = LoadAssets<WeaponObject>("t:WeaponObject");
+        towerObjects = LoadAssets<TowerObject>("t:TowerObject");
+        chestObjects = LoadAssets<ChestObject>("t:ChestObject");
+        usableObjects = LoadAssets<ChestObject>("t:UsableObject");
+        Debug.Log(usableObjects.Length);
     }
+    
+    private T[] LoadAssets<T>(string filter) where T : ScriptableObject
+    {
+        string[] guids = AssetDatabase.FindAssets(filter);
+        T[] objects = new T[guids.Length];
+        for (int i = 0; i < guids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            objects[i] = AssetDatabase.LoadAssetAtPath<T>(path);
+        }
+        return objects;
+    }
+
     void Start()
     {
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
@@ -148,11 +127,7 @@ public class CraftingUIManager : MonoBehaviour
 
 
     }
-
-
-
-
-
+    
 
     private void OnDestroy()
     {
@@ -176,7 +151,7 @@ public class CraftingUIManager : MonoBehaviour
 
         weapons.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(weaponObjects)));
         towers.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(towerObjects)));
-        projectiles.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(projectileObjects)));
+        projectiles.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(usableObjects)));
         chests.onClick.AddListener(() => SetupCraftUI(RemoveEmptyRecipeItems(chestObjects)));
 
         MenuUI.SetActive(false);
