@@ -22,4 +22,4 @@ MonoBehaviour:
   effectControllerType: {fileID: 11500000, guid: 45c65802c2add764cb3eacfb48691c3c, type: 3}
   targetOnHitEffectObject: {fileID: 11400000, guid: 3e988668d345a3943b1583e1ee1d7686, type: 2}
   levelConfig: {fileID: 11400000, guid: f4889a63b94dc0146a42f0ecfb6aa0dc, type: 2}
-  currentLevel: 3
+  currentLevel: 1

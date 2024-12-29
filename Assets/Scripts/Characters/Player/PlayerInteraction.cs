@@ -38,6 +38,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     public GameObject equipmentTemplate;
     private InventorySlot currentSlotInUse = null;
     private int indexInUse = EMPTY;
+    private float usableObjectPressTime = 0f; // Tracks the time the button has been held
     
     
     public float handFarm = 0.5f;
@@ -94,12 +95,11 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     // Update is called once per frame
     void Update()
     {
-        if (IsMouseOverInventoryUI())
-        {
-            return;
-        }
+        if (IsMouseOverInventoryUI()) return;
+        
         PickUpItemCheck();
-
+        HandleUsableObjectUsage();
+        
         if(IsChestOpen())
         {
             currentChest.OpenChest();
@@ -162,6 +162,35 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     private void HandleSlotLeftClickEvent(object sender, InventoryEventBus.OnSlotLeftClickedEventArgs args)
     {
         UseItemInSlot(args.slotIndex);
+    }
+    
+    private void HandleUsableObjectUsage()
+    {
+        if (currentSlotInUse != null && currentSlotInUse.item is UsableObject usableObject)
+        {
+            // If left mouse button is held
+            if (Input.GetMouseButton(0))
+            {
+                usableObjectPressTime += Time.deltaTime;
+
+                if (usableObjectPressTime >= usableObject.pressDuration)
+                {
+                    // Trigger the use effect and reset timer
+                    usableObject.UseEffect(GetComponent<CharacterController>());
+                    usableObjectPressTime = 0f;
+
+                    // Optional: consume the item after use
+                    inventory.RemoveItemByOne(indexInUse);
+                    if (currentSlotInUse.count <= 0) ClearCurrentItemInUse();
+                    
+                }
+            }
+            else
+            {
+                // Reset the press time if button is released
+                usableObjectPressTime = 0f;
+            }
+        }
     }
   
     private void UseItemInSlot(int slotIndex)
@@ -239,8 +268,6 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
 
     private void BreakTileCheck()
     {
-        
-
         if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject) && (currentSlotInUse.item.GetItemName() == "Shovel"))))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();

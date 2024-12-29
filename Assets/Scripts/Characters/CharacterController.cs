@@ -178,6 +178,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public void AddCurrentStats(CharacterStats mods)
     {
         currentStats += mods;
+        currentStats.hp = Mathf.Clamp(currentStats.hp, Mathf.NegativeInfinity, characterObject.maxStats.hp);
         OnStatsChanged();
     }
     
