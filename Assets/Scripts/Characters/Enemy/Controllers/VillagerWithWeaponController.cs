@@ -251,7 +251,7 @@ public class VillagerWithWeaponController : EnemyController
         Vector3 direction = transform.TransformDirection(-Vector3.right);
         Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
         RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
-        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
+        //Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
         if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
         {
             return false;
@@ -271,8 +271,8 @@ public class VillagerWithWeaponController : EnemyController
         Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
         Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
 
-        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
-        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
+        //Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
+        //Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
 
         float distance1 = Vector2.Distance(targetTop, villagerTop);
         float distance2 = Vector2.Distance(targetBottom, villagerBottom);
