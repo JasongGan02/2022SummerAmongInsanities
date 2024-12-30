@@ -12,43 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5175c7802cd72408bd863d16abe728, type: 3}
   m_Name: OnFireLevelConfig
   m_EditorClassIdentifier: 
+  effectName: 
   levels:
   - level: 1
-    levelStats:
-      hp: 3
-      attackDamage: 0
-      attackInterval: 0
-      attackRange: 0
-      armor: 0
-      criticalChance: 0
-      criticalMultiplier: 0
-      movingSpeed: 0
-      jumpForce: 0
-      totalJumps: 0
-    duration: 2
+    attributes:
+    - Key: damagePerSecond
+      Value: 3
+    - Key: duration
+      Value: 2
   - level: 2
-    levelStats:
-      hp: 5
-      attackDamage: 0
-      attackInterval: 0
-      attackRange: 0
-      armor: 0
-      criticalChance: 0
-      criticalMultiplier: 0
-      movingSpeed: 0
-      jumpForce: 0
-      totalJumps: 0
-    duration: 3
+    attributes:
+    - Key: damagePerSecond
+      Value: 5
+    - Key: duration
+      Value: 3
   - level: 3
-    levelStats:
-      hp: 7
-      attackDamage: 0
-      attackInterval: 0
-      attackRange: 0
-      armor: 0
-      criticalChance: 0
-      criticalMultiplier: 0
-      movingSpeed: 0
-      jumpForce: 0
-      totalJumps: 0
-    duration: 5
+    attributes:
+    - Key: damagePerSecond
+      Value: 7
+    - Key: duration
+      Value: 5
