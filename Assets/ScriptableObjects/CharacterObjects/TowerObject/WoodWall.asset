@@ -56,8 +56,8 @@ MonoBehaviour:
   projectileObject: {fileID: 0}
   _maxStack: 5
   _recipe:
-  - {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
-  _quantity: 05000000
+  - material: {fileID: 11400000, guid: 9888ef839123be44496f7b126f2de985, type: 2}
+    quantity: 3
   _isCraftable: 1
   _isCoreNeeded: 1
   _craftTime: 4
