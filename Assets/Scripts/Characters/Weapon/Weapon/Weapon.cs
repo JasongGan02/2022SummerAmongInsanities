@@ -22,9 +22,9 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     protected Vector3 idleOffset = new Vector3(0, 0f, 0); 
     protected float idleBobSpeed = 2f; 
-    protected float idleBobAmount = 0.5f; 
-    private float idleBobTime;
-
+    protected float idleBobAmount = 0.5f;
+    protected float idleBobTime;
+    
     public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;

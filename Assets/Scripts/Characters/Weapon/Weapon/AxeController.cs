@@ -13,10 +13,19 @@ public class AxeController : Weapon
 
     protected override void FollowPlayerWithFloat()
     {
-        transform.position = player.transform.position + idleOffset + new Vector3(0, 1.5f, 0);
-        
+    
+        idleBobTime += Time.deltaTime * idleBobSpeed;
+        float bobOffset = Mathf.Sin(idleBobTime) * idleBobAmount;
+
+        Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
+
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
+
         transform.rotation = Quaternion.Euler(0, 0, isLeftSide ? -45 : 45);
         transform.localScale = new Vector3(isLeftSide ? -1 : 1, 1, 1);
+
+
+
 
     }
 
