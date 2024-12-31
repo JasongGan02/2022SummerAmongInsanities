@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effects/Stats/OnFire")]
-public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
+[CreateAssetMenu(menuName = "Effects/WeaponEffect/SetFire")]
+public class SetFireEffectObject : EffectObject, IUpgradeableEffectObject
 {
-    [Header("On Fire Effect Object")] 
-    [Tooltip("Upper limit for the number of stacks.")] 
-    public int maxStacks = 999; // Upper limit for the number of stacks
-
+    [Header("SetFireEffectObject Fields")] 
+    public OnFireEffectObject onFireEffectObject;
+    [Range(0, 1)] public float chance;
+    public int stacksPerHit;
+        
     #region IUpgradeableEffect Fields
 
     [Header("Upgradeable Effect Configuration")]
@@ -46,11 +47,27 @@ public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
         }
 
        
-        statChanges.hp = LevelConfig.GetAttribute("damagePerSecond", targetLevel, 0f);
-        duration = LevelConfig.GetAttribute("duration", targetLevel, 0f);
+        chance = LevelConfig.GetAttribute("chance", targetLevel, 0f);
+        stacksPerHit = (int) LevelConfig.GetAttribute("stacksPerHit", targetLevel, 0f);
     }
 
     #endregion
+
+    public override void ExecuteEffect(IEffectableController effectedGameController) //apply effect on a single object
+    {
+        if (Random.value <= chance) // Check chance to apply
+        {
+            ApplyBurnEffect(effectedGameController);
+        }
+    }
+    
+    private void ApplyBurnEffect(IEffectableController effectableController)
+    {
+        for (int i = 0; i < stacksPerHit; i++)
+        {
+            onFireEffectObject.ExecuteEffect(effectableController); 
+        }
+    }
     
     private void OnValidate()
     {

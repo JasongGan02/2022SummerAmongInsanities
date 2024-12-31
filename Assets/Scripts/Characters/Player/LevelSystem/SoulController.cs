@@ -9,7 +9,6 @@ public class SoulController : PickupController
 
     public void Initialize(float experienceValue)
     {
-        player =  player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player");

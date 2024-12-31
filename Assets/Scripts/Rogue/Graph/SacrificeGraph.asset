@@ -112,8 +112,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 595
-    y: 466
+    x: 520
+    y: 464
     width: 200
     height: 100
 --- !u!114 &4027627594927342833
@@ -144,8 +144,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 853
-    y: 482
+    x: 794
+    y: 464
     width: 200
     height: 100
 --- !u!114 &5784438416862401934
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: 6452891004d2ba944aec9701b825b1d2, type: 2}
+  effect: {fileID: 11400000, guid: e13374145eee797499857e494723a918, type: 2}
   baseWeight: 0
   isReselectable: 1
   isRoot: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 1104
-    y: 465
+    x: 1091
+    y: 461
     width: 200
     height: 100

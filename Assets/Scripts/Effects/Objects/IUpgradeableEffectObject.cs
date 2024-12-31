@@ -22,7 +22,7 @@ public interface IUpgradeableEffectObject
             Debug.LogWarning($"{this} cannot be upgraded further.");
         }
     }
-
+    
     /// <summary>
     /// Updates the effect stats to match the specified target level.
     /// </summary>

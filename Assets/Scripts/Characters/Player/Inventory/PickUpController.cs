@@ -12,9 +12,9 @@ public abstract class PickupController : MonoBehaviour
     public float acceleration = 2.5f;
 
     // Floating properties
-    public float floatAmplitude = 0.08f; // Height of the floating motion
-    public float floatFrequency = 1f;  // Speed of the floating motion
-    public float floatingDelay = 1f;   // Delay before starting to float
+    public float floatAmplitude = 0.05f; // Height of the floating motion
+    public float floatFrequency = 0.7f;  // Speed of the floating motion
+    public float floatingDelay = 0.8f;   // Delay before starting to float
 
     protected GameObject player;
     protected bool shouldFlyToPlayer = false;
@@ -50,7 +50,6 @@ public abstract class PickupController : MonoBehaviour
 
         if (!isGrounded && IsOnGround())
         {
-            Debug.Log("On Ground");
             isGrounded = true;
             if (!isWaitingToFloat)
             {
@@ -156,8 +155,7 @@ public abstract class PickupController : MonoBehaviour
         if (!isFloating)
         {
             isFloating = true;
-
-            // Use the current position as the base position and adjust for ground level
+            
             Vector3 currentPosition = transform.position;
             float groundLevel = GetGroundLevel();
             initialPosition = new Vector3(currentPosition.x, Mathf.Max(currentPosition.y, groundLevel + 0.25f), currentPosition.z);
@@ -183,10 +181,6 @@ public abstract class PickupController : MonoBehaviour
 
     private void StopFloating()
     {
-        if (!shouldFlyToPlayer)
-        {
-            GetComponent<Collider2D>().enabled = true;
-        }
         isFloating = false;
     }
 
@@ -199,7 +193,6 @@ public abstract class PickupController : MonoBehaviour
             // Check if the object is no longer grounded
             if (!IsOnGround())
             {
-                Debug.Log("No longer grounded, stopping floating.");
                 isGrounded = false;
                 StopFloating();
                 yield break; // Exit the coroutine if no longer grounded
