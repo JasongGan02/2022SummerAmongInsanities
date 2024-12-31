@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e10bd8ec3fb81bc4b84cefcfeef17b78, type: 3}
-  m_Name: OnChilledAssignmentEffect
+  m_Name: OnFireWeaponAssignment
   m_EditorClassIdentifier: 
   duration: 0
   tickDuration: 0
   requiresReset: 0
-  isStackable: 0
+  isStackable: 1
   isPermanent: 0
-  description: "\u8D50\u4E88\u6240\u6709\u6B66\u5668\u5BD2\u51B7\u9644\u9B54"
+  description: "\u8D50\u4E88\u6240\u6709\u6B66\u5668\u706B\u7130\u9644\u9B54"
   componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   effectControllerType: {fileID: 11500000, guid: 45c65802c2add764cb3eacfb48691c3c, type: 3}
-  targetOnHitEffectObject: {fileID: 11400000, guid: 6452891004d2ba944aec9701b825b1d2, type: 2}
-  levelConfig: {fileID: 11400000, guid: a1ea3e501e014c24c9a8171af9d59530, type: 2}
-  currentLevel: 1
+  targetOnHitEffectObject: {fileID: 11400000, guid: 5b28613ba1922d2449e54a94d196101b, type: 2}

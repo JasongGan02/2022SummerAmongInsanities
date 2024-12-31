@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effects/Effect Upgrade")]
 public class EffectUpgradeObject : EffectObject
 {
-    [Header("SetFireEffectObject Fields")] 
+    [Header("EffectUpgradeObject Fields")] 
     public EffectObject upgradeableEffectObject;
     
     public override void ExecuteEffectOnAType()
