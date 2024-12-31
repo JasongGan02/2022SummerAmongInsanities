@@ -60,7 +60,7 @@ public class CoreArchitectureController : CharacterController
         Constructable_Circle.SetActive(false);
     }
 
-    public bool IsPlayerInControlRange()
+    public bool IsPlayerInConstructionRange()
     {
         if(player == null)
         {

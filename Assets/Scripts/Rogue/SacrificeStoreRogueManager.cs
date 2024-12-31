@@ -50,23 +50,16 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         }
     }
     
-    protected void Update() 
+    public bool IsPlayerInConstructionRange()
     {
-        if (Input.GetKeyDown(openSacrificeKey) && coreController != null && coreController.IsPlayerInControlRange())
-        {
-            OnPlayerOpenSacrificeStore();
-        }
+        return coreController != null && coreController.IsPlayerInConstructionRange();
     }
     
     protected override void OnUIUpdated(object sender, UIBeingViewed ui)
     {
         rogueUI.SetActive(ui == UIBeingViewed.Sacrifice);
-    }
-
-    private void OnPlayerOpenSacrificeStore()
-    {
-        uiViewStateManager.ToggleSacrificeUI();
-        AddBuffs();
+        if (ui == UIBeingViewed.Sacrifice)
+            AddBuffs();
     }
 
     protected override void AddBuffs()

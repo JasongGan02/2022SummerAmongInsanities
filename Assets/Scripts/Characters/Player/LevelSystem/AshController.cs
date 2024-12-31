@@ -9,11 +9,19 @@ public class AshController : PickupController
     
     public void Initialize(float ashValue)
     {
-        player =  player = GameObject.FindGameObjectWithTag("Player");
-        playerExperience = player.GetComponent<PlayerExperience>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+            playerExperience = player.GetComponent<PlayerExperience>();
         this.ashValue = ashValue;
         UpdateChunk();
         NormalizeObjectSize();
+    }
+    
+    protected override void FindFields()
+    {
+        base.FindFields();
+        if (player != null)
+            playerExperience = player.GetComponent<PlayerExperience>();
     }
     
     protected override void OnPickup()

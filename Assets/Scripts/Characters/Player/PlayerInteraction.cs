@@ -380,7 +380,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         if (currentSlotInUse == null ||
             currentSlotInUse.count == 0 ||
             Input.GetMouseButtonDown(1) || 
-            Input.GetMouseButtonDown(2) || (!UIViewStateManager.GetCurUI() && UIViewStateManager.isViewingUI()))
+            Input.GetMouseButtonDown(2) || (!UIViewStateManager.IsViewingConstruction() && UIViewStateManager.IsViewingUI()))
         {
             ClearCurrentItemInUse();
         }

@@ -249,7 +249,7 @@ public class CraftingUIManager : MonoBehaviour
             {
                 if (isCraftable.getIsCoreNeeded())
                 {
-                    if (coreArchitecture.IsPlayerInControlRange() == false)
+                    if (coreArchitecture.IsPlayerInConstructionRange() == false)
                     {
                         image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
                     }
@@ -376,7 +376,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             if (craftableObject.getIsCoreNeeded())
             {
-                if (coreArchitecture.IsPlayerInControlRange())
+                if (coreArchitecture.IsPlayerInConstructionRange())
                 {
                     enableInputItems();
                     

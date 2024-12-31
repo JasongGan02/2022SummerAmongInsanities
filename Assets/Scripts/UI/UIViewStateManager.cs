@@ -6,12 +6,14 @@ using UnityEngine;
 public class UIViewStateManager : MonoBehaviour
 {
     public event EventHandler<UIBeingViewed> UpdateUiBeingViewedEvent;
+    private SacrificeStoreRogueManager sacrificeStoreRogueManager;
 
     private static UIBeingViewed currentUI;
     // Start is called before the first frame update
     void Start()
     {
         currentUI = UIBeingViewed.Null;
+        sacrificeStoreRogueManager = GetComponent<SacrificeStoreRogueManager>();
     }
 
     // Update is called once per frame
@@ -31,9 +33,13 @@ public class UIViewStateManager : MonoBehaviour
         {
             ToggleUI(UIBeingViewed.Craft);
         }
+        else if (Input.GetKeyDown(KeyCode.R) && sacrificeStoreRogueManager.IsPlayerInConstructionRange())
+        {
+            ToggleUI(UIBeingViewed.Sacrifice);
+        }
         else if (Input.GetKeyDown(KeyCode.Escape)) // Check for the Escape key
         {
-            collaspeAllUI(); // Call the method to collapse all UI
+            CollaspeAllUI(); // Call the method to collapse all UI
         }
     }
 
@@ -43,17 +49,22 @@ public class UIViewStateManager : MonoBehaviour
         UpdateUiBeingViewedEvent?.Invoke(this, currentUI);
     }
 
-    public static bool isViewingUI()
+    public static bool IsViewingUI()
     {
         return currentUI != UIBeingViewed.Null;
     }
 
-    public static bool GetCurUI()
+    public static bool IsViewingConstruction()
     {
         return currentUI==UIBeingViewed.Construction;
     }
+    
+    public static UIBeingViewed GetCurrentUI()
+    {
+        return currentUI;
+    }
 
-    public void collaspeAllUI()
+    public void CollaspeAllUI()
     {
         ToggleUI(UIBeingViewed.Null);
     }
