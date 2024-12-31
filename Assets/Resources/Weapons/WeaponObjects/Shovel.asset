@@ -29,7 +29,6 @@ MonoBehaviour:
   projectileObject: {fileID: 0}
   onHitEffects: []
   _recipe: []
-  _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0

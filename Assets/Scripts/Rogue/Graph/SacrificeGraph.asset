@@ -32,6 +32,38 @@ MonoBehaviour:
     y: 465
     width: 200
     height: 100
+--- !u!114 &-6263270054759089041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effect: {fileID: 11400000, guid: c392fc443b34e2d4886e1371dd2f425e, type: 2}
+  baseWeight: 0
+  isReselectable: 1
+  isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
+  childNodes: []
+  parentNodes:
+  - {fileID: -5452198789683420793}
+  rect:
+    serializedVersion: 2
+    x: 1334
+    y: 457
+    width: 200
+    height: 100
 --- !u!114 &-5452198789683420793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,6 +91,7 @@ MonoBehaviour:
   - {fileID: 599137119995403438}
   - {fileID: 5784438416862401934}
   - {fileID: 4027627594927342833}
+  - {fileID: -6263270054759089041}
   parentNodes: []
   rect:
     serializedVersion: 2
@@ -83,6 +116,7 @@ MonoBehaviour:
   - {fileID: 599137119995403438}
   - {fileID: 5784438416862401934}
   - {fileID: 4027627594927342833}
+  - {fileID: -6263270054759089041}
   rootNode: {fileID: -5452198789683420793}
 --- !u!114 &599137119995403438
 MonoBehaviour:
@@ -112,8 +146,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 595
-    y: 466
+    x: 520
+    y: 464
     width: 200
     height: 100
 --- !u!114 &4027627594927342833
@@ -144,8 +178,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 853
-    y: 482
+    x: 794
+    y: 464
     width: 200
     height: 100
 --- !u!114 &5784438416862401934
@@ -160,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: 6452891004d2ba944aec9701b825b1d2, type: 2}
+  effect: {fileID: 11400000, guid: e13374145eee797499857e494723a918, type: 2}
   baseWeight: 0
   isReselectable: 1
   isRoot: 0
@@ -176,7 +210,7 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 1104
-    y: 465
+    x: 1091
+    y: 461
     width: 200
     height: 100
