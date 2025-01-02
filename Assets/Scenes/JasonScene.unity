@@ -2057,6 +2057,62 @@ PrefabInstance:
       propertyPath: insufficientRerollTextColor.r
       value: 0.41960788
       objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[6].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 78165116cb45e304c82f0459b5f4f95e, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[7].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd39ab47b83ac941bea94049a86b30e, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[8].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: acad7846dea24f14bbb908684ab32a85, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[9].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[10].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[11].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[12].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[13].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b59cb1301e886845bfd594c3d51e81c, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[14].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[15].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[16].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[17].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: a970880c399df4243a759e6fc8814f1a, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[13].initialPoolSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
       value: 
@@ -2089,6 +2145,10 @@ PrefabInstance:
       propertyPath: statsImage2
       value: 
       objectReference: {fileID: 21300000, guid: 1ce09953e8e6acf4782de046df3e3e41, type: 3}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: testCase.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a970880c399df4243a759e6fc8814f1a, type: 2}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.size
       value: 10
@@ -2160,7 +2220,7 @@ PrefabInstance:
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[5].inventoryObject
       value: 
-      objectReference: {fileID: 11400000, guid: 7be5f48d4bc1dff4c9fe38be91989716, type: 2}
+      objectReference: {fileID: 11400000, guid: a970880c399df4243a759e6fc8814f1a, type: 2}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[6].inventoryObject
       value: 

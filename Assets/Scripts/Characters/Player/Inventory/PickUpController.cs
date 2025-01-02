@@ -12,8 +12,8 @@ public abstract class PickupController : MonoBehaviour
     public float acceleration = 2.5f;
 
     // Floating properties
-    public float floatAmplitude = 0.05f; // Height of the floating motion
-    public float floatFrequency = 0.7f;  // Speed of the floating motion
+    public float floatAmplitude = 0.06f; // Height of the floating motion
+    public float floatFrequency = 1.2f;  // Speed of the floating motion
     public float floatingDelay = 0.8f;   // Delay before starting to float
 
     protected GameObject player;

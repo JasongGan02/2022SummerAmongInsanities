@@ -24,7 +24,7 @@ public class CatapultTowerController : RangedTowerController
         {
             audioEmitter.PlayClipFromCategory("CatapultShoot");
             animator.Play("Catapult_Attack", -1, 0f); // Play the attack animation
-            FireProjectile(target); // Fire a projectile at the target
+            FireProjectiles(target); // Fire a projectile at the target
         }
     }
 
@@ -38,10 +38,10 @@ public class CatapultTowerController : RangedTowerController
         }
     }
 
-    public override void FireProjectile(GameObject target)
+    public override void FireProjectiles(GameObject target)
     {
         FlipTowardsTarget(); // Flip the tower to face the target before firing
-        base.FireProjectile(target); // Call the base method to handle projectile firing
+        base.FireProjectiles(target); // Call the base method to handle projectile firing
     }
 
     const float NON_DETECTABLE_RANGE = 3f;

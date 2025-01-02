@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/SetFireEffect.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/SetFireEffect.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/WeaponAssignmentEffect/OnChilledAssignmentEffect.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/WeaponAssignmentEffect/OnChilledAssignmentEffect.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/WeaponAssignmentEffect/OnFireAssignmentEffect.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/WeaponAssignmentEffect/OnFireAssignmentEffect.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/SacrificeGraph.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/SacrificeGraph.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningArrowTowerEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningArrowTowerEffectObject.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,13 +28,14 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/PlayerExperienceUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/SoulObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/UsableObject/UsableObject.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/DetonateEffectController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/HideInDerivedInspectorDrawer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/RangedTowerObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnChilledEffectController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/WeaponEffectAssignmentController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectEvents.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/DetonateEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningArrowTowerEffectObject.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/IUpgradeableEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnChilledEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
@@ -77,6 +69,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;Attach to Unity Editor.Attach to Unity Editor &amp; Play.executor&quot;: &quot;Debug&quot;,
     &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -200,7 +193,9 @@
       <workItem from="1735369453406" duration="4919000" />
       <workItem from="1735451734756" duration="6033000" />
       <workItem from="1735521720044" duration="5137000" />
-      <workItem from="1735614554087" duration="13809000" />
+      <workItem from="1735614554087" duration="15146000" />
+      <workItem from="1735708559236" duration="1816000" />
+      <workItem from="1735797421470" duration="7675000" />
     </task>
     <servers />
   </component>

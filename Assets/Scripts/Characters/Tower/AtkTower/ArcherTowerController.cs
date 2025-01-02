@@ -13,7 +13,7 @@ public class ArcherTowerController : RangedTowerController
         {
             audioEmitter.PlayClipFromCategory("ShootArrow");
             //Vector2 direction = (target.transform.position - transform.position).normalized;
-            FireProjectile(target);
+            FireProjectiles(target);
             
         }
     }

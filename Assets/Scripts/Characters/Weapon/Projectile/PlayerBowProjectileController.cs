@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBowProjectile : Projectile
+public class PlayerBowProjectileController : ProjectileController
 {
     float knockbackForce;
     public void Initialize(CharacterController firingCharacter, ProjectileObject projectileObject, float force, float damage,float knockbackForce)

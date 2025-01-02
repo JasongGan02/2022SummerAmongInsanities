@@ -10,7 +10,6 @@ public class ConstructionShadows : MonoBehaviour
     private SpriteRenderer ShadowSpriteRenderer;
     
     private CoreArchitectureController coreArchitecture;
-    private TowerContainer towerContainer;
     private Color OriginalColor;
     private bool isPlaceAble = false;
 
@@ -18,7 +17,6 @@ public class ConstructionShadows : MonoBehaviour
     {
         ShadowSpriteRenderer = GetComponent<SpriteRenderer>();
         OriginalColor = ShadowSpriteRenderer.color;
-        towerContainer = FindObjectOfType<TowerContainer>();
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
 
     }

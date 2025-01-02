@@ -65,7 +65,7 @@ public class LadyController : EnemyController, IRangedAttacker
 
 
     // Implement the FireProjectile method as specified by the IRangedAttacker interface
-    public void FireProjectile(GameObject target)
+    public void FireProjectiles(GameObject target)
     {
         if (target == null)
         {
@@ -77,13 +77,13 @@ public class LadyController : EnemyController, IRangedAttacker
         GameObject projectileGameObject = PoolManager.Instance.Get(ProjectileObject);
         projectileGameObject.transform.position = startPosition.position;
         projectileGameObject.transform.SetParent(transform, true);
-        Projectile projectileComponent = projectileGameObject.GetComponent<Projectile>();
+        ProjectileController projectileControllerComponent = projectileGameObject.GetComponent<ProjectileController>();
 
-        if (projectileComponent != null)
+        if (projectileControllerComponent != null)
         {
             // Initialize and launch the projectile
-            projectileComponent.Initialize(this, ProjectileObject);
-            projectileComponent.Launch(target, startPosition);
+            projectileControllerComponent.Initialize(this, ProjectileObject);
+            projectileControllerComponent.Launch(target, startPosition);
         }
         else
         {
@@ -138,7 +138,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 {
                     Debug.Log(target);
                     // Fire an arrow
-                    FireProjectile(target);
+                    FireProjectiles(target);
 
                     // Set the next fire time
                     nextFire = Time.time + currentStats.attackInterval;

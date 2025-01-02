@@ -18,16 +18,16 @@ public class RangedWeaponController : Weapon, IRangedAttacker
         projectileObject = weaponStats.projectileObject;
     }
 
-    public virtual void FireProjectile(GameObject target)
+    public virtual void FireProjectiles(GameObject target)
     {
         if (ProjectileObject != null)
         {
             GameObject projectileObject = PoolManager.Instance.Get(ProjectileObject);
             projectileObject.transform.position = startPosition.position;
             projectileObject.transform.SetParent(transform, true);
-            Projectile projectileComponent = projectileObject.GetComponent<Projectile>();
-            projectileComponent.Initialize(characterController, ProjectileObject);
-            projectileComponent.Launch(target, startPosition);
+            ProjectileController projectileControllerComponent = projectileObject.GetComponent<ProjectileController>();
+            projectileControllerComponent.Initialize(characterController, ProjectileObject);
+            projectileControllerComponent.Launch(target, startPosition);
         }
     }
 }

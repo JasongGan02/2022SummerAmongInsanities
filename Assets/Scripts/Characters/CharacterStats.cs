@@ -8,10 +8,10 @@ using System.Text;
 public class CharacterStats
 {
     public float hp;
+    public float armor;
     public float attackDamage;
     public float attackInterval;
     public float attackRange;
-    public float armor;
     public float criticalChance;
     public float criticalMultiplier;
     public float movingSpeed;
@@ -299,6 +299,11 @@ public class TowerStats : CharacterStats
     public int energyCost;
     public Quaternion rotateAngle;//a fixed amount that determines the rotation type of a tower
     [HideInInspector] public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
+}
 
-
+[Serializable]
+public class RangedTowerStats : TowerStats
+{
+    [Header("Ranged Tower Fields")]
+    public int projectilesPerShot = 1;
 }
