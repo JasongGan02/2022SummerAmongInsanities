@@ -88,7 +88,7 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
     {
         currentStats.hp = 0;
         UpdateHealthUI();
-        GameObject.FindObjectOfType<UIViewStateManager>().collaspeAllUI();
+        GameObject.FindObjectOfType<UIViewStateManager>().CollaspeAllUI();
         GameObject.FindObjectOfType<UIViewStateManager>().enabled = false;  
         deathCount++;
         PoolManager.Instance.Return(this.gameObject, characterObject);

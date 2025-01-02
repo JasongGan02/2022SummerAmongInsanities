@@ -57,10 +57,10 @@ MonoBehaviour:
   projectileObject: {fileID: 11400000, guid: 923b64dd2880121489b1f446a8da6b66, type: 2}
   _maxStack: 5
   _recipe:
-  - {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
-  - {fileID: 11400000, guid: 9888ef839123be44496f7b126f2de985, type: 2}
-  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
-  _quantity: 230000000f0000000a000000
+  - material: {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
+    quantity: 2
+  - material: {fileID: 11400000, guid: be26af94efed3574a98d0da13049dbdd, type: 2}
+    quantity: 3
   _isCraftable: 1
   _isCoreNeeded: 1
   _craftTime: 10

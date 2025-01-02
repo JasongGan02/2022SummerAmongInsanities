@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd5175c7802cd72408bd863d16abe728, type: 3}
-  m_Name: OnFireLevelConfig
+  m_Name: OnDetonateLevelConfig
   m_EditorClassIdentifier: 
   effectName: 
   levels:
   - level: 1
     attributes:
-    - Key: damagePerSecond
-      Value: 3
-    - Key: duration
-      Value: 2
+    - Key: chance
+      Value: 0
+    - Key: detonateDamageMultiplier
+      Value: 1
   - level: 2
     attributes:
-    - Key: damagePerSecond
-      Value: 5
-    - Key: duration
-      Value: 3
+    - Key: chance
+      Value: 0.05
+    - Key: detonateDamageMultiplier
+      Value: 1
   - level: 3
     attributes:
-    - Key: damagePerSecond
-      Value: 7
-    - Key: duration
-      Value: 5
+    - Key: chance
+      Value: 0.1
+    - Key: detonateDamageMultiplier
+      Value: 2

@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[CreateAssetMenu(menuName = "Effects/Stats/OnFire")]
-public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
+[CreateAssetMenu(menuName = "Effects/OnHitEffect/OnDetonate")]
+public class OnDetonateEffectObject : EffectObject, IUpgradeableEffectObject
 {
-    [Header("On Fire Effect Object")] 
-    [Tooltip("Upper limit for the number of stacks.")] 
-    public int maxStacks = 999; // Upper limit for the number of stacks
-
+    [Header("DetonateEffectObject Fields")] 
+    public float detonateDamageMultiplier;
+    public float chance;
+    public OnFireEffectObject onFireEffectObject;
+    
     #region IUpgradeableEffect Fields
 
     [Header("Upgradeable Effect Configuration")]
@@ -44,10 +44,9 @@ public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
             Debug.LogWarning($"No stats found for level {targetLevel} in {name}.");
             return;
         }
-
-       
-        statChanges.hp = LevelConfig.GetAttribute("damagePerSecond", targetLevel, 0f);
-        duration = LevelConfig.GetAttribute("duration", targetLevel, 0f);
+        
+        chance = LevelConfig.GetAttribute("chance", targetLevel, 0f);
+        detonateDamageMultiplier = (int) LevelConfig.GetAttribute("detonateDamageMultiplier", targetLevel, 0f);
     }
 
     #endregion

@@ -32,3 +32,5 @@ MonoBehaviour:
     jumpForce: 0
     totalJumps: 0
   maxStacks: 999
+  levelConfig: {fileID: 11400000, guid: f4889a63b94dc0146a42f0ecfb6aa0dc, type: 2}
+  currentLevel: 1

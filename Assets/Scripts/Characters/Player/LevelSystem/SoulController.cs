@@ -9,11 +9,22 @@ public class SoulController : PickupController
 
     public void Initialize(float experienceValue)
     {
-        player =  player = GameObject.FindGameObjectWithTag("Player");
-        playerExperience = player.GetComponent<PlayerExperience>();
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                playerExperience = player.GetComponent<PlayerExperience>();
+        }
         this.experienceValue = experienceValue;
         UpdateChunk();
         NormalizeObjectSize();
+    }
+
+    protected override void FindFields()
+    {
+       base.FindFields();
+        if (player != null)
+            playerExperience = player.GetComponent<PlayerExperience>();
     }
     
     protected override void OnPickup()
@@ -21,6 +32,7 @@ public class SoulController : PickupController
         if (playerExperience == null)
         {
             Destroy(gameObject);
+            return;
         }
         playerExperience.AddExperience(experienceValue);
         Destroy(gameObject);
