@@ -75,7 +75,8 @@ public class BurningArrowTowerEffectObject : EffectObject, IUpgradeableEffectObj
         {
             archerTower.projectileObject.onHitEffects.Add(onFireEffectObject);
             archerTower.rangedTowerStats.projectilesPerShot = projectilesPerShot;
-            archerTower
+            //TODO: OnFireEffect provides a method to add multiple layers, consider done this logic in controller
+            //archerTower
         }
     }
     
