@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dbfc95eb3fadc34cbe108b89cd6b22a, type: 3}
   m_Name: ArcherTower
   m_EditorClassIdentifier: 
   itemName: ArcherTower
-  sizeRatio: 0.5
+  sizeRatio: 1
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
   baseStats:
     hp: 100
+    armor: 3
     attackDamage: 5
     attackInterval: 0.8
     attackRange: 15
-    armor: 3
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 0
@@ -28,10 +28,10 @@ MonoBehaviour:
     totalJumps: 0
   maxStats:
     hp: 100
+    armor: 3
     attackDamage: 5
     attackInterval: 0.8
     attackRange: 15
-    armor: 3
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 0
@@ -42,10 +42,10 @@ MonoBehaviour:
   - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
   towerStats:
     hp: 100
+    armor: 3
     attackDamage: 5
     attackInterval: 0.8
     attackRange: 15
-    armor: 3
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 0
@@ -54,7 +54,6 @@ MonoBehaviour:
     energyCost: 10
     rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     curAngle: {x: 0, y: 0, z: 0, w: 1}
-  projectileObject: {fileID: 11400000, guid: 923b64dd2880121489b1f446a8da6b66, type: 2}
   _maxStack: 5
   _recipe:
   - material: {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
@@ -64,3 +63,19 @@ MonoBehaviour:
   _isCraftable: 1
   _isCoreNeeded: 1
   _craftTime: 10
+  rangedTowerStats:
+    hp: 100
+    armor: 3
+    attackDamage: 5
+    attackInterval: 0.8
+    attackRange: 15
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    energyCost: 10
+    rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    curAngle: {x: 0, y: 0, z: 0, w: 1}
+    projectilesPerShot: 1
+  projectileObject: {fileID: 11400000, guid: 923b64dd2880121489b1f446a8da6b66, type: 2}

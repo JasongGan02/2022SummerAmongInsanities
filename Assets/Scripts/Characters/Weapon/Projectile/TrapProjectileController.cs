@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapProjectile : Projectile
+public class TrapProjectileController : ProjectileController
 {
     private Vector2 initialSpot;
     public override void Launch(GameObject target, Transform startPosition)

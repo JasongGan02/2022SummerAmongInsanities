@@ -34,13 +34,13 @@ public class DroppedObjectController : PickupController
         inventory.AddItem(item, amount);
         if (item is IPoolableObject)
         {
-            Projectile projectileComponent = GetComponent<Projectile>();
+            ProjectileController projectileControllerComponent = GetComponent<ProjectileController>();
             GetComponent<Rigidbody2D>().simulated = true;
             GetComponent<Collider2D>().enabled = true;
             GetComponent<Collider2D>().isTrigger = true;
-            if (projectileComponent != null)
+            if (projectileControllerComponent != null)
             {
-                projectileComponent.enabled = true;
+                projectileControllerComponent.enabled = true;
             }
             PoolManager.Instance.Return(gameObject, item as BaseObject);
             Destroy(this);
@@ -56,13 +56,13 @@ public class DroppedObjectController : PickupController
     {
         if (item is IPoolableObject)
         {
-            Projectile projectileComponent = GetComponent<Projectile>();
+            ProjectileController projectileControllerComponent = GetComponent<ProjectileController>();
             GetComponent<Rigidbody2D>().simulated = true;
             GetComponent<Collider2D>().enabled = true;
             GetComponent<Collider2D>().isTrigger = true;
-            if (projectileComponent != null)
+            if (projectileControllerComponent != null)
             {
-                projectileComponent.enabled = true;
+                projectileControllerComponent.enabled = true;
             }
             PoolManager.Instance.Return(gameObject, item as BaseObject);
             Destroy(this);

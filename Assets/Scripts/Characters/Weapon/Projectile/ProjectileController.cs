@@ -4,7 +4,7 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using System;
 
-public class Projectile : MonoBehaviour, IDamageSource
+public class ProjectileController : MonoBehaviour, IDamageSource
 {
     protected ProjectileObject projectileObject;
     protected CharacterObject characterObject;
@@ -17,6 +17,7 @@ public class Projectile : MonoBehaviour, IDamageSource
     public float firingAngle = 45.0f; // Angle of firing
     public float speed = 20f; // Speed of the projectile
     public float gravityScale = 0.1f; // Scaled down gravity effect
+
 
     public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
@@ -109,6 +110,15 @@ public class Projectile : MonoBehaviour, IDamageSource
     {
         float damageDealt = target.CalculateDamage(DamageAmount, CriticalChance, CriticalMultiplier);
         target.TakeDamage(damageDealt, this);
+        ApplyEffects(target as IEffectableController);
+    }
+    
+    private void ApplyEffects(IEffectableController target)
+    {
+        foreach (var effect in projectileObject.onHitEffects)
+        {
+            effect.ExecuteEffect(target);
+        }
     }
 
     protected virtual bool IsInHatredList(Collider2D collider)

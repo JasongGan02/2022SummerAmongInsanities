@@ -71,14 +71,14 @@ public class BowController : RangedWeaponController
 
         _audioEmitter.PlayClipFromCategory("BowCharge");
         yield return new WaitForSeconds(1f);
-        FireProjectile(target);
+        FireProjectiles(target);
 
 
     }
     
 
 
-    public override void FireProjectile(GameObject target)
+    public override void FireProjectiles(GameObject target)
     {
 
         if (!inventory.ConsumeItem(projectileObject, 1))
@@ -91,7 +91,7 @@ public class BowController : RangedWeaponController
         GameObject arrow = PoolManager.Instance.Get(projectileObject);
         arrow.transform.SetParent(transform, true);
         arrow.transform.position = startPosition.transform.position;
-        var playerBowArrow = arrow.GetComponent<PlayerBowProjectile>();
+        var playerBowArrow = arrow.GetComponent<PlayerBowProjectileController>();
       
         if (playerBowArrow != null)
         {

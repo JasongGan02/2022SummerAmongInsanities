@@ -6,9 +6,10 @@ using System.Reflection;
 using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
-public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject, IPoolableObject
+public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject
 {   
-    [SerializeField] private TowerStats towerStats;
+    [Header("TowerObject Fields")]
+    [SerializeField, HideInDerivedInspector] private TowerStats towerStats;
     
     protected override void OnEnable()
     {
@@ -16,9 +17,10 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         base.OnEnable();
     }
 
-    [Header("Bullet Specification")]
-    [SerializeField] public ProjectileObject projectileObject;
-
+    protected void CharacterOnEnable()
+    {
+        base.OnEnable();
+    }
     
     [Header("Iventory Parameters")]
     [SerializeField]

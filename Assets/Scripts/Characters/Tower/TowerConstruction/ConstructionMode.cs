@@ -12,7 +12,6 @@ public class ConstructionMode : MonoBehaviour
     private CoreArchitectureController coreArchitecture;
     private UIViewStateManager uiViewStateManager;
     private PlayerInteraction playerInteraction;
-    private TowerContainer towerContainer;
 
     
     [SerializeField] GameObject ConstructionUI;
@@ -26,7 +25,6 @@ public class ConstructionMode : MonoBehaviour
     {
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
-        towerContainer = FindObjectOfType<TowerContainer>();
         MaxEnergy = 100;
         CurrentEnergy = 0;
         SetEnergyText();

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CatapultProjectile : Projectile
+public class CatapultProjectileController : ProjectileController
 {
     [SerializeField] private LayerMask damageableLayer; // Set this in the inspector
     [SerializeField] private float explosionRadius = 5.0f;

@@ -20,6 +20,4 @@ MonoBehaviour:
   description: "\u8D50\u4E88\u6240\u6709\u6B66\u5668\u5BD2\u51B7\u9644\u9B54"
   componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   effectControllerType: {fileID: 11500000, guid: 45c65802c2add764cb3eacfb48691c3c, type: 3}
-  targetOnHitEffectObject: {fileID: 11400000, guid: 6452891004d2ba944aec9701b825b1d2, type: 2}
-  levelConfig: {fileID: 11400000, guid: a1ea3e501e014c24c9a8171af9d59530, type: 2}
-  currentLevel: 1
+  targetOnHitEffectObject: {fileID: 11400000, guid: 1bf150935ffd93d4a87f4d8894d6977d, type: 2}

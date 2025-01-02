@@ -57,8 +57,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
 
         // Scale damage by stack count
         float damagePerTick = statsEffectObject.statChanges.hp * stackCount;
-
-        iDamageable.TakeDamage(damagePerTick, GetComponent<CharacterController>() as IDamageSource);
+        iDamageable.TakeDamage(iDamageable.CalculateDamage(damagePerTick, 0f, 0f), GetComponent<CharacterController>() as IDamageSource);
     }
 
     private void AddStack()

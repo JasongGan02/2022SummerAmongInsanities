@@ -9,11 +9,10 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
 
     [SerializeField]
     private float damageCoef;
+    public float DamageCoef => damageCoef;
 
-    public float DamageCoef
-    {
-        get => damageCoef;
-    }
+    public List<EffectObject> onHitEffects = new List<EffectObject>();
+    
     //IventoryObject Implementation
     #region
     [SerializeField]
@@ -31,10 +30,10 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
 
         drop.GetComponent<Collider2D>().isTrigger = false;
         // Disable the Projectile component if it exists
-        Projectile projectileComponent = drop.GetComponent<Projectile>();
-        if (projectileComponent != null)
+        ProjectileController projectileControllerComponent = drop.GetComponent<ProjectileController>();
+        if (projectileControllerComponent != null)
         {
-            projectileComponent.enabled = false;
+            projectileControllerComponent.enabled = false;
         }
         var controller = drop.GetComponent<DroppedObjectController>();
         if (controller == null)
@@ -128,7 +127,7 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
-        if (worldGameObject.GetComponent<Projectile>() == null)
+        if (worldGameObject.GetComponent<ProjectileController>() == null)
         {
 
             Type type = Type.GetType(itemName);
