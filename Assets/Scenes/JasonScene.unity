@@ -1673,12 +1673,24 @@ PrefabInstance:
       value: -120.29982
       objectReference: {fileID: 0}
     - target: {fileID: 2367789563267324857, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367789563267324857, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367789563267324857, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2367789563267324857, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367789563267324857, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 2367789563267324857, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1928,9 +1940,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5552232036597466116, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 489.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5552232036597466116, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -594
+      objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 396.4269
+      value: -0.00063251576
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size

@@ -1932,9 +1932,17 @@ PrefabInstance:
       value: 389.7
       objectReference: {fileID: 0}
     - target: {fileID: 1912999445381098145, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912999445381098145, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1912999445381098145, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 1912999445381098145, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
       propertyPath: m_sharedMaterial
       value: 
@@ -2078,6 +2086,14 @@ PrefabInstance:
     - target: {fileID: 8595183673023288175, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837255454603266445, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 500.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837255454603266445, guid: 28f306e495f036c459f158c058fd0be2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 224.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects:
@@ -2530,6 +2546,14 @@ PrefabInstance:
     - target: {fileID: 4183867079217491464, guid: f2f76981f8f165043a14211f0ff26fce, type: 3}
       propertyPath: m_AnchorMin.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183867079217491464, guid: f2f76981f8f165043a14211f0ff26fce, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183867079217491464, guid: f2f76981f8f165043a14211f0ff26fce, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4183867079217491464, guid: f2f76981f8f165043a14211f0ff26fce, type: 3}
       propertyPath: m_AnchoredPosition.x
