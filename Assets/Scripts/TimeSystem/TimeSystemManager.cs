@@ -35,12 +35,10 @@ public class TimeSystemManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
+       //timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
         //calendarText = GameObject.Find(Constants.Name.CALENDAR_TEXT).GetComponent<Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
         _audioEmitter = GetComponent<AudioEmitter>();
-        
-
     }
 
     private void Start()
@@ -163,7 +161,7 @@ public class TimeSystemManager : MonoBehaviour
     {
         string formattedHour = currentHour.ToString("D2");
         string formattedMinute = ((int)currentMinute).ToString("D2");
-        timeText.text = $"{formattedHour}:{formattedMinute}";
+        //timeText.text = $"{formattedHour}:{formattedMinute}";
         //calendarText.text = $"{currentDay+1}";
     }
     public float GetCurrentTime() => currentHour + currentMinute / 60f;
