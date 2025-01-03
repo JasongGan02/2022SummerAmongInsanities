@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18fedaf104aa09041b5ac37481a2da3a, type: 3}
+  m_Name: BurningArrowTowerEffect
+  m_EditorClassIdentifier: 
+  duration: 0
+  tickDuration: 0
+  requiresReset: 0
+  isStackable: 0
+  isPermanent: 0
+  description: "\u6BCF\u6B21\u547D\u4E2D\u589E\u52A0x\u5C42\u71C3\u70E7\u6548\u679C\uFF0C\u4E00\u6B21\u5C04\u51FAy\u53EA\u7BAD"
+  componentToApply: {fileID: 0}
+  effectControllerType: {fileID: 0}
+  onFireEffectObject: {fileID: 11400000, guid: 3e988668d345a3943b1583e1ee1d7686, type: 2}
+  stacksPerHit: 1
+  projectilesPerShot: 1
+  levelConfig: {fileID: 11400000, guid: edda70035f0b86244807644768b10ebf, type: 2}
+  currentLevel: 1

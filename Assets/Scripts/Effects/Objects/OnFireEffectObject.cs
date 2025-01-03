@@ -49,9 +49,6 @@ public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
         statChanges.hp = LevelConfig.GetAttribute("damagePerSecond", targetLevel, 0f);
         duration = LevelConfig.GetAttribute("duration", targetLevel, 0f);
     }
-
-    #endregion
-    
     private void OnValidate()
     {
         if (CurrentLevel < 1)
@@ -60,5 +57,27 @@ public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
         }
 
         UpdateStatsToTargetLevel(CurrentLevel);
+    }
+
+    #endregion
+    
+    
+    public void ApplyMultipleStacks(IEffectableController target, int stacksToAdd)
+    {
+        if (target == null) return;
+
+        var onFire = (target as MonoBehaviour).GetComponent<OnFireController>();
+
+        if (onFire == null)
+        {
+            ExecuteEffect(target);
+            stacksToAdd--;
+            onFire = (target as MonoBehaviour).GetComponent<OnFireController>();
+            Debug.Log("on fire current stack: " + onFire.stackCount);
+            Debug.Log("stacksToAdd: " + stacksToAdd);
+        }
+        
+        onFire.AddStack(stacksToAdd);
+        Debug.Log("on fire current stack: " + onFire.stackCount);
     }
 }

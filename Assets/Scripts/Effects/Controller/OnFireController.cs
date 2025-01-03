@@ -29,7 +29,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
             if (effect != this) // Skip the newly added instance (this)
             {
                 Debug.Log($"Stacked on {effect.GetInstanceID()}");
-                effect.AddStack(); // Add stack to the existing effect
+                effect.AddStack(1); // Add stack to the existing effect
                 enabled = false; // Disable this instance
                 Destroy(this); // Destroy the new instance
                 return; // Exit early to prevent further execution
@@ -60,7 +60,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
         iDamageable.TakeDamage(iDamageable.CalculateDamage(damagePerTick, 0f, 0f), GetComponent<CharacterController>() as IDamageSource);
     }
 
-    private void AddStack()
+    public void AddStack(int stacksToAdd)
     {
         if (stackCount >= onFireEffectObject.maxStacks)
         {
@@ -69,7 +69,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
         }
 
         // Increment the stack count
-        stackCount++;
+        stackCount = Mathf.Clamp(stackCount + stacksToAdd, 0, onFireEffectObject.maxStacks);
 
         // Refresh the duration
         ResetEffectDuration();

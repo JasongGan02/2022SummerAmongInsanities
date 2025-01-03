@@ -6,7 +6,6 @@ using System;
 [CreateAssetMenu(fileName = "projectile", menuName = "Objects/Projectile Object")]
 public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, IPoolableObject
 {
-
     [SerializeField]
     private float damageCoef;
     public float DamageCoef => damageCoef;
@@ -66,6 +65,28 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
     private bool _isCoreNeeded;
     [SerializeField]
     private int _craftTime;
+    
+    // Dictionary to store effect-specific data (e.g., stacks per hit)
+    public Dictionary<EffectObject, int> effectStacksPerHit = new Dictionary<EffectObject, int>();
+
+    public void SetEffectStacks(EffectObject effect, int stacksPerHit)
+    {
+        if (!effectStacksPerHit.ContainsKey(effect))
+        {
+            effectStacksPerHit.Add(effect, stacksPerHit);
+        }
+        else
+        {
+            effectStacksPerHit[effect] = stacksPerHit;
+        }
+        Debug.Log("is effect exists " + effectStacksPerHit.ContainsKey(effect));
+        Debug.Log("how many stacks " + effectStacksPerHit[effect]);
+    }
+
+    public int GetEffectStacks(EffectObject effect)
+    {
+        return effectStacksPerHit.GetValueOrDefault(effect, 0);
+    }
     /**
      * implementation of ICraftableObject
      */
