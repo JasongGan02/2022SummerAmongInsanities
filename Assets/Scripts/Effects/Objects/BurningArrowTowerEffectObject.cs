@@ -67,18 +67,32 @@ public class BurningArrowTowerEffectObject : EffectObject, IUpgradeableEffectObj
     
     public override void ExecuteEffectOnAType()
     {
+        // Load the target tower object
         RangedTowerObject archerTower = LoadAssetByName<RangedTowerObject>("ArcherTower");
-        var existingEffect = archerTower.projectileObject.onHitEffects.Find(effect =>
-            effect.GetType() == onFireEffectObject.GetType());
 
-        if (existingEffect == null)
+        if (archerTower != null)
         {
-            archerTower.projectileObject.onHitEffects.Add(onFireEffectObject);
+            var existingEffect = archerTower.projectileObject.onHitEffects.Find(effect =>
+                effect.GetType() == onFireEffectObject.GetType());
+
+            if (existingEffect == null)
+            {
+                archerTower.projectileObject.onHitEffects.Add(onFireEffectObject);
+            }
+            else
+            {
+                (this as IUpgradeableEffectObject).UpgradeLevel();
+            }
+            
+            // Set the specific stacks for OnFireEffectObject
+            archerTower.projectileObject.SetEffectStacks(onFireEffectObject, stacksPerHit);
+
+            // Update projectiles per shot for the tower
             archerTower.rangedTowerStats.projectilesPerShot = projectilesPerShot;
-            //TODO: OnFireEffect provides a method to add multiple layers, consider done this logic in controller
-            //archerTower
+
         }
     }
+
     
     private T LoadAssetByName<T>(string assetName) where T : ScriptableObject
     {

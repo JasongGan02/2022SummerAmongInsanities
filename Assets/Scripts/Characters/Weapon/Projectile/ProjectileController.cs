@@ -117,7 +117,19 @@ public class ProjectileController : MonoBehaviour, IDamageSource
     {
         foreach (var effect in projectileObject.onHitEffects)
         {
-            effect.ExecuteEffect(target);
+            if (effect is OnFireEffectObject onFireEffect)
+            {
+                // Retrieve stacksPerHit from the projectile object
+                int stacksPerHit = projectileObject.GetEffectStacks(onFireEffect);
+                Debug.Log("stacksPerHit" + stacksPerHit);
+                // Apply the retrieved number of stacks
+                onFireEffect.ApplyMultipleStacks(target, stacksPerHit);
+            }
+            else
+            {
+                // Apply other effects as usual
+                effect.ExecuteEffect(target);
+            }
         }
     }
 
