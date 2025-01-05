@@ -33,7 +33,8 @@ public class BuffSelectionController : MonoBehaviour, IPointerClickHandler, IPoi
         TMP_Text buffName = transform.Find(NAME_BUFF_NAME_TEXT).GetComponent<TMP_Text>();
         //buffName.text = node.buff.name;
         buffName.text = node.effect?.name ?? "No Effect Selected";
-        
+        TMP_Text descriptionText = transform.Find(Description).GetComponent<TMP_Text>();
+        descriptionText.text = node.effect?.description ?? "No Description Available";
         transform.SetParent(parent);
         transform.position = position;
     }
@@ -49,4 +50,5 @@ public class BuffSelectionController : MonoBehaviour, IPointerClickHandler, IPoi
         }
     }
     private const string NAME_BUFF_NAME_TEXT = "BuffNameText";
+    private const string Description = "Description";
 }

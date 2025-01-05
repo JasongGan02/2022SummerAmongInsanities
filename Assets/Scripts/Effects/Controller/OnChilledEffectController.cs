@@ -58,10 +58,6 @@ public class OnChilledEffectController : StatsEffectController
         }
         //Debug.Log($"StartEffect on {GetInstanceID()}, current stack: {stackCount}");
         characterController.MultiplyCurrentStats(statsEffectObject.statChanges);
-        if (characterController is EnemyController enemyController)
-        {
-            enemyController.PrintStats();
-        }
     }
 
     

@@ -9,31 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dbfc95eb3fadc34cbe108b89cd6b22a, type: 3}
   m_Name: CatapultTower
   m_EditorClassIdentifier: 
-  itemName: CatapultTower
-  sizeRatio: 0.25
+  itemName: New Ranged Tower Object
+  sizeRatio: 1
   prefab: {fileID: 7115298586428798980, guid: bd25b3c23f2ef3d479e442cf4ef2ad07, type: 3}
   baseStats:
-    hp: 200
-    attackDamage: 20
-    attackInterval: 4
-    attackRange: 25
-    armor: 5
-    criticalChance: 0.01
-    criticalMultiplier: 2
+    hp: 0
+    armor: 0
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    criticalChance: 0
+    criticalMultiplier: 0
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
   maxStats:
-    hp: 200
-    attackDamage: 20
-    attackInterval: 4
-    attackRange: 25
-    armor: 5
-    criticalChance: 0.01
-    criticalMultiplier: 2
+    hp: 0
+    armor: 0
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    criticalChance: 0
+    criticalMultiplier: 0
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
@@ -44,20 +44,19 @@ MonoBehaviour:
   - {fileID: 11500000, guid: ef7bdb5098e8a6740a39f498c46993a3, type: 3}
   - {fileID: 11500000, guid: 611155adb19289445a79bf5069e9adb9, type: 3}
   towerStats:
-    hp: 200
-    attackDamage: 20
-    attackInterval: 4
-    attackRange: 25
-    armor: 5
-    criticalChance: 0.01
-    criticalMultiplier: 2
+    hp: 0
+    armor: 0
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    criticalChance: 0
+    criticalMultiplier: 0
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
-    energyCost: 50
-    rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    energyCost: 0
+    rotateAngle: {x: 0, y: 0, z: 0, w: 0}
     curAngle: {x: 0, y: 0, z: 0, w: 1}
-  projectileObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}
   _maxStack: 2
   _recipe:
   - material: {fileID: 11400000, guid: be2125ff3e9108f4f87e5a96ce972c8d, type: 2}
@@ -66,4 +65,20 @@ MonoBehaviour:
     quantity: 5
   _isCraftable: 1
   _isCoreNeeded: 1
-  _craftTime: 10
+  _craftTime: 15
+  rangedTowerStats:
+    hp: 200
+    armor: 5
+    attackDamage: 20
+    attackInterval: 4
+    attackRange: 25
+    criticalChance: 0.01
+    criticalMultiplier: 2
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    energyCost: 50
+    rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    curAngle: {x: 0, y: 0, z: 0, w: 1}
+    projectilesPerShot: 1
+  projectileObject: {fileID: 11400000, guid: adf9fd01afb25c147815ef81a21aa3f2, type: 2}

@@ -93,8 +93,6 @@ public abstract class RogueManagerBase : MonoBehaviour
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
             buffSelectionController.Init(node, buffContainer.transform, new Vector2(460 + 500 * i, 590f));
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
-            buffSelectionController.OnBuffHoverEnterEvent += ShowHoveringBuffUI;
-            buffSelectionController.OnBuffHoverExitEvent += HideHoveringBuffUI;
         }
     }
     
@@ -107,8 +105,6 @@ public abstract class RogueManagerBase : MonoBehaviour
             if (buffSelectionController != null)
             {
                 buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
-                buffSelectionController.OnBuffHoverEnterEvent -= ShowHoveringBuffUI;
-                buffSelectionController.OnBuffHoverExitEvent -= HideHoveringBuffUI;
             }
             Destroy(child.gameObject);
         }
@@ -205,22 +201,9 @@ public abstract class RogueManagerBase : MonoBehaviour
         ClearBuffCards();
     }
     
+    
 
-    protected virtual void ShowHoveringBuffUI(object sender, BuffSelectionController.OnBuffEventArgs args)
-    {
-        Vector2 mousePosition = Input.mousePosition + new Vector3(0, -100f);
-        GameObject hoveringBuffUI = Instantiate(hoveringBuffUIPrefab, args.buffSelectionTemplate.transform.position + new Vector3(0, -300f), Quaternion.identity);
-        hoveringBuffUI.transform.SetParent(args.buffSelectionTemplate.transform);
-
-        TMP_Text descriptionText = hoveringBuffUI.GetComponentInChildren<TMP_Text>();
-        descriptionText.text = args.node.effect?.description ?? "No Description Available";
-    }
-
-    protected virtual void HideHoveringBuffUI(object sender, BuffSelectionController.OnBuffEventArgs args)
-    {
-        Destroy(GameObject.FindGameObjectWithTag(NAME_HOVERING_BUFF));
-    }
-
+        
     private void OnRerollButtonClicked()
     {
         int currentCost = CalculateRerollCost();
