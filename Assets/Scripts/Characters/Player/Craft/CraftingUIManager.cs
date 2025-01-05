@@ -83,7 +83,7 @@ public class CraftingUIManager : MonoBehaviour
         weaponObjects = LoadAssets<WeaponObject>("t:WeaponObject");
         towerObjects = LoadAssets<TowerObject>("t:TowerObject");
         chestObjects = LoadAssets<ChestObject>("t:ChestObject");
-        usableObjects = LoadAssets<ChestObject>("t:UsableObject");
+        usableObjects = LoadAssets<UsableObject>("t:UsableObject");
         Debug.Log(usableObjects.Length);
     }
     

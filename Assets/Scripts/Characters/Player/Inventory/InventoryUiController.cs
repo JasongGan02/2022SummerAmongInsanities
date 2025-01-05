@@ -190,9 +190,9 @@ public class InventoryUiController
 
     private void UpdateInventoryUi(object sender, UIBeingViewed ui)
     {
-        bool isActive = ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Chest;
+        bool isActive = ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Chest || ui == UIBeingViewed.Craft;
 
-        SetUiActive(isActive, ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Null);
+        SetUiActive(isActive, ui == UIBeingViewed.Inventory || ui == UIBeingViewed.Null || ui == UIBeingViewed.Craft);
     }
 
     private void UpdateChestInventoryUi(object sender, UIBeingViewed ui)
