@@ -221,18 +221,18 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -1711181673, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!114 &365814486767663367
@@ -249,14 +249,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetImage: {fileID: 5272496605757092556}
   animationSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: -1711181673, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: 873215531, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: -502362597, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: -818021963, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: -706690929, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: 780060673, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: -1578947363, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
+  - {fileID: -281533568, guid: 0191bcdfb2b79e04e9895fe0bbb6446d, type: 3}
   frameRate: 5
   loop: 1
   playOnAwake: 1
@@ -553,13 +553,13 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -322897542, guid: d9be354609a7cfb46b20ede0282de7f4, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!114 &6130935743679129842
 MonoBehaviour:
@@ -1105,8 +1105,6 @@ MonoBehaviour:
   fillImage: {fileID: 5272496605757092556}
   hpLightText: {fileID: 8373740844434432507}
   hpDarkText: {fileID: 8693857434607748447}
-  redMoonDeco: {fileID: 0}
-  TimeSystemUI_Base: {fileID: 0}
   timeUIBaseSprites:
   - {fileID: 21300000, guid: 016376528ce77f444af5707b529a9212, type: 3}
   - {fileID: 21300000, guid: 2a0c3d9554ce535499941ecbade13342, type: 3}
