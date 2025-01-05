@@ -1370,7 +1370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5439552984295374361, guid: 6797366960a5b6945bbbe6d6763f65ce, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 503.2
+      value: 479.1
       objectReference: {fileID: 0}
     - target: {fileID: 5439552984295374361, guid: 6797366960a5b6945bbbe6d6763f65ce, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2059,7 +2059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 12.510816
+      value: 0.00015486177
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size
@@ -2173,6 +2173,10 @@ PrefabInstance:
       propertyPath: m_Size
       value: 0.88550216
       objectReference: {fileID: 0}
+    - target: {fileID: 8025377624665983333, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68a4876d5b9073b449ef4db36bd82b3b, type: 3}
     - target: {fileID: 8475015525451595364, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
