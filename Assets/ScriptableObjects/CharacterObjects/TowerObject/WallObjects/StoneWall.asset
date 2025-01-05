@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fea836de3ddb0034aa744d0839f0b852, type: 3}
-  m_Name: WoodWall
+  m_Name: StoneWall
   m_EditorClassIdentifier: 
-  itemName: WoodWall
+  itemName: StoneWall
   sizeRatio: 1
-  prefab: {fileID: 3397657003104583585, guid: e8b0da03e9b2e7b4c92dfeb7de975321, type: 3}
+  prefab: {fileID: 2428287790915297841, guid: 292f7e07e0f609143bfec8555f92a6b6, type: 3}
   baseStats:
-    hp: 100
-    armor: 5
+    hp: 0
+    armor: 0
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
     jumpForce: 0
     totalJumps: 0
   maxStats:
-    hp: 100
-    armor: 5
+    hp: 0
+    armor: 0
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -55,14 +55,14 @@ MonoBehaviour:
     curAngle: {x: 0, y: 0, z: 0, w: 1}
   _maxStack: 64
   _recipe:
-  - material: {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
-    quantity: 5
+  - material: {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+    quantity: 64
   _isCraftable: 1
   _isCoreNeeded: 1
-  _craftTime: 0
+  _craftTime: 5
   wallStats:
-    hp: 100
-    armor: 5
+    hp: 150
+    armor: 10
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
-    energyCost: 5
+    energyCost: 7
     rotateAngle: {x: 0, y: 0, z: 0, w: 0}
     curAngle: {x: 0, y: 0, z: 0, w: 1}
   onHitEffects: []

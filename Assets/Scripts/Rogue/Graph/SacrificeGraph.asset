@@ -60,8 +60,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 1334
-    y: 457
+    x: 715
+    y: 492
     width: 200
     height: 100
 --- !u!114 &-5828137048432059319
@@ -92,8 +92,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 1595
-    y: 457
+    x: 976
+    y: 492
     width: 200
     height: 100
 --- !u!114 &-5452198789683420793
@@ -125,11 +125,44 @@ MonoBehaviour:
   - {fileID: 4027627594927342833}
   - {fileID: -6263270054759089041}
   - {fileID: -5828137048432059319}
+  - {fileID: -4987506011705345393}
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 772
-    y: 219
+    x: 153
+    y: 254
+    width: 200
+    height: 100
+--- !u!114 &-4987506011705345393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effect: {fileID: 11400000, guid: d1f8830ab35c4894b8bc75e6555fdf75, type: 2}
+  baseWeight: 10
+  isReselectable: 1
+  isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
+  childNodes: []
+  parentNodes:
+  - {fileID: -5452198789683420793}
+  rect:
+    serializedVersion: 2
+    x: 1255
+    y: 478
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -151,6 +184,7 @@ MonoBehaviour:
   - {fileID: 4027627594927342833}
   - {fileID: -6263270054759089041}
   - {fileID: -5828137048432059319}
+  - {fileID: -4987506011705345393}
   rootNode: {fileID: -5452198789683420793}
 --- !u!114 &599137119995403438
 MonoBehaviour:
@@ -180,8 +214,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 520
-    y: 464
+    x: -99
+    y: 499
     width: 200
     height: 100
 --- !u!114 &4027627594927342833
@@ -212,8 +246,8 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 794
-    y: 464
+    x: 175
+    y: 499
     width: 200
     height: 100
 --- !u!114 &5784438416862401934
@@ -244,7 +278,7 @@ MonoBehaviour:
   - {fileID: -5452198789683420793}
   rect:
     serializedVersion: 2
-    x: 1091
-    y: 461
+    x: 472
+    y: 496
     width: 200
     height: 100
