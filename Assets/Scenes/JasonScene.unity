@@ -1950,7 +1950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00063251576
+      value: 0.00003264472
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size
@@ -2156,7 +2156,7 @@ PrefabInstance:
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[9].poolableObject
       value: 
-      objectReference: {fileID: 11400000, guid: 265f60b37ef1a4948af84b50a61b15ee, type: 2}
+      objectReference: {fileID: 11400000, guid: e9d5bc39f821b10469856c8f47fca1e6, type: 2}
     - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: IPoolableObjectPools.Array.data[10].poolableObject
       value: 
@@ -2230,8 +2230,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a970880c399df4243a759e6fc8814f1a, type: 2}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: testCase.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: e9d5bc39f821b10469856c8f47fca1e6, type: 2}
+    - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.size
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[0].number
@@ -2275,7 +2279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[10].number
-      value: 100
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[0].inventoryObject
@@ -2320,7 +2324,7 @@ PrefabInstance:
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.data[10].inventoryObject
       value: 
-      objectReference: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
+      objectReference: {fileID: 11400000, guid: e9d5bc39f821b10469856c8f47fca1e6, type: 2}
     - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: content
       value: 

@@ -80,7 +80,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         worldGameObject.name = itemName;
         if (itemName.Contains("Wall"))
         {
-            controllerName = "TowerController";
+            controllerName = "WallController";
         }
         else
         {
