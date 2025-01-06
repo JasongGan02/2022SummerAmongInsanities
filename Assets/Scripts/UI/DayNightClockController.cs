@@ -16,11 +16,9 @@ public class DayNightClockController : MonoBehaviour
 
     private Image dayClockImage;
     private Image nightClockImage;
-
-    private bool isDay = true;
-    private float frameInterval; // Time per frame in real seconds
-    private float frameTimer = 0f; // Timer to track frame updates
+    
     private int currentFrame = 0; // Tracks the current sprite frame
+    private bool isDay;
 
     private void Start()
     {
@@ -29,87 +27,22 @@ public class DayNightClockController : MonoBehaviour
 
         if (dayClockImage == null || nightClockImage == null)
         {
-            Debug.LogError("❌ Day and Night Clock objects must have an Image component.");
+            Debug.LogError("\u274C Day and Night Clock objects must have an Image component.");
+            return;
         }
 
-        CalculateFrameInterval();
 
-        // Initialize day or night mode
-        UpdateClockState();
+        // Subscribe to events
+        GameEvents.current.OnHourUpdated += UpdateFrameToCurrentHour;
+        GameEvents.current.OnDayStarted += OnDayStarted;
+        GameEvents.current.OnNightStarted += OnNightStarted;
+
+        InitializeClockState();
     }
-
-    private void CalculateFrameInterval()
+    
+    private void InitializeClockState()
     {
-        float dayDuration = timeSystemManager.dayToRealTimeInSecond;
-        if (dayDuration <= 0)
-        {
-            Debug.LogError("❌ dayToRealTimeInSecond must be set to a positive value in TimeSystemManager.");
-            dayDuration = 1200f; // Default fallback (20 min per day)
-        }
-
-        frameInterval = dayDuration / 24f; // 12 frames per full day-night cycle
-        Debug.Log($"⏳ Frame Interval Set to {frameInterval} seconds per frame.");
-    }
-
-    private void Update()
-    {
-        UpdateClockFrame();
-    }
-
-    private void UpdateClockFrame()
-    {
-        // Update frame timer
-        frameTimer += Time.deltaTime;
-
-        if (frameTimer >= frameInterval)
-        {
-            frameTimer = 0f; // Reset timer
-            currentFrame = (currentFrame + 1) % 12; // Loop through frames (0–11)
-
-            Debug.Log($"🕒 Clock Frame Updated: {currentFrame}");
-
-            if (isDay)
-            {
-                dayClockImage.sprite = dayFrames[currentFrame];
-            }
-            else
-            {
-                nightClockImage.sprite = nightFrames[currentFrame];
-            }
-        }
-    }
-
-    /// <summary>
-    /// Handles switching to day mode.
-    /// </summary>
-    private void OnDayStarted()
-    {
-        isDay = true;
-        dayClockObject.SetActive(true);
-        nightClockObject.SetActive(false);
-        currentFrame = 0;
-        frameTimer = 0;
-        Debug.Log("🌞 Switched to Day Mode");
-    }
-
-    /// <summary>
-    /// Handles switching to night mode.
-    /// </summary>
-    private void OnNightStarted(bool isRedMoon)
-    {
-        isDay = false;
-        dayClockObject.SetActive(false);
-        nightClockObject.SetActive(true);
-        currentFrame = 0;
-        frameTimer = 0;
-        Debug.Log($"🌙 Switched to Night Mode | Is Red Moon: {isRedMoon}");
-    }
-
-    /// <summary>
-    /// Ensures the initial state matches the current time.
-    /// </summary>
-    private void UpdateClockState()
-    {
+        // Determine if the current time is daytime or nighttime
         if (timeSystemManager.IsInDaytime())
         {
             OnDayStarted();
@@ -118,10 +51,45 @@ public class DayNightClockController : MonoBehaviour
         {
             OnNightStarted(timeSystemManager.GetCurrentDay() % timeSystemManager.redMoonNightInterval == 0);
         }
+
+        // Set the initial frame based on the current time progress
+        UpdateFrameToCurrentHour(timeSystemManager.GetCurrentHour());
     }
+
+    private void OnDayStarted()
+    {
+        isDay = true;
+        dayClockObject.SetActive(true);
+        nightClockObject.SetActive(false);
+    }
+    
+    private void OnNightStarted(bool isBloodMoon)
+    {
+        isDay = false;
+        dayClockObject.SetActive(false);
+        nightClockObject.SetActive(true);
+    }
+
+    private void UpdateFrameToCurrentHour(int currentHour)
+    {
+        if (isDay)
+        {
+            // Correctly map currentHour to day frame
+            currentFrame = ((currentHour - timeSystemManager.dayStartHour + 12) % 12 + 12) % 12;
+            dayClockImage.sprite = dayFrames[Mathf.Clamp(currentFrame, 0, 11)];
+        }
+        else
+        {
+            // Correctly map currentHour to night frame
+            currentFrame = ((currentHour - timeSystemManager.nightStartHour + 12) % 12 + 12) % 12;
+            nightClockImage.sprite = nightFrames[Mathf.Clamp(currentFrame, 0, 11)];
+        }
+    }
+
 
     private void OnDestroy()
     {
+        GameEvents.current.OnHourUpdated -= UpdateFrameToCurrentHour;
         GameEvents.current.OnDayStarted -= OnDayStarted;
         GameEvents.current.OnNightStarted -= OnNightStarted;
     }
