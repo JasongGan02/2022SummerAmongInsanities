@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effects/Tower Upgrades/MultipleShotsArcherTowerEffectObject")]
 public class MultipleShotsArcherTowerEffectObject : EffectObject
 {
-    [Header("BurningArrowTowerEffectObject Fields")]
+    [Header("MultipleShotsArcherTowerEffectObject Fields")]
     public int projectilesPerShot = 1;
     
     public override void ExecuteEffectOnAType()
