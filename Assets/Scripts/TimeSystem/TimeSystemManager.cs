@@ -17,7 +17,9 @@ public class TimeSystemManager : MonoBehaviour
     public int dawnEndHour = 7; // Hour dawn ends
     public int duskStartHour = 18; // Hour dusk starts
     public int duskEndHour = 20; // Hour dusk ends
+    public bool isDay;
     public bool isDebugDayTime = false;
+    
     
     private Text timeText; //hours and minutes
     private Text calendarText; //days
@@ -52,6 +54,7 @@ public class TimeSystemManager : MonoBehaviour
     {
         currentHour = dayStartHour + 1;
         GameEvents.current.DayStarted();
+        isDay = true;
     }
     
     private void InitializeTimeBasedOnCurrentHour()
@@ -61,10 +64,14 @@ public class TimeSystemManager : MonoBehaviour
             _audioEmitter.PlayClipFromCategory("DayTime", false);
             _audioEmitter.IsPlaying("DayTime");
             GameEvents.current.DayStarted();
+            isDay = true;
+            GameEvents.current.HourUpdated(currentHour);
         }
         else
         {
             GameEvents.current.NightStarted(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+            GameEvents.current.HourUpdated(currentHour);
+            isDay = false;
         }
     }
 
@@ -87,9 +94,7 @@ public class TimeSystemManager : MonoBehaviour
 
     public bool IsInDaytime()
     {
-        
-        return currentHour >= dayStartHour && currentHour < nightStartHour;
-        
+        return isDay;
     }
 
     public float GetHowMuchPercentageOfNightTimeHasPassed()
@@ -107,7 +112,7 @@ public class TimeSystemManager : MonoBehaviour
         {
             currentHour += (int)(currentMinute / 60);
             currentMinute %= 60;
-
+            CheckForDayNightTransition();
             GameEvents.current.HourUpdated(currentHour);
         }
 
@@ -134,7 +139,7 @@ public class TimeSystemManager : MonoBehaviour
         if (!isDebugDayTime) IncrementTime(gameMinutesToAdvance);
         // Update the UI and check for day/night transition as before.
         UpdateTimeUI();
-        CheckForDayNightTransition();
+        
         CalculateAndUpdateSunlight();
     }
 
@@ -145,6 +150,7 @@ public class TimeSystemManager : MonoBehaviour
         if (currentHour == dayStartHour && !dayStarted)
         {
             GameEvents.current.DayStarted();
+            isDay = true;
             dayStarted = true; // Mark the day start transition as handled
             nightStarted = false;
             _audioEmitter.PlayClipFromCategory("DayTime", false);
@@ -152,6 +158,7 @@ public class TimeSystemManager : MonoBehaviour
         else if (currentHour == nightStartHour && !nightStarted)
         {
             GameEvents.current.NightStarted(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+            isDay = false;
             nightStarted = true; // Mark the night start transition as handled
             dayStarted = false;
             _audioEmitter.PlayClipFromCategory("NightTime", false);
