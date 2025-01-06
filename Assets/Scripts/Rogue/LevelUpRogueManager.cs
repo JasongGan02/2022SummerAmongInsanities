@@ -51,7 +51,7 @@ public class LevelUpRogueManager : RogueManagerBase
         levelUpQueue.Dequeue();
 
         uiViewStateManager.ToggleLevelUpUI();
-        Time.timeScale = 0f;
+        PauseGame();
 
         AddBuffs();
     }
@@ -61,8 +61,9 @@ public class LevelUpRogueManager : RogueManagerBase
         base.HandleBuffSelectedEvent(sender, node);
 
         isProcessingLevelUp = false;
-        Time.timeScale = 1f;
+        ResumeGame();
         uiViewStateManager.ToggleLevelUpUI();
         ProcessNextLevelUp();
     }
+
 }

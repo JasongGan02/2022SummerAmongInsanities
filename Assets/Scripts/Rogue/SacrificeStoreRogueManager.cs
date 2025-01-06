@@ -11,6 +11,8 @@ public class SacrificeStoreRogueManager : RogueManagerBase
     private CoreArchitectureController coreController;
     private int totalPurchases;
     private const float CoreControllerTimeout = 10f;
+    private List<RogueGraphNode> storedNodes = new List<RogueGraphNode>();
+
 
     protected override void Start()
     {
@@ -59,13 +61,32 @@ public class SacrificeStoreRogueManager : RogueManagerBase
     {
         rogueUI.SetActive(ui == UIBeingViewed.Sacrifice);
         if (ui == UIBeingViewed.Sacrifice)
+        {
             AddBuffs();
+            PauseGame();
+        }
+        else
+        {
+            ResumeGame();
+        }
     }
 
     protected override void AddBuffs()
     {
         ClearBuffCards();
-        List<RogueGraphNode> nodes = GetRandomBuffNodes();
+
+        List<RogueGraphNode> nodes;
+        Debug.Log(storedNodes.Count);
+        if (storedNodes.Count > 0)
+        {
+            nodes = new List<RogueGraphNode>(storedNodes);
+        }
+        else
+        {
+            nodes = GetRandomBuffNodes();
+            storedNodes = new List<RogueGraphNode>(nodes);
+        }
+
         for (int i = 0; i < nodes.Count; i++)
         {
             RogueGraphNode node = nodes[i];
@@ -78,6 +99,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
         }
     }
+
 
     private const float INIT_COST = 10f;
     private const float GROWTH_RATE = 0.045f;
@@ -123,12 +145,15 @@ public class SacrificeStoreRogueManager : RogueManagerBase
     
     private IEnumerator RefillStoreCoroutine()
     {
-        // Wait for a short moment to let any animations or effects finish
-        yield return new WaitForSeconds(0.2f);
-        
-        // Refill the store with new items
+        // Wait for a short moment in real-time to let any animations or effects finish
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        // Generate and display new nodes
+        storedNodes.Clear();
         AddBuffs();
     }
+
+
     
    
 }
