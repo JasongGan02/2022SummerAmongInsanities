@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 623daf24d2416c646b682ea3b0db3b2c
+guid: 650084912827cb841801fa30c704f690
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -118,13 +118,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HpBar 1_0
+      name: TimeNight_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 117
-        width: 228
-        height: 39
+        y: 34
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 633442eb00befd94abb8e571cf8cdbed
-      internalID: -1566729328
+      spriteID: 951b6c927ca75484cbf340c392ba3a54
+      internalID: -1909310713
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_1
+      name: TimeNight_1
       rect:
         serializedVersion: 2
-        x: 228
-        y: 117
-        width: 228
-        height: 39
+        x: 35
+        y: 34
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 660e1d796ca3a7a4ba8e35397169f22e
-      internalID: 627156624
+      spriteID: 8610389bc653cd84b9615540f16873f8
+      internalID: -943588196
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_2
+      name: TimeNight_2
       rect:
         serializedVersion: 2
-        x: 456
-        y: 117
-        width: 228
-        height: 39
+        x: 70
+        y: 34
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: abd2bb4ab3b807c458050011808e4e2a
-      internalID: -1409980424
+      spriteID: 8368ac83c37c62047afffe8c8adba3b2
+      internalID: -1527330881
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_3
+      name: TimeNight_3
       rect:
         serializedVersion: 2
-        x: 684
-        y: 117
-        width: 228
-        height: 39
+        x: 105
+        y: 34
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,104 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5915f5c964909264bb8467a6fb8a9707
-      internalID: 1410899887
+      spriteID: 2ca3dea798da7d044aa2ae103a8425f2
+      internalID: 1873542868
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 78
-        width: 228
-        height: 39
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d789747185b439c479f7b4cdd87aa7a3
-      internalID: -1158606753
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HpBar 1_5
-      rect:
-        serializedVersion: 2
-        x: 228
-        y: 78
-        width: 228
-        height: 39
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 93ec0270323c58b46840a55796f10d59
-      internalID: -1770195455
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HpBar 1_6
-      rect:
-        serializedVersion: 2
-        x: 456
-        y: 78
-        width: 228
-        height: 39
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: db642cc32d65a11408835d4c8ae91a59
-      internalID: -320626901
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HpBar 1_7
-      rect:
-        serializedVersion: 2
-        x: 684
-        y: 78
-        width: 228
-        height: 39
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 45ba358ec0b458c4ba14524fbc90cad3
-      internalID: 1075375468
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HpBar 1_8
+      name: TimeNight_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 39
-        width: 228
-        height: 39
+        y: 17
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -300,20 +216,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5ceef46de67f01d43b26e957e6ece6b2
-      internalID: 774362814
+      spriteID: a76fac65e9eea9747a04300549356b0a
+      internalID: 1002855243
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_9
+      name: TimeNight_5
       rect:
         serializedVersion: 2
-        x: 228
-        y: 39
-        width: 228
-        height: 39
+        x: 35
+        y: 17
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -321,20 +237,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cfb803f2ec0a42d46aba9f8f2196db17
-      internalID: 1972658078
+      spriteID: d8dbaeee8c405b246a74a2b602ba07b4
+      internalID: -279165969
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_10
+      name: TimeNight_6
       rect:
         serializedVersion: 2
-        x: 456
-        y: 39
-        width: 228
-        height: 39
+        x: 70
+        y: 17
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -342,20 +258,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83e3273c5c8f3d2459c2f9c1d0ee1d98
-      internalID: -1711084175
+      spriteID: ef3b7dd213c0b2b4fbd6c0cdfc948811
+      internalID: 222860555
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_11
+      name: TimeNight_7
       rect:
         serializedVersion: 2
-        x: 684
-        y: 39
-        width: 228
-        height: 39
+        x: 105
+        y: 17
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -363,20 +279,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d25825923759f9f4fa84145c49ee078d
-      internalID: 1952696109
+      spriteID: 8e4e1276a4dc0974fa6743be16b567ff
+      internalID: -967093168
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_12
+      name: TimeNight_8
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 228
-        height: 39
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -384,20 +300,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9244aa41174fee94e80fef17fb76b04f
-      internalID: -932961299
+      spriteID: cd32ed944e66f9b4793acbc573d492ee
+      internalID: -1914291708
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_13
+      name: TimeNight_9
       rect:
         serializedVersion: 2
-        x: 228
+        x: 35
         y: 0
-        width: 228
-        height: 39
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -405,20 +321,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fce0239f06b99cf4a9f6b0c01ad021f0
-      internalID: 682185560
+      spriteID: ab4194cd2ed3c414ea9de70374ad0f09
+      internalID: 1306376353
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_14
+      name: TimeNight_10
       rect:
         serializedVersion: 2
-        x: 456
+        x: 70
         y: 0
-        width: 228
-        height: 39
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -426,20 +342,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a06de3772c38f1c42b2872abef8bb33b
-      internalID: 1849724596
+      spriteID: 3dbf86032d222c044996a8b585db049d
+      internalID: -1862867991
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HpBar 1_15
+      name: TimeNight_11
       rect:
         serializedVersion: 2
-        x: 684
+        x: 105
         y: 0
-        width: 228
-        height: 39
+        width: 35
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -447,8 +363,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6a0b65bbacffb2642946ba64c8054635
-      internalID: -2129357950
+      spriteID: faf811c8782ae6b4c80606f0310cda41
+      internalID: 1000514091
       vertices: []
       indices: 
       edges: []
@@ -464,22 +380,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      HpBar 1_14: 1849724596
-      HpBar 1_10: -1711084175
-      HpBar 1_6: -320626901
-      HpBar 1_0: -1566729328
-      HpBar 1_5: -1770195455
-      HpBar 1_1: 627156624
-      HpBar 1_11: 1952696109
-      HpBar 1_12: -932961299
-      HpBar 1_15: -2129357950
-      HpBar 1_2: -1409980424
-      HpBar 1_9: 1972658078
-      HpBar 1_7: 1075375468
-      HpBar 1_13: 682185560
-      HpBar 1_8: 774362814
-      HpBar 1_3: 1410899887
-      HpBar 1_4: -1158606753
+      TimeNight_5: -279165969
+      TimeNight_10: -1862867991
+      TimeNight_11: 1000514091
+      TimeNight_0: -1909310713
+      TimeNight_6: 222860555
+      TimeNight_8: -1914291708
+      TimeNight_2: -1527330881
+      TimeNight_7: -967093168
+      TimeNight_4: 1002855243
+      TimeNight_1: -943588196
+      TimeNight_9: 1306376353
+      TimeNight_3: 1873542868
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
