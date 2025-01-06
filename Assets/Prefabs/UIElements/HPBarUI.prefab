@@ -738,7 +738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.16, y: -0.95}
+  m_AnchoredPosition: {x: -4.4100037, y: 2.1233063}
   m_SizeDelta: {x: 7337.5, y: 833.451}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5439552985314351561
@@ -1186,6 +1186,7 @@ GameObject:
   - component: {fileID: 5439552985718582802}
   - component: {fileID: 5439552985718582801}
   - component: {fileID: 5439552985718582800}
+  - component: {fileID: 4909242336783131373}
   m_Layer: 5
   m_Name: ExperienceBar
   m_TagString: Untagged
@@ -1211,8 +1212,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -340.4, y: 101.3}
-  m_SizeDelta: {x: 234, y: 45}
+  m_AnchoredPosition: {x: -331.19, y: 92.13}
+  m_SizeDelta: {x: 228, y: 39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5439552985718582802
 CanvasRenderer:
@@ -1242,7 +1243,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d3af86462970bc44a9592b30d47e20f0, type: 3}
+  m_Sprite: {fileID: 398837378, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1265,6 +1266,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &4909242336783131373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5439552985718582830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54b83558482ac049adeb54bbd15ced2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetImage: {fileID: 0}
+  animationSprites:
+  - {fileID: 398837378, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: 1828863291, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: -713678745, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: 1155481565, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: 1547640149, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: -1973642767, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: -125990089, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  - {fileID: 753747477, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
+  frameRate: 5
+  loop: 1
+  playOnAwake: 1
 --- !u!1 &5439552985728745375
 GameObject:
   m_ObjectHideFlags: 0
