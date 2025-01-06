@@ -41,6 +41,7 @@ public class TimeSystemManager : MonoBehaviour
         _audioEmitter = GetComponent<AudioEmitter>();
     }
 
+
     private void Start()
     {
         if (isDebugDayTime) SetToDaytime();
@@ -210,6 +211,17 @@ public class TimeSystemManager : MonoBehaviour
         return sunlightLevel;
     }
     
+    public int GetCurrentHour()
+    {
+        
+        return currentHour;
+    }
+
+    public int GetCurrentDay()
+    {
+        return currentDay;
+    }
+
     
 
 }
