@@ -1,30 +1,39 @@
 using System.Collections;
 using UnityEngine;
 
+public enum WeaponState
+{
+    Idle,
+    Attacking,
+    Returning
+}
+
 public class Weapon : MonoBehaviour, IDamageSource
 {
     protected AudioEmitter _audioEmitter;
     protected CharacterController characterController;
     protected WeaponObject weaponStats;
-    protected float finalDamage;
-    protected float attackRange;
-    protected float knockbackForce;
-
     protected GameObject player;
     protected PlayerMovement playerMovement;
+
     protected Transform targetEnemy;
     protected Inventory inventory;
 
+    protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
-    protected float attackDelay = 1f;
-    protected Vector2 targetDirection;
+    protected float attackCycleTime = 2f;
+
+    protected float finalDamage;
+    protected float attackRange;
+    protected float knockbackForce;
     protected float speed = 15f;
 
-    protected Vector3 idleOffset = new Vector3(0, 0f, 0); 
-    protected float idleBobSpeed = 2f; 
+    protected Vector3 idleOffset = new Vector3(0, 0f, 0);
+    protected float idleBobSpeed = 2f;
     protected float idleBobAmount = 0.5f;
     protected float idleBobTime;
-    
+
+    protected Vector2 targetDirection;
     public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
@@ -38,14 +47,6 @@ public class Weapon : MonoBehaviour, IDamageSource
         inventory = FindObjectOfType<Inventory>();
         characterController.OnWeaponStatsChanged += UpdateWeaponStats;
     }
-
-    private void UpdateWeaponStats()
-    {
-        finalDamage = weaponStats.BaseDamage + characterController.CurrentStats.attackDamage * weaponStats.DamageCoef;
-        attackRange = (weaponStats.BaseRange + characterController.CurrentStats.attackRange * weaponStats.RangeCoef) / 100;
-        knockbackForce = weaponStats.KnockBack;
-    }
-
     public virtual void Initialize(WeaponObject weaponObject, CharacterController characterController)
     {
         this.characterController = characterController;
@@ -60,119 +61,143 @@ public class Weapon : MonoBehaviour, IDamageSource
             spriteRenderer.sortingOrder = 12;
         }
     }
-   
+    private void UpdateWeaponStats()
+    {
+        finalDamage = weaponStats.BaseDamage + characterController.CurrentStats.attackDamage * weaponStats.DamageCoef;
+        attackRange = (weaponStats.BaseRange + characterController.CurrentStats.attackRange * weaponStats.RangeCoef) / 100;
+        knockbackForce = weaponStats.KnockBack;
+    }
+
     public virtual void Update()
     {
-        if (!isAttacking)
+        switch (currentState)
         {
-            FollowPlayerWithFloat();
-            DetectAndAttackEnemy();
+            case WeaponState.Idle:
+                FollowPlayerWithFloat();
+                DetectAndAttackEnemy();
+                break;
+
+            case WeaponState.Attacking:
+                // 在协程中执行攻击逻辑，无需在Update重复
+                break;
+
+            case WeaponState.Returning:
+                // 在协程中执行回程逻辑
+                break;
         }
     }
 
+
+
     protected virtual void FollowPlayerWithFloat()
     {
-        // 计算idle状态下的上下摆动
         idleBobTime += Time.deltaTime * idleBobSpeed;
         float bobOffset = Mathf.Sin(idleBobTime) * idleBobAmount;
-
-        // 计算武器应该跟随的位置
         Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
-
-        // 平滑移动到该位置
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
+
+        // 朝向玩家的朝向
+        if (playerMovement != null)
+        {
+            float angle = playerMovement.facingRight ? 270 : 90;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
     }
 
     protected virtual void DetectAndAttackEnemy()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange);
+        float minDistance = float.MaxValue;
+        Transform closestEnemy = null;
+
         foreach (Collider2D hit in hits)
         {
             if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
             {
-                targetEnemy = hit.transform;
-                StartCoroutine(PrepareAttack(hit.transform.position));
-                break;
+                float distance = Vector2.Distance(transform.position, hit.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestEnemy = hit.transform;
+                }
             }
         }
 
-        if (targetEnemy == null)
+        if (closestEnemy != null && !isAttacking)
         {
-            if (player.GetComponent<PlayerMovement>().facingRight)
-            {
-                // 玩家朝右，武器也朝右
-                transform.rotation = Quaternion.Euler(0, 0, 270); // 正常朝向
-            }
-            else
-            {
-                // 玩家朝左，武器也朝左
-                transform.rotation = Quaternion.Euler(0, 0, 90); // 水平翻转
-            }
-            
+            targetEnemy = closestEnemy;
+            targetDirection = (targetEnemy.position - transform.position).normalized;
+            StartCoroutine(PerformAttack());
         }
-    }
-
-    IEnumerator PrepareAttack(Vector2 targetPosition)
-    {
-        if (isAttacking)
-            yield break;
-
-        isAttacking = true;
-
-        float rotationDuration = 0.2f; // 旋转时间
-        float rotateTime = 0.0f;
-
-        while (rotateTime < 1.0f)
-        {
-            // 更新目标方向
-            targetDirection = (targetPosition - (Vector2)transform.position).normalized;
-            float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
-
-            Quaternion startRotation = transform.rotation;
-            Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
-
-            rotateTime += Time.deltaTime / rotationDuration;
-            transform.rotation = Quaternion.Lerp(startRotation, endRotation, rotateTime);
-
-            yield return null; // 等待下一帧
-        }
-
-        StartCoroutine(PerformAttack());
     }
 
     IEnumerator PerformAttack()
     {
+        currentState = WeaponState.Attacking;
+        isAttacking = true;
         _audioEmitter.PlayClipFromCategory("WeaponAttack");
+
+        float attackTime = attackCycleTime / 2f;
         float startTime = Time.time;
-        float journeyLength = attackRange;
-        float fracJourney = 0f;
 
+   
         Vector2 startPosition = player.transform.position + idleOffset;
-        Vector2 endPosition = startPosition + targetDirection * attackRange;
+        Vector2 targetPosition = targetEnemy != null ? (Vector2)targetEnemy.position : startPosition + targetDirection * attackRange;
 
-        while (fracJourney < 1.0f)
+        while (Time.time - startTime < attackTime)
         {
-            float distCovered = (Time.time - startTime) * speed * 2;
-            fracJourney = distCovered / journeyLength;
-            transform.position = Vector2.Lerp(startPosition, endPosition, fracJourney);
+          
+            float remainingTime = attackTime - (Time.time - startTime);
+            float distance = Vector2.Distance(transform.position, targetPosition);
+            float dynamicSpeed = distance / remainingTime;
+
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, dynamicSpeed * Time.deltaTime);
+
+           
+            Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
 
-        startTime = Time.time;
-        fracJourney = 0f;
-        while (fracJourney < 1.0f)
+        yield return StartCoroutine(ReturnToPlayer());
+    }
+
+
+
+    IEnumerator ReturnToPlayer()
+    {
+        currentState = WeaponState.Returning;
+
+        float returnTime = attackCycleTime / 2f;
+        float startTime = Time.time;
+
+        Vector2 currentTargetPosition = player.transform.position + idleOffset;
+
+        while (Time.time - startTime < returnTime)
         {
-            float distCovered = (Time.time - startTime) * speed;
-            fracJourney = distCovered / journeyLength;
-            transform.position = Vector2.Lerp(endPosition, startPosition, fracJourney);
+            currentTargetPosition = player.transform.position + idleOffset;
+
+            float remainingTime = returnTime - (Time.time - startTime);
+            float distance = Vector2.Distance(transform.position, currentTargetPosition);
+            float dynamicSpeed = distance / remainingTime;
+
+            transform.position = Vector2.MoveTowards(transform.position, currentTargetPosition, dynamicSpeed * Time.deltaTime);
+
+            Vector2 direction = ((Vector2)transform.position - currentTargetPosition).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+
             yield return null;
         }
 
         isAttacking = false;
-        targetEnemy = null;
+        currentState = WeaponState.Idle;
     }
+
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {

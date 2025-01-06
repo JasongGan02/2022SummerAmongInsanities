@@ -89,7 +89,7 @@ public class LightGenerator : MonoBehaviour
                     for (int y = ChunkSize.y - 1; y >= 0; y--)
                     {
                         float maxNeighborLightLevel = 0; // Initialize the maximum neighbor light level
-                        TileObject curTile = null;
+                        TileObject curTile = null; //TODO: Make a ILightable interface for light impacting objects
                         for (int z = 1; z < chunkData.GetLength(2); z++)
                         {
                             if (chunkData[x, y, z] != null && chunkData[x, y, z].IsLit)
