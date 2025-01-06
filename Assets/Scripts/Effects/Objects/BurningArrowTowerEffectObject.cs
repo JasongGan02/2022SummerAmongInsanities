@@ -10,7 +10,7 @@ public class BurningArrowTowerEffectObject : EffectObject, IUpgradeableEffectObj
     [Header("BurningArrowTowerEffectObject Fields")]
     public OnFireEffectObject onFireEffectObject;
     public int stacksPerHit;
-    public int projectilesPerShot;
+    
     
     #region IUpgradeableEffect Fields
 
@@ -47,9 +47,7 @@ public class BurningArrowTowerEffectObject : EffectObject, IUpgradeableEffectObj
             Debug.LogWarning($"No stats found for level {targetLevel} in {name}.");
             return;
         }
-
-       
-        projectilesPerShot = (int) LevelConfig.GetAttribute("projectilesPerShot", targetLevel, 0f);
+        
         stacksPerHit = (int) LevelConfig.GetAttribute("stacksPerHit", targetLevel, 0f);
     }
     
@@ -86,10 +84,6 @@ public class BurningArrowTowerEffectObject : EffectObject, IUpgradeableEffectObj
             
             // Set the specific stacks for OnFireEffectObject
             archerTower.projectileObject.SetEffectStacks(onFireEffectObject, stacksPerHit);
-
-            // Update projectiles per shot for the tower
-            archerTower.rangedTowerStats.projectilesPerShot = projectilesPerShot;
-
         }
     }
 

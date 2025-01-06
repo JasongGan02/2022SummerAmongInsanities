@@ -126,6 +126,7 @@ MonoBehaviour:
   - {fileID: -6263270054759089041}
   - {fileID: -5828137048432059319}
   - {fileID: -4987506011705345393}
+  - {fileID: 694316559033798269}
   parentNodes: []
   rect:
     serializedVersion: 2
@@ -185,6 +186,7 @@ MonoBehaviour:
   - {fileID: -6263270054759089041}
   - {fileID: -5828137048432059319}
   - {fileID: -4987506011705345393}
+  - {fileID: 694316559033798269}
   rootNode: {fileID: -5452198789683420793}
 --- !u!114 &599137119995403438
 MonoBehaviour:
@@ -216,6 +218,38 @@ MonoBehaviour:
     serializedVersion: 2
     x: -99
     y: 499
+    width: 200
+    height: 100
+--- !u!114 &694316559033798269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effect: {fileID: 11400000, guid: 417e935f7c95f8b4ab8eab18e8b0bacf, type: 2}
+  baseWeight: 0
+  isReselectable: 1
+  isRoot: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  rogueNodeGraph: {fileID: 0}
+  childNodes: []
+  parentNodes:
+  - {fileID: -5452198789683420793}
+  rect:
+    serializedVersion: 2
+    x: 1514
+    y: 473
     width: 200
     height: 100
 --- !u!114 &4027627594927342833

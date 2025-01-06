@@ -298,6 +298,17 @@ public abstract class RogueManagerBase : MonoBehaviour
         }
     }
     
+    protected void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    protected void ResumeGame()
+    {
+        Time.timeScale = 1f;
+    }
+
+    
     protected abstract string NameRogueUI { get; }
     protected const string NAME_INSUFFICIENCY_TEXT = "InsuffiencyText";
     protected const string NAME_SELECTED_BUFF_TEXT = "SelectedBuffText";
