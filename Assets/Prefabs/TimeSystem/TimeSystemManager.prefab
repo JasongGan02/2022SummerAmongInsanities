@@ -48,3 +48,8 @@ MonoBehaviour:
   dayStartHour: 5
   nightStartHour: 18
   redMoonNightInterval: 2
+  dawnStartHour: 5
+  dawnEndHour: 7
+  duskStartHour: 18
+  duskEndHour: 20
+  isDebugDayTime: 0
