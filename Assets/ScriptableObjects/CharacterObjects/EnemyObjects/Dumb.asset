@@ -16,22 +16,22 @@ MonoBehaviour:
   sizeRatio: 2
   prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
   baseStats:
-    hp: 60
+    hp: 150
+    armor: 20
     attackDamage: 20
     attackInterval: 0
     attackRange: 0
-    armor: 20
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 2
     jumpForce: 10
     totalJumps: 1
   maxStats:
-    hp: 60
+    hp: 150
+    armor: 20
     attackDamage: 20
     attackInterval: 0
     attackRange: 0
-    armor: 20
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 2
@@ -42,11 +42,11 @@ MonoBehaviour:
     chance: 15
   hatred: []
   enemyStats:
-    hp: 60
+    hp: 150
+    armor: 20
     attackDamage: 20
     attackInterval: 0
     attackRange: 0
-    armor: 20
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 2
