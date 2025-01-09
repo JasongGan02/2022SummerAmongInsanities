@@ -2067,7 +2067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: 0.00089393044
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size
@@ -2237,6 +2237,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: isDebugDayTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
       value: 
