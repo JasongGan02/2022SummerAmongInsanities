@@ -30,7 +30,7 @@ MonoBehaviour:
     hp: 80
     armor: 5
     attackDamage: 10
-    attackInterval: 1
+    attackInterval: 5
     attackRange: 1
     criticalChance: 5
     criticalMultiplier: 1.5

@@ -96,7 +96,7 @@ public class VillagerController : EnemyController
         { ChangeCollider("Stand"); }
         else { ChangeCollider("Sit"); }
 
-
+        
         if (target == null || TargetTicker < 0) { target = SearchForTargetObject(); TargetTicker = 1f; } // if doesn't have target
         if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
         else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
@@ -106,15 +106,10 @@ public class VillagerController : EnemyController
             ChasingRemainder = 5f;  // chasing time after losing target in visual
             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
             else { PathExecute(); }         // continue current path
-           
+        
             if (DistanceToTarget(target.transform) < currentStats.attackRange || target.transform.GetComponent<BreakableObjectController>() != null)
             {
-                attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower -> faster
-            }
-            else
-            {
-                //Debug.Log("approaching target " + target.transform);
-                //flip(target.transform);
+                attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower this value -> faster attack frequency
             }
             
             ShakePlayerOverHead();
@@ -140,14 +135,17 @@ public class VillagerController : EnemyController
 
             if (attacking_animation_timer < (0.25f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.25f - damage_start_time_0 - 0.01f))
             {
-                var breakable = target.transform.GetComponent<IDamageable>();
+                var breakable = target.transform.GetComponent<IDamageable>();   // target construction
                 if (breakable != null)
                 {
                     ApplyDamage(breakable);
+                    rest = true;
+                    attacking_animation_timer = 0f;
+                    Wait = frequency;
                 }
-                else
+                else    // target player or NPC
                 {
-                    float checkD = Vector2.Distance(attackEnd.position, target.transform.position);
+                    float checkD = Vector2.Distance(attackEnd.position, target.transform.position);     
                     if (checkD < 0.75f) // hurt target successfully
                     {
                         ApplyDamage(target.GetComponent<CharacterController>());
@@ -317,7 +315,9 @@ public class VillagerController : EnemyController
     }
     private void Jump(float horizontal)
     {
-        rb.velocity = new Vector2(horizontal * 1.0f, currentStats.jumpForce);
+        // rb.velocity = new Vector2(horizontal * 1.0f, currentStats.jumpForce);
+        rb.velocity = new Vector2(0f, currentStats.jumpForce);
+        // Debug.Log($"Jump triggered: Horizontal = {horizontal}, JumpForce = {currentStats.jumpForce}");
     }
     
     public void ChangeCollider(string status)
