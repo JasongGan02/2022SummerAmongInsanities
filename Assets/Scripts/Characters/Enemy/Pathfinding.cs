@@ -71,20 +71,42 @@ public class Pathfinding
             }
 
             List<Node> children = new List<Node>();
-            Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+            Vector2Int[] directions = {
+                Vector2Int.up,
+                Vector2Int.down,
+                Vector2Int.left,
+                Vector2Int.right,
+                new Vector2Int(-1, 1),  // Diagonal directions
+                new Vector2Int(1, 1),
+                new Vector2Int(-1, -1),
+                new Vector2Int(1, -1)
+            };
 
             foreach (var direction in directions)
             {
-                Vector2Int nodePosition = currentNode.Position + direction;
-                if (nodePosition.x >= 0 && nodePosition.x < width && nodePosition.y >= 0 && nodePosition.y < height)
+                Vector2Int neighborPos = currentNode.Position + direction;
+
+                // Check bounds and passability
+                if (neighborPos.x < 0 || neighborPos.x >= width || neighborPos.y < 0 || neighborPos.y >= height)
+                    continue;
+
+                int cellCost = costGrid[neighborPos.x, neighborPos.y];
+                if (cellCost == 99) continue; // Skip impassable cells
+
+                Node neighborNode = new Node(neighborPos, currentNode);
+                if (closedList.Contains(neighborNode)) continue;
+
+                neighborNode.G = currentNode.G + cellCost;
+                neighborNode.H = Mathf.Abs(neighborNode.Position.x - endNode.Position.x) +
+                                Mathf.Abs(neighborNode.Position.y - endNode.Position.y);
+                neighborNode.F = neighborNode.G + neighborNode.H;
+
+                if (!openList.Contains(neighborNode))
                 {
-                    Node newNode = new Node(nodePosition, currentNode);
-                    if (!closedList.Contains(newNode))
-                    {
-                        children.Add(newNode);
-                    }
+                    openList.Add(neighborNode);
                 }
             }
+
 
             foreach (var child in children)
             {

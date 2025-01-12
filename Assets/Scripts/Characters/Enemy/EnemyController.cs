@@ -195,7 +195,7 @@ public abstract class EnemyController : CharacterController
 
         RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, groundLayerMask);
         //Debug.DrawLine(eyePosition, targetPosition, Color.red);
-        if (hit.collider == null)
+        if (hit.collider == null || distance < enemyStats.sensingRange) // just testing!!!!
         {
             // Line of sight is clear
             return true;
@@ -299,46 +299,4 @@ public abstract class EnemyController : CharacterController
             player = GameObject.FindWithTag("Player");
         }
     }
-    
-    /*protected void SenseFrontBlock()    
-    {
-        Vector3 shooting_direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position - new Vector3(0, 0.5f, 0);
-
-        LayerMask ground_mask = LayerMask.GetMask("ground");
-
-        RaycastHit2D hit = Physics2D.Raycast(origin, shooting_direction, 0.5f, ground_mask);
-        Debug.DrawRay(origin, shooting_direction * 0.5f, Color.green); // infront
-        Vector3 left = transform.position - new Vector3(-0.3f, 0.2f, 0);
-        RaycastHit2D bottomLeft = Physics2D.Raycast(left, Vector3.down, 0.2f, ground_mask);
-        Debug.DrawRay(left, Vector3.down * 0.2f, Color.blue);        // bottom left
-        Vector3 right = transform.position + new Vector3(0.2f, 0.2f, 0);
-        RaycastHit2D bottomRight = Physics2D.Raycast(right, Vector3.down, 0.2f, ground_mask);
-        Debug.DrawRay(right, Vector3.down * 0.2f, Color.blue);        // bottom right
-
-        if (hit.collider != null && 
-            bottomLeft.collider != null && 
-            bottomRight.collider != null)
-        {
-            //Vector2 up_force = new Vector2(0, JumpForce);
-            //gameObject.GetComponent<Rigidbody2D>().AddForce(up_force); 
-            //Debug.Log("up_force: " + up_force);
-            if (hit.collider.gameObject.tag == "ground" &&
-                bottomLeft.collider.gameObject.tag == "ground" &&
-                bottomRight.collider.gameObject.tag == "ground")
-            {
-                Vector2 up_force = new Vector2(0, currentStats.jumpForce);
-                Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
-                rb.AddForce(up_force, ForceMode2D.Impulse);
-                //Debug.Log("up_force: " + up_force);
-                StartCoroutine(StopJump(rb, 0.5f)); //stop the jump after 0.5 seconds
-            }
-        }
-        
-    }
-    IEnumerator StopJump(Rigidbody2D rb, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-    }*/
 }

@@ -1,16 +1,701 @@
+// using System.Collections.Generic;
+// using UnityEngine;
+
+// public class VillagerController : EnemyController
+// {
+//     bool rest = false;
+//     bool facingright = false;
+//     float patroltime = 0f;
+//     private Animator animator;
+//     bool patrolToRight = true;
+//     float patrolRest = 2f;
+    
+
+//     public Transform groundCheckLeft;
+//     public Transform groundCheckCenter;
+//     public Transform groundCheckRight;
+//     public Transform frontCheck;
+//     public Transform backCheck;
+//     public Transform attackStart;
+//     public Transform attackEnd;
+//     public Transform head;
+
+//     //private BoxCollider2D boxCollider;
+//     private CapsuleCollider2D capsuleCollider;
+
+//     private float Wait = 0.3f;
+//     private float attacking_animation_timer = 0f;
+//     float damage_start_time_0 = 0.17f;
+//     float TargetTicker = 1f;
+//     public List<Vector2> PathToTarget = new List<Vector2>();
+//     public float PathTicker = 3f;
+//     public int PathCounter;
+//     public LineRenderer lineRenderer;
+//     public Transform tileDetect1;
+//     public Transform tileDetect2;
+//     public Transform tileDetect3;
+//     public Transform tileDetect4;
+//     public float BreakObstaclesCD = 1f;
+//     public Transform TargetRemainder;
+//     public float ChasingRemainder = 5f;
+    
+//     protected override string IdleAnimationState => "villager_idle";
+//     protected override string AttackAnimationState => "villager_attack";
+//     protected override string MoveAnimationState => "villager_walk";
+//     //protected override string DeathAnimationState => "Zombie_Death";
+
+//     protected override void Awake()
+//     {
+//         base.Awake();
+//         animator = GetComponent<Animator>();
+//         groundCheckLeft = transform.Find("groundCheckLeft");
+//         groundCheckCenter = transform.Find("groundCheckCenter");
+//         groundCheckRight = transform.Find("groundCheckRight");
+//         frontCheck = transform.Find("frontCheck");
+//         backCheck = transform.Find("backCheck");
+//         attackStart = transform.Find("attackStart");
+//         attackEnd = transform.Find("attackEnd");
+//         head = transform.Find("head");
+//         capsuleCollider = GetComponent<CapsuleCollider2D>();
+//         rb = GetComponent<Rigidbody2D>();
+//         tileDetect1 = transform.Find("tileDetect1");
+//         tileDetect2 = transform.Find("tileDetect2");
+//         tileDetect3 = transform.Find("tileDetect3");
+//         tileDetect4 = transform.Find("tileDetect4");
+//     }
+
+    
+    
+//     /*protected override void UpdateEnemyBehavior()
+//     {
+//         target = SearchForTargetObject(); //attempt to search for target
+//         if (target == null && !HasLastKnownPosition) //如果现在既没有找到目标也没有上一个目标遗留的地址，则脱离仇恨，开始散步。
+//         {
+//             Patrol();
+//         }
+//         else if (target == null && HasLastKnownPosition) //如果现在没有目标但是有上一个目标遗留的地址，则继续前进。
+//         {
+//             Approach(LastKnownPosition, true);
+//         }
+//         else //有目标，追就完事了
+//         {
+//             Approach(target.transform.position, true);
+//             Attack(target);
+//         }
+//     }*/
+
+//     protected void Patrol()
+//     {
+        
+//     }
+
+    
+//     protected override void UpdateEnemyBehavior()
+//     {
+//         if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
+//         { ChangeCollider("Stand"); }
+//         else { ChangeCollider("Sit"); }
+
+        
+//         if (target == null || TargetTicker < 0) { target = SearchForTargetObject(); TargetTicker = 1f; } // if doesn't have target
+//         if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
+//         else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
+//         else
+//         {
+//             TargetRemainder = target.transform;
+//             ChasingRemainder = 5f;  // chasing time after losing target in visual
+//             if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
+//             else { PathExecute(); }         // continue current path
+        
+//             if (DistanceToTarget(target.transform) < currentStats.attackRange || target.transform.GetComponent<BreakableObjectController>() != null)
+//             {
+//                 attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower this value -> faster attack frequency
+//             }
+            
+//             ShakePlayerOverHead();
+//         }
+//         PathTicker -= Time.deltaTime;  // update ticker for path tracking
+//         TargetTicker -= Time.deltaTime; // update ticker for target tracking
+//     }
+    
+
+//     void attack(Transform target, float frequency)
+//     {
+//         // start attack
+//         if (!rest && attacking_animation_timer <= 0)
+//         {
+//             animator.Play("villager_attack");
+//             attacking_animation_timer = 0.25f; // Time & Speed of animation
+//         }
+
+//         // wait for attack behavior finish
+//         else if (attacking_animation_timer > 0) // make sure the attack behavior animation is complete
+//         {
+//             attacking_animation_timer -= Time.deltaTime;
+
+//             if (attacking_animation_timer < (0.25f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.25f - damage_start_time_0 - 0.01f))
+//             {
+//                 var breakable = target.transform.GetComponent<IDamageable>();   // target construction
+//                 if (breakable != null)
+//                 {
+//                     ApplyDamage(breakable);
+//                     rest = true;
+//                     attacking_animation_timer = 0f;
+//                     Wait = frequency;
+//                 }
+//                 else    // target player or NPC
+//                 {
+//                     float checkD = Vector2.Distance(attackEnd.position, target.transform.position);     
+//                     if (checkD < 0.75f) // hurt target successfully
+//                     {
+//                         ApplyDamage(target.GetComponent<CharacterController>());
+//                     }
+//                     rest = true;
+//                     attacking_animation_timer = 0f;
+//                     Wait = frequency;
+//                 }
+//             }
+
+//         }
+
+//         // finished attack and wait for next, this else if should be changed to else later!
+//         else if (rest)
+//         {
+//             if (Wait > 0)
+//             {
+//                 Wait -= Time.deltaTime;
+//                 animator.Play("villager_rest");
+//             }
+//             else
+//             {
+//                 rest = false;
+//             }
+//         }
+
+//         flip(target);
+//     }
+//     void approach(float speed, Transform target)
+//     {
+//         if (speed > currentStats.movingSpeed)
+//         {
+//             animator.Play("villager_run");
+//         }
+//         else
+//         {
+//             animator.Play("villager_walk");
+//         }
+//         if ((facingright && target.position.x < transform.position.x) || (!facingright && target.position.x > transform.position.x)) { flip(); }
+        
+//         if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
+//         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+//     }
+
+//     protected override void MoveTowards(Transform targetTransform)
+//     {
+//         Vector2 direction = (targetTransform.position - transform.position).normalized;
+//         rb.velocity = direction * currentStats.movingSpeed;
+//     }
+//     void patrol()
+//     {
+//         RemovePathLine();
+//         if (patroltime <= 0f)
+//         {
+//             patrolRest = 2f;
+//             animator.Play("villager_idle");
+//             patroltime = UnityEngine.Random.Range(1f, 3f);
+//             if (UnityEngine.Random.Range(0f, 1f) < 0.5) // go left
+//             {
+//                 patrolToRight = false;
+//             }
+//             else                          // go right
+//             {
+//                 patrolToRight = true;
+//             }
+//         }
+//         else if (patrolRest > 0)
+//         {
+//             patrolRest -= Time.deltaTime;
+//         }
+//         else
+//         {
+//             animator.Play("villager_walk");
+//             SenseFrontBlock();
+//             if (MoveForwardDepthCheck() == false) { return; }
+//             patroltime -= Time.deltaTime;
+//             if (patrolToRight)
+//             {
+//                 if (MoveForwardDepthCheck()) 
+//                 {
+//                     rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
+//                     if (!facingright) { flip(); }
+//                 }
+//             }
+//             else
+//             {
+//                 if (MoveForwardDepthCheck())
+//                 {
+//                     rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
+//                     if (facingright) { flip(); }
+//                 }
+//             }
+//         }
+//     }
+//     void flip(Transform target)
+//     {
+//         if (target.position.x >= transform.position.x && !facingright)
+//         {
+//             facingright = true;
+//             transform.eulerAngles = new Vector3(0, 180, 0);
+//         }
+//         else if (target.position.x < transform.position.x && facingright)
+//         {
+//             facingright = false;
+//             transform.eulerAngles = new Vector3(0, 0, 0);
+//         }
+//     }
+//     void flip()
+//     {
+//         if (facingright)
+//         {
+//             facingright = false;
+//             transform.eulerAngles = new Vector3(0, 0, 0);
+//         }
+//         else
+//         {
+//             facingright = true;
+//             transform.eulerAngles = new Vector3(0, 180, 0);
+//         }
+//     }
+//     new void SenseFrontBlock()
+//     {
+//         if (MoveForwardDepthCheck() == false) { return; }
+//         headCheck();
+//         RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, groundLayerMask);
+//         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+//         RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, groundLayerMask);
+//         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
+//         RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
+
+//         if (hitCenter.transform != null)
+//         {
+//             if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
+//             {
+//                 if (hitFront.transform != null)
+//                 {
+//                     if (headCheck())
+//                     {
+//                         Jump(2 * currentStats.movingSpeed);
+//                     }
+//                 }
+//             }
+//             else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
+//             {
+//                 if (hitBack.transform != null)
+//                 {
+//                     if (headCheck())
+//                     {
+//                         Jump(2 * currentStats.movingSpeed);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     bool headCheck()
+//     {
+//         Vector3 direction = transform.TransformDirection(-Vector3.right);
+//         RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
+//         //Debug.DrawRay(head.position, direction * 0.34f, Color.red);        // bottom right
+//         if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
+//         {
+//             //Debug.Log("headCheck return false");
+//             return false;
+//         }
+
+//         return true;
+//     }
+//     private void Jump(float horizontal)
+//     {
+//         // rb.velocity = new Vector2(horizontal * 1.0f, currentStats.jumpForce);
+//         rb.velocity = new Vector2(0f, currentStats.jumpForce);
+//         // Debug.Log($"Jump triggered: Horizontal = {horizontal}, JumpForce = {currentStats.jumpForce}");
+//     }
+    
+//     public void ChangeCollider(string status)
+//     {
+//         // Enable or disable the colliders based on the state
+//         // boxCollider.enabled = !isSitting;
+//         if (status == "Stand")
+//         {
+//             //boxCollider.size = new Vector2(0.1875544f, 1.0f);
+//             capsuleCollider.offset = new Vector2(0.05061817f, -0.03f);
+//             capsuleCollider.size = new Vector2(0.1316872f, 0.9791025f);
+//         }
+//         else
+//         {
+//             //boxCollider.size = new Vector2(0.1875544f, 0.718245f);
+//             capsuleCollider.offset = new Vector2(0.02169657f, -0.05424142f);
+//             capsuleCollider.size = new Vector2(0.1895304f, 0.7271314f);
+//         }
+//     }
+//     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
+//     {
+//         Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+//         RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
+//         if (hit.collider != null) { return true; }
+
+//         return false;
+//     }
+
+//     new void ShakePlayerOverHead()
+//     {
+//         Vector2 direction = target.transform.position - transform.position;
+//         float distance = direction.magnitude;
+
+//         // Calculate the angle in degrees
+//         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+//         // Check the conditions
+//         if ((angle >= -95f && angle <= -85f) || (angle >= 85 && angle <= 95) && distance < 3f)
+//         {
+//             Debug.Log("Angle and distance conditions met");
+//             if (Mathf.Abs(target.transform.position.x - transform.position.x) <= 0.3f)
+//             {
+//                 Debug.Log("Within horizontal range");
+//                 if (Mathf.Abs(target.transform.position.y - transform.position.y) < 2f)
+//                 {
+//                     Debug.Log("Shaking the player overhead");
+//                     if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
+//                     {
+//                         rb.velocity = new Vector2(-12f, rb.velocity.y);
+//                     }
+//                     else
+//                     {
+//                         rb.velocity = new Vector2(12f, rb.velocity.y);
+//                     }
+//                 }
+//             }
+//         }
+//         else
+//         {
+//             //Debug.Log("distance: " + distance + " angle: " + angle);
+//         }
+//     }
+    
+//     public void PathFind()
+//     {
+//         if (target == null || DistanceToTarget(target.transform) < currentStats.attackRange) { PathToTarget.Clear(); PathCounter = 0; return; }
+
+//         float TX = target.transform.position.x; float TY = target.transform.position.y;
+//         float CX = transform.position.x; float CY = transform.position.y - 0.25f;
+
+//         int startX = (int)CX;
+//         int startY = (int)CY;
+//         int endX = (int)TX;
+//         int endY = (int)TY;
+
+//         int minX = Mathf.Min(startX, endX) - 3;
+//         int maxX = Mathf.Max(startX, endX) + 3;
+//         int minY = Mathf.Min(startY, endY) - 4;
+//         int maxY = Mathf.Max(startY, endY) + 4;
+
+//         int[,] healthGrid = new int[maxX - minX + 1, maxY - minY + 1];
+
+//         for (int y = minY; y <= maxY; y++)
+//         {
+//             for (int x = minX; x <= maxX; x++)
+//             {
+//                 int disToGround = Pathfinding.DistanceToGround(x, y);
+//                 if (disToGround != 0)
+//                 {
+//                     if (disToGround == 1) { healthGrid[x - minX, y - minY] = 1; continue; }
+//                     else if (disToGround == 2) { healthGrid[x - minX, y - minY] = 2; continue; }
+//                     else if (disToGround > 2 && Pathfinding.IsNeighborOfTile(x, y) && y <= startY) { healthGrid[x - minX, y - minY] = 2; continue; }
+//                     else { healthGrid[x - minX, y - minY] = 99; continue; }
+//                 }
+//                 else
+//                 {
+//                     Vector2Int position = new Vector2Int(x, y);
+//                     TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
+//                     if (Pathfinding.IsLadder(x, y)) { healthGrid[x - minX, y - minY] = 1; continue; }
+//                     else if (Pathfinding.IsNeighborTileReachable(x, y)) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
+//                     else if (y < startY) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
+//                     else if (y >= startY) { healthGrid[x - minX, y - minY] = 99; continue; }
+//                     else { healthGrid[x - minX, y - minY] = 99; continue; }
+//                 }
+//             }
+//         }
+//         healthGrid[startX - minX, startY - minY] = 0;
+//         Vector2Int start = new Vector2Int(startX - minX, startY - minY);
+//         Vector2Int end = new Vector2Int(endX - minX, endY - minY);
+
+//         Pathfinding.LogHealthGrid(healthGrid);
+
+//         List<Vector2Int> path = Pathfinding.AstarPath(start, end, healthGrid, maxX - minX + 1, maxY - minY + 1, minX, minY);
+//         if (path.Count > 0)
+//         {
+//             int totalPathCost = Pathfinding.CalculatePathCost(path, healthGrid, minX, minY);
+//             if (totalPathCost >= 99) { PathToTarget.Clear(); return; }
+//             PathToTarget = Pathfinding.PathPointToCenter(path);
+//             PathCounter = 0;
+
+//             string pathString = string.Join(", ", path);
+//             //Debug.Log(pathString);
+//         }
+//         else
+//         {
+//             Debug.Log("No path found.");
+//         }
+//     }
+
+//     public void PathExecute()
+//     {
+//         if (DistanceToTarget(target.transform) < currentStats.attackRange)
+//         {
+//             PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+//             return;
+//         }
+//        DrawPath();
+//         if (PathCounter < PathToTarget.Count)
+//         {
+//             //Debug.Log("Go to: " + PathToTarget[PathCounter]);
+
+//             approach(2 * currentStats.movingSpeed, target.transform);
+//             SenseFrontBlock();
+
+//             Vector2 direction = target.transform.position - transform.position;
+//             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+//             if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
+//             else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
+//             else { BreakObstacles("horizontal"); }
+
+//             if (CloseToLocation(PathToTarget[PathCounter]))
+//             {
+//                 PathCounter++;
+//             }
+//             else
+//             {
+//                 //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+//             }
+//         }
+//         else
+//         {
+//             approach(2 * currentStats.movingSpeed, target.transform);
+//             PathToTarget.Clear();
+//             PathCounter = 0;
+//         }
+//     }
+
+//     public void FinishExistingPath()
+//     {
+//         if (ChasingRemainder < 0f)
+//         {
+//             TargetRemainder = null;
+//             return;
+//         }
+//         if (DistanceToTarget(TargetRemainder) < currentStats.attackRange)
+//         {
+//             PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+//             return;
+//         }
+//         DrawPath();
+//         if (PathCounter < PathToTarget.Count)
+//         {
+//             //Debug.Log("Go to: " + PathToTarget[PathCounter]);
+
+//             approach(2 * currentStats.movingSpeed, TargetRemainder);
+//             SenseFrontBlock();
+
+//             Vector2 direction = TargetRemainder.position - transform.position;
+//             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+//             if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
+//             else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
+//             else { BreakObstacles("horizontal"); }
+
+//             if (CloseToLocation(PathToTarget[PathCounter]))
+//             {
+//                 PathCounter++;
+//             }
+//             else
+//             {
+//                 //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+//             }
+//         }
+//         else
+//         {
+//             approach(2 * currentStats.movingSpeed, TargetRemainder);
+//             PathToTarget.Clear();
+//             PathCounter = 0;
+//         }
+//     }
+
+//     private GameObject lineObj;
+//     public void DrawPath()
+//     {
+//         if (lineRenderer == null)
+//         {
+//             lineObj = new GameObject("PathLine");
+//             lineRenderer = lineObj.AddComponent<LineRenderer>();
+//             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+//             lineRenderer.startColor = new Color(0.5f, 0f, 0.5f, 1f);
+//             lineRenderer.endColor = new Color(0.5f, 0f, 0.5f, 1f);
+//             lineRenderer.startWidth = 0.3f;
+//             lineRenderer.endWidth = 0.3f;
+//             lineObj.layer = 11;
+//             lineRenderer.sortingOrder = 11;
+//         }
+//         if (lineRenderer == null)
+//         {
+//             Debug.LogError("LineRenderer is not initialized!");
+//             return;
+//         }
+//         else if (PathToTarget != null)
+//         {
+//             Vector3[] positions = new Vector3[PathToTarget.Count];
+
+//             for (int i = 0; i < PathToTarget.Count; i++)
+//             {
+//                 positions[i] = new Vector3(PathToTarget[i].x, PathToTarget[i].y, 0);
+//             }
+
+//             lineRenderer.positionCount = positions.Length;
+//             lineRenderer.SetPositions(positions);
+//         }
+//     }
+
+//     public void RemovePathLine()
+//     {
+//         if (lineObj != null)
+//         {
+//             Destroy(lineObj);
+//             lineRenderer = null;
+//         }
+//     }
+
+//     public bool CloseToLocation(Vector2 location)
+//     {
+//         Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
+//         if (Vector2.Distance(currentLoc, location) < 1.2f)
+//         {
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     public void BreakObstacles(string command)
+//     {
+//         BreakObstaclesCD -= Time.deltaTime;
+//         if (BreakObstaclesCD < 0f)
+//         {
+//             Vector2 direction1 = Vector2.left;
+//             Vector2 direction2 = Vector2.left;
+//             Vector2 direction3 = (Vector2.left + Vector2.up).normalized;
+//             Vector2 direction4 = Vector2.up;
+//             if (facingright)
+//             {
+//                 direction1 = Vector2.right;
+//                 direction2 = Vector2.right;
+//                 direction3 = (Vector2.right + Vector2.up).normalized;
+//             }
+//             float rayLength = 0.05f;
+
+//             if (command == "horizontal")
+//             {
+//                 RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, groundLayerMask);
+//                 //Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red);
+//                 RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, groundLayerMask);
+//                //Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green);
+//                 if (hitTileDetect2.transform != null)
+//                 {
+//                     var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
+//                     if (breakable1 != null)
+//                     {
+//                         target = breakable1.gameObject; BreakObstaclesCD = 1f;
+//                     }
+//                 }
+//                 else if (hitTileDetect1.transform != null)
+//                 {
+//                     var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
+//                     if (breakable2 != null)
+//                     {
+//                         target = breakable2.gameObject; BreakObstaclesCD = 1f;
+//                     }
+//                 }
+//             }
+//             else if (command == "top")
+//             {
+//                 RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, groundLayerMask);
+//                 //Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
+//                 RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, groundLayerMask);
+//                 //Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow);
+//                 if (hitTileDetect3.transform != null)
+//                 {
+//                     var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
+//                     if (breakable3 != null)
+//                     {
+//                         target = breakable3.gameObject; BreakObstaclesCD = 1f;
+//                     }
+//                 }
+//                 else if (hitTileDetect4.transform != null)
+//                 {
+//                     var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
+//                     if (breakable4 != null)
+//                     {
+//                         target = breakable4.gameObject; BreakObstaclesCD = 1f;
+//                     }
+//                 }
+//             }
+//             else if (command == "bottom")
+//             {
+//                 RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, groundLayerMask);
+//                 //Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
+//                 if (hitTileDetect5.transform != null)
+//                 {
+//                     var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
+//                     if (breakable5 != null)
+//                     {
+//                         target = breakable5.gameObject; BreakObstaclesCD = 1f;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+        
+    
+// }
+
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public class VillagerController : EnemyController
 {
-    bool rest = false;
-    bool facingright = false;
-    float patroltime = 0f;
-    private Animator animator;
-    bool patrolToRight = true;
-    float patrolRest = 2f;
-    
+    #region Fields and Variables
 
+    private bool _isResting = false;
+    private bool _isFacingRight = false;
+    private bool _patrolToRight = true;
+
+    private float _patrolTime = 0f;
+    private float _patrolRest = 2f;
+    private float _attackingAnimationTimer = 0f;
+    private float _damageStartTime_0 = 0.17f;
+    private float _wait = 0.3f;
+
+    private float _targetTicker = 1f;
+    private float _pathTicker = 3f;
+    private float _chasingRemainder = 5f;
+    private float _breakObstaclesCD = 1f;
+
+    private int _pathCounter;
+
+    private Animator _animator;
+    private CapsuleCollider2D _capsuleCollider;
+
+    public List<Vector2> PathToTarget = new List<Vector2>();
+
+    [Header("Check Transforms")]
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
     public Transform groundCheckRight;
@@ -19,427 +704,529 @@ public class VillagerController : EnemyController
     public Transform attackStart;
     public Transform attackEnd;
     public Transform head;
-
-    //private BoxCollider2D boxCollider;
-    private CapsuleCollider2D capsuleCollider;
-
-    private float Wait = 0.3f;
-    private float attacking_animation_timer = 0f;
-    float damage_start_time_0 = 0.17f;
-    float TargetTicker = 1f;
-    public List<Vector2> PathToTarget = new List<Vector2>();
-    public float PathTicker = 3f;
-    public int PathCounter;
-    public LineRenderer lineRenderer;
     public Transform tileDetect1;
     public Transform tileDetect2;
     public Transform tileDetect3;
     public Transform tileDetect4;
-    public float BreakObstaclesCD = 1f;
     public Transform TargetRemainder;
-    public float ChasingRemainder = 5f;
-    
+
+    [Header("Path Visualization")]
+    public LineRenderer lineRenderer;
+    private GameObject _lineObj; // For creating a line renderer in runtime
+
+    [Header("Timers / Cooldowns")]
+    // Expose these for balancing; adjust as needed
+    public float defaultChasingRemainder = 5f;
+    public float defaultPathTicker = 2f;
+    public float defaultTargetTicker = 1f;
+    public float attackAnimationDuration = 0.25f; 
+    public float pathFindingRadiusExtra = 3f;
+    public float breakObstacleCDReset = 1f;
+
+    #endregion
+
+    #region Animation States
+
     protected override string IdleAnimationState => "villager_idle";
     protected override string AttackAnimationState => "villager_attack";
     protected override string MoveAnimationState => "villager_walk";
-    //protected override string DeathAnimationState => "Zombie_Death";
+
+    #endregion
+
+    #region Unity Lifecycle
 
     protected override void Awake()
     {
         base.Awake();
-        animator = GetComponent<Animator>();
-        groundCheckLeft = transform.Find("groundCheckLeft");
-        groundCheckCenter = transform.Find("groundCheckCenter");
-        groundCheckRight = transform.Find("groundCheckRight");
-        frontCheck = transform.Find("frontCheck");
-        backCheck = transform.Find("backCheck");
-        attackStart = transform.Find("attackStart");
-        attackEnd = transform.Find("attackEnd");
-        head = transform.Find("head");
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
+
+        // Cache references
+        _animator = GetComponent<Animator>();
+        _capsuleCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        tileDetect1 = transform.Find("tileDetect1");
-        tileDetect2 = transform.Find("tileDetect2");
-        tileDetect3 = transform.Find("tileDetect3");
-        tileDetect4 = transform.Find("tileDetect4");
+
+        // Automatically find child transform references if not manually assigned
+        groundCheckLeft = groundCheckLeft ?? transform.Find("groundCheckLeft");
+        groundCheckCenter = groundCheckCenter ?? transform.Find("groundCheckCenter");
+        groundCheckRight = groundCheckRight ?? transform.Find("groundCheckRight");
+        frontCheck = frontCheck ?? transform.Find("frontCheck");
+        backCheck = backCheck ?? transform.Find("backCheck");
+        attackStart = attackStart ?? transform.Find("attackStart");
+        attackEnd = attackEnd ?? transform.Find("attackEnd");
+        head = head ?? transform.Find("head");
+        tileDetect1 = tileDetect1 ?? transform.Find("tileDetect1");
+        tileDetect2 = tileDetect2 ?? transform.Find("tileDetect2");
+        tileDetect3 = tileDetect3 ?? transform.Find("tileDetect3");
+        tileDetect4 = tileDetect4 ?? transform.Find("tileDetect4");
     }
 
-    
-    
-    /*protected override void UpdateEnemyBehavior()
-    {
-        target = SearchForTargetObject(); //attempt to search for target
-        if (target == null && !HasLastKnownPosition) //如果现在既没有找到目标也没有上一个目标遗留的地址，则脱离仇恨，开始散步。
-        {
-            Patrol();
-        }
-        else if (target == null && HasLastKnownPosition) //如果现在没有目标但是有上一个目标遗留的地址，则继续前进。
-        {
-            Approach(LastKnownPosition, true);
-        }
-        else //有目标，追就完事了
-        {
-            Approach(target.transform.position, true);
-            Attack(target);
-        }
-    }*/
+    #endregion
 
-    protected void Patrol()
-    {
-        
-    }
+    #region Behavior Updates
 
-    
+    /// <summary>
+    /// This is the high-level Behavior update. 
+    /// Called from EnemyController - runs every frame or on fixed intervals if you want (depending on the architecture).
+    /// </summary>
     protected override void UpdateEnemyBehavior()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle") == false)
-        { ChangeCollider("Stand"); }
-        else { ChangeCollider("Sit"); }
+        UpdateColliderBasedOnAnimation();
+        
+        // Periodically re-check for target
+        if (target == null || _targetTicker < 0) 
+        { 
+            target = SearchForTargetObject(); 
+            _targetTicker = defaultTargetTicker; 
+        }
 
-
-        if (target == null || TargetTicker < 0) { target = SearchForTargetObject(); TargetTicker = 1f; } // if doesn't have target
-        if (target == null && TargetRemainder == null) { PathToTarget.Clear(); patrol(); RemovePathLine(); }
-        else if (target == null && TargetRemainder != null) { FinishExistingPath(); ChasingRemainder -= Time.deltaTime; } // when target out of range, keep chasing for a while
+        // If no target in sight or memory
+        if (target == null && TargetRemainder == null) 
+        {
+            PathToTarget.Clear();
+            Patrol();
+            RemovePathLine();
+        }
+        // If no target but we still remember the last known position
+        else if (target == null && TargetRemainder != null) 
+        {
+            FinishExistingPath();
+            _chasingRemainder -= Time.deltaTime;
+        }
+        // If we have a target
         else
         {
+            // Update the last known target position
             TargetRemainder = target.transform;
-            ChasingRemainder = 5f;  // chasing time after losing target in visual
-            if (PathToTarget.Count == 0 || PathTicker < 0) { PathToTarget.Clear(); PathFind(); PathTicker = 2f; }   // find a path to target
-            else { PathExecute(); }         // continue current path
-           
-            if (DistanceToTarget(target.transform) < currentStats.attackRange || target.transform.GetComponent<BreakableObjectController>() != null)
+            _chasingRemainder = defaultChasingRemainder;
+
+            // If path is empty or our pathTicker has run out, re-pathfind
+            if (PathToTarget.Count == 0 || _pathTicker < 0)
             {
-                attack(target.transform, 1f / currentStats.attackInterval); // default:1;  lower -> faster
+                PathToTarget.Clear();
+                PathFind();
+                _pathTicker = defaultPathTicker;
             }
             else
             {
-                //Debug.Log("approaching target " + target.transform);
-                //flip(target.transform);
+                PathExecute();
             }
-            
+
+            // If close enough, try to attack
+            if (DistanceToTarget(target.transform) < currentStats.attackRange ||
+                target.transform.GetComponent<BreakableObjectController>() != null)
+            {
+                AttackHandler(target.transform, 1f / currentStats.attackInterval); 
+            }
+
+            // Additional behavior: Shake player overhead if they are above or below
             ShakePlayerOverHead();
         }
-        PathTicker -= Time.deltaTime;  // update ticker for path tracking
-        TargetTicker -= Time.deltaTime; // update ticker for target tracking
+
+        // Update tickers
+        _pathTicker -= Time.deltaTime;
+        _targetTicker -= Time.deltaTime;
     }
-    
 
-    void attack(Transform target, float frequency)
+    #endregion
+
+    #region Patrol / Movement
+
+    /// <summary>
+    /// Idle/Walk randomly for a short while.
+    /// </summary>
+    private void Patrol()
     {
-        // start attack
-        if (!rest && attacking_animation_timer <= 0)
+        RemovePathLine();
+
+        if (_patrolTime <= 0f)
         {
-            animator.Play("villager_attack");
-            attacking_animation_timer = 0.25f; // Time & Speed of animation
+            // Prepare for a new patrol cycle
+            _patrolRest = 2f;
+            _animator.Play("villager_idle");
+            _patrolTime = UnityEngine.Random.Range(1f, 3f);
+
+            _patrolToRight = (UnityEngine.Random.Range(0f, 1f) >= 0.5f);
         }
-
-        // wait for attack behavior finish
-        else if (attacking_animation_timer > 0) // make sure the attack behavior animation is complete
+        else if (_patrolRest > 0)
         {
-            attacking_animation_timer -= Time.deltaTime;
-
-            if (attacking_animation_timer < (0.25f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.25f - damage_start_time_0 - 0.01f))
-            {
-                var breakable = target.transform.GetComponent<IDamageable>();
-                if (breakable != null)
-                {
-                    ApplyDamage(breakable);
-                }
-                else
-                {
-                    float checkD = Vector2.Distance(attackEnd.position, target.transform.position);
-                    if (checkD < 0.75f) // hurt target successfully
-                    {
-                        ApplyDamage(target.GetComponent<CharacterController>());
-                    }
-                    rest = true;
-                    attacking_animation_timer = 0f;
-                    Wait = frequency;
-                }
-            }
-
+            // Rest for a moment in idle
+            _patrolRest -= Time.deltaTime;
         }
-
-        // finished attack and wait for next, this else if should be changed to else later!
-        else if (rest)
+        else
         {
-            if (Wait > 0)
+            // Actually move
+            _animator.Play("villager_walk");
+            SenseFrontBlock();
+            if (!MoveForwardDepthCheck()) return;
+
+            _patrolTime -= Time.deltaTime;
+
+            // Move either left or right
+            if (_patrolToRight)
             {
-                Wait -= Time.deltaTime;
-                animator.Play("villager_rest");
+                rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
+                if (!_isFacingRight) Flip();
             }
             else
             {
-                rest = false;
+                rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
+                if (_isFacingRight) Flip();
             }
         }
-
-        flip(target);
     }
-    void approach(float speed, Transform target)
+
+    /// <summary>
+    /// Simple approach function. Adjusts orientation and sets velocity.
+    /// </summary>
+    private void Approach(float speed, Transform targetTransform)
     {
         if (speed > currentStats.movingSpeed)
         {
-            animator.Play("villager_run");
+            _animator.Play("villager_run");
         }
         else
         {
-            animator.Play("villager_walk");
+            _animator.Play("villager_walk");
         }
-        if ((facingright && target.position.x < transform.position.x) || (!facingright && target.position.x > transform.position.x)) { flip(); }
-        
-        if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+
+        // Face the target
+        if ((_isFacingRight && targetTransform.position.x < transform.position.x)
+             || (!_isFacingRight && targetTransform.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
+        // Move left or right
+        if (targetTransform.position.x > transform.position.x)
+        {
+            rb.velocity = new Vector2(speed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(-speed, rb.velocity.y);
+        }
     }
 
     protected override void MoveTowards(Transform targetTransform)
     {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        var direction = (targetTransform.position - transform.position).normalized;
         rb.velocity = direction * currentStats.movingSpeed;
     }
-    void patrol()
+
+    #endregion
+
+    #region Attacking
+
+    /// <summary>
+    /// Manages the full attack sequence.
+    /// </summary>
+    /// <param name="targetTransform">Transform of target</param>
+    /// <param name="attackFrequency">How quickly the next attack can happen</param>
+    private void AttackHandler(Transform targetTransform, float attackFrequency)
     {
-        RemovePathLine();
-        if (patroltime <= 0f)
+        if (!_isResting && _attackingAnimationTimer <= 0)
         {
-            patrolRest = 2f;
-            animator.Play("villager_idle");
-            patroltime = UnityEngine.Random.Range(1f, 3f);
-            if (UnityEngine.Random.Range(0f, 1f) < 0.5) // go left
-            {
-                patrolToRight = false;
-            }
-            else                          // go right
-            {
-                patrolToRight = true;
-            }
+            // Start the attack
+            _animator.Play("villager_attack");
+            _attackingAnimationTimer = attackAnimationDuration;
         }
-        else if (patrolRest > 0)
+        else if (_attackingAnimationTimer > 0)
         {
-            patrolRest -= Time.deltaTime;
-        }
-        else
-        {
-            animator.Play("villager_walk");
-            SenseFrontBlock();
-            if (MoveForwardDepthCheck() == false) { return; }
-            patroltime -= Time.deltaTime;
-            if (patrolToRight)
+            // Wait for the animation to reach damage frame
+            _attackingAnimationTimer -= Time.deltaTime;
+
+            // Check if time is within the damage window
+            float current = _attackingAnimationTimer;
+            float damageWindowCenter = attackAnimationDuration - _damageStartTime_0;
+
+            if (current < (damageWindowCenter + 0.03f) && current > (damageWindowCenter - 0.01f))
             {
-                if (MoveForwardDepthCheck()) 
+                var breakable = targetTransform.GetComponent<IDamageable>();
+                if (breakable != null)
                 {
-                    rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
-                    if (!facingright) { flip(); }
-                }
-            }
-            else
-            {
-                if (MoveForwardDepthCheck())
-                {
-                    rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
-                    if (facingright) { flip(); }
-                }
-            }
-        }
-    }
-    void flip(Transform target)
-    {
-        if (target.position.x >= transform.position.x && !facingright)
-        {
-            facingright = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }
-        else if (target.position.x < transform.position.x && facingright)
-        {
-            facingright = false;
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-    }
-    void flip()
-    {
-        if (facingright)
-        {
-            facingright = false;
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            facingright = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }
-    }
-    new void SenseFrontBlock()
-    {
-        if (MoveForwardDepthCheck() == false) { return; }
-        headCheck();
-        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, groundLayerMask);
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
-        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, groundLayerMask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
-
-        if (hitCenter.transform != null)
-        {
-            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
-            {
-                if (hitFront.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump(2 * currentStats.movingSpeed);
-                    }
-                }
-            }
-            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
-            {
-                if (hitBack.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump(2 * currentStats.movingSpeed);
-                    }
-                }
-            }
-        }
-    }
-    bool headCheck()
-    {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
-        //Debug.DrawRay(head.position, direction * 0.34f, Color.red);        // bottom right
-        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
-        {
-            //Debug.Log("headCheck return false");
-            return false;
-        }
-
-        return true;
-    }
-    private void Jump(float horizontal)
-    {
-        rb.velocity = new Vector2(horizontal * 1.0f, currentStats.jumpForce);
-    }
-    
-    public void ChangeCollider(string status)
-    {
-        // Enable or disable the colliders based on the state
-        // boxCollider.enabled = !isSitting;
-        if (status == "Stand")
-        {
-            //boxCollider.size = new Vector2(0.1875544f, 1.0f);
-            capsuleCollider.offset = new Vector2(0.05061817f, -0.03f);
-            capsuleCollider.size = new Vector2(0.1316872f, 0.9791025f);
-        }
-        else
-        {
-            //boxCollider.size = new Vector2(0.1875544f, 0.718245f);
-            capsuleCollider.offset = new Vector2(0.02169657f, -0.05424142f);
-            capsuleCollider.size = new Vector2(0.1895304f, 0.7271314f);
-        }
-    }
-    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
-    {
-        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
-        if (hit.collider != null) { return true; }
-
-        return false;
-    }
-
-    new void ShakePlayerOverHead()
-    {
-        Vector2 direction = target.transform.position - transform.position;
-        float distance = direction.magnitude;
-
-        // Calculate the angle in degrees
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // Check the conditions
-        if ((angle >= -95f && angle <= -85f) || (angle >= 85 && angle <= 95) && distance < 3f)
-        {
-            Debug.Log("Angle and distance conditions met");
-            if (Mathf.Abs(target.transform.position.x - transform.position.x) <= 0.3f)
-            {
-                Debug.Log("Within horizontal range");
-                if (Mathf.Abs(target.transform.position.y - transform.position.y) < 2f)
-                {
-                    Debug.Log("Shaking the player overhead");
-                    if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
-                    {
-                        rb.velocity = new Vector2(-12f, rb.velocity.y);
-                    }
-                    else
-                    {
-                        rb.velocity = new Vector2(12f, rb.velocity.y);
-                    }
-                }
-            }
-        }
-        else
-        {
-            //Debug.Log("distance: " + distance + " angle: " + angle);
-        }
-    }
-    
-    public void PathFind()
-    {
-        if (target == null || DistanceToTarget(target.transform) < currentStats.attackRange) { PathToTarget.Clear(); PathCounter = 0; return; }
-
-        float TX = target.transform.position.x; float TY = target.transform.position.y;
-        float CX = transform.position.x; float CY = transform.position.y - 0.25f;
-
-        int startX = (int)CX;
-        int startY = (int)CY;
-        int endX = (int)TX;
-        int endY = (int)TY;
-
-        int minX = Mathf.Min(startX, endX) - 3;
-        int maxX = Mathf.Max(startX, endX) + 3;
-        int minY = Mathf.Min(startY, endY) - 4;
-        int maxY = Mathf.Max(startY, endY) + 4;
-
-        int[,] healthGrid = new int[maxX - minX + 1, maxY - minY + 1];
-
-        for (int y = minY; y <= maxY; y++)
-        {
-            for (int x = minX; x <= maxX; x++)
-            {
-                int disToGround = Pathfinding.DistanceToGround(x, y);
-                if (disToGround != 0)
-                {
-                    if (disToGround == 1) { healthGrid[x - minX, y - minY] = 1; continue; }
-                    else if (disToGround == 2) { healthGrid[x - minX, y - minY] = 2; continue; }
-                    else if (disToGround > 2 && Pathfinding.IsNeighborOfTile(x, y) && y <= startY) { healthGrid[x - minX, y - minY] = 2; continue; }
-                    else { healthGrid[x - minX, y - minY] = 99; continue; }
+                    // Breaking a destructible object
+                    ApplyDamage(breakable);
+                    EnterAttackCooldown(attackFrequency);
                 }
                 else
                 {
-                    Vector2Int position = new Vector2Int(x, y);
-                    TileObject tile = WorldGenerator.GetDataFromWorldPos(position);
-                    if (Pathfinding.IsLadder(x, y)) { healthGrid[x - minX, y - minY] = 1; continue; }
-                    else if (Pathfinding.IsNeighborTileReachable(x, y)) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
-                    else if (y < startY) { healthGrid[x - minX, y - minY] = 1 + tile.getHP(); continue; }
-                    else if (y >= startY) { healthGrid[x - minX, y - minY] = 99; continue; }
-                    else { healthGrid[x - minX, y - minY] = 99; continue; }
+                    // Possibly a player or some other character
+                    float checkD = Vector2.Distance(attackEnd.position, targetTransform.position);
+                    if (checkD < 0.75f)
+                    {
+                        var character = targetTransform.GetComponent<CharacterController>();
+                        ApplyDamage(character);
+                    }
+                    EnterAttackCooldown(attackFrequency);
                 }
             }
         }
-        healthGrid[startX - minX, startY - minY] = 0;
-        Vector2Int start = new Vector2Int(startX - minX, startY - minY);
-        Vector2Int end = new Vector2Int(endX - minX, endY - minY);
+        else if (_isResting)
+        {
+            // Once the attack is done, rest for cooldown
+            if (_wait > 0)
+            {
+                _wait -= Time.deltaTime;
+                _animator.Play("villager_rest");
+            }
+            else
+            {
+                _isResting = false;
+            }
+        }
 
+        // Flip orientation if needed
+        Flip(targetTransform);
+    }
+
+    /// <summary>
+    /// Helper to set the villager into rest mode and reset the wait timer.
+    /// </summary>
+    private void EnterAttackCooldown(float frequency)
+    {
+        _isResting = true;
+        _attackingAnimationTimer = 0f;
+        _wait = frequency;
+    }
+
+    #endregion
+
+    #region Flips / Colliders / Jump
+
+    /// <summary>
+    /// Flip based on a target transform's position.
+    /// </summary>
+    private void Flip(Transform targetTransform)
+    {
+        if (targetTransform.position.x >= transform.position.x && !_isFacingRight)
+        {
+            _isFacingRight = true;
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (targetTransform.position.x < transform.position.x && _isFacingRight)
+        {
+            _isFacingRight = false;
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+    }
+
+    /// <summary>
+    /// Flip regardless of a target, simple toggle.
+    /// </summary>
+    private void Flip()
+    {
+        _isFacingRight = !_isFacingRight;
+        transform.eulerAngles = _isFacingRight ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);
+    }
+
+    /// <summary>
+    /// Update the collider shape if idle vs. moving vs. crouching, etc.
+    /// </summary>
+    private void UpdateColliderBasedOnAnimation()
+    {
+        // If idle state, set to "Sit" collider
+        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("villager_idle"))
+        {
+            ChangeCollider("Stand");
+        }
+        else
+        {
+            ChangeCollider("Sit");
+        }
+    }
+
+    public void ChangeCollider(string status)
+    {
+        // Adjust the capsule size/offset for different states
+        if (status == "Stand")
+        {
+            _capsuleCollider.offset = new Vector2(0.05061817f, -0.03f);
+            _capsuleCollider.size = new Vector2(0.1316872f, 0.9791025f);
+        }
+        else // "Sit"
+        {
+            _capsuleCollider.offset = new Vector2(0.02169657f, -0.05424142f);
+            _capsuleCollider.size = new Vector2(0.1895304f, 0.7271314f);
+        }
+    }
+
+    /// <summary>
+    /// Attempt to jump over a small obstacle. 
+    /// </summary>
+    private void Jump(float horizontal)
+    {
+        // If you want horizontal velocity to carry into jump, uncomment
+        // rb.velocity = new Vector2(horizontal, currentStats.jumpForce);
+        rb.velocity = new Vector2(0f, enemyStats.jumpForce);
+    }
+
+    /// <summary>
+    /// Check if there's enough clearance above the head before jumping.
+    /// </summary>
+    private bool HeadCheck()
+    {
+        Vector3 direction = transform.TransformDirection(-Vector3.right);
+        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
+
+        if (headRay.collider != null && headRay.collider.CompareTag("ground"))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    #endregion
+
+    #region Obstacle / Sensing
+
+    /// <summary>
+    /// Check for obstacles in the forward/back direction, ground checks, etc.
+    /// </summary>
+    private new void SenseFrontBlock()
+    {
+        if (!MoveForwardDepthCheck()) return;
+        HeadCheck();
+
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
+
+        // Only do the jump logic if center is on ground
+        if (hitCenter.transform != null)
+        {
+            bool movingForward = (_isFacingRight && rb.velocity.x > 0) || (!_isFacingRight && rb.velocity.x < 0);
+            bool movingBackward = (_isFacingRight && rb.velocity.x < 0) || (!_isFacingRight && rb.velocity.x > 0);
+
+            // If blocked in the front
+            if (movingForward && hitFront.transform != null)
+            {
+                if (HeadCheck())
+                {
+                    Debug.Log("Jumping infront of obstacle");
+                    Jump(2 * currentStats.movingSpeed);
+                }
+            }
+            // If blocked in the back
+            else if (movingBackward && hitBack.transform != null)
+            {
+                if (HeadCheck())
+                {
+                    Debug.Log("Jumping behind obstacle");
+                    Jump(2 * currentStats.movingSpeed);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Prevent running into a big hole or abyss.
+    /// </summary>
+    private bool MoveForwardDepthCheck()
+    {
+        // Slightly forward from frontCheck
+        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
+        return (hit.collider != null);
+    }
+
+    #endregion
+
+    #region Shake Player Overhead
+
+    /// <summary>
+    /// Additional behavior that shakes the player overhead if they are basically vertical above or below the villager.
+    /// </summary>
+    private void ShakePlayerOverHead()
+    {
+        if (target == null) return;
+
+        Vector2 direction = target.transform.position - transform.position;
+        float distance = direction.magnitude;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        bool isVerticalAngle = (angle >= -95f && angle <= -85f) || (angle >= 85 && angle <= 95);
+        if (isVerticalAngle && distance < 3f)
+        {
+            // Debug.Log("Angle and distance conditions met");
+            float verticalOffset = Mathf.Abs(target.transform.position.y - transform.position.y);
+            if (verticalOffset < 2f)
+            {
+                Vector2 start = transform.position;
+                Vector2 end = target.transform.position;
+                RaycastHit2D hit = Physics2D.Raycast(start, direction.normalized, distance, groundLayerMask);
+
+                if (hit.collider == null)
+                {
+                    // Debug.Log("No obstruction detected. Applying horizontal force.");
+
+                    // Apply random horizontal force
+                    float randomForce = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -12f : 12f;
+                    rb.velocity = new Vector2(randomForce, rb.velocity.y);
+                }
+                else
+                {
+                    // Debug.Log("Obstruction detected. No horizontal force applied.");
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    #region Pathfinding Methods
+
+    /// <summary>
+    /// Attempts to compute an A* path to the target. Stores points in PathToTarget.
+    /// </summary>
+    public void PathFind()
+    {
+        // Ensure there is a valid target, and we are outside attack range
+        if (target == null || DistanceToTarget(target.transform) < currentStats.attackRange)
+        {
+            PathToTarget.Clear();
+            _pathCounter = 0;
+            return;
+        }
+
+        // Get start and end positions
+        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y - 0.25f); // Adjust for collider height
+        Vector2 targetPosition = target.transform.position;
+
+        // Compute bounds with sensing range margins
+        int minX = Mathf.FloorToInt(Mathf.Min(currentPosition.x, targetPosition.x) - enemyStats.sensingRange);
+        int maxX = Mathf.FloorToInt(Mathf.Max(currentPosition.x, targetPosition.x) + enemyStats.sensingRange);
+        int minY = Mathf.FloorToInt(Mathf.Min(currentPosition.y, targetPosition.y) - enemyStats.sensingRange);
+        int maxY = Mathf.FloorToInt(Mathf.Max(currentPosition.y, targetPosition.y) + enemyStats.sensingRange);
+
+        // Grid dimensions
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+
+        // Initialize health grid
+        int[,] healthGrid = InitializeHealthGrid(minX, maxX, minY, maxY, width, height, currentPosition.y);
+
+        // Convert world coordinates to grid indices
+        Vector2Int start = WorldToGridCoords(currentPosition, minX, minY);
+        Vector2Int end = WorldToGridCoords(targetPosition, minX, minY);
+
+        // Debug: log the health grid
         Pathfinding.LogHealthGrid(healthGrid);
 
-        List<Vector2Int> path = Pathfinding.AstarPath(start, end, healthGrid, maxX - minX + 1, maxY - minY + 1, minX, minY);
+        // Compute the A* path
+        List<Vector2Int> path = Pathfinding.AstarPath(start, end, healthGrid, width, height, minX, minY);
+
         if (path.Count > 0)
         {
             int totalPathCost = Pathfinding.CalculatePathCost(path, healthGrid, minX, minY);
-            if (totalPathCost >= 99) { PathToTarget.Clear(); return; }
-            PathToTarget = Pathfinding.PathPointToCenter(path);
-            PathCounter = 0;
+            if (totalPathCost >= 99)
+            {
+                Debug.Log("Path cost too high, clearing path.");
+                PathToTarget.Clear();
+                return;
+            }
 
-            string pathString = string.Join(", ", path);
-            //Debug.Log(pathString);
+            // Convert path to world coordinates (centered)
+            PathToTarget = Pathfinding.PathPointToCenter(path);
+            _pathCounter = 0;
         }
         else
         {
@@ -447,118 +1234,182 @@ public class VillagerController : EnemyController
         }
     }
 
+    /// <summary>
+    /// Initializes the health grid with costs for each cell based on terrain and conditions.
+    /// </summary>
+    private int[,] InitializeHealthGrid(int minX, int maxX, int minY, int maxY, int width, int height, float currentY)
+    {
+        int[,] healthGrid = new int[width, height];
+
+        for (int y = minY; y <= maxY; y++)
+        {
+            for (int x = minX; x <= maxX; x++)
+            {
+                Vector2Int gridCoords = new Vector2Int(x - minX, y - minY);
+
+                // Determine grid cost based on terrain
+                int distanceToGround = Pathfinding.DistanceToGround(x, y);
+                if (distanceToGround > 0)
+                {
+                    // Assign costs based on proximity to the ground
+                    healthGrid[gridCoords.x, gridCoords.y] = distanceToGround <= enemyStats.jumpForce - 1 ? distanceToGround : 99;
+                }
+                else
+                {
+                    // Check for specific tile properties
+                    TileObject tile = WorldGenerator.GetDataFromWorldPos(new Vector2Int(x, y));
+                    if (tile == null)
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 99; // Impassable
+                    }
+                    else if (Pathfinding.IsLadder(x, y))
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 1;
+                    }
+                    else if (Pathfinding.IsNeighborTileReachable(x, y))
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 1 + tile.getHP();
+                    }
+                    else if (y < currentY)
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 1 + tile.getHP();
+                    }
+                    else
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 99; // Impassable
+                    }
+                }
+            }
+        }
+
+        return healthGrid;
+    }
+
+    /// <summary>
+    /// Converts a world position to grid coordinates.
+    /// </summary>
+    private Vector2Int WorldToGridCoords(Vector2 position, int minX, int minY)
+    {
+        return new Vector2Int(
+            Mathf.FloorToInt(position.x) - minX,
+            Mathf.FloorToInt(position.y) - minY
+        );
+    }
+
+
+    /// <summary>
+    /// Execute path movement if needed.
+    /// </summary>
     public void PathExecute()
     {
         if (DistanceToTarget(target.transform) < currentStats.attackRange)
         {
-            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+            PathToTarget.Clear();
+            RemovePathLine();
+            _pathCounter = 0;
             return;
         }
-       // DrawPath();
-        if (PathCounter < PathToTarget.Count)
+
+        DrawPath();
+
+        // Follow path
+        if (_pathCounter < PathToTarget.Count)
         {
-            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
-
-            approach(2 * currentStats.movingSpeed, target.transform);
+            Approach(2 * currentStats.movingSpeed, target.transform);
             SenseFrontBlock();
+            BreakObstaclesByAngle(target.transform);
 
-            Vector2 direction = target.transform.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
-            else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
-            else { BreakObstacles("horizontal"); }
-
-            if (CloseToLocation(PathToTarget[PathCounter]))
+            // Move to next waypoint
+            if (CloseToLocation(PathToTarget[_pathCounter]))
             {
-                PathCounter++;
-            }
-            else
-            {
-                //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+                _pathCounter++;
             }
         }
         else
         {
-            approach(2 * currentStats.movingSpeed, target.transform);
+            // No more waypoints, just approach directly
+            Approach(2 * currentStats.movingSpeed, target.transform);
             PathToTarget.Clear();
-            PathCounter = 0;
+            _pathCounter = 0;
         }
     }
 
+    /// <summary>
+    /// Continue chasing the last known target position for a while.
+    /// </summary>
     public void FinishExistingPath()
     {
-        if (ChasingRemainder < 0f)
+        if (_chasingRemainder < 0f)
         {
             TargetRemainder = null;
             return;
         }
+
         if (DistanceToTarget(TargetRemainder) < currentStats.attackRange)
         {
-            PathToTarget.Clear(); RemovePathLine(); PathCounter = 0;
+            PathToTarget.Clear();
+            RemovePathLine();
+            _pathCounter = 0;
             return;
         }
-        //DrawPath();
-        if (PathCounter < PathToTarget.Count)
+
+        DrawPath();
+
+        if (_pathCounter < PathToTarget.Count)
         {
-            //Debug.Log("Go to: " + PathToTarget[PathCounter]);
-
-            approach(2 * currentStats.movingSpeed, TargetRemainder);
+            Approach(2 * currentStats.movingSpeed, TargetRemainder);
             SenseFrontBlock();
+            BreakObstaclesByAngle(TargetRemainder);
 
-            Vector2 direction = TargetRemainder.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            if (angle >= 75 && angle <= 105) { BreakObstacles("top"); }
-            else if (angle >= -105 && angle <= -75) { BreakObstacles("bottom"); }
-            else { BreakObstacles("horizontal"); }
-
-            if (CloseToLocation(PathToTarget[PathCounter]))
+            if (CloseToLocation(PathToTarget[_pathCounter]))
             {
-                PathCounter++;
-            }
-            else
-            {
-                //Debug.Log("Approaching path position: " + PathToTarget[PathCounter]);
+                _pathCounter++;
             }
         }
         else
         {
-            approach(2 * currentStats.movingSpeed, TargetRemainder);
+            Approach(2 * currentStats.movingSpeed, TargetRemainder);
             PathToTarget.Clear();
-            PathCounter = 0;
+            _pathCounter = 0;
         }
     }
 
-    private GameObject lineObj;
+    #endregion
+
+    #region Path Drawing
+
     public void DrawPath()
     {
         if (lineRenderer == null)
         {
-            lineObj = new GameObject("PathLine");
-            lineRenderer = lineObj.AddComponent<LineRenderer>();
+            // If no line renderer, create one
+            _lineObj = new GameObject("PathLine");
+            lineRenderer = _lineObj.AddComponent<LineRenderer>();
+
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
             lineRenderer.startColor = new Color(0.5f, 0f, 0.5f, 1f);
             lineRenderer.endColor = new Color(0.5f, 0f, 0.5f, 1f);
             lineRenderer.startWidth = 0.3f;
             lineRenderer.endWidth = 0.3f;
-            lineObj.layer = 11;
+
+            // Setup sorting
+            _lineObj.layer = 11;
             lineRenderer.sortingOrder = 11;
         }
+
         if (lineRenderer == null)
         {
             Debug.LogError("LineRenderer is not initialized!");
             return;
         }
-        else if (PathToTarget != null)
+
+        if (PathToTarget != null)
         {
             Vector3[] positions = new Vector3[PathToTarget.Count];
-
             for (int i = 0; i < PathToTarget.Count; i++)
             {
                 positions[i] = new Vector3(PathToTarget[i].x, PathToTarget[i].y, 0);
             }
-
             lineRenderer.positionCount = positions.Length;
             lineRenderer.SetPositions(positions);
         }
@@ -566,101 +1417,128 @@ public class VillagerController : EnemyController
 
     public void RemovePathLine()
     {
-        if (lineObj != null)
+        if (_lineObj != null)
         {
-            Destroy(lineObj);
+            Destroy(_lineObj);
             lineRenderer = null;
         }
     }
 
-    public bool CloseToLocation(Vector2 location)
+    #endregion
+
+    #region Obstacle Breaking
+
+    /// <summary>
+    /// Pick whether we break top/bottom/horizontal obstacles by analyzing the angle to the target.
+    /// </summary>
+    private void BreakObstaclesByAngle(Transform t)
     {
-        Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
-        if (Vector2.Distance(currentLoc, location) < 1.2f)
+        Vector2 direction = t.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if (angle >= 75 && angle <= 105)
         {
-            return true;
+            BreakObstacles("top");
         }
-        return false;
+        else if (angle >= -105 && angle <= -75)
+        {
+            BreakObstacles("bottom");
+        }
+        else
+        {
+            BreakObstacles("horizontal");
+        }
     }
 
+    /// <summary>
+    /// Attempt to detect breakable objects and set them as target.
+    /// </summary>
     public void BreakObstacles(string command)
     {
-        BreakObstaclesCD -= Time.deltaTime;
-        if (BreakObstaclesCD < 0f)
-        {
-            Vector2 direction1 = Vector2.left;
-            Vector2 direction2 = Vector2.left;
-            Vector2 direction3 = (Vector2.left + Vector2.up).normalized;
-            Vector2 direction4 = Vector2.up;
-            if (facingright)
-            {
-                direction1 = Vector2.right;
-                direction2 = Vector2.right;
-                direction3 = (Vector2.right + Vector2.up).normalized;
-            }
-            float rayLength = 0.05f;
+        _breakObstaclesCD -= Time.deltaTime;
+        if (_breakObstaclesCD > 0f) return;
 
-            if (command == "horizontal")
-            {
-                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, direction1, rayLength, groundLayerMask);
-                //Debug.DrawRay(tileDetect1.position, direction1 * rayLength, Color.red);
-                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, direction2, rayLength, groundLayerMask);
-               //Debug.DrawRay(tileDetect2.position, direction2 * rayLength, Color.green);
+        Vector2 directionSide = _isFacingRight ? Vector2.right : Vector2.left;
+        Vector2 directionUpSide = (_isFacingRight ? Vector2.right : Vector2.left) + Vector2.up;
+        directionUpSide.Normalize();
+
+        float rayLength = 0.05f;
+
+        switch (command)
+        {
+            case "horizontal":
+                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, directionSide, rayLength, groundLayerMask);
+                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, directionSide, rayLength, groundLayerMask);
                 if (hitTileDetect2.transform != null)
                 {
                     var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();
                     if (breakable1 != null)
                     {
-                        target = breakable1.gameObject; BreakObstaclesCD = 1f;
+                        target = breakable1.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
                     }
                 }
-                else if (hitTileDetect1.transform != null)
+                if (hitTileDetect1.transform != null)
                 {
                     var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
                     if (breakable2 != null)
                     {
-                        target = breakable2.gameObject; BreakObstaclesCD = 1f;
+                        target = breakable2.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
                     }
                 }
-            }
-            else if (command == "top")
-            {
-                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, direction3, rayLength, groundLayerMask);
-                //Debug.DrawRay(tileDetect3.position, direction3 * rayLength, Color.blue);
-                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, direction4, rayLength, groundLayerMask);
-                //Debug.DrawRay(tileDetect4.position, direction4 * rayLength, Color.yellow);
+                break;
+
+            case "top":
+                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, directionUpSide, rayLength, groundLayerMask);
+                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, Vector2.up, rayLength, groundLayerMask);
+
                 if (hitTileDetect3.transform != null)
                 {
                     var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
                     if (breakable3 != null)
                     {
-                        target = breakable3.gameObject; BreakObstaclesCD = 1f;
+                        target = breakable3.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
                     }
                 }
-                else if (hitTileDetect4.transform != null)
+                if (hitTileDetect4.transform != null)
                 {
                     var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
                     if (breakable4 != null)
                     {
-                        target = breakable4.gameObject; BreakObstaclesCD = 1f;
+                        target = breakable4.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
                     }
                 }
-            }
-            else if (command == "bottom")
-            {
+                break;
+
+            case "bottom":
                 RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, groundLayerMask);
-                //Debug.DrawRay(groundCheckCenter.position, Vector2.down * rayLength, Color.blue);
                 if (hitTileDetect5.transform != null)
                 {
                     var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
                     if (breakable5 != null)
                     {
-                        target = breakable5.gameObject; BreakObstaclesCD = 1f;
+                        target = breakable5.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
                     }
                 }
-            }
+                break;
         }
     }
-        
-    
+
+    #endregion
+
+    #region Utility
+
+    public bool CloseToLocation(Vector2 location)
+    {
+        Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
+        return Vector2.Distance(currentLoc, location) < 1.2f;
+    }
+
+    #endregion
 }
