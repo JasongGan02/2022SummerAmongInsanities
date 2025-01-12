@@ -10,19 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: f4f0d1a38eb279a44b271fdf180d0816, type: 2}
-  baseWeight: 0
   isReselectable: 1
-  isRoot: 0
+  baseWeight: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     weight: 20
     cost: 0
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
   childNodes: []
   parentNodes: []
   rect:
@@ -41,19 +42,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
-  baseWeight: 0
   isReselectable: 1
-  isRoot: 0
+  baseWeight: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     weight: 20
     cost: 0
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
@@ -89,19 +91,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
-  baseWeight: 0
   isReselectable: 1
-  isRoot: 0
+  baseWeight: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     weight: 20
     cost: 0
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
@@ -121,19 +124,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 0}
-  baseWeight: 0
   isReselectable: 1
-  isRoot: 1
+  baseWeight: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     weight: 20
     cost: 0
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 1
   childNodes: []
   parentNodes: []
   rect:
@@ -152,19 +156,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
-  baseWeight: 0
   isReselectable: 1
-  isRoot: 0
+  baseWeight: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     weight: 20
     cost: 0
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
@@ -184,19 +189,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: 6cb70e8ae38d73b4196fd1f236c7f12f, type: 2}
-  baseWeight: 0
   isReselectable: 1
-  isRoot: 0
+  baseWeight: 0
   quality:
     rarity: 0
     color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     weight: 20
     cost: 0
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}
@@ -216,19 +222,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: f4f0d1a38eb279a44b271fdf180d0816, type: 2}
-  baseWeight: 100
   isReselectable: 1
-  isRoot: 0
+  baseWeight: 100
   quality:
     rarity: 2
     color: {r: 0, g: 0, b: 1, a: 1}
     weight: 3
     cost: 0.8
     sprite: {fileID: 0}
-  rogueNodeGraph: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
   childNodes: []
   parentNodes:
   - {fileID: 1213871549809339633}

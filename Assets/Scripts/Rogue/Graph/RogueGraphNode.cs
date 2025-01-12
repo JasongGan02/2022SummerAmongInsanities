@@ -2,16 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Serialization;
 
 public class RogueGraphNode : ScriptableObject
 {
+    public string blessingName = "Unnamed Node"; // 福赠名称
     public EffectObject effect;
-    public float baseWeight;
     public bool isReselectable = true;
-    public bool isRoot = false;
+    public float baseWeight;
     public Quality quality;
-    public Sprite rogueNodeGraph;
+    public Sprite blessingIcon;
     private RogueGraph containerGraph;
+    private bool isNameManuallyChanged = false;
+    [HideInInspector] public bool isRoot = false;
+
+
+    public string BlessingName // Property for 福赠名称
+    {
+        get => blessingName;
+        set
+        {
+            if (blessingName != value)
+            {
+                blessingName = value;
+                isNameManuallyChanged = true; // Mark name as manually changed
+                UpdateAssetName();
+            }
+        }
+    }
+    
+    private EffectObject Effect
+    {
+        get => effect;
+        set
+        {
+            effect = value;
+            if (effect != null && !isNameManuallyChanged)
+            {
+                // Update the node's name only if it hasn't been manually changed
+                blessingName = effect.name;
+                UpdateAssetName();
+            }
+        }
+    }
+
 
     [SerializeField]
     public List<RogueGraphNode> childNodes = new();
@@ -22,6 +56,16 @@ public class RogueGraphNode : ScriptableObject
     [SerializeField]
     private Rect rect;
     private Rect headerRect;
+    
+    private void UpdateAssetName()
+    {
+        if (!string.IsNullOrWhiteSpace(blessingName))
+        {
+            name = blessingName; // Update the asset name
+            EditorUtility.SetDirty(this); // Mark the object as dirty to ensure Unity saves the changes
+            AssetDatabase.SaveAssets(); // Save the updated name
+        }
+    }
     
     private static readonly Dictionary<ItemRarity, (Color color, float weight, float cost)> RarityMappings = new()
     {
@@ -57,15 +101,22 @@ public class RogueGraphNode : ScriptableObject
 
     private void DrawHeader()
     {
-        GUIStyle heander = new GUIStyle();
+        GUIStyle headerStyle = new GUIStyle
+        {
+            normal = { textColor = Color.white },
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter
+        };
 
         headerRect = rect;
         headerRect.height = 20;
         headerRect.y = rect.y - 14;
-        GUILayout.BeginArea(headerRect, heander);
-        GUILayout.Button("");
+
+        GUILayout.BeginArea(headerRect);
+        GUILayout.Label(name, headerStyle); // Display node name
         GUILayout.EndArea();
     }
+
 
     private void DrawRootNode(GUIStyle style)
     {
@@ -80,12 +131,15 @@ public class RogueGraphNode : ScriptableObject
         EditorGUI.BeginChangeCheck();
 
         float remainingHeight = rect.height - EditorGUIUtility.singleLineHeight - 10f;
-        Rect objectFieldRect = new Rect(5f, 5f + remainingHeight / 2f, rect.width - 10f, EditorGUIUtility.singleLineHeight);
-        effect = EditorGUI.ObjectField(objectFieldRect, "Effect", effect, typeof(EffectObject), false) as EffectObject;
 
-        GUILayout.BeginArea(new Rect(5f, 5f, rect.width - 10f, remainingHeight / 2f));
-        GUILayout.Label(effect?.name ?? "No Effect Selected");
-        GUILayout.EndArea();
+        // Display Blessing Name as a text field
+        Rect blessingNameFieldRect = new Rect(5f, 5f, rect.width - 10f, EditorGUIUtility.singleLineHeight);
+        BlessingName = EditorGUI.TextField(blessingNameFieldRect, "Blessing Name", BlessingName);
+
+        // Display Effect field
+        Rect objectFieldRect = new Rect(5f, blessingNameFieldRect.yMax + 5f, rect.width - 10f, EditorGUIUtility.singleLineHeight);
+        effect = EditorGUI.ObjectField(objectFieldRect, "Effect", effect, typeof(EffectObject), false) as EffectObject;
+        
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -94,6 +148,7 @@ public class RogueGraphNode : ScriptableObject
 
         GUILayout.EndArea();
     }
+
 
 
     public void Move(Vector2 delta)
@@ -175,6 +230,8 @@ public class RogueGraphNode : ScriptableObject
     
     private void OnValidate()
     {
+        UpdateAssetName();
+        
         quality ??= new Quality();
 
         if (RarityMappings.TryGetValue(quality.rarity, out var mapping))

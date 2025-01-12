@@ -10,6 +10,11 @@ public class RogueGraphEditorWindowController
 
     public RogueGraph graph;
     private RogueGraphNodeCreator nodeCreator;
+    
+    private float zoomLevel = 1f;
+    private const float ZoomMin = 0.5f;
+    private const float ZoomMax = 2f;
+
 
     public RogueGraphEditorWindowController(RogueGraph graph)
     {
@@ -124,6 +129,13 @@ public class RogueGraphEditorWindowController
         if (CanConnectNode(e.mousePosition))
         {
             parentNode = nodeAtMousePosition;
+        }
+        
+        if (nodeAtMousePosition != null)
+        {
+            // Set the clicked node as the active object
+            Selection.activeObject = nodeAtMousePosition;
+            EditorGUIUtility.PingObject(nodeAtMousePosition); // Optional: Highlight the asset in the project window
         }
     }
 
