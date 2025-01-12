@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816baf3ecf0ee8848893d48ec290272a, type: 3}
+  m_Name: FrostbiteArrowEffect
+  m_EditorClassIdentifier: 
+  duration: 0
+  tickDuration: 0
+  requiresReset: 0
+  isStackable: 1
+  isPermanent: 0
+  description: "\u6BCF\u6B21\u547D\u4E2D\u4E3A\u654C\u4EBA\u9644\u52A0\u5355\u6B21\u989D\u5916\u4F24\u5BB3\uFF0C\u4F24\u5BB3=\u6700\u5927\u751F\u547D\u503C*\uFF08\u5BD2\u51B7\u5C42\u6570+x\uFF09% "
+  componentToApply: {fileID: 0}
+  effectControllerType: {fileID: 0}
+  damagePerStacks: 1
