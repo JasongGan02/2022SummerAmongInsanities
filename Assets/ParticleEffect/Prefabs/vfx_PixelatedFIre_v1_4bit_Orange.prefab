@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.32323232, b: 0, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5038,7 +5038,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.32323232, b: 0, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6124,7 +6124,7 @@ ParticleSystem:
         key0: {r: 1, g: 0.37322208, b: 0.25098038, a: 1}
         key1: {r: 1, g: 0.3099426, b: 0.015686274, a: 1}
         key2: {r: 1, g: 0.4666667, b: 0.015686275, a: 1}
-        key3: {r: 0.9245283, g: 0.49807942, b: 0, a: 0}
+        key3: {r: 1, g: 0.7535237, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
@@ -6132,7 +6132,7 @@ ParticleSystem:
         ctime0: 193
         ctime1: 21010
         ctime2: 45296
-        ctime3: 65535
+        ctime3: 65342
         ctime4: 51272
         ctime5: 0
         ctime6: 0
@@ -19277,7 +19277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &510474073494934750
 Transform:
   m_ObjectHideFlags: 0
@@ -19483,7 +19483,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.3085, b: 0.07800001, a: 1}
+      maxColor: {r: 1, g: 0.41710156, b: 0.2216981, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -23194,8 +23194,8 @@ ParticleSystem:
     intensityCurve:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 20
-      minScalar: 5
+      scalar: 50
+      minScalar: 30
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -23244,7 +23244,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    maxLights: 20
+    maxLights: 50
   TrailModule:
     enabled: 0
     mode: 0
