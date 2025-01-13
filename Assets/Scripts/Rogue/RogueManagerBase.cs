@@ -83,7 +83,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
     protected abstract void OnUIUpdated(object sender, UIBeingViewed ui);
     
-    protected virtual void AddBuffs()
+    protected virtual void AddBuffs(bool needReroll = false)
     {
         ClearBuffCards();
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
@@ -192,7 +192,7 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected virtual void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
         selectedNodes.Add(node);
-        selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
+        selectedBuffText.text += "\n" + (node.name);
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
 
         // Apply the effect
@@ -225,7 +225,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             _audioEmitter.PlayClipFromCategory("PlayerReroll");
             
             // Add new buffs
-            AddBuffs();
+            AddBuffs(true);
 
             // Update reroll cost UI
             UpdateRerollUI(currentCost);

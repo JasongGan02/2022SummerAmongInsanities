@@ -31,21 +31,6 @@ public class RogueGraphNode : ScriptableObject
         }
     }
     
-    private EffectObject Effect
-    {
-        get => effect;
-        set
-        {
-            effect = value;
-            if (effect != null && !isNameManuallyChanged)
-            {
-                // Update the node's name only if it hasn't been manually changed
-                blessingName = effect.name;
-                UpdateAssetName();
-            }
-        }
-    }
-
 
     [SerializeField]
     public List<RogueGraphNode> childNodes = new();

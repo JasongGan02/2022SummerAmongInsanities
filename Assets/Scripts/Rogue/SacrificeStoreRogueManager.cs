@@ -62,7 +62,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         rogueUI.SetActive(ui == UIBeingViewed.Sacrifice);
         if (ui == UIBeingViewed.Sacrifice)
         {
-            AddBuffs();
+            AddBuffs(false);
             PauseGame();
         }
         else
@@ -71,13 +71,12 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         }
     }
 
-    protected override void AddBuffs()
+    protected override void AddBuffs(bool needReroll)
     {
         ClearBuffCards();
 
         List<RogueGraphNode> nodes;
-        Debug.Log(storedNodes.Count);
-        if (storedNodes.Count > 0)
+        if (storedNodes.Count > 0 && !needReroll)
         {
             nodes = new List<RogueGraphNode>(storedNodes);
         }
@@ -142,7 +141,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
 
         // Generate and display new nodes
         storedNodes.Clear();
-        AddBuffs();
+        AddBuffs(false);
     }
 
 

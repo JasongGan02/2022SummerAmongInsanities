@@ -59,10 +59,13 @@ public class PlayerExperience : MonoBehaviour
     private void LevelUp()
     {
         currentExperience -= experienceToNextLevel;
-        experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.1f); // Example scaling
         Level++;
-        Debug.Log("Leveled up!");
-        
+
+        // Update experience required for the next level using the provided formula
+        experienceToNextLevel = Mathf.RoundToInt(10 * (1 + 0.045f * Mathf.Pow(Level, 2))); // Using Level as totalLevel
+
+        Debug.Log($"Leveled up! New level: {Level}, XP required for next level: {experienceToNextLevel}");
+
         // Fire the LevelUp event via GameEvents
         if (GameEvents.current != null)
         {
@@ -73,4 +76,5 @@ public class PlayerExperience : MonoBehaviour
             Debug.LogError("GameEvents instance not found in the scene.");
         }
     }
+
 }

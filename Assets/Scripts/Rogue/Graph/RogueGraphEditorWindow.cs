@@ -29,6 +29,7 @@ public class RogueGraphEditorWindow : EditorWindow
 
     private void OnGUI()
     {
+        if (Event.current == null || controller == null) return;
         controller.ProcessEvent(Event.current);
         controller.parentNode?.DrawConnectionLineToMousePosition(Event.current.mousePosition);
         controller.graph?.DrawConnectionLines();

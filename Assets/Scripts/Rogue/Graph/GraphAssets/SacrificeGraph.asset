@@ -241,9 +241,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
+  m_Name: Yo
   m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
+  blessingName: Yo
   effect: {fileID: 11400000, guid: 417e935f7c95f8b4ab8eab18e8b0bacf, type: 2}
   isReselectable: 1
   baseWeight: 0
