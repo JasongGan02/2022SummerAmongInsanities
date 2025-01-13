@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Effects/Wall Upgrades/BurningWallEffectObject")]
-public class BurningWallEffectObject : EffectObject, IUpgradeableEffectObject
+public class BurningWallEffectObject : EffectObject
 {
     [Header("BurningWallEffectObject Fields")]
     public OnFireEffectObject onFireEffectObject;
@@ -56,49 +56,5 @@ public class BurningWallEffectObject : EffectObject, IUpgradeableEffectObject
 
         return assets.ToArray();
     }
-
-    #region IUpgradeableEffect Fields
-
-    [Header("Upgradeable Effect Configuration")]
-    [SerializeField] private EffectConfiguration levelConfig;
-    [SerializeField] private int currentLevel = 1;
-
-    public EffectConfiguration LevelConfig
-    {
-        get => levelConfig;
-        set => levelConfig = value;
-    }
-
-    public int CurrentLevel
-    {
-        get => currentLevel;
-        set => currentLevel = value;
-    }
-
-    public void UpdateStatsToTargetLevel(int targetLevel)
-    {
-        if (LevelConfig == null)
-        {
-            Debug.LogError("LevelConfig is not set.");
-            return;
-        }
-
-        var stats = LevelConfig.GetStatsForLevel(targetLevel);
-        if (stats == null)
-        {
-            Debug.LogWarning($"No stats found for level {targetLevel} in {name}.");
-            return;
-        }
-
-        stacksPerHit = (int)LevelConfig.GetAttribute("stacksPerHit", targetLevel, 1);
-            //effectInterval = LevelConfig.GetAttribute("effectInterval", targetLevel, 2f);
-    }
-
-    private void OnValidate()
-    {
-        if (CurrentLevel < 1) CurrentLevel = 1;
-        UpdateStatsToTargetLevel(CurrentLevel);
-    }
-
-    #endregion
+        
 }
