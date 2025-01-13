@@ -62,7 +62,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         rogueUI.SetActive(ui == UIBeingViewed.Sacrifice);
         if (ui == UIBeingViewed.Sacrifice)
         {
-            AddBuffs();
+            AddBuffs(false);
             PauseGame();
         }
         else
@@ -71,13 +71,12 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         }
     }
 
-    protected override void AddBuffs()
+    protected override void AddBuffs(bool needReroll)
     {
         ClearBuffCards();
 
         List<RogueGraphNode> nodes;
-        Debug.Log(storedNodes.Count);
-        if (storedNodes.Count > 0)
+        if (storedNodes.Count > 0 && !needReroll)
         {
             nodes = new List<RogueGraphNode>(storedNodes);
         }
@@ -99,26 +98,18 @@ public class SacrificeStoreRogueManager : RogueManagerBase
             buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
         }
     }
-
-
-    private const float INIT_COST = 10f;
-    private const float GROWTH_RATE = 0.045f;
-    private const float NONLINEAR_FACTOR = 2f;
-
+    
     private int CalculateAshCost(Quality quality)
     {
-        // Pfinal = Pbase * (1 + Pquality)
-        // Pbase = Pinit * (1 + a * totalPurchase^b)
-    
-        float basePrice = INIT_COST * (1 + GROWTH_RATE * Mathf.Pow(totalPurchases, NONLINEAR_FACTOR));
-        float finalPrice = basePrice * (1 + quality.cost);
-    
-        return Mathf.RoundToInt(finalPrice);
+        float baseCost = CostCalculator.GetBaseCost("RogueManagerBase");
+        return Mathf.RoundToInt(CostCalculator.CalculateFinalCost(baseCost, quality.cost));
     }
     
     protected override void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
-        int nodeCost = CalculateAshCost(node.quality);
+        float baseCost = CostCalculator.CalculateBaseCostAndIncrement("RogueManagerBase");
+        int nodeCost =  Mathf.RoundToInt(CostCalculator.CalculateFinalCost(baseCost, node.quality.cost));
+        
         if (playerExperience == null)
         {
             playerExperience = FindObjectOfType<PlayerExperience>();
@@ -150,7 +141,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
 
         // Generate and display new nodes
         storedNodes.Clear();
-        AddBuffs();
+        AddBuffs(false);
     }
 
 

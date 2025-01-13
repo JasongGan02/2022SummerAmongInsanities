@@ -31,7 +31,7 @@ public class OnChilledEffectController : StatsEffectController
             if (effect != this) // Skip the newly added instance (this)
             {
                 //Debug.Log($"Stacked on {effect.GetInstanceID()}");
-                effect.AddStack(); // Add stack to the existing effect
+                effect.AddStack(1); // Add stack to the existing effect
                 enabled = false; // Disable this instance
                 Destroy(this); // Destroy the new instance
                 return; // Exit early to prevent further execution
@@ -87,9 +87,8 @@ public class OnChilledEffectController : StatsEffectController
 
         //Debug.Log($"After reset: {characterController.CurrentStats}");
     }
-
     
-    private void AddStack()
+    public void AddStack(int stacksToAdd)
     {
         CharacterController characterController = GetComponent<CharacterController>();
         if (characterController == null)
@@ -98,7 +97,7 @@ public class OnChilledEffectController : StatsEffectController
             return;
         }
 
-        stackCount++;
+        stackCount = Mathf.Clamp(stackCount + stacksToAdd, 0, onChilledEffectObject.maxStacks);
         
         // If at max stacks, trigger the frozen effect
         if (stackCount >= onChilledEffectObject.maxStacks)

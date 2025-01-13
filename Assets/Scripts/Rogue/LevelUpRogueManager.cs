@@ -53,7 +53,7 @@ public class LevelUpRogueManager : RogueManagerBase
         uiViewStateManager.ToggleLevelUpUI();
         PauseGame();
 
-        AddBuffs();
+        AddBuffs(false);
     }
 
     protected override void HandleBuffSelectedEvent(object sender, RogueGraphNode node)

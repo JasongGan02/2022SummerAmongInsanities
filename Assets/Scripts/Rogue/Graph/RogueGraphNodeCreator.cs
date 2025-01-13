@@ -26,6 +26,9 @@ public class RogueGraphNodeCreator
             isRoot
             );
         currentGraph.nodes.Add(node);
+        
+        // Set the name of the node
+        node.name = isRoot ? "Root Node" : $"Node {currentGraph.nodes.Count}";
 
         AssetDatabase.AddObjectToAsset(node, currentGraph);
         AssetDatabase.SaveAssets();

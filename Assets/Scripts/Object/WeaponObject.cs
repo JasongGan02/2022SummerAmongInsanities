@@ -58,8 +58,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     private float frequency;
 
 
-    [Header("Projectile Properties")] 
-    public ProjectileObject projectileObject;
+  
     
     public List<EffectObject> onHitEffects = new List<EffectObject>();
     

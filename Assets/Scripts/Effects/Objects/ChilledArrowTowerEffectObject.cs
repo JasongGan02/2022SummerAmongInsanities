@@ -4,21 +4,38 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "Effects/Tower Upgrades/MultipleShotsArcherTowerEffectObject")]
-public class MultipleShotsArcherTowerEffectObject : EffectObject
+[CreateAssetMenu(menuName = "Effects/Tower Upgrades/ChilledArrowTowerEffectObject")]
+public class ChilledArrowTowerEffectObject : EffectObject
 {
-    [Header("MultipleShotsArcherTowerEffectObject Fields")]
-    public int projectilesPerShot = 1;
+    [Header("ChilledArrowTowerEffectObject Fields")]
+    public OnChilledEffectObject onChilledEffectObject;
+    public int stacksPerHit;
+    
+    public override void ExecuteEffect(IEffectableController effectedGameController)
+    {
+        onChilledEffectObject.ApplyMultipleStacks(effectedGameController, stacksPerHit);
+    }
     
     public override void ExecuteEffectOnAType()
     {
         // Load the target tower object
         RangedTowerObject archerTower = LoadAssetByName<RangedTowerObject>("ArcherTower");
-        archerTower.rangedTowerStats.projectilesPerShot += projectilesPerShot;
 
+        if (archerTower != null)
+        {
+            var existingEffect = archerTower.projectileObject.onHitEffects.Find(effect =>
+                effect.GetType() == GetType());
+
+            if (existingEffect == null)
+            {
+                archerTower.projectileObject.onHitEffects.Add(this);
+            }
+            else
+            {
+                (this as IUpgradeableEffectObject).UpgradeLevel();
+            }
+        }
     }
-
     
     private T LoadAssetByName<T>(string assetName) where T : ScriptableObject
     {
@@ -39,4 +56,7 @@ public class MultipleShotsArcherTowerEffectObject : EffectObject
         Debug.LogWarning($"No asset of type {typeof(T).Name} found with name '{assetName}'");
         return null; // Return null if no matching asset is found
     }
+
+
+    
 }

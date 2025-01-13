@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
@@ -82,7 +83,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
     protected abstract void OnUIUpdated(object sender, UIBeingViewed ui);
     
-    protected virtual void AddBuffs()
+    protected virtual void AddBuffs(bool needReroll = false)
     {
         ClearBuffCards();
         List<RogueGraphNode> nodes = GetRandomBuffNodes();
@@ -191,7 +192,7 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected virtual void HandleBuffSelectedEvent(object sender, RogueGraphNode node)
     {
         selectedNodes.Add(node);
-        selectedBuffText.text += "\n" + (node.effect?.name ?? "No Effect Selected");
+        selectedBuffText.text += "\n" + (node.name);
         _audioEmitter.PlayClipFromCategory("PlayerSelecting");
 
         // Apply the effect
@@ -224,7 +225,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             _audioEmitter.PlayClipFromCategory("PlayerReroll");
             
             // Add new buffs
-            AddBuffs();
+            AddBuffs(true);
 
             // Update reroll cost UI
             UpdateRerollUI(currentCost);
@@ -245,9 +246,9 @@ public abstract class RogueManagerBase : MonoBehaviour
     
     private int CalculateRerollCost()
     {
-        // Exponential increase: cost = baseCost * 2^rerollCount
-        return baseRerollCost * (int)Mathf.Pow(1.132f, rerollCount);
+        return CostCalculator.CalculateRerollCost("RogueManagerBase", rerollCount); //TODO: If there are multiple player, use their IDs for contexts
     }
+
     
     protected void UpdateRerollUI(int lastCost)
     {
@@ -315,4 +316,62 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected const string NAME_BUFF_CONTAINER = "BuffContainer";
     protected const string NAME_HOVERING_BUFF = "HoveringBuffUI";
     protected const string NAME_REROLL_BUTTON = "RerollButton";
+    
+    
 }
+
+public static class CostCalculator
+{
+    private const float InitCost = 10f; // P_init
+    private const float GrowthRate = 0.045f; // a
+    private const float NonlinearFactor = 2f; // b
+    private const float RerollGrowthRate = 0.2f; // r
+
+    private static Dictionary<string, int> purchaseTrackers = new Dictionary<string, int>();
+
+    // Calculates P_base without incrementing totalPurchases
+    public static float GetBaseCost(string context)
+    {
+        if (!purchaseTrackers.ContainsKey(context))
+            purchaseTrackers[context] = 0;
+
+        int totalPurchases = purchaseTrackers[context];
+        return InitCost * (1 + GrowthRate * Mathf.Pow(totalPurchases, NonlinearFactor));
+    }
+
+    // Calculates P_base and increments totalPurchases (only for actual purchases)
+    public static float CalculateBaseCostAndIncrement(string context)
+    {
+        float baseCost = GetBaseCost(context);
+        if (purchaseTrackers.ContainsKey(context))
+            purchaseTrackers[context]++;
+        return baseCost;
+    }
+
+    // Calculates P_final
+    public static float CalculateFinalCost(float baseCost, float qualityOffset)
+    {
+        return baseCost * (1 + qualityOffset);
+    }
+
+    // Calculates C_reroll without incrementing totalPurchases
+    public static int CalculateRerollCost(string context, int rerollCount)
+    {
+        float baseCost = GetBaseCost(context); // Get the current base cost without incrementing purchases
+        return Mathf.CeilToInt(baseCost * Mathf.Pow(1 + RerollGrowthRate, rerollCount));
+    }
+
+    // Resets the purchase tracker for a specific context
+    public static void ResetPurchases(string context)
+    {
+        if (purchaseTrackers.ContainsKey(context))
+            purchaseTrackers[context] = 0;
+    }
+
+    // Resets all purchase trackers
+    public static void ResetAllPurchases()
+    {
+        purchaseTrackers.Clear();
+    }
+}
+

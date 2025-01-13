@@ -15,7 +15,7 @@ public class RangedWeaponController : Weapon, IRangedAttacker
     public override void Start()
     {
         base.Start();
-        projectileObject = weaponStats.projectileObject;
+        projectileObject = ((RangedWeaponObject)weaponStats).projectileObject;
     }
 
     public virtual void FireProjectiles(GameObject target)

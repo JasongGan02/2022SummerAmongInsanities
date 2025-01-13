@@ -58,6 +58,11 @@ public class RogueGraph : ScriptableObject
         {
             childNode.parentNodes.Remove(node);
         }
+        
+        // Remove the node asset
+        AssetDatabase.RemoveObjectFromAsset(node);
+        DestroyImmediate(node, true);
+        AssetDatabase.SaveAssets();
     }
 
     private const int nodePadding = 25;
