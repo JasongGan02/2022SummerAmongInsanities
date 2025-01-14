@@ -242,6 +242,12 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected void ResetRerollCount()
     {
         rerollCount = 0;
+        TMP_Text rerollCostText = rerollButton.transform.Find("RerollCostText").GetComponent<TMP_Text>();
+        if (rerollCostText != null)
+        {
+            int nextCost = CalculateRerollCost();
+            rerollCostText.text = $"{nextCost}";
+        }
     }
     
     private int CalculateRerollCost()

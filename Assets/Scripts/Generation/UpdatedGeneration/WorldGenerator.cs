@@ -87,7 +87,7 @@ public class WorldGenerator : MonoBehaviour, IDataPersistence
         
         if (TotalChunks.ContainsKey(ChunkCoord))
         {
-            Debug.Log("Chunk " + ChunkCoord + " is turned on.");
+            //Debug.Log("Chunk " + ChunkCoord + " is turned on.");
             TotalChunks[ChunkCoord].SetActive(true);
             ActiveChunks.Add(ChunkCoord, TotalChunks[ChunkCoord]);
             RefreshChunkLight(pos, true);

@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 6647711791749533985}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 31.9, y: 14.6, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6647711790814027598}
@@ -405,6 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentExperience: 0
   experienceToNextLevel: 5
+  currentAsh: 0
 --- !u!114 &1120449656137656567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,7 +642,7 @@ MonoBehaviour:
   - {x: 0.19680214, y: -0.46011162, z: 0}
   m_ShapePathHash: 1986624917
   m_Mesh: {fileID: 0}
-  m_InstanceId: 32612
+  m_InstanceId: 46908
 --- !u!50 &4399184682783356512
 Rigidbody2D:
   serializedVersion: 4
