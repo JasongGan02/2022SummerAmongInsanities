@@ -1,9 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EffectController : MonoBehaviour
 {
     protected EffectObject effectObject;
+    protected List<GameObject> activeVFXList = new List<GameObject>(); // Track active VFX instances
+    protected const int maxVFXStack = 3; // Maximum VFX stack limit
 
     public virtual void Initialize(EffectObject effectObject)
     {
@@ -29,6 +32,7 @@ public class EffectController : MonoBehaviour
         
         //Preparation like special effect or one time instant change
         StartEffect();
+        StartVFX();
         
         if (!gameObject.activeInHierarchy)
         {
@@ -43,6 +47,30 @@ public class EffectController : MonoBehaviour
     {
         // Perform any necessary updates here
     }
+    
+    protected virtual void StartVFX()
+    {
+        if (effectObject.vfxPrefab != null)
+        {
+            if (activeVFXList.Count >= maxVFXStack)
+            {
+                // If we've reached the max VFX stack, remove or reuse the oldest
+                GameObject oldestVFX = activeVFXList[0];
+                activeVFXList.RemoveAt(0);
+                Debug.Log($"Removing oldest VFX: {oldestVFX.name}");
+                Destroy(oldestVFX); // Destroy the oldest VFX
+            }
+
+            // Spawn a new VFX instance
+            Transform parentTransform = effectObject.attachToTarget ? transform : null;
+            GameObject newVFX = Instantiate(effectObject.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
+            activeVFXList.Add(newVFX); // Add to the active VFX list
+
+            Debug.Log($"Created new VFX: {newVFX.name} | Total Active VFX: {activeVFXList.Count}");
+        }
+    }
+
+    
     
     protected virtual IEnumerator EffectDurationCoroutine()
     {
@@ -87,7 +115,24 @@ public class EffectController : MonoBehaviour
     {
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
+        
+        // Destroy all active VFX
+        foreach (var vfx in activeVFXList)
+        {
+            if (vfx != null)
+            {
+                Debug.Log($"Destroying VFX: {vfx.name}");
+                vfx.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("Encountered a null VFX in activeVFXList.");
+            }
+        }
+        activeVFXList.Clear();
 
+        Debug.Log($"All VFX destroyed for effect: {effectObject.name}");
+        
         if (!effectObject.isPermanent)
             Destroy(this); // Destroy the EffectController if it's not permanent
     }

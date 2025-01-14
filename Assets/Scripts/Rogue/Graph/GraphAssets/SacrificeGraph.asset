@@ -29,8 +29,8 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 362
-    y: 344
+    x: 322
+    y: 276
     width: 200
     height: 100
 --- !u!114 &-6564606303037030254
@@ -62,8 +62,8 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 122
-    y: 342
+    x: 82
+    y: 274
     width: 200
     height: 100
 --- !u!114 &-6200536035804829123
@@ -95,8 +95,41 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 861
-    y: 346
+    x: 821
+    y: 278
+    width: 200
+    height: 100
+--- !u!114 &-1338076678103998442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u5C16\u9510\u51B0\u7BAD"
+  m_EditorClassIdentifier: 
+  blessingName: "\u5C16\u9510\u51B0\u7BAD"
+  effect: {fileID: 11400000, guid: 292835e56bb942444912cb1197e0d70e, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 1062
+    y: 274
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -117,7 +150,42 @@ MonoBehaviour:
   - {fileID: -8801546970452361386}
   - {fileID: 8518759689788473351}
   - {fileID: -6200536035804829123}
+  - {fileID: -1338076678103998442}
+  - {fileID: 4593185830271567135}
   rootNode: {fileID: 5968854803820520060}
+--- !u!114 &4593185830271567135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u51B0\u971C\u7BAD\u7FBD"
+  m_EditorClassIdentifier: 
+  blessingName: "\u51B0\u971C\u7BAD\u7FBD"
+  effect: {fileID: 11400000, guid: eb9a1d7e46860bf4db13a722d0f41e99, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 1273
+    y: 269
+    width: 200
+    height: 100
 --- !u!114 &5968854803820520060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,11 +215,13 @@ MonoBehaviour:
   - {fileID: -8801546970452361386}
   - {fileID: 8518759689788473351}
   - {fileID: -6200536035804829123}
+  - {fileID: -1338076678103998442}
+  - {fileID: 4593185830271567135}
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 361
-    y: 141
+    x: 321
+    y: 73
     width: 200
     height: 100
 --- !u!114 &8518759689788473351
@@ -167,7 +237,7 @@ MonoBehaviour:
   m_Name: "\u71C3\u70E7\u5899"
   m_EditorClassIdentifier: 
   blessingName: "\u71C3\u70E7\u5899"
-  effect: {fileID: 0}
+  effect: {fileID: 11400000, guid: 6fa8d5d0d9d508e42bd979db2702f4f4, type: 2}
   isReselectable: 1
   baseWeight: 0
   quality:
@@ -183,7 +253,7 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 620
-    y: 342
+    x: 570
+    y: 280
     width: 200
     height: 100

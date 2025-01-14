@@ -21,7 +21,7 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
-    protected float attackCycleTime = 4f;
+    protected float attackCycleTime = 1.5f;
     protected float windupRatio = 0.2f; 
     protected float followThroughRatio = 0.2f;
     protected float intervalRatio => 1f - windupRatio - followThroughRatio; 
@@ -236,10 +236,8 @@ public class Weapon : MonoBehaviour, IDamageSource
     
     private void ApplyEffects(IEffectableController target)
     {
-        Debug.Log("applied effect");
         foreach (var effect in weaponStats.onHitEffects)
         {
-            Debug.Log(effect);
             effect.ExecuteEffect(target);
         }
     }

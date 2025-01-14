@@ -21,6 +21,10 @@ public abstract class EffectObject : ScriptableObject
     public MonoScript componentToApply;
     public MonoScript effectControllerType;
     //TODO: Sprite 2DIcon, Potential VFX
+    [Header("Visual Effect Settings")]
+    public GameObject vfxPrefab; // Prefab of the particle effect
+    public bool attachToTarget = true; // Should the effect be parented to the target
+
     
     public virtual void ExecuteEffect(IEffectableController effectedGameController) //apply effect on a single object
     {

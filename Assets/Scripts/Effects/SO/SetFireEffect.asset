@@ -20,8 +20,10 @@ MonoBehaviour:
   description: "\u6B66\u5668\u547D\u4E2D\u654C\u4EBA\u65F6\u5C06\u6709\u4E00\u5B9A\u6982\u7387\u9644\u7740\u4E0A\u71C3\u70E7"
   componentToApply: {fileID: 0}
   effectControllerType: {fileID: 0}
+  vfxPrefab: {fileID: 0}
+  attachToTarget: 1
   onFireEffectObject: {fileID: 11400000, guid: 3e988668d345a3943b1583e1ee1d7686, type: 2}
-  chance: 0.3
-  stacksPerHit: 3
+  chance: 0.1
+  stacksPerHit: 1
   levelConfig: {fileID: 11400000, guid: 10e2a6380dbc9ce438227e3763cd81a8, type: 2}
-  currentLevel: 3
+  currentLevel: 1
