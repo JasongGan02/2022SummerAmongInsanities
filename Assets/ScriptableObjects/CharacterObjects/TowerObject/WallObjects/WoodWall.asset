@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea836de3ddb0034aa744d0839f0b852, type: 3}
   m_Name: WoodWall
   m_EditorClassIdentifier: 
-  itemName: New Wall Object
+  itemName: WoodWall
   sizeRatio: 1
   prefab: {fileID: 3397657003104583585, guid: e8b0da03e9b2e7b4c92dfeb7de975321, type: 3}
   baseStats:
-    hp: 0
-    armor: 0
+    hp: 1000
+    armor: 5
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
     jumpForce: 0
     totalJumps: 0
   maxStats:
-    hp: 0
-    armor: 0
+    hp: 1000
+    armor: 5
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   _isCoreNeeded: 1
   _craftTime: 5
   wallStats:
-    hp: 100
+    hp: 1000
     armor: 5
     attackDamage: 0
     attackInterval: 0
@@ -74,4 +74,5 @@ MonoBehaviour:
     energyCost: 5
     rotateAngle: {x: 0, y: 0, z: 0, w: 0}
     curAngle: {x: 0, y: 0, z: 0, w: 1}
-  onHitEffects: []
+  onHitEffects:
+  - {fileID: 11400000, guid: d1f8830ab35c4894b8bc75e6555fdf75, type: 2}

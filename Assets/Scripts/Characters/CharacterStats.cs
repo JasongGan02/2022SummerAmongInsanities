@@ -39,6 +39,16 @@ public class CharacterStats
         CopyFrom(source);
     }
     
+    public CharacterStats Clone()
+    {
+        CharacterStats clone = (CharacterStats)Activator.CreateInstance(this.GetType());
+        foreach (FieldInfo field in this.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
+        {
+            field.SetValue(clone, field.GetValue(this));
+        }
+        return clone;
+    }
+    
     public CharacterStats Inverse()
     {
         // Create a new instance of the same type as the current instance
@@ -72,7 +82,7 @@ public class CharacterStats
         Type commonBaseType = FindCommonBaseType(stats1.GetType(), stats2.GetType());
 
         // Create a new instance of the left-hand side type
-        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
+        CharacterStats result = stats1.Clone();
 
         // Get all public instance fields of the common base type
         FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);
@@ -103,7 +113,7 @@ public class CharacterStats
         Type commonBaseType = FindCommonBaseType(stats1.GetType(), stats2.GetType());
 
         // Create a new instance of the left-hand side type
-        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
+        CharacterStats result = stats1.Clone();
 
         // Get all public instance fields of the common base type
         FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);
@@ -162,8 +172,7 @@ public class CharacterStats
         Type commonBaseType = FindCommonBaseType(stats1.GetType(), stats2.GetType());
 
         // Create a new instance of the most common base type
-        CharacterStats result = (CharacterStats)Activator.CreateInstance(stats1.GetType());
-        result = stats1;
+        CharacterStats result = stats1.Clone();
         
         // Get all public instance fields of the common base type
         FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);

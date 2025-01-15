@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class WallController : TowerController
@@ -9,7 +10,15 @@ public class WallController : TowerController
         base.TakeDamage(amount, damageSource);
         foreach (var effect in ((WallObject)characterObject).onHitEffects)
         {
-            effect.ExecuteEffect(damageSource as IEffectableController);
+            if (effect is ChilledWallEffectObject)
+            {
+                effect.ExecuteEffect(GetComponent<CharacterController>());
+            }
+            else
+            {
+                effect.ExecuteEffect(damageSource as IEffectableController);
+            }
+            
         }
     }
 }

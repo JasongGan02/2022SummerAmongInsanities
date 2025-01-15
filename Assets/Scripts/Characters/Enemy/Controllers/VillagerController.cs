@@ -1471,18 +1471,18 @@ public class VillagerController : EnemyController
                 RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, directionSide, rayLength, groundLayerMask);
                 if (hitTileDetect2.transform != null)
                 {
-                    Debug.Log("something hit1");
+                    //Debug.Log("something hit1");
                     var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();        // ground tile
                     var breakable11 = hitTileDetect2.transform.GetComponent<TowerController>();                  // wall tile
                     if (breakable1 != null)
                     {
-                        Debug.Log("get breakable1");
+                        //Debug.Log("get breakable1");
                         target = breakable1.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;
                     } else if (breakable11 != null)
                     {
-                        Debug.Log("get breakable2");
+                        //Debug.Log("get breakable2");
                         target = breakable11.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;
@@ -1490,17 +1490,17 @@ public class VillagerController : EnemyController
                 }
                 else if (hitTileDetect1.transform != null)
                 {
-                    Debug.Log("something hit2");
+                    //Debug.Log("something hit2");
                     var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
                     var breakable22 = hitTileDetect1.transform.GetComponent<TowerController>();
                     if (breakable2 != null)
                     {
-                        Debug.Log("get breakable1");
+                        //Debug.Log("get breakable1");
                         target = breakable2.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;
                     } else if (breakable22 != null){
-                        Debug.Log("get breakable2");
+                        //Debug.Log("get breakable2");
                         target = breakable22.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;

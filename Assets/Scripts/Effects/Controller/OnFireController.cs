@@ -37,7 +37,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
         }
 
         // No existing stackable effect was found
-        Debug.Log($"First effect applied: {GetInstanceID()}");
+        //Debug.Log($"First effect applied: {GetInstanceID()}");
     }
 
     protected override void DuringEffect()

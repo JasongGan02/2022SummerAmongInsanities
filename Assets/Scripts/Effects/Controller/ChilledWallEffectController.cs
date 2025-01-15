@@ -87,8 +87,9 @@ public class ChilledWallEffectController : EffectController
             //Debug.LogError("Max Stats not attached to a CC");
             return;
         }
+        Debug.Log("Before: " + characterController.CurrentStats);
         characterController.AddCurrentStats(characterStats);
-
+        Debug.Log("After: " + characterController.CurrentStats);
         // Refresh the duration
         ResetEffectDuration();
     }
