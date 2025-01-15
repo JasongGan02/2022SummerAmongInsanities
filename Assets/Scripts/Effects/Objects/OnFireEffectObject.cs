@@ -73,11 +73,8 @@ public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
             ExecuteEffect(target);
             stacksToAdd--;
             onFire = (target as MonoBehaviour).GetComponent<OnFireController>();
-            Debug.Log("on fire current stack: " + onFire.stackCount);
-            Debug.Log("stacksToAdd: " + stacksToAdd);
         }
         
         onFire.AddStack(stacksToAdd);
-        Debug.Log("on fire current stack: " + onFire.stackCount);
     }
 }
