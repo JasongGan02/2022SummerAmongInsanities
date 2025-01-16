@@ -32,8 +32,8 @@ MonoBehaviour:
   - {fileID: -7251734177019941377}
   rect:
     serializedVersion: 2
-    x: -214
-    y: 371
+    x: -88
+    y: 452
     width: 200
     height: 100
 --- !u!114 &-8692208508223869133
@@ -65,8 +65,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: -375
-    y: 586
+    x: -269
+    y: 661
     width: 200
     height: 100
 --- !u!114 &-8185062224839343926
@@ -99,8 +99,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1276
-    y: 169
+    x: 1382
+    y: 244
     width: 200
     height: 100
 --- !u!114 &-7251734177019941377
@@ -133,8 +133,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: -450
-    y: 158
+    x: -344
+    y: 233
     width: 200
     height: 100
 --- !u!114 &-6014722271346273671
@@ -199,8 +199,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 667
-    y: 379
+    x: 773
+    y: 454
     width: 200
     height: 100
 --- !u!114 &-1684480885411025288
@@ -232,8 +232,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 207
-    y: 381
+    x: 313
+    y: 456
     width: 200
     height: 100
 --- !u!114 &-1210576560814337855
@@ -246,9 +246,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: 12312
+  m_Name: Unnamed Node
   m_EditorClassIdentifier: 
-  blessingName: 12312
+  blessingName: Unnamed Node
   effect: {fileID: 11400000, guid: 375d2b27f98eb4a44964430a541e5571, type: 2}
   isReselectable: 1
   baseWeight: 0
@@ -267,8 +267,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 424
-    y: 167
+    x: 488
+    y: 244
     width: 200
     height: 100
 --- !u!114 &-986583957479573979
@@ -300,8 +300,8 @@ MonoBehaviour:
   - {fileID: 6407617651943876954}
   rect:
     serializedVersion: 2
-    x: 1991
-    y: 366
+    x: 2097
+    y: 441
     width: 200
     height: 100
 --- !u!114 &-821460624157284328
@@ -333,8 +333,8 @@ MonoBehaviour:
   - {fileID: -1210576560814337855}
   rect:
     serializedVersion: 2
-    x: 413
-    y: 383
+    x: 519
+    y: 458
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -399,8 +399,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 1156
-    y: 380
+    x: 1262
+    y: 455
     width: 200
     height: 100
 --- !u!114 &579058131076162650
@@ -438,8 +438,8 @@ MonoBehaviour:
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 529
-    y: -95
+    x: 713
+    y: -11
     width: 200
     height: 100
 --- !u!114 &883222154243436308
@@ -471,8 +471,8 @@ MonoBehaviour:
   - {fileID: -8713264263238349361}
   rect:
     serializedVersion: 2
-    x: -46
-    y: 587
+    x: 60
+    y: 662
     width: 200
     height: 100
 --- !u!114 &3374202019692122354
@@ -505,8 +505,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 0
-    y: 172
+    x: 125
+    y: 251
     width: 200
     height: 100
 --- !u!114 &3430983906398004119
@@ -571,8 +571,8 @@ MonoBehaviour:
   - {fileID: -8185062224839343926}
   rect:
     serializedVersion: 2
-    x: 1521
-    y: 362
+    x: 1627
+    y: 437
     width: 200
     height: 100
 --- !u!114 &4609158443660531679
@@ -604,8 +604,8 @@ MonoBehaviour:
   - {fileID: 7370120939698119193}
   rect:
     serializedVersion: 2
-    x: 907
-    y: 379
+    x: 1013
+    y: 454
     width: 200
     height: 100
 --- !u!114 &4669440942681246395
@@ -637,8 +637,8 @@ MonoBehaviour:
   - {fileID: 8025022266278908958}
   rect:
     serializedVersion: 2
-    x: 2285
-    y: 361
+    x: 2391
+    y: 436
     width: 200
     height: 100
 --- !u!114 &6407617651943876954
@@ -671,8 +671,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 1697
-    y: 183
+    x: 1803
+    y: 258
     width: 200
     height: 100
 --- !u!114 &7370120939698119193
@@ -707,8 +707,8 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 883
-    y: 158
+    x: 989
+    y: 233
     width: 200
     height: 100
 --- !u!114 &8025022266278908958
@@ -741,7 +741,7 @@ MonoBehaviour:
   - {fileID: 579058131076162650}
   rect:
     serializedVersion: 2
-    x: 2025
-    y: 168
+    x: 2131
+    y: 243
     width: 200
     height: 100
