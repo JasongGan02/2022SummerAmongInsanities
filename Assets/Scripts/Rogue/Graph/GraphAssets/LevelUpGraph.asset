@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1705277686326040807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u8840\u91CF\u63D0\u53471"
+  m_EditorClassIdentifier: 
+  blessingName: "\u8840\u91CF\u63D0\u53471"
+  effect: {fileID: 11400000, guid: 2f7100b04e8c5284590fb0c88f3aa086, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 2442622173852268307}
+  rect:
+    serializedVersion: 2
+    x: 118
+    y: 382
+    width: 200
+    height: 100
+--- !u!114 &-1600838906920686009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u8840\u91CF\u63D0\u53472"
+  m_EditorClassIdentifier: 
+  blessingName: "\u8840\u91CF\u63D0\u53472"
+  effect: {fileID: 11400000, guid: 3561249f1f97de94f97cdd96f5ecc9e3, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 1
+    color: {r: 0, g: 1, b: 0, a: 1}
+    weight: 10
+    cost: 0.3
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 2442622173852268307}
+  rect:
+    serializedVersion: 2
+    x: 383
+    y: 377
+    width: 200
+    height: 100
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0497db9006aec0b49ba17e608ea610ba, type: 3}
+  m_Name: LevelUpGraph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 2442622173852268307}
+  - {fileID: -1705277686326040807}
+  - {fileID: -1600838906920686009}
+  - {fileID: 7860072903946696487}
+  rootNode: {fileID: 2442622173852268307}
+--- !u!114 &2442622173852268307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: Unnamed Node
+  m_EditorClassIdentifier: 
+  blessingName: Unnamed Node
+  effect: {fileID: 0}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    weight: 0
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 1
+  childNodes:
+  - {fileID: -1705277686326040807}
+  - {fileID: -1600838906920686009}
+  - {fileID: 7860072903946696487}
+  parentNodes: []
+  rect:
+    serializedVersion: 2
+    x: 400
+    y: 166
+    width: 200
+    height: 100
+--- !u!114 &7860072903946696487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u8840\u91CF\u63D0\u53473"
+  m_EditorClassIdentifier: 
+  blessingName: "\u8840\u91CF\u63D0\u53473"
+  effect: {fileID: 11400000, guid: 921e05aa30a59344db4a385eaab677f8, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 2
+    color: {r: 0, g: 0, b: 1, a: 1}
+    weight: 3
+    cost: 0.8
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 2442622173852268307}
+  rect:
+    serializedVersion: 2
+    x: 653
+    y: 373
+    width: 200
+    height: 100

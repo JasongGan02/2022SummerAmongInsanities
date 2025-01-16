@@ -14,7 +14,7 @@ public class RogueGraphNode : ScriptableObject
     public Sprite blessingIcon;
     private RogueGraph containerGraph;
     private bool isNameManuallyChanged = false;
-    [HideInInspector] public bool isRoot = false;
+    public bool isRoot = false;
 
 
     public string BlessingName // Property for 福赠名称
@@ -44,13 +44,23 @@ public class RogueGraphNode : ScriptableObject
     
     private void UpdateAssetName()
     {
-        if (!string.IsNullOrWhiteSpace(blessingName))
+        // If Unity is refreshing, defer the update
+        if (EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode)
         {
-            name = blessingName; // Update the asset name
-            EditorUtility.SetDirty(this); // Mark the object as dirty to ensure Unity saves the changes
-            AssetDatabase.SaveAssets(); // Save the updated name
+            EditorApplication.delayCall += UpdateAssetName;
+            return;
+        }
+
+        // Perform the update safely
+        if (!string.IsNullOrWhiteSpace(blessingName) && name != blessingName)
+        {
+            name = blessingName; // Update the asset's internal name
+            EditorUtility.SetDirty(this); // Mark the object as dirty
+            AssetDatabase.SaveAssets(); // Save the changes to the asset database
         }
     }
+
+
     
     private static readonly Dictionary<ItemRarity, (Color color, float weight, float cost)> RarityMappings = new()
     {
@@ -215,7 +225,12 @@ public class RogueGraphNode : ScriptableObject
     
     private void OnValidate()
     {
-        UpdateAssetName();
+        if (EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            return; // Prevent execution during Unity refresh or playmode changes
+        }
+
+        UpdateAssetName(); // Safe call to update the asset name
         
         quality ??= new Quality();
 

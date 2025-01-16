@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7836930301883874739
+--- !u!114 &-8801546970452361386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
+  m_Name: "\u591A\u53D1\u5F13\u7BAD"
   m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: 6083ac06a01958143819b034bb1e82e9, type: 2}
+  blessingName: "\u591A\u53D1\u5F13\u7BAD"
+  effect: {fileID: 11400000, guid: 417e935f7c95f8b4ab8eab18e8b0bacf, type: 2}
   isReselectable: 1
   baseWeight: 0
   quality:
@@ -26,14 +26,14 @@ MonoBehaviour:
   isRoot: 0
   childNodes: []
   parentNodes:
-  - {fileID: -5452198789683420793}
+  - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 857
-    y: 465
+    x: 322
+    y: 276
     width: 200
     height: 100
---- !u!114 &-6263270054759089041
+--- !u!114 &-6564606303037030254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,42 +43,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
+  m_Name: "\u71C3\u70E7\u7BAD\u7FBD"
   m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: c392fc443b34e2d4886e1371dd2f425e, type: 2}
-  isReselectable: 1
-  baseWeight: 0
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: 715
-    y: 492
-    width: 200
-    height: 100
---- !u!114 &-5828137048432059319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
+  blessingName: "\u71C3\u70E7\u7BAD\u7FBD"
   effect: {fileID: 11400000, guid: 7c2e77b60b3b21d4382262ea105a01af, type: 2}
   isReselectable: 1
   baseWeight: 0
@@ -92,14 +59,134 @@ MonoBehaviour:
   isRoot: 0
   childNodes: []
   parentNodes:
-  - {fileID: -5452198789683420793}
+  - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 976
-    y: 492
+    x: 82
+    y: 274
     width: 200
     height: 100
---- !u!114 &-5452198789683420793
+--- !u!114 &-6200536035804829123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u51B0\u971C\u5899\u58C1"
+  m_EditorClassIdentifier: 
+  blessingName: "\u51B0\u971C\u5899\u58C1"
+  effect: {fileID: 11400000, guid: d1f8830ab35c4894b8bc75e6555fdf75, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 821
+    y: 278
+    width: 200
+    height: 100
+--- !u!114 &-1338076678103998442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u5C16\u9510\u51B0\u7BAD"
+  m_EditorClassIdentifier: 
+  blessingName: "\u5C16\u9510\u51B0\u7BAD"
+  effect: {fileID: 11400000, guid: 292835e56bb942444912cb1197e0d70e, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 1062
+    y: 274
+    width: 200
+    height: 100
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0497db9006aec0b49ba17e608ea610ba, type: 3}
+  m_Name: SacrificeGraph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 5968854803820520060}
+  - {fileID: -6564606303037030254}
+  - {fileID: -8801546970452361386}
+  - {fileID: 8518759689788473351}
+  - {fileID: -6200536035804829123}
+  - {fileID: -1338076678103998442}
+  - {fileID: 4593185830271567135}
+  rootNode: {fileID: 5968854803820520060}
+--- !u!114 &4593185830271567135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u51B0\u971C\u7BAD\u7FBD"
+  m_EditorClassIdentifier: 
+  blessingName: "\u51B0\u971C\u7BAD\u7FBD"
+  effect: {fileID: 11400000, guid: eb9a1d7e46860bf4db13a722d0f41e99, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 1273
+    y: 269
+    width: 200
+    height: 100
+--- !u!114 &5968854803820520060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,21 +211,20 @@ MonoBehaviour:
   blessingIcon: {fileID: 0}
   isRoot: 1
   childNodes:
-  - {fileID: 599137119995403438}
-  - {fileID: 5784438416862401934}
-  - {fileID: 4027627594927342833}
-  - {fileID: -6263270054759089041}
-  - {fileID: -5828137048432059319}
-  - {fileID: -4987506011705345393}
-  - {fileID: 694316559033798269}
+  - {fileID: -6564606303037030254}
+  - {fileID: -8801546970452361386}
+  - {fileID: 8518759689788473351}
+  - {fileID: -6200536035804829123}
+  - {fileID: -1338076678103998442}
+  - {fileID: 4593185830271567135}
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 153
-    y: 254
+    x: 321
+    y: 73
     width: 200
     height: 100
---- !u!114 &-4987506011705345393
+--- !u!114 &8518759689788473351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,98 +234,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
+  m_Name: "\u71C3\u70E7\u5899"
   m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: d1f8830ab35c4894b8bc75e6555fdf75, type: 2}
-  isReselectable: 1
-  baseWeight: 10
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: 1255
-    y: 478
-    width: 200
-    height: 100
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0497db9006aec0b49ba17e608ea610ba, type: 3}
-  m_Name: SacrificeGraph
-  m_EditorClassIdentifier: 
-  nodes:
-  - {fileID: -5452198789683420793}
-  - {fileID: 599137119995403438}
-  - {fileID: 5784438416862401934}
-  - {fileID: 4027627594927342833}
-  - {fileID: -6263270054759089041}
-  - {fileID: -5828137048432059319}
-  - {fileID: -4987506011705345393}
-  - {fileID: 694316559033798269}
-  rootNode: {fileID: -5452198789683420793}
---- !u!114 &599137119995403438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: f4f0d1a38eb279a44b271fdf180d0816, type: 2}
-  isReselectable: 1
-  baseWeight: 5
-  quality:
-    rarity: 2
-    color: {r: 0, g: 0, b: 1, a: 1}
-    weight: 3
-    cost: 0.8
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: -99
-    y: 499
-    width: 200
-    height: 100
---- !u!114 &694316559033798269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: 417e935f7c95f8b4ab8eab18e8b0bacf, type: 2}
+  blessingName: "\u71C3\u70E7\u5899"
+  effect: {fileID: 11400000, guid: 6fa8d5d0d9d508e42bd979db2702f4f4, type: 2}
   isReselectable: 1
   baseWeight: 0
   quality:
@@ -252,174 +250,10 @@ MonoBehaviour:
   isRoot: 0
   childNodes: []
   parentNodes:
-  - {fileID: -5452198789683420793}
+  - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 1514
-    y: 473
-    width: 200
-    height: 100
---- !u!114 &3272989443664168723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: 292835e56bb942444912cb1197e0d70e, type: 2}
-  isReselectable: 1
-  baseWeight: 0
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: -1682
-    y: 289
-    width: 200
-    height: 100
---- !u!114 &3724068566281282111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: eb9a1d7e46860bf4db13a722d0f41e99, type: 2}
-  isReselectable: 1
-  baseWeight: 0
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: -1446
-    y: 297
-    width: 200
-    height: 100
---- !u!114 &4027627594927342833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: cf88f2b8f3673904c9d9b8d64fbad76c, type: 2}
-  isReselectable: 1
-  baseWeight: 0
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: 175
-    y: 499
-    width: 200
-    height: 100
---- !u!114 &5784438416862401934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: e13374145eee797499857e494723a918, type: 2}
-  isReselectable: 1
-  baseWeight: 0
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes:
-  - {fileID: -5452198789683420793}
-  rect:
-    serializedVersion: 2
-    x: 472
-    y: 496
-    width: 200
-    height: 100
---- !u!114 &8065447184982229878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
-  m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
-  effect: {fileID: 11400000, guid: 292835e56bb942444912cb1197e0d70e, type: 2}
-  isReselectable: 1
-  baseWeight: 0
-  quality:
-    rarity: 0
-    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    weight: 20
-    cost: 0
-    sprite: {fileID: 0}
-  blessingIcon: {fileID: 0}
-  isRoot: 0
-  childNodes: []
-  parentNodes: []
-  rect:
-    serializedVersion: 2
-    x: 803
-    y: 234
+    x: 570
+    y: 280
     width: 200
     height: 100

@@ -20,5 +20,7 @@ MonoBehaviour:
   description: 
   componentToApply: {fileID: 11500000, guid: 37a68bd692fecdc40aa15d1d2599f42d, type: 3}
   effectControllerType: {fileID: 11500000, guid: 72846ed9f6d8cf74daa315b22eabc170, type: 3}
-  maxStacks: 1
+  vfxPrefab: {fileID: 0}
+  attachToTarget: 1
+  maxStacks: 5
   armorMultiplier: 0.3

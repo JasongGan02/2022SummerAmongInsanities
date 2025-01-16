@@ -16,9 +16,10 @@ MonoBehaviour:
   sizeRatio: 1
   prefab: {fileID: 3484577907003912249, guid: 009cccf9dcf4b5344b4ff5e1fe7dfb74, type: 3}
   damageCoef: 1
+  onHitEffects:
+  - {fileID: 11400000, guid: 292835e56bb942444912cb1197e0d70e, type: 2}
   _maxStack: 0
   _recipe: []
-  _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0

@@ -6,15 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/PlayerExperience.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/PlayerExperience.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Buff/BuffSelectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Buff/BuffSelectionController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/GraphAssets/SacrificeGraph.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/GraphAssets/SacrificeGraph.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphEditorWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphEditorWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/LevelUpRogueManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/LevelUpRogueManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/SacrificeStoreRogueManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/SacrificeStoreRogueManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/WoodWall.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/WoodWall.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterStats.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterStats.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/Controllers/VillagerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/WallController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/WallController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/ChilledWallEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/ChilledWallEffectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnFireEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnFireEffectObject.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +217,9 @@
       <workItem from="1735931745387" duration="4839000" />
       <workItem from="1736044365214" duration="6404000" />
       <workItem from="1736641304732" duration="6350000" />
-      <workItem from="1736730858883" duration="1725000" />
+      <workItem from="1736730858883" duration="2310000" />
+      <workItem from="1736733351656" duration="2581000" />
+      <workItem from="1736830254632" duration="8458000" />
     </task>
     <servers />
   </component>

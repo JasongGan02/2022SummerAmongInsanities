@@ -21,7 +21,10 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
-    protected float attackCycleTime = 2f;
+    protected float attackCycleTime = 1.5f;
+    protected float windupRatio = 0.2f; 
+    protected float followThroughRatio = 0.2f;
+    protected float intervalRatio => 1f - windupRatio - followThroughRatio; 
 
     protected float finalDamage;
     protected float attackRange;
@@ -106,7 +109,7 @@ public class Weapon : MonoBehaviour, IDamageSource
 
     protected virtual void DetectAndAttackEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange*0.8f);
         float minDistance = float.MaxValue;
         Transform closestEnemy = null;
 
@@ -135,25 +138,26 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         currentState = WeaponState.Attacking;
         isAttacking = true;
+
+        
+        float attackWindupTime = attackCycleTime * windupRatio;
+
         _audioEmitter.PlayClipFromCategory("WeaponAttack");
 
-        float attackTime = attackCycleTime / 2f;
         float startTime = Time.time;
-
-   
         Vector2 startPosition = player.transform.position + idleOffset;
-        Vector2 targetPosition = targetEnemy != null ? (Vector2)targetEnemy.position : startPosition + targetDirection * attackRange;
+        Vector2 targetPosition = startPosition + targetDirection * attackRange;
 
-        while (Time.time - startTime < attackTime)
+        
+        while (Time.time - startTime < attackWindupTime)
         {
-          
-            float remainingTime = attackTime - (Time.time - startTime);
+            float remainingTime = attackWindupTime - (Time.time - startTime);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float dynamicSpeed = distance / remainingTime;
 
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, dynamicSpeed * Time.deltaTime);
 
-           
+            
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -161,8 +165,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.1f);
-
+        
         yield return StartCoroutine(ReturnToPlayer());
     }
 
@@ -172,7 +175,8 @@ public class Weapon : MonoBehaviour, IDamageSource
     {
         currentState = WeaponState.Returning;
 
-        float returnTime = attackCycleTime / 2f;
+        
+        float returnTime = attackCycleTime * followThroughRatio;
         float startTime = Time.time;
 
         Vector2 currentTargetPosition = player.transform.position + idleOffset;
@@ -192,6 +196,17 @@ public class Weapon : MonoBehaviour, IDamageSource
             transform.rotation = Quaternion.Euler(0, 0, angle);
 
             yield return null;
+        }
+
+
+        
+        float intervalTime = attackCycleTime * intervalRatio;
+        float intervalStartTime = Time.time;
+
+        while (Time.time - intervalStartTime < intervalTime)
+        {
+            FollowPlayerWithFloat();
+            yield return null; 
         }
 
         isAttacking = false;
@@ -221,10 +236,8 @@ public class Weapon : MonoBehaviour, IDamageSource
     
     private void ApplyEffects(IEffectableController target)
     {
-        Debug.Log("applied effect");
         foreach (var effect in weaponStats.onHitEffects)
         {
-            Debug.Log(effect);
             effect.ExecuteEffect(target);
         }
     }
