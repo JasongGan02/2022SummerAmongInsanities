@@ -25,7 +25,7 @@ public class OnDetonateEffectController : EffectController
     
     protected override void StartEffect()
     {
-        var onFireEffect = GetComponent<OnFireController>();
+        var onFireEffect = GetComponent<OnFireEffectController>();
         if (onFireEffect != null)
         {
             int stacks = onFireEffect.stackCount;
