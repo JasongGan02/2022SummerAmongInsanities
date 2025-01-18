@@ -103,13 +103,17 @@ public class OnFrozenEffectController : EffectController
         yield return new WaitForSeconds(onFrozenEffectObject.cooldownDuration);
     }
     
-    protected virtual void EndEffect()
+    protected override void EndEffect()
     {
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
         StartCountDown(); // during this CD wont stack frozen
         if (!effectObject.isPermanent)
+        {
+            EndVFX();
             Destroy(this); // Destroy the EffectController if it's not permanent
+            
+        }
     }
 
     protected override void HandleNonStackable()

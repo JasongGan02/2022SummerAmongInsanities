@@ -52,7 +52,7 @@ public abstract class EffectObject : ScriptableObject
     }
 
     
-    public virtual void ExecuteEffectOnAType()
+    public virtual void InitializeEffectObject()
     {
         EffectEvents.ApplyEffect(this, GetComponentToApply());
     }

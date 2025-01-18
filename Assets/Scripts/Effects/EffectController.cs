@@ -128,6 +128,15 @@ public class EffectController : MonoBehaviour
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
         
+        if (!effectObject.isPermanent)
+        {
+            EndVFX();
+            Destroy(this); // Destroy the EffectController if it's not permanent
+        }
+    }
+
+    protected virtual void EndVFX()
+    {
         // Destroy all active VFX
         foreach (var vfx in activeVFXList)
         {
@@ -140,12 +149,10 @@ public class EffectController : MonoBehaviour
                 Debug.LogWarning("Encountered a null VFX in activeVFXList.");
             }
         }
-        activeVFXList.Clear();
 
-        if (!effectObject.isPermanent)
-            Destroy(this); // Destroy the EffectController if it's not permanent
+        activeVFXList.Clear();
     }
-    
+
     protected virtual void HandleStacking()
     {
         // Override this function in derived classes to specify stacking behavio

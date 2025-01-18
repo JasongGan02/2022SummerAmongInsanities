@@ -6,16 +6,25 @@
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Spear.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Spear.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnDetonateEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnDetonateEffectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireEffectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireEffectController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0002.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0002.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/VFX/FrozenEffect.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/VFX/FrozenEffect.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Weapon/Weapon/Weapon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Weapon/Weapon/Weapon.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFrozenEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFrozenEffectController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnFireEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnFireEffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/SetFireEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/SetFireEffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnHitEffect/OnFireEffect.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnHitEffect/OnFireEffect.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/SetFireEffect.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/SetFireEffect.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningArrowTowerEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningArrowTowerEffectObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningWallEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningWallEffectObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/ChilledArrowTowerEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/ChilledArrowTowerEffectObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/ChilledWallEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/ChilledWallEffectObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/FrostbiteArrowEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/FrostbiteArrowEffectObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/MultipleShotsArcherTowerEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/MultipleShotsArcherTowerEffectObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnHitEffect/OnDetonateEffect.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnHitEffect/OnDetonateEffect.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnHitEffect/OnFrozenEffect.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/OnHitEffect/OnFrozenEffect.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Object/WeaponObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Object/WeaponObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/GraphAssets/SacrificeGraph.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/GraphAssets/SacrificeGraph.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,14 +52,15 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/WallObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/WallController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/ChilledWallEffectController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/DetonateChargeEffectController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnChilledEffectController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnFireController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/WeaponEffectAssignmentController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectEvents.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningArrowTowerEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/BurningWallEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/ChilledWallEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/DetonateChargeEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/FrostbiteArrowEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/IUpgradeableEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
@@ -223,6 +233,7 @@
       <workItem from="1736730858883" duration="2310000" />
       <workItem from="1736733351656" duration="2581000" />
       <workItem from="1736830254632" duration="13648000" />
+      <workItem from="1737157109413" duration="7772000" />
     </task>
     <servers />
   </component>
