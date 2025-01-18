@@ -33,6 +33,8 @@ public class CreeperController : EnemyController
     protected override string AttackAnimationState { get; }
     protected override string MoveAnimationState { get; }
 
+    public GameObject VFXExplosion;
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,6 +47,7 @@ public class CreeperController : EnemyController
         backCheck = transform.Find("backCheck");
         Collider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        VFXExplosion = GetComponentInChildren<ParticleSystem>().gameObject;
     }
 
     protected override void UpdateEnemyBehavior()
@@ -102,6 +105,18 @@ public class CreeperController : EnemyController
         yield return new WaitForSeconds(waitTime);
         booming = true;
         animator.Play("creeper_boom");
+        
+        // Activate the existing VFXExplosion and play the particle effect
+        if (VFXExplosion != null)
+        {
+            VFXExplosion.SetActive(true); // Ensure the GameObject is active
+            ParticleSystem particleSystem = VFXExplosion.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+            {
+                particleSystem.Play(); // Trigger the particle effect
+            }
+        }
+
         //ChangeCollider("creeper_boom");
         yield return new WaitForSeconds(0.3f);
         float checkD = Vector2.Distance(transform.position, player.transform.position);
