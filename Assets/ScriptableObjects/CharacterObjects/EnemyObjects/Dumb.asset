@@ -16,8 +16,8 @@ MonoBehaviour:
   sizeRatio: 2
   prefab: {fileID: 2412458028491595258, guid: f230077777b185b439c1ccaead6effb9, type: 3}
   baseStats:
-    hp: 150
-    armor: 20
+    hp: 60
+    armor: 10
     attackDamage: 20
     attackInterval: 0
     attackRange: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
     jumpForce: 10
     totalJumps: 1
   maxStats:
-    hp: 150
-    armor: 20
+    hp: 60
+    armor: 10
     attackDamage: 20
     attackInterval: 0
     attackRange: 0
@@ -42,8 +42,8 @@ MonoBehaviour:
     chance: 15
   hatred: []
   enemyStats:
-    hp: 150
-    armor: 20
+    hp: 60
+    armor: 10
     attackDamage: 20
     attackInterval: 0
     attackRange: 0
