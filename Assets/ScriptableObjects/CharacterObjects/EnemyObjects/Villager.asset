@@ -16,9 +16,9 @@ MonoBehaviour:
   sizeRatio: 2
   prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
   baseStats:
-    hp: 800
+    hp: 35
     armor: 5
-    attackDamage: 10
+    attackDamage: 7
     attackInterval: 1
     attackRange: 1
     criticalChance: 5
@@ -27,9 +27,9 @@ MonoBehaviour:
     jumpForce: 15
     totalJumps: 1
   maxStats:
-    hp: 80
+    hp: 35
     armor: 5
-    attackDamage: 10
+    attackDamage: 7
     attackInterval: 1
     attackRange: 1
     criticalChance: 5
@@ -44,9 +44,9 @@ MonoBehaviour:
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   enemyStats:
-    hp: 800
+    hp: 35
     armor: 5
-    attackDamage: 10
+    attackDamage: 7
     attackInterval: 1
     attackRange: 1
     criticalChance: 5

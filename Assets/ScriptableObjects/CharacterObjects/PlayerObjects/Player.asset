@@ -16,38 +16,38 @@ MonoBehaviour:
   sizeRatio: 1
   prefab: {fileID: 6647711791749533985, guid: 4a76d7ca108e6bb4dab533130174dc7e, type: 3}
   baseStats:
-    hp: 1000
+    hp: 100
     armor: 15
     attackDamage: 10
     attackInterval: 1.2
-    attackRange: 7
+    attackRange: 15
     criticalChance: 5
     criticalMultiplier: 1.2
     movingSpeed: 5
-    jumpForce: 25
-    totalJumps: 2
+    jumpForce: 20
+    totalJumps: 1
   maxStats:
-    hp: 1020
+    hp: 100
     armor: 15
-    attackDamage: 25
+    attackDamage: 10
     attackInterval: 1.2
-    attackRange: 7
+    attackRange: 15
     criticalChance: 5
     criticalMultiplier: 1.2
     movingSpeed: 5
-    jumpForce: 25
-    totalJumps: 2
+    jumpForce: 20
+    totalJumps: 1
   drops: []
   hatred: []
   playerStats:
-    hp: 1000
+    hp: 100
     armor: 15
     attackDamage: 10
     attackInterval: 1.2
-    attackRange: 7
+    attackRange: 15
     criticalChance: 5
     criticalMultiplier: 1.2
     movingSpeed: 5
-    jumpForce: 25
-    totalJumps: 2
+    jumpForce: 20
+    totalJumps: 1
     respawnTimeInterval: 5
