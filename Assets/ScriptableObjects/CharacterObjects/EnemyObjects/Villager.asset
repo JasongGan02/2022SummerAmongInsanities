@@ -24,7 +24,7 @@ MonoBehaviour:
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
-    jumpForce: 15
+    jumpForce: 13
     totalJumps: 1
   maxStats:
     hp: 35
@@ -35,7 +35,7 @@ MonoBehaviour:
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
-    jumpForce: 15
+    jumpForce: 14
     totalJumps: 1
   drops:
   - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
@@ -52,7 +52,7 @@ MonoBehaviour:
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
-    jumpForce: 15
+    jumpForce: 13
     totalJumps: 1
     sensingRange: 10
     soulValue: 50

@@ -22,8 +22,9 @@ public class EffectController : MonoBehaviour
             return;
         }
         
-        if (effectObject.isStackable)
+        if (effectObject.isStackable){
             HandleStacking();
+        }
         else
         {
             // Handle non-stackable behavior

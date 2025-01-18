@@ -5,51 +5,33 @@ using UnityEngine;
 
 public class BatController : EnemyController
 {
-    private bool facingRight = false;
+    [Header("Bat State")]
+    private new bool facingRight = false;
     private float waitTime;
-    private Transform moveTo;
+    private Vector2 moveTo;
     private bool planned;
-    private bool prepare_dash;
-    private bool is_dashing;
-    private Vector2 dash_end;
-    private Vector2 stop_point;
-    private Animator animator;
-
+    private bool prepareDash;
+    private bool isDashing;
+    private Vector2 dashEnd;
+    private Vector2 stopPoint;
     private bool attacked;
+    private float attackSpeed;
 
-    private TrailRenderer Tr;
-    private ParticleSystem Ps;
-    private float BatTimer;
+    [Header("References")]
+    private new Animator animator;
+    private TrailRenderer trailRenderer;
+    private new ParticleSystem particleSystem;
+    private new GameObject target;
 
-    private GameObject target;
+    [Header("Timings")]
+    private float batTimer;
 
+    [Header("Positions")]
     private float startX;
     private float startY;
-    private Transform GroupApproachTarget;
+    private Transform groupApproachTarget;
 
-    // Start is called before the first frame update
-    protected void Start()
-    {
-        GameObject destination = new GameObject("newObject");
-        moveTo = destination.transform;
-        // initial moveTo
-
-        waitTime = 3;
-        BatTimer = 0;
-        startX = this.transform.position.x;
-        startY = this.transform.position.y;
-        moveTo.position = new Vector2(Random.Range(startX-3, startX+3), Random.Range(startY-3, startY+3));
-
-        planned = false;
-        prepare_dash = true;
-        is_dashing = false;
-        attacked = false;
-
-        stop_point = new Vector3(0,0,0); //place holder
-
-
-    }
-
+    // Make sure to fill in the correct animation state names if needed
     protected override string IdleAnimationState { get; }
     protected override string AttackAnimationState { get; }
     protected override string MoveAnimationState { get; }
@@ -58,208 +40,318 @@ public class BatController : EnemyController
     {
         base.Awake();
         animator = GetComponent<Animator>();
-        Tr = GetComponent<TrailRenderer>();
-        Ps = GetComponent<ParticleSystem>();
-        
+        trailRenderer = GetComponent<TrailRenderer>();
+        particleSystem = GetComponent<ParticleSystem>();
     }
-    
+
+    private void Start()
+    {
+        // Create a temporary GameObject to serve as a patrol destination
+        // GameObject destination = new GameObject("BatTempDestination");
+        float randX = Random.Range(startX - enemyStats.sensingRange / 2f, startX + enemyStats.sensingRange / 2f);
+        float randY = Random.Range(startY - enemyStats.sensingRange / 2f, startY + enemyStats.sensingRange / 2f);
+        moveTo = new Vector2(randX, randY);
+
+        // Initialize patrol positions / variables
+        waitTime = enemyStats.attackInterval * 2;
+        batTimer = 0f;
+        attackSpeed = 1f / enemyStats.attackInterval;
+
+        startX = transform.position.x;
+        startY = transform.position.y;
+
+        // Random initial patrol point
+        moveTo = GetRandomPatrolPoint();
+
+        planned = false;
+        prepareDash = true;
+        isDashing = false;
+        attacked = false;
+
+        stopPoint = Vector2.zero; // placeholder
+    }
+
+    private Vector2 GetRandomPatrolPoint()
+    {
+        float randX = Random.Range(startX - enemyStats.sensingRange/2f, startX + enemyStats.sensingRange/2f);
+        float randY = Random.Range(startY - enemyStats.sensingRange/2f, startY + enemyStats.sensingRange/2f);
+        return new Vector2(randX, randY);
+    }
 
     protected override void UpdateEnemyBehavior()
     {
-        if (!planned) { target = SearchForTargetObject(); } // attacking behavior is uninterruptable
-        else if (target == null) { target = SearchForTargetObject(); } // once target is destroied but an attack is planned
+        // If no attack plan is currently in place, check for a new target
+        if (!planned)
+        {
+            target = SearchForTargetObject();
+        }
+        else if (target == null)
+        {
+            // If our planned target was destroyed, find a new one
+            target = SearchForTargetObject();
+        }
 
+        // If no target is found, proceed with patrol
         if (target == null)
         {
-            // Patrol
-            //Debug.Log("Bat is patroling");
-            if(animator.GetBool("is_attacking") == true) { animator.SetBool("is_attacking", false); }
-            if(Tr.emitting == true) { Tr.emitting = false; }
-            Patrol();
-            if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
-            {
-                Flip();
-            }
-        }
-        else 
-        {
-            if (Vector2.Distance(target.transform.position, transform.position) < enemyStats.sensingRange || planned)
-            {
-                if (Vector2.Distance(target.transform.position, transform.position) < currentStats.attackRange || planned)
-                {
-                    // atk player
-                    DashAttack(target.transform);
-                }
-                else
-                {
-                    // approaching player
-                    ApproachingTarget(target.transform);
-                }
-            }
-            else
-            {
-                //Debug.Log("Bat is patroling 2");
-                Patrol();
-                if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
-                {
-                    Flip();
-                }
-            }
-        }
-    }
-
-    void Patrol()
-    {
-        if (IsGroupAttacking) 
-        { 
-            transform.position = Vector2.MoveTowards(transform.position, GroupApproachTarget.position, 3 * Time.deltaTime);
+            HandlePatrol();
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, moveTo.position, 3 * Time.deltaTime);
+            HandleTargetLogic();
+        }
+    }
+
+    private void HandlePatrol()
+    {
+        // If currently set to attacking in animator, reset to false
+        if (animator.GetBool("is_attacking"))
+        {
+            animator.SetBool("is_attacking", false);
         }
 
-        if (Vector2.Distance(transform.position, moveTo.position) < 0.2f || waitTime <= 0)
+        // If the trail is emitting, turn it off
+        if (trailRenderer.emitting)
         {
-            if (waitTime <= 0)
+            trailRenderer.emitting = false;
+        }
+
+        Patrol();
+        CheckFlipForMovement(moveTo.x);
+    }
+
+    private void HandleTargetLogic()
+    {
+        float distanceToTarget = Vector2.Distance(target.transform.position, transform.position);
+
+        // If target within sensing range or already locked in attack plan
+        if (distanceToTarget < enemyStats.sensingRange || planned)
+        {
+            // If target within attack range or an attack is planned
+            if (distanceToTarget < currentStats.attackRange || planned)
             {
-                moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));  // cause startX I don't know need to change
-                waitTime = 3;
+                DashAttack(target.transform);
             }
             else
             {
-                waitTime -= Time.deltaTime;
+                ApproachingTarget(target.transform, enemyStats.movingSpeed * attackSpeed);
             }
         }
-
-        waitTime -= Time.deltaTime;
-    }
-
-    new void ApproachingTarget(Transform target_transform)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, currentStats.movingSpeed * Time.deltaTime);
-        if (target_transform.position.x < transform.position.x && facingRight || target_transform.position.x > transform.position.x && !facingRight)
+        else
         {
-            Flip();
+            // Target is too far, go back to patrol
+            Patrol();
+            CheckFlipForMovement(moveTo.x);
         }
     }
 
-    void DashAttack(Transform destination)
+    private void Patrol()
     {
-        //Debug.Log("is attacking");
-        if (prepare_dash)           
+        if (IsGroupAttacking)
         {
-            if (!Ps.isPlaying) Ps.Play();
+            transform.position = Vector2.MoveTowards(
+                transform.position, 
+                groupApproachTarget.position, 
+                currentStats.movingSpeed * Time.deltaTime
+            );
+        }
+        else
+        {
+            transform.position = Vector2.MoveTowards(
+                transform.position, 
+                moveTo, 
+                currentStats.movingSpeed * Time.deltaTime
+            );
+        }
 
+        // Check if we reached the patrol point or if waitTime is up
+        if (Vector2.Distance(transform.position, moveTo) < 0.2f)
+        {
+            // Once we arrive, we let the enemy "wait" at that spot
+            // then pick a new random patrol point
+            waitTime -= Time.deltaTime;
+            if (waitTime <= 0)
+            {
+                moveTo = GetRandomPatrolPoint();
+                waitTime = 3 * enemyStats.attackInterval;
+            }
+        }
+        else
+        {
+            // If not arrived yet, keep decreasing waitTime
+            // but do not drive it below zero unless we are close to the patrol point
+            waitTime -= Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Overriding the parent method. Moves the bat toward the target at normal moving speed.
+    /// </summary>
+    protected new void ApproachingTarget(Transform targetTransform, float speed)
+    {
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            targetTransform.position,
+            speed * Time.deltaTime
+        );
+        CheckFlipForMovement(targetTransform.position.x);
+    }
+
+    private void DashAttack(Transform destination)
+    {
+        if (prepareDash)
+        {
+            // Play charge-up effect
+            CheckFlipForMovement(target.transform.position.x);
+            if (!particleSystem.isPlaying) 
+            {
+                particleSystem.Play();
+            }
+
+            // If no plan is set, create a route
             if (!planned)
-            {         // set attack route
+            {
                 PlanRoute(destination);
                 planned = true;
             }
-            
-            if (BatTimer > 0.8f) 
+
+            // "Charge up" before dashing
+            if (batTimer > 0.8f * enemyStats.attackInterval)
             {
-                prepare_dash = false;
-                is_dashing = true;
+                prepareDash = false;
+                isDashing = true;
+                // Refresh route before dash in case target moved
                 PlanRoute(destination);
             }
             else
             {
-                BatTimer += Time.deltaTime;
+                batTimer += Time.deltaTime;
+            }
+        }
+        else if (isDashing)
+        {
+            // Execute dash
+            batTimer = 0f;
+            if (particleSystem.isPlaying) 
+            {
+                particleSystem.Stop();
             }
 
-        }
-        else if (is_dashing)        // dash through the player and attack
-        {
-            BatTimer = 0;
-            if (Ps.isPlaying) Ps.Stop();
-            transform.position = Vector2.MoveTowards(transform.position, dash_end, currentStats.movingSpeed * 5 * Time.deltaTime);
-            animator.SetBool("is_attacking", true); 
-            Tr.emitting = true;
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                dashEnd,
+                currentStats.movingSpeed * 5f * Time.deltaTime * attackSpeed
+            );
+
+            animator.SetBool("is_attacking", true);
+            trailRenderer.emitting = true;
+
+            // If close enough to target, apply damage once
             if (Vector2.Distance(transform.position, destination.position) < 0.4f && !attacked)
             {
-                ApplyDamage(target.GetComponent<CharacterController>());
+                var characterCtrl = target.GetComponent<CharacterController>();
+                if (characterCtrl != null)
+                {
+                    ApplyDamage(characterCtrl);
+                }
                 attacked = true;
             }
-            if (CloseEnough(transform.position, dash_end))
+
+            // If we've reached the end of dash
+            if (CloseEnough(transform.position, dashEnd))
             {
-                animator.SetBool("is_attacking", false);    
-                Tr.emitting = false;
-                is_dashing = false;
+                animator.SetBool("is_attacking", false);
+                trailRenderer.emitting = false;
+                isDashing = false;
             }
         }
-        else                        // return to the higher point and attack again
+        else
         {
-            if (CloseEnough(transform.position, stop_point))
+            // Return to a "higher" point
+            if (CloseEnough(transform.position, stopPoint))
             {
-                //BatTimer = 0;
-                prepare_dash = true;
+                prepareDash = true;
                 attacked = false;
                 planned = false;
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, stop_point, currentStats.movingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(
+                    transform.position, 
+                    stopPoint, 
+                    currentStats.movingSpeed * Time.deltaTime * attackSpeed
+                );
             }
-            if (destination.position.x < transform.position.x && facingRight || destination.position.x > transform.position.x && !facingRight)
-            {
-                Flip();
-            }
-        }
 
+            // Check if we need to flip while returning
+            CheckFlipForMovement(destination.position.x);
+        }
     }
-    // make attack plan (dash_start -> dash_End -> stop_point -> dash_start...)
-    void PlanRoute(Transform destination)
+
+    /// <summary>
+    /// Plan the route for the dash. 
+    /// The dashEnd is set to the player's position (with offset),
+    /// and the stopPoint is set above that position to reset the bat.
+    /// </summary>
+    private void PlanRoute(Transform destination)
     {
-        dash_end = destination.position;
-        stop_point = destination.position;
-        if (destination.position.x > transform.position.x)           // player is on the right side
+        dashEnd = destination.position;
+        stopPoint = destination.position;
+
+        // If player is on the right side of the bat
+        if (destination.position.x > transform.position.x)
         {
-            dash_end.x += destination.position.x - transform.position.x;
-            dash_end.y -= transform.position.y - destination.position.y;
-            stop_point.x += 1;
-            stop_point.y += 3;
+            dashEnd.x += destination.position.x - transform.position.x;
+            dashEnd.y -= transform.position.y - destination.position.y;
+
+            stopPoint.x += Random.Range(enemyStats.sensingRange / 2f + 1, enemyStats.sensingRange + 1);
+            stopPoint.y += Random.Range(enemyStats.sensingRange / 2f + 1, enemyStats.sensingRange + 1);
         }
-        else                                                    // player is on the left side
+        else
         {
-            dash_end.x -= (transform.position.x - destination.position.x);
-            dash_end.y -= (transform.position.y - destination.position.y);
-            stop_point.x -= 1;
-            stop_point.y += 3;
+            dashEnd.x -= transform.position.x - destination.position.x;
+            dashEnd.y -= transform.position.y - destination.position.y;
+
+            stopPoint.x -= Random.Range(enemyStats.sensingRange / 2f + 1, enemyStats.sensingRange + 1);
+            stopPoint.y += Random.Range(enemyStats.sensingRange / 2f + 1, enemyStats.sensingRange + 1);
         }
     }
 
+    /// <summary>
+    /// Check whether we should flip our facing direction based on a given X position.
+    /// </summary>
+    private void CheckFlipForMovement(float targetX)
+    {
+        bool shouldFlip =
+            (targetX < transform.position.x && facingRight) ||
+            (targetX > transform.position.x && !facingRight);
 
-    void Flip()
+        if (shouldFlip)
+        {
+            Flip();
+        }
+    }
+
+    private void Flip()
     {
         facingRight = !facingRight;
 
-        Vector3 transformScale = transform.localScale;
-        transformScale.x *= -1;
-        transform.localScale = transformScale;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
-
-    // check for collision with player
-    private void OnTriggerEnter2D(Collider2D collision)
+    /// <summary>
+    /// Check if two vectors are within a small threshold of each other.
+    /// </summary>
+    private bool CloseEnough(Vector2 first, Vector2 second)
     {
-        if (collision.gameObject.name == "Player")
-        {
-            //Debug.Log("contacted");
-        }
-    }
-
-    // check if two points are close enough
-    bool CloseEnough(Vector2 first, Vector2 second)
-    {
-        if (Vector2.Distance(first, second) < 0.2f) { return true; }
-        return false;
+        return Vector2.Distance(first, second) < 0.2f;
     }
 
     protected override void MoveTowards(Transform targetTransform)
     {
-        GroupApproachTarget = targetTransform;
+        groupApproachTarget = targetTransform;
         IsGroupAttacking = true;
     }
 }
-

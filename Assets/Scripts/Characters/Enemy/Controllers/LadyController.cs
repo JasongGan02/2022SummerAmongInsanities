@@ -119,7 +119,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 transform.right = Vector2.right;
             }
 
-            approach(currentStats.movingSpeed, target.transform, currentStats.attackRange - 0.4f);   // debug
+            KeepDistance(currentStats.movingSpeed, target.transform, currentStats.attackRange - 0.4f);   // debug
             
             // Target Taken Damage
             if (arrow != null)
@@ -131,7 +131,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 }
             }
 
-            if (Vector2.Distance(transform.position, target.transform.position) <= currentStats.attackRange && lady_sight())
+            if (Vector2.Distance(transform.position, target.transform.position) <= currentStats.attackRange || lady_sight())
             {
                 // Check if the archer can fire
                 if (canFire)
@@ -301,27 +301,41 @@ public class LadyController : EnemyController, IRangedAttacker
         rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
     }
     
-    void approach(float speed, Transform target, float distance)
+    void KeepDistance(float speed, Transform target, float distance)
     {
         float currentDistance = Mathf.Abs(transform.position.x - target.position.x);
-        //Debug.Log("currentDistance" + currentDistance);
-        if (currentDistance < distance)
+
+        if (Mathf.Abs(currentDistance - distance) < 0.1f) // if the distance is close enough, stop moving
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y); animator.SetFloat("movingSpeed", 0);
+        }
+        else if (currentDistance < distance) // get away from the target
         {
             if (RetreatDepthCheck() == true) // check if there isn't abyss on the back
             {
                 if (target.position.x > transform.position.x)
                 {
                     rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                    //Debug.Log("going Left");
                 }
                 else
                 {
                     rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
-                    //Debug.Log("going Right");
                 }
             }
         }
-        else { animator.SetFloat("movingSpeed", 0f); }
+        else{                          // get closer to the target     
+            if (RetreatDepthCheck() == true) 
+            {
+                if (target.position.x > transform.position.x)
+                {
+                    rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                }
+            }
+        }
     }
 
     protected override void MoveTowards(Transform targetTransform)
