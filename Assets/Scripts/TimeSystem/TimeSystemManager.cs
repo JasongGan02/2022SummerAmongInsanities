@@ -19,6 +19,7 @@ public class TimeSystemManager : MonoBehaviour
     public int duskEndHour = 20; // Hour dusk ends
     public bool isDay;
     public bool isDebugDayTime = false;
+    public bool isAlwaysRedMoon = false;
     
     
     private Text timeText; //hours and minutes
@@ -157,7 +158,7 @@ public class TimeSystemManager : MonoBehaviour
         }
         else if (currentHour == nightStartHour && !nightStarted)
         {
-            GameEvents.current.NightStarted(currentDay != 0 && currentDay % redMoonNightInterval == 0);
+            GameEvents.current.NightStarted(isAlwaysRedMoon || (currentDay != 0 && currentDay % redMoonNightInterval == 0));
             isDay = false;
             nightStarted = true; // Mark the night start transition as handled
             dayStarted = false;
