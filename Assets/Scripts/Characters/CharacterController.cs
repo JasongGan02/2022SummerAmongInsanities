@@ -208,6 +208,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public float DamageAmount => currentStats.attackDamage;
     public float CriticalChance => currentStats.criticalChance;
     public float CriticalMultiplier => currentStats.criticalMultiplier;
+    
+    public float AttackInterval => currentStats.attackInterval;
 
     public virtual void ApplyDamage(IDamageable target)
     {

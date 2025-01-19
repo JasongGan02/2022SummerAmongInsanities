@@ -21,13 +21,17 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
 
     protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
-    protected float attackCycleTime = 1.5f;
+
+    public float attackCycleTime => 2 / characterController.AttackInterval;
     protected float windupRatio = 0.2f; 
     protected float followThroughRatio = 0.2f;
-    protected float intervalRatio => 1f - windupRatio - followThroughRatio; 
+    protected float minWindupTime = 0.2f; 
+    protected float maxWindupTime = 0.7f; 
+    protected float minFollowThroughTime = 0.2f; 
+    protected float maxFollowThroughTime = 0.7f; 
 
     protected float finalDamage;
-    protected float attackRange;
+    protected float attackRange;    
     protected float knockbackForce;
     protected float speed = 15f;
 
@@ -35,6 +39,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     protected float idleBobSpeed = 2f;
     protected float idleBobAmount = 0.5f;
     protected float idleBobTime;
+    protected bool hasDealtDamage = false;
 
     protected Vector2 targetDirection;
     public GameObject SourceGameObject => gameObject;
@@ -84,11 +89,9 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
                 break;
 
             case WeaponState.Attacking:
-                // ÔÚÐ­³ÌÖÐÖ´ÐÐ¹¥»÷Âß¼­£¬ÎÞÐèÔÚUpdateÖØ¸´
                 break;
 
             case WeaponState.Returning:
-                // ÔÚÐ­³ÌÖÐÖ´ÐÐ»Ø³ÌÂß¼­
                 break;
         }
     }
@@ -102,7 +105,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
         Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
 
-        // ³¯ÏòÍæ¼ÒµÄ³¯Ïò
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒµÄ³ï¿½ï¿½ï¿½
         if (playerMovement != null)
         {
             float angle = playerMovement.facingRight ? 270 : 90;
@@ -141,26 +144,27 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     {
         currentState = WeaponState.Attacking;
         isAttacking = true;
+        hasDealtDamage = false;
 
-        
-        float attackWindupTime = attackCycleTime * windupRatio;
+        float calculatedWindupTime = attackCycleTime * windupRatio;
+        float calculatedFollowThroughTime = attackCycleTime * followThroughRatio;
 
-        _audioEmitter.PlayClipFromCategory("WeaponAttack");
+        float adjustedWindupTime = Mathf.Clamp(calculatedWindupTime, minWindupTime, maxWindupTime);
+        float adjustedFollowThroughTime = Mathf.Clamp(calculatedFollowThroughTime, minFollowThroughTime, maxFollowThroughTime);
+        float adjustedIntervalTime = attackCycleTime - (adjustedWindupTime + adjustedFollowThroughTime);
 
         float startTime = Time.time;
         Vector2 startPosition = player.transform.position + idleOffset;
-        Vector2 targetPosition = startPosition + targetDirection * attackRange;
+        Vector2 targetPosition =  startPosition + targetDirection * attackRange;
 
-        
-        while (Time.time - startTime < attackWindupTime)
+        while (Time.time - startTime < adjustedWindupTime)
         {
-            float remainingTime = attackWindupTime - (Time.time - startTime);
+            float remainingTime = adjustedWindupTime - (Time.time - startTime);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float dynamicSpeed = distance / remainingTime;
 
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, dynamicSpeed * Time.deltaTime);
 
-            
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -168,27 +172,20 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
             yield return null;
         }
 
-        
-        yield return StartCoroutine(ReturnToPlayer());
+        yield return StartCoroutine(ReturnToPlayer(adjustedFollowThroughTime, adjustedIntervalTime));
     }
 
-
-
-    IEnumerator ReturnToPlayer()
+    IEnumerator ReturnToPlayer(float followThroughTime, float intervalTime)
     {
         currentState = WeaponState.Returning;
-
-        
-        float returnTime = attackCycleTime * followThroughRatio;
         float startTime = Time.time;
-
         Vector2 currentTargetPosition = player.transform.position + idleOffset;
 
-        while (Time.time - startTime < returnTime)
+        while (Time.time - startTime < followThroughTime)
         {
             currentTargetPosition = player.transform.position + idleOffset;
 
-            float remainingTime = returnTime - (Time.time - startTime);
+            float remainingTime = followThroughTime - (Time.time - startTime);
             float distance = Vector2.Distance(transform.position, currentTargetPosition);
             float dynamicSpeed = distance / remainingTime;
 
@@ -201,9 +198,6 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
             yield return null;
         }
 
-
-        
-        float intervalTime = attackCycleTime * intervalRatio;
         float intervalStartTime = Time.time;
 
         while (Time.time - intervalStartTime < intervalTime)
@@ -221,11 +215,19 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     {
         if (collision.CompareTag("enemy") && isAttacking)
         {
+
+            if (hasDealtDamage) return;
+
             IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable == null) return;
-            ApplyDamage(damageable);
-            ApplyEffects(collision.GetComponent<IEffectableController>());
-            KnockbackEnemy(collision);
+            
+            if (damageable != null)
+            {
+                ApplyDamage(damageable);
+                ApplyEffects(collision.GetComponent<IEffectableController>());
+                KnockbackEnemy(collision);
+                hasDealtDamage = true;
+            }
+
         }
     }
 

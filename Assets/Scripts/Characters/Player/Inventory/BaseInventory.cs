@@ -129,7 +129,7 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
     }
 
     
-    public void SwapItemsBetweenInventory(BaseInventory targetInventory, int index1, int index2)
+    public void SwapItemsBetweenInventory(BaseInventory targetInventory, int index1, int index2)    
     {
         InventorySlot sourceSlot = this.GetInventorySlotAtIndex(index1);
         InventorySlot targetSlot = targetInventory.GetInventorySlotAtIndex(index2);
@@ -220,6 +220,10 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
         void Sort();
     }
 
+    public InventoryDatabase Database
+    {
+        get { return database; }
+    }
 
 
 }
