@@ -32,8 +32,7 @@ public class EffectController : MonoBehaviour
         
         //Preparation like special effect or one time instant change
         StartEffect();
-        if (effectObject.attachAtStart)
-            StartVFX();
+        StartVFX();
         
         if (!gameObject.activeInHierarchy)
         {
@@ -51,16 +50,18 @@ public class EffectController : MonoBehaviour
     
     protected virtual void StartVFX()
     {
-        if (effectObject.vfxPrefab != null && activeVFXList.Count == 0)
+        foreach (var vfx in effectObject.vfxList)
         {
-            // Create VFX instance if it doesn't already exist
-            Transform parentTransform = effectObject.attachToTarget ? transform : null;
-            GameObject newVFX = Instantiate(effectObject.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
-            activeVFXList.Add(newVFX);
-
-            Debug.Log($"Created VFX: {newVFX.name} for effect: {effectObject.name}");
+            if (vfx.vfxPrefab != null && vfx.attachAtStart)
+            {
+                Transform parentTransform = vfx.attachToTarget ? transform : null;
+                GameObject newVFX = Instantiate(vfx.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
+                activeVFXList.Add(newVFX);
+                Debug.Log($"Created VFX: {vfx.name} for effect: {effectObject.name}");
+            }
         }
     }
+
 
     protected virtual void UpdateVFX(int stackCount)
     {
