@@ -20,8 +20,11 @@ MonoBehaviour:
   description: "\u51CF\u901F\u654C\u65B93\u79D2"
   componentToApply: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
   effectControllerType: {fileID: 11500000, guid: 208fa2c616bde484c93ee3c382ed210b, type: 3}
-  vfxPrefab: {fileID: 8423029588219032371, guid: 67bfc228023053c4a98589e26924db67, type: 3}
-  attachToTarget: 1
+  vfxList:
+  - name: 
+    vfxPrefab: {fileID: 8423029588219032371, guid: 67bfc228023053c4a98589e26924db67, type: 3}
+    attachAtStart: 1
+    attachToTarget: 1
   statChanges:
     hp: 0
     armor: 0

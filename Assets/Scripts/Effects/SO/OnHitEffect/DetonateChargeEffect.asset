@@ -20,8 +20,14 @@ MonoBehaviour:
   description: 
   componentToApply: {fileID: 0}
   effectControllerType: {fileID: 0}
-  vfxPrefab: {fileID: 0}
-  attachAtStart: 1
-  attachToTarget: 1
+  vfxList:
+  - name: ChargeUp
+    vfxPrefab: {fileID: 8423029588219032371, guid: 181d84a48e6b79f4d98e9605f418c6ae, type: 3}
+    attachAtStart: 0
+    attachToTarget: 1
+  - name: ChargeReady
+    vfxPrefab: {fileID: 8423029588219032371, guid: 2e40a01b15d834f429f5dd3147ec820d, type: 3}
+    attachAtStart: 0
+    attachToTarget: 1
   chargeDuration: 5
   detonateEffect: {fileID: 11400000, guid: 6e7b1bdcb9d0b7d43aaf167b78665aef, type: 2}
