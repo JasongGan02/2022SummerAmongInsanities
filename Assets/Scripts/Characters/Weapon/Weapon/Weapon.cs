@@ -8,7 +8,7 @@ public enum WeaponState
     Returning
 }
 
-public class Weapon : MonoBehaviour, IDamageSource
+public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
 {
     protected AudioEmitter _audioEmitter;
     protected CharacterController characterController;
@@ -62,11 +62,14 @@ public class Weapon : MonoBehaviour, IDamageSource
         finalDamage = weaponObject.BaseDamage + characterController.CurrentStats.attackDamage * weaponObject.DamageCoef;
         attackRange = (weaponObject.BaseRange + characterController.CurrentStats.attackRange * weaponObject.RangeCoef) / 100;
         knockbackForce = weaponObject.KnockBack;
-
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.sortingOrder = 12;
+        }
+        foreach (var effect in weaponStats.onInitializeEffects)
+        {
+            effect.ExecuteEffect(this);
         }
     }
     private void UpdateWeaponStats()
@@ -102,7 +105,7 @@ public class Weapon : MonoBehaviour, IDamageSource
         Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
 
-        // ³¯ÏòÍæ¼ÒµÄ³¯Ïò
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒµÄ³ï¿½ï¿½ï¿½
         if (playerMovement != null)
         {
             float angle = playerMovement.facingRight ? 270 : 90;
@@ -216,6 +219,7 @@ public class Weapon : MonoBehaviour, IDamageSource
             if (hasDealtDamage) return;
 
             IDamageable damageable = collision.GetComponent<IDamageable>();
+            
             if (damageable != null)
             {
                 ApplyDamage(damageable);
@@ -223,6 +227,7 @@ public class Weapon : MonoBehaviour, IDamageSource
                 KnockbackEnemy(collision);
                 hasDealtDamage = true;
             }
+
         }
     }
 
@@ -234,6 +239,12 @@ public class Weapon : MonoBehaviour, IDamageSource
     
     private void ApplyEffects(IEffectableController target)
     {
+        var detonateChargeEffect = GetComponent<DetonateChargeEffectController>();
+        if (detonateChargeEffect != null && detonateChargeEffect.enabled)
+        {
+            detonateChargeEffect.ApplyDetonateHit(target);
+        }
+        
         foreach (var effect in weaponStats.onHitEffects)
         {
             effect.ExecuteEffect(target);

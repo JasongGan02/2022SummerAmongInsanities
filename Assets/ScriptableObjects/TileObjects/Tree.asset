@@ -22,13 +22,18 @@ MonoBehaviour:
   - droppedItem: {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
     chance: 9.5
   _prefabs:
-  - {fileID: 2655721104761988997, guid: c4285e791d6e4444a9530dcb62363f7e, type: 3}
   - {fileID: 7697918885280410487, guid: 46c321287394b5d408c644d7bd09d754, type: 3}
+  - {fileID: 6501609725464200438, guid: 228d98a49c60e5246b32d717cee724f5, type: 3}
   _recipe: []
-  _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0
   _needsBackground: 0
   _isLit: 0
-  _wallTileObject: {fileID: 0}
+  _isDynamic: 0
+  _lightIntensity: 0
+  SpecifiedTiles: []
+  AnotherSpecifiedTiles: []
+  TargetSprite: []
+  hasSpecialFunctionality: 0
+  isGrassTile: 0

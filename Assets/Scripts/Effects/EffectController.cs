@@ -6,7 +6,6 @@ public class EffectController : MonoBehaviour
 {
     protected EffectObject effectObject;
     protected List<GameObject> activeVFXList = new List<GameObject>(); // Track active VFX instances
-    protected const int maxVFXStack = 3; // Maximum VFX stack limit
 
     public virtual void Initialize(EffectObject effectObject)
     {
@@ -51,27 +50,41 @@ public class EffectController : MonoBehaviour
     
     protected virtual void StartVFX()
     {
-        if (effectObject.vfxPrefab != null)
+        foreach (var vfx in effectObject.vfxList)
         {
-            if (activeVFXList.Count >= maxVFXStack)
+            if (vfx.vfxPrefab != null && vfx.attachAtStart)
             {
-                // If we've reached the max VFX stack, remove or reuse the oldest
-                GameObject oldestVFX = activeVFXList[0];
-                activeVFXList.RemoveAt(0);
-                Debug.Log($"Removing oldest VFX: {oldestVFX.name}");
-                Destroy(oldestVFX); // Destroy the oldest VFX
+                Transform parentTransform = vfx.attachToTarget ? transform : null;
+                GameObject newVFX = Instantiate(vfx.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
+                activeVFXList.Add(newVFX);
+                Debug.Log($"Created VFX: {vfx.name} for effect: {effectObject.name}");
             }
-
-            // Spawn a new VFX instance
-            Transform parentTransform = effectObject.attachToTarget ? transform : null;
-            GameObject newVFX = Instantiate(effectObject.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
-            activeVFXList.Add(newVFX); // Add to the active VFX list
-
-            Debug.Log($"Created new VFX: {newVFX.name} | Total Active VFX: {activeVFXList.Count}");
         }
     }
 
-    
+
+    protected virtual void UpdateVFX(int stackCount)
+    {
+        if (activeVFXList.Count > 0)
+        {
+            // Update the single VFX instance properties
+            var particleSystem = activeVFXList[0].GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+            {
+                var emission = particleSystem.emission;
+                emission.rateOverTime = stackCount * 10; // Example: Scale particles based on stack count
+
+                var main = particleSystem.main;
+                main.startSize = Mathf.Clamp(0.5f + stackCount * 0.1f, 0.5f, 2.0f); // Example: Scale size by stacks
+
+                Debug.Log($"Updated VFX for {effectObject.name}: stackCount={stackCount}");
+            }
+            else
+            {
+                Debug.LogWarning("there is not particle system attached");
+            }
+        }
+    }
     
     protected virtual IEnumerator EffectDurationCoroutine()
     {
@@ -117,27 +130,31 @@ public class EffectController : MonoBehaviour
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
         
+        if (!effectObject.isPermanent)
+        {
+            EndVFX();
+            Destroy(this); // Destroy the EffectController if it's not permanent
+        }
+    }
+
+    protected virtual void EndVFX()
+    {
         // Destroy all active VFX
         foreach (var vfx in activeVFXList)
         {
             if (vfx != null)
             {
-                Debug.Log($"Destroying VFX: {vfx.name}");
-                vfx.gameObject.SetActive(false);
+                Destroy(vfx);
             }
             else
             {
                 Debug.LogWarning("Encountered a null VFX in activeVFXList.");
             }
         }
-        activeVFXList.Clear();
 
-        Debug.Log($"All VFX destroyed for effect: {effectObject.name}");
-        
-        if (!effectObject.isPermanent)
-            Destroy(this); // Destroy the EffectController if it's not permanent
+        activeVFXList.Clear();
     }
-    
+
     protected virtual void HandleStacking()
     {
         // Override this function in derived classes to specify stacking behavio

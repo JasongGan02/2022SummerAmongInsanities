@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9081238371874744415}
   - component: {fileID: 154378751684806344}
-  - component: {fileID: 3295944866174097596}
+  - component: {fileID: 1068182994915461140}
   m_Layer: 7
   m_Name: cedar-nature_1
   m_TagString: Untagged
@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7697918885280410487}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.1, y: 5.94, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 964633207, guid: 56125023c87b1e7468ec76250f0fcb0a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 21cc72f72ad6c7048910b20c918d687c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,8 +85,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &3295944866174097596
-PolygonCollider2D:
+--- !u!61 &1068182994915461140
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -98,23 +98,16 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.05646056, y: 4.9919353}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5116279, y: 0.027027028}
-    oldSize: {x: 5.375, y: 23.125}
+    pivot: {x: 0.5, y: 0.08333333}
+    oldSize: {x: 6, y: 12}
     newSize: {x: 5.375, y: 23.125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.3559115, y: -0.25684956}
-      - {x: 0.4, y: -0.31276157}
-      - {x: 0.45339552, y: 12.845113}
-      - {x: 2.7737684, y: 13.691717}
-      - {x: 0, y: 22.64888}
-      - {x: -2.8271642, y: 13.798508}
-      - {x: -0.46018654, y: 12.915299}
-  m_UseDelaunayMesh: 0
+  serializedVersion: 2
+  m_Size: {x: 0.69270015, y: 11.9838705}
+  m_EdgeRadius: 0

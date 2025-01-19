@@ -66,13 +66,13 @@ public class OnFireEffectObject : StatsEffectObject, IUpgradeableEffectObject
     {
         if (target == null) return;
 
-        var onFire = (target as MonoBehaviour).GetComponent<OnFireController>();
+        var onFire = (target as MonoBehaviour).GetComponent<OnFireEffectController>();
 
         if (onFire == null)
         {
             ExecuteEffect(target);
             stacksToAdd--;
-            onFire = (target as MonoBehaviour).GetComponent<OnFireController>();
+            onFire = (target as MonoBehaviour).GetComponent<OnFireEffectController>();
         }
         
         onFire.AddStack(stacksToAdd);

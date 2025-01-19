@@ -63,7 +63,7 @@ public class BurningArrowTowerEffectObject : EffectObject, IUpgradeableEffectObj
     
     #endregion
     
-    public override void ExecuteEffectOnAType()
+    public override void InitializeEffectObject()
     {
         // Load the target tower object
         RangedTowerObject archerTower = LoadAssetByName<RangedTowerObject>("ArcherTower");

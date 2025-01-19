@@ -21,9 +21,10 @@ MonoBehaviour:
   componentToApply: {fileID: 0}
   effectControllerType: {fileID: 0}
   vfxPrefab: {fileID: 0}
+  attachAtStart: 1
   attachToTarget: 1
   onFireEffectObject: {fileID: 11400000, guid: 3e988668d345a3943b1583e1ee1d7686, type: 2}
-  chance: 0.1
-  stacksPerHit: 1
+  chance: 0.3
+  stacksPerHit: 3
   levelConfig: {fileID: 11400000, guid: 10e2a6380dbc9ce438227e3763cd81a8, type: 2}
-  currentLevel: 1
+  currentLevel: 3
