@@ -53,14 +53,14 @@ public class DetonateChargeEffectController : EffectController
     {
         if (!isCharged)
         {
-            //Debug.Log("Weapon is not charged yet.");
+            Debug.Log("Weapon is not charged yet.");
             return;
         }
         MonoBehaviour target = iEffectableController as MonoBehaviour;
         var onFireEffect = target.GetComponent<OnFireEffectController>();
         if (onFireEffect == null)
         {
-            //Debug.Log("Target does not have OnFireEffect. Saving charge.");
+            Debug.Log("Target does not have OnFireEffect. Saving charge.");
             return;
         }
 
@@ -70,7 +70,7 @@ public class DetonateChargeEffectController : EffectController
 
         // Consume the charge and restart countdown
         isCharged = false;
-        //Debug.Log($"Weapon {weapon.name} applied detonate hit to {target}.");
+        Debug.Log($"Weapon applied detonate hit to {target}.");
         StartChargeCountdown();
     }
 }

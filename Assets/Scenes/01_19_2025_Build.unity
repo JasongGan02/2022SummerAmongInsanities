@@ -4745,7 +4745,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0014883733
+      value: 0.000015432326
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size
@@ -4933,16 +4933,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 56a4d10b3d12ea74aa21982af86ad733, type: 2}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: isDay
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: isDebugDayTime
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: redMoonNightInterval
-      value: 2
+      propertyPath: dayToRealTimeInSecond
+      value: 840
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
@@ -4956,10 +4948,6 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 831146460}
-    - target: {fileID: 3730011587222673553, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5120820689110120683, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: inventoryObjects.Array.size
       value: 11
