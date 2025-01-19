@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9081238371874744415}
   - component: {fileID: 154378751684806344}
-  - component: {fileID: 3295944866174097596}
+  - component: {fileID: 1068182994915461140}
   m_Layer: 7
   m_Name: cedar-nature_1
   m_TagString: Untagged
@@ -85,8 +85,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &3295944866174097596
-PolygonCollider2D:
+--- !u!61 &1068182994915461140
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -98,7 +98,7 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 4.88}
+  m_Offset: {x: -0.05646056, y: 4.9919353}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.08333333}
@@ -108,23 +108,6 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.5090508, y: -4.539166}
-      - {x: -0.9395282, y: -5.880252}
-      - {x: 1.0340353, y: -5.892578}
-      - {x: 0.2914123, y: -4.5485435}
-      - {x: 0.9046607, y: -2.616885}
-      - {x: 2.6407387, y: -1.8170257}
-      - {x: 1.9524155, y: -0.5002694}
-      - {x: 0.4684229, y: -0.47903728}
-      - {x: 0.9977869, y: 1.927042}
-      - {x: 3.1669402, y: 3.1063309}
-      - {x: 0.54439163, y: 5.984457}
-      - {x: -1.0135224, y: 5.5811663}
-      - {x: -2.9793324, y: 1.7264729}
-      - {x: -0.61608124, y: 1.1683145}
-      - {x: -2.0166032, y: -0.24993277}
-      - {x: -1.8932418, y: -0.91685534}
-      - {x: -0.568414, y: -1.1080518}
-  m_UseDelaunayMesh: 0
+  serializedVersion: 2
+  m_Size: {x: 0.69270015, y: 11.9838705}
+  m_EdgeRadius: 0
