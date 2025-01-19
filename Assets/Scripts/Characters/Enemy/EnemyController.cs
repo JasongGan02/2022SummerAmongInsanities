@@ -8,6 +8,7 @@ public abstract class EnemyController : CharacterController
 {
     protected EnemyStats enemyStats => (EnemyStats)currentStats;
     protected GameObject player;
+    protected GameObject Core;
     protected Rigidbody2D rb;
     protected bool facingRight = true;
     
@@ -22,6 +23,7 @@ public abstract class EnemyController : CharacterController
     //Status variables
     public bool IsGroupAttacking { get; set; }
     public bool IsFrozen { get; set; } // Tracks if the enemy is frozen
+    private bool isRedMoonNight = false;
     
     
     //Animation Properties
@@ -36,6 +38,11 @@ public abstract class EnemyController : CharacterController
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("ground");
         targetLayerMask = LayerMask.GetMask("player", "tower");
+        SubscribeToGameEvents();
+    }
+    private void OnDestroy()        // debug is needs to be moved to other file
+    {
+        UnsubscribeFromGameEvents();
     }
     
     protected virtual void Start()
@@ -84,6 +91,18 @@ public abstract class EnemyController : CharacterController
     #region Search For Target
     protected GameObject SearchForTargetObject()
     {
+        if (isRedMoonNight)
+        {
+            if (Core == null)
+            {
+                Core = GameObject.Find("CoreArchitecture");
+            }
+            float distance = Vector2.Distance(transform.position, Core.transform.position);
+            if (distance < 20f){    // test value
+                return Core;
+            }
+        }
+
         if (Hatred == null || Hatred.Count == 0)
         {
             Debug.LogError("Hatred list is empty.");
@@ -195,7 +214,7 @@ public abstract class EnemyController : CharacterController
 
         RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, groundLayerMask);
         //Debug.DrawLine(eyePosition, targetPosition, Color.red);
-        if (hit.collider == null || distance < enemyStats.sensingRange) // just testing!!!!
+        if (hit.collider == null && distance < enemyStats.sensingRange) // just testing!!!!
         {
             // Line of sight is clear
             return true;
@@ -297,6 +316,40 @@ public abstract class EnemyController : CharacterController
         if (player == null) 
         { 
             player = GameObject.FindWithTag("Player");
+        }
+    }
+
+    private void SubscribeToGameEvents()
+    {
+        if (GameEvents.current != null)
+        {
+            GameEvents.current.OnNightStarted += HandleNightStarted;
+        }
+    }
+
+    private void UnsubscribeFromGameEvents()
+    {
+        if (GameEvents.current != null)
+        {
+            GameEvents.current.OnNightStarted -= HandleNightStarted;
+        }
+    }
+
+    private void HandleNightStarted(bool isRedMoon)
+    {
+        isRedMoonNight = isRedMoon;
+
+        if (isRedMoonNight)
+        {
+            //Debug.Log($"{gameObject.name} detected a red moon night! Adjusting behavior...");
+            // Modify enemy behavior for red moon night (e.g., increase stats, become aggressive)
+            enemyStats.movingSpeed *= 1.5f;  // Example: increase movement speed
+        }
+        else
+        {
+            //Debug.Log($"{gameObject.name} detected a normal night.");
+            // Revert behavior adjustments for normal night
+            enemyStats.movingSpeed /= 1.5f;
         }
     }
 }

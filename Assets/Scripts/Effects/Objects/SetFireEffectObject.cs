@@ -57,15 +57,7 @@ public class SetFireEffectObject : EffectObject, IUpgradeableEffectObject
     {
         if (Random.value <= chance) // Check chance to apply
         {
-            ApplyBurnEffect(effectedGameController);
-        }
-    }
-    
-    private void ApplyBurnEffect(IEffectableController effectableController)
-    {
-        for (int i = 0; i < stacksPerHit; i++)
-        {
-            onFireEffectObject.ExecuteEffect(effectableController); 
+            onFireEffectObject.ApplyMultipleStacks(effectedGameController, stacksPerHit); 
         }
     }
     

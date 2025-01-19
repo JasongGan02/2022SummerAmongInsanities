@@ -8,7 +8,7 @@ public enum WeaponState
     Returning
 }
 
-public class Weapon : MonoBehaviour, IDamageSource
+public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
 {
     protected AudioEmitter _audioEmitter;
     protected CharacterController characterController;
@@ -57,11 +57,14 @@ public class Weapon : MonoBehaviour, IDamageSource
         finalDamage = weaponObject.BaseDamage + characterController.CurrentStats.attackDamage * weaponObject.DamageCoef;
         attackRange = (weaponObject.BaseRange + characterController.CurrentStats.attackRange * weaponObject.RangeCoef) / 100;
         knockbackForce = weaponObject.KnockBack;
-
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.sortingOrder = 12;
+        }
+        foreach (var effect in weaponStats.onInitializeEffects)
+        {
+            effect.ExecuteEffect(this);
         }
     }
     private void UpdateWeaponStats()
@@ -219,12 +222,10 @@ public class Weapon : MonoBehaviour, IDamageSource
         if (collision.CompareTag("enemy") && isAttacking)
         {
             IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                ApplyDamage(damageable);
-                ApplyEffects(collision.GetComponent<IEffectableController>());
-                KnockbackEnemy(collision);
-            }
+            if (damageable == null) return;
+            ApplyDamage(damageable);
+            ApplyEffects(collision.GetComponent<IEffectableController>());
+            KnockbackEnemy(collision);
         }
     }
 
@@ -236,6 +237,12 @@ public class Weapon : MonoBehaviour, IDamageSource
     
     private void ApplyEffects(IEffectableController target)
     {
+        var detonateChargeEffect = GetComponent<DetonateChargeEffectController>();
+        if (detonateChargeEffect != null && detonateChargeEffect.enabled)
+        {
+            detonateChargeEffect.ApplyDetonateHit(target);
+        }
+        
         foreach (var effect in weaponStats.onHitEffects)
         {
             effect.ExecuteEffect(target);
