@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class OnFireController : DurationCurrentStatChangeEffectController
+public class OnFireEffectController : DurationCurrentStatChangeEffectController, IDamageSource
 {
     public int stackCount = 1; // Tracks the current number of stacks
     private OnFireEffectObject onFireEffectObject;
@@ -23,7 +23,7 @@ public class OnFireController : DurationCurrentStatChangeEffectController
 
     protected override void HandleStacking()
     {
-        var existingEffects = GetComponents<OnFireController>();
+        var existingEffects = GetComponents<OnFireEffectController>();
         foreach (var effect in existingEffects)
         {
             if (effect != this) // Skip the newly added instance (this)
@@ -56,8 +56,15 @@ public class OnFireController : DurationCurrentStatChangeEffectController
         }
 
         // Scale damage by stack count
+        ApplyDamage(iDamageable);
+
+    }
+    
+    public GameObject SourceGameObject { get; }
+    public void ApplyDamage(IDamageable target)
+    {
         float damagePerTick = statsEffectObject.statChanges.hp * stackCount;
-        iDamageable.TakeDamage(iDamageable.CalculateDamage(damagePerTick, 0f, 0f), GetComponent<CharacterController>() as IDamageSource);
+        target.TakeDamage(target.CalculateDamage(damagePerTick, 0f, 0f), this);
     }
 
     public void AddStack(int stacksToAdd)
@@ -69,10 +76,11 @@ public class OnFireController : DurationCurrentStatChangeEffectController
         }
 
         // Increment the stack count
-        stackCount = Mathf.Clamp(stackCount + stacksToAdd, 0, onFireEffectObject.maxStacks);
+        int stacksAdded = Mathf.Clamp(stackCount + stacksToAdd, 0, onFireEffectObject.maxStacks) - stackCount;
+        stackCount += stacksAdded;
+        UpdateVFX(stackCount);
 
         // Refresh the duration
         ResetEffectDuration();
     }
-
 }

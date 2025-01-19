@@ -404,7 +404,7 @@ public class VillagerController : EnemyController
             if (inAir > 0.9f){
                 float randomDirection = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -1f : 1f;
                 rb.velocity = new Vector2(randomDirection * enemyStats.movingSpeed * 5, -1f * rb.mass);
-                Debug.Log("auto landing");
+                //Debug.Log("auto landing");
                 return true;
             }
         }else{

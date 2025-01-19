@@ -59,7 +59,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
 
 
   
-    
+    public List<EffectObject> onInitializeEffects = new List<EffectObject>();
     public List<EffectObject> onHitEffects = new List<EffectObject>();
     
     [Header("Craft")]

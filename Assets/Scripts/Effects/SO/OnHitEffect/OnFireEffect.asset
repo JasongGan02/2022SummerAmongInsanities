@@ -21,6 +21,7 @@ MonoBehaviour:
   componentToApply: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
   effectControllerType: {fileID: 11500000, guid: 27233eb63a5e63442b0ff43a1c49ff74, type: 3}
   vfxPrefab: {fileID: 8423029588219032371, guid: 74d58455e208f0145ad7e07c61f0e019, type: 3}
+  attachAtStart: 1
   attachToTarget: 1
   statChanges:
     hp: 3

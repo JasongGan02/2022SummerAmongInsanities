@@ -197,7 +197,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
         // Apply the effect
         if (node.effect != null)
-            node.effect.ExecuteEffectOnAType();
+            node.effect.InitializeEffectObject();
         
         ClearBuffCards();
     }
