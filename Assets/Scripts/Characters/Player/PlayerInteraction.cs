@@ -113,7 +113,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         PlaceTileCheck();
         PlaceTileCancelCheck();
         playAnim();
-        HandleShiftKeyForWeapon();
+        HandleQKeyForWeapon();
     }
 
 
@@ -233,20 +233,12 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
 
     }
 
-    private void HandleShiftKeyForWeapon()
+    private void HandleQKeyForWeapon()
     {
-        if (isWeaponInUse && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+        if (isWeaponInUse && (Input.GetKeyDown(KeyCode.Q)))
         {
-            Debug.Log("Shift key detected! Attempting to move weapon to WeaponInventory.");
-
+           
             var weaponInventory = Array.Find(Resources.FindObjectsOfTypeAll<WeaponInventory>(), w => w.gameObject.activeInHierarchy || !w.gameObject.activeInHierarchy);
-            if (weaponInventory == null)
-            {
-                Debug.LogError("WeaponInventory not found!");
-                return;
-            }
-
-            Debug.Log("WeaponInventory found.");
 
             int targetSlot = -1;
             for (int i = 0; i < weaponInventory.Database.GetSize(); i++)
@@ -268,7 +260,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             {
                 inventory.SwapItemsBetweenInventory(weaponInventory, indexInUse, targetSlot);
                 ClearCurrentItemInUse();
-                Debug.Log($"Weapon moved to WeaponInventory slot {targetSlot}.");
+                
             }
 
             isWeaponInUse = false;
@@ -297,6 +289,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         indexInUse = EMPTY;
         currentSlotInUse = null;
         currentWeapon= null;
+        isWeaponInUse = false;
         currentInUseItemIconUI.SetActive(false);
     }
     

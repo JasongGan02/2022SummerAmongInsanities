@@ -18,7 +18,7 @@ MonoBehaviour:
   maxStack: 64
   recipe:
   - material: {fileID: 11400000, guid: 681c780344b4b7c44b2568bfea4222af, type: 2}
-    quantity: 1
+    quantity: 3
   isCraftable: 1
   isCoreNeeded: 0
   craftTime: 1
