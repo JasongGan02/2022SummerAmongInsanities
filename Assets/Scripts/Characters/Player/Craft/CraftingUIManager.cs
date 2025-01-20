@@ -533,7 +533,7 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_NUM_4 = "num4";
     private const string NAME_NUM_5 = "num5";
 
-    private const string NAME_STATS_UI = "StatsComponet";
+    private const string NAME_STATS_UI = "StatsUI";
 
     private const string NAME_TAB_CRAFT = "TabCraftButton";
     private const string NAME_TAB_STATS = "TabStatsButton";

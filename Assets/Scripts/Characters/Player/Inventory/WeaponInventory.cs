@@ -73,7 +73,17 @@ public class WeaponInventory : BaseInventory
         }
     }
 
-
+    public void DestroyAllSpawnedWeapons()
+    {
+        foreach (var weapon in spawnedWeapons.Values)
+        {
+            if (weapon != null)
+            {
+                Destroy(weapon);
+            }
+        }
+        spawnedWeapons.Clear(); 
+    }
 
 
 }

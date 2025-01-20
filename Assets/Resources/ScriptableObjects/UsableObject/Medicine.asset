@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ceb3a5f8769554bb3b966f9a54de9b, type: 3}
+  m_Name: Medicine
+  m_EditorClassIdentifier: 
+  itemName: Medicine
+  sizeRatio: 1
+  prefab: {fileID: 4192573540381174803, guid: 0d25f4ebb7a44476fab2cd211c647046, type: 3}
+  maxStack: 64
+  recipe:
+  - material: {fileID: 11400000, guid: 681c780344b4b7c44b2568bfea4222af, type: 2}
+    quantity: 3
+  isCraftable: 1
+  isCoreNeeded: 0
+  craftTime: 1
+  pressDuration: 1.5
+  effect: {fileID: 11400000, guid: 375d2b27f98eb4a44964430a541e5571, type: 2}

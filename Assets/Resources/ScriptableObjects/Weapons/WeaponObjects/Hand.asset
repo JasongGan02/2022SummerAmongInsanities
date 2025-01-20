@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
+  m_Name: Hand
+  m_EditorClassIdentifier: 
+  itemName: Hand
+  sizeRatio: 1
+  prefab: {fileID: 351958815672505498, guid: b09ecf8e0d75ecc4e9d745e44f343c91, type: 3}
+  level: 1
+  quality: {r: 0, g: 0, b: 0, a: 0}
+  durability: 0
+  _maxStack: 0
+  damageCoef: 1
+  rangeCoef: 0.5
+  baseDamage: 0
+  baseRange: 0
+  knockBack: 0
+  farm: 0.5
+  frequency: 1
+  onInitializeEffects: []
+  onHitEffects: []
+  _recipe: []
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0
