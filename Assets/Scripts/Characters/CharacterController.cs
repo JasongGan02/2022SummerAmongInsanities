@@ -208,8 +208,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public float DamageAmount => currentStats.attackDamage;
     public float CriticalChance => currentStats.criticalChance;
     public float CriticalMultiplier => currentStats.criticalMultiplier;
-    
-    public float AttackInterval => currentStats.attackInterval;
 
     public virtual void ApplyDamage(IDamageable target)
     {
@@ -220,7 +218,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     // Implementation of IDamageable
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp,damageSource);
+        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp);
         ChangeHealth(amount);
     }
 

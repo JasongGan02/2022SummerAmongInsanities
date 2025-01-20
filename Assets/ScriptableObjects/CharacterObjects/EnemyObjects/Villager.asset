@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3fd5bccb97aa847968ba988f3d2fdb, type: 3}
+  m_Name: Villager
+  m_EditorClassIdentifier: 
+  itemName: Villager
+  sizeRatio: 2
+  prefab: {fileID: 5469098318322386293, guid: dc7c103a3237572448beee49ee96264d, type: 3}
+  baseStats:
+    hp: 35
+    armor: 5
+    attackDamage: 7
+    attackInterval: 1
+    attackRange: 1
+    criticalChance: 5
+    criticalMultiplier: 1.5
+    movingSpeed: 2
+    jumpForce: 13
+    totalJumps: 1
+  maxStats:
+    hp: 35
+    armor: 5
+    attackDamage: 7
+    attackInterval: 1
+    attackRange: 1
+    criticalChance: 5
+    criticalMultiplier: 1.5
+    movingSpeed: 2
+    jumpForce: 14
+    totalJumps: 1
+  drops:
+  - droppedItem: {fileID: 11400000, guid: dadc44bcc2993bc4b8d1a5f74dce1700, type: 2}
+    chance: 5
+  hatred:
+  - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
+  enemyStats:
+    hp: 35
+    armor: 5
+    attackDamage: 7
+    attackInterval: 1
+    attackRange: 1
+    criticalChance: 5
+    criticalMultiplier: 1.5
+    movingSpeed: 2
+    jumpForce: 13
+    totalJumps: 1
+    sensingRange: 10
+    soulValue: 50
+  soulObject: {fileID: 11400000, guid: e0e44c120cb18f046905d57b784e8903, type: 2}
+  minLightLevel: 0
+  maxLightLevel: 6
+  spawnWeight: 100
+  groupSize: 2
+  biome: 
+  colliderSize: {x: 1, y: 2}

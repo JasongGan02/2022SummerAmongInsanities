@@ -129,7 +129,7 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
     }
 
     
-    public void SwapItemsBetweenInventory(BaseInventory targetInventory, int index1, int index2)    
+    public void SwapItemsBetweenInventory(BaseInventory targetInventory, int index1, int index2)
     {
         InventorySlot sourceSlot = this.GetInventorySlotAtIndex(index1);
         InventorySlot targetSlot = targetInventory.GetInventorySlotAtIndex(index2);
@@ -178,33 +178,6 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
             
     }
 
-
-    public virtual void RemoveAllItemsAndDrops()
-    {
-        for (int i = 0; i < database.GetSize(); i++)
-        {
-            InventorySlot removedItem = database.RemoveItem(i);
-            if (removedItem != null)
-            {
-                Vector3 dropPosition;
-                if (player.GetComponent<PlayerMovement>().facingRight)
-                {
-                    dropPosition = player.transform.position + new Vector3(1, 0, 0);
-                }
-                else
-                {
-                    dropPosition = player.transform.position + new Vector3(-1, 0, 0);
-                }
-                // TODO refactor collectible object to set the amount when getting the dropped item
-                GameObject droppedItem = removedItem.item.GetDroppedGameObject(removedItem.count, dropPosition);
-                droppedItem.GetComponent<DroppedObjectController>().Initialize(removedItem.item, removedItem.count);
-            }
-
-            UpdateSlotUi(i);
-        }
-    }
-
-
     public int MoveItems(int fromIndex, int toIndex, int amount, bool shouldUpdateFromSlot)
     {
         int remainingItemCount = database.MoveItems(fromIndex, toIndex, amount);
@@ -247,10 +220,6 @@ public class BaseInventory : MonoBehaviour, BaseInventory.IInventoryButtonClicke
         void Sort();
     }
 
-    public InventoryDatabase Database
-    {
-        get { return database; }
-    }
 
 
 }
