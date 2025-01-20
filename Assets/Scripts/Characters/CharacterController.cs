@@ -220,7 +220,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     // Implementation of IDamageable
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp);
+        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp,damageSource);
         ChangeHealth(amount);
     }
 

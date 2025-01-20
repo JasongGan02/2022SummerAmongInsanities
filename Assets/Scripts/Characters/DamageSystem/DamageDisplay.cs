@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using static UnityEditorInternal.ReorderableList;
+using System.Collections.Generic;
 
 public class DamageDisplay : MonoBehaviour
 {
@@ -11,14 +12,13 @@ public class DamageDisplay : MonoBehaviour
     private float duration = 1f;
 
     private Color RedColor = Color.red;
-    private Color BlueColor = Color.blue;
     private Color GreenColor = Color.green;
     private Color DefaultColor = Color.white;
-
-
+    private Dictionary<System.Type, Color> damageSourceColors = new Dictionary<System.Type, Color>();
     private GameObject DamageTextContainer;
 
-    public void ShowDamage(float amount,Transform enemyTransform, float Health)
+
+    public void ShowDamage(float amount,Transform enemyTransform, float Health, IDamageSource damageSource)
     {
         DamageTextContainer = GameObject.Find("DamageTextContainer");
         var damageTextMeshPrefab = Resources.Load<TextMeshPro>("DamageDisplay");
@@ -28,126 +28,122 @@ public class DamageDisplay : MonoBehaviour
             Debug.LogError("Damage Text Mesh Prefab not found in Resources. Please check the path.");
             return;
         }
+        Color damageColor = GetColorForDamageSource(damageSource);
 
         bool isPlayer = enemyTransform.CompareTag("Player");
+        bool isTower = enemyTransform.CompareTag("tower");
 
         TextMeshPro textMesh = Instantiate(damageTextMeshPrefab, enemyTransform.position, Quaternion.identity, DamageTextContainer.transform);
 
 
-        if (amount < 0) // Healing case
+        if (amount < 0)
         {
-            textMesh.text = "+" + Mathf.Abs(Mathf.RoundToInt(amount)).ToString(); // Show as positive for healing
-            textMesh.color = GreenColor; // Use green color for healing
+            textMesh.text = "+" + Mathf.Abs(Mathf.RoundToInt(amount)).ToString(); 
+            textMesh.color = GreenColor;
         }
         else
         {
-            if (isPlayer)
+            if (isPlayer || isTower)
             {
                 textMesh.text = "-" + Mathf.RoundToInt(amount).ToString();
-                textMesh.color = RedColor; // Use red color for damage to the player
+                textMesh.color = RedColor; 
             }
             else
             {
                 textMesh.text = Mathf.RoundToInt(amount).ToString();
-                textMesh.color = DefaultColor; // Default white color for damage to others
+                textMesh.color = damageColor;
             }
         }
 
 
        
         float damageRatio = amount / Health;  
-        float minFontSize = 3f;  // 最小字体大小
-        float maxFontSize = 8f;  // 最大字体大小
+        float minFontSize = 3f;  
+        float maxFontSize = 9f;  
 
-        // 将伤害值映射到字体大小范围内
         textMesh.fontSize = Mathf.Lerp(minFontSize, maxFontSize, damageRatio);
 
-        DamageTextContainer.GetComponent<MonoBehaviour>().StartCoroutine(AnimateDamageText(textMesh));
-        
+
+        DamageTextContainer.GetComponent<MonoBehaviour>().StartCoroutine(AnimateDamageText(textMesh, enemyTransform.position));
+
 
 
     }
 
+    private Color GetColorForDamageSource(IDamageSource damageSource)
+    {
+        
 
-    private IEnumerator AnimateDamageText(TextMeshPro textMesh)
+        System.Type sourceType = damageSource.GetType();
+
+        if (!damageSourceColors.ContainsKey(sourceType))
+        {
+            if (sourceType == typeof(OnFireEffectController))
+            {
+                damageSourceColors[sourceType] = Color.yellow; 
+            }
+            else
+            {
+                return DefaultColor;
+            }
+        }
+
+        return damageSourceColors[sourceType];
+    }
+
+
+
+    private IEnumerator AnimateDamageText(TextMeshPro textMesh, Vector3 centerPosition)
     {
         Color startColor = textMesh.color;
         float startSize = textMesh.fontSize;
 
-        float appearTime = 0.15f;  
-        float holdTime = 0.75f;  
-        float shrinkTime = duration - appearTime - holdTime; 
+        float appearTime = 0.15f;
+        float holdTime = 0.35f;
+        float shrinkTime = duration - appearTime - holdTime;
 
         float elapsedTime = 0f;
 
-        Vector3 startPos = textMesh.transform.position + new Vector3(0, 0.3f, 0); ;
-        Vector3 initialPos = startPos; 
-        Vector3 floatUpPos = startPos + new Vector3(0, 0.6f, 0);  // 上移的目标位置（达到这个位置后发生刹车）
+        Vector3 randomStartOffset = Random.insideUnitCircle * 0.5f;
+        Vector3 randomEndOffset = Random.insideUnitCircle * 0.7f; 
 
-        textMesh.transform.position = initialPos;
+        Vector3 startPos = centerPosition + randomStartOffset;
+        Vector3 floatUpPos = centerPosition + randomEndOffset + new Vector3(0, 1f, 0); 
+
+        textMesh.transform.position = startPos;
 
 
-        while (elapsedTime < appearTime)
+        float parabolaHeight = 0.7f;
+        float parabolaDuration = appearTime + holdTime; 
+
+ 
+        while (elapsedTime < parabolaDuration)
         {
             elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / appearTime;
-
-            textMesh.transform.position = Vector3.Lerp(initialPos, floatUpPos, Mathf.SmoothStep(0f, 1f, progress));
+            float progress = elapsedTime / parabolaDuration;
+            float heightOffset = 4 * parabolaHeight * progress * (1 - progress); 
+            Vector3 position = Vector3.Lerp(startPos, floatUpPos, progress);
+            position.y += heightOffset; 
+            textMesh.transform.position = position;
 
             yield return null;
         }
 
-
-        float reboundMagnitude = 0.1f;  
-        Vector3 reboundPos = floatUpPos + new Vector3(0, -reboundMagnitude, 0);  
-        elapsedTime = 0f;
-        float reboundTime = 0.1f; 
-
-        while (elapsedTime < reboundTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / reboundTime;
-
-            textMesh.transform.position = Vector3.Lerp(floatUpPos, reboundPos, progress);  
-
-            yield return null;
-        }
-
-        elapsedTime = 0f;
-        while (elapsedTime < reboundTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / reboundTime;
-
-            textMesh.transform.position = Vector3.Lerp(reboundPos, floatUpPos, progress);  
-
-            yield return null;
-        }
-
-
-        yield return new WaitForSeconds(holdTime);
-
+     
         elapsedTime = 0f;
         while (elapsedTime < shrinkTime)
         {
             elapsedTime += Time.deltaTime;
             float progress = elapsedTime / shrinkTime;
 
-            textMesh.fontSize = Mathf.Lerp(startSize, startSize * 0.75f, progress);  
-            textMesh.color = new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(1, 0, progress));  
+            textMesh.fontSize = Mathf.Lerp(startSize, startSize * 0.75f, progress);
+            textMesh.color = new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(1, 0, progress));
 
             yield return null;
         }
 
         Destroy(textMesh.gameObject);
     }
-
-
-
-
-
-
-
 
 
 

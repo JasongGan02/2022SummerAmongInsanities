@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
 
-    public float attackCycleTime => 2 / characterController.AttackInterval;
+    public float attackCycleTime => characterController.AttackInterval;
     protected float windupRatio = 0.2f; 
     protected float followThroughRatio = 0.2f;
     protected float minWindupTime = 0.2f; 
@@ -105,7 +105,6 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
         Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
 
-        // ������ҵĳ���
         if (playerMovement != null)
         {
             float angle = playerMovement.facingRight ? 270 : 90;
