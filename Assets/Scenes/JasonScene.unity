@@ -2220,47 +2220,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974010217}
   m_CullTransparentMesh: 1
---- !u!1 &990937175 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5439552985718582830, guid: 6797366960a5b6945bbbe6d6763f65ce, type: 3}
-  m_PrefabInstance: {fileID: 1772774183}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &990937178 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5439552985718582801, guid: 6797366960a5b6945bbbe6d6763f65ce, type: 3}
-  m_PrefabInstance: {fileID: 1772774183}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990937175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &990937180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990937175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e54b83558482ac049adeb54bbd15ced2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetImage: {fileID: 990937178}
-  animationSprites:
-  - {fileID: 398837378, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: 1828863291, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: -713678745, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: 1155481565, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: 1547640149, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: -1973642767, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: -125990089, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  - {fileID: 753747477, guid: 38e17354ee576ee42a3a19d49c7f7afd, type: 3}
-  frameRate: 10
-  loop: 1
-  playOnAwake: 1
 --- !u!1 &1032178869
 GameObject:
   m_ObjectHideFlags: 0
@@ -4745,7 +4704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0030421282
+      value: 0.00021315286
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size
