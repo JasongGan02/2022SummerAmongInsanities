@@ -35,8 +35,12 @@ public class CraftingUIManager : MonoBehaviour
     public RectTransform content;
 
 
-
+    private Button TabCraftButton;
+    private Button TabStatsButton;
+    private GameObject CharacterUI;
     private GameObject CraftUI;
+    private GameObject StatsUI;
+
     [SerializeField]
     private ScrollView scrollView;
 
@@ -63,12 +67,6 @@ public class CraftingUIManager : MonoBehaviour
     private BaseObject[] chestObjects;
     private BaseObject[] usableObjects;
 
-
-
-
-    private Button TabCraftButton;
-    private Button TabStatsButton;
-    private GameObject StatsUI;
 
 
 
@@ -105,7 +103,7 @@ public class CraftingUIManager : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleCraftUi;
-        SetupMenuUI();
+        SetupUI();
     }
 
 
@@ -148,11 +146,13 @@ public class CraftingUIManager : MonoBehaviour
 
 
 
-    private void SetupMenuUI()
+    private void SetupUI()
     {
+        CharacterUI = GameObject.Find(NAME_CHARACTER_UI);
         CraftUI = GameObject.Find(NAME_CRAFT_UI);
         MenuUI = GameObject.Find(NAME_CRAFT_MENU);
         StatsUI = GameObject.Find(NAME_STATS_UI);
+
 
         weapons = MenuUI.transform.Find(NAME_BUTTON_0).GetComponent<Button>();
         towers = MenuUI.transform.Find(NAME_BUTTON_1).GetComponent<Button>();
@@ -178,6 +178,7 @@ public class CraftingUIManager : MonoBehaviour
         TabCraftButton.onClick.AddListener(ShowCraftUI);
         TabStatsButton.onClick.AddListener(ShowStatsUI);
 
+        CharacterUI.SetActive(false);
         CraftUI.SetActive(false);
         StatsUI.SetActive(false);
         TabCraftButton.gameObject.SetActive(false);
@@ -306,9 +307,11 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftUIOn()
     {
+        CharacterUI.SetActive(true);
         CraftUI.SetActive(true);
         TabCraftButton.gameObject.SetActive(true);
         TabStatsButton.gameObject.SetActive(true);
+        StatsUI.SetActive(false);
         PlayerStatusRepository.SetIsViewingUi(true);
         SetupCraftUI(RemoveEmptyRecipeItems(weaponObjects));
         UpdateTabIcons(craftImage1, statsImage2);
@@ -317,9 +320,10 @@ public class CraftingUIManager : MonoBehaviour
     private void CraftUIOff()
     {
         CraftUI.SetActive(false);
-        StatsUI.SetActive(false);
+        CharacterUI.SetActive(false);
         TabCraftButton.gameObject.SetActive(false);
         TabStatsButton.gameObject.SetActive(false);
+        StatsUI.SetActive(false);
         PlayerStatusRepository.SetIsViewingUi(false);
     }
     private void UpdateTabIcons(Sprite craftSprite, Sprite statsSprite)
@@ -514,8 +518,10 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_BUTTON_3 = "type3";
 
 
-
+    private const string NAME_CHARACTER_UI = "CharacterUI";
     private const string NAME_CRAFT_UI = "CraftUI";
+    private const string NAME_STATS_UI = "StatsUI";
+
     private const string NAME_Craft_BUTTON = "CraftButton";
 
 
@@ -533,7 +539,7 @@ public class CraftingUIManager : MonoBehaviour
     private const string NAME_NUM_4 = "num4";
     private const string NAME_NUM_5 = "num5";
 
-    private const string NAME_STATS_UI = "StatsUI";
+    
 
     private const string NAME_TAB_CRAFT = "TabCraftButton";
     private const string NAME_TAB_STATS = "TabStatsButton";
