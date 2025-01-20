@@ -148,12 +148,6 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
-        if (worldGameObject.GetComponent<ProjectileController>() == null)
-        {
-
-            Type type = Type.GetType(itemName);
-            worldGameObject.AddComponent(type);
-        }
         var controller = worldGameObject.GetComponent<DroppedObjectController>();
         if (controller != null)
         {

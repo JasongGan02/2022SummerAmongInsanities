@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: TowerObject
+  m_EditorClassIdentifier: 
+  m_GroupName: TowerObject
+  m_Data:
+    m_SerializedData: []
+  m_GUID: e49e8d1dd5fb88646b1c5c3951b06834
+  m_SerializeEntries:
+  - m_GUID: a970880c399df4243a759e6fc8814f1a
+    m_Address: Assets/Resources/ScriptableObjects/CharacterObjects/TowerObject/ArcherTower.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e029c7fad2307684c81f0e443821cef6
+    m_Address: Assets/Resources/ScriptableObjects/CharacterObjects/TowerObject/CatapultTower.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0c7faabb5db2d24b967f8e0319d6e47
+    m_Address: Assets/Resources/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44b95cb48ed225347ab641ddc2309861
+    m_Address: Assets/Resources/ScriptableObjects/CharacterObjects/TowerObject/TrapTower.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5ec35d6ea00a0da4588feaa470256288, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d14a863612fc65140809dce677b48183, type: 2}
+    - {fileID: 11400000, guid: 45bb873d4ea814b44adac7442dca0885, type: 2}
