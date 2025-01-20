@@ -55,6 +55,7 @@ public class AddressablesManager : MonoBehaviour
     // 2) Exact-type approach: excludes derived classes of T
     // -----------------------------------------------------------------
     public async Task<IList<T>> LoadMultipleAssetsExactTypeAsync<T>(object keyOrLabel)
+        where T : UnityEngine.Object
     {
         // Load as 'Object' to get all raw assets under that key/label.
         AsyncOperationHandle<IList<Object>> handle = Addressables.LoadAssetsAsync<Object>(keyOrLabel, null);
@@ -66,10 +67,11 @@ public class AddressablesManager : MonoBehaviour
 
             foreach (var asset in handle.Result)
             {
+                // Ensure it's not null and type is exactly T
                 if (asset != null && asset.GetType() == typeof(T))
                 {
-                    // Cast to T
-                    //matchedAssets.Add((T)asset);
+                    // Now you can safely cast because T must derive from UnityEngine.Object
+                    matchedAssets.Add((T)asset);
                 }
             }
 
@@ -81,10 +83,7 @@ public class AddressablesManager : MonoBehaviour
             return null;
         }
     }
-
-    // ---------------------------------------------------------------
-    // Example usage for single-asset loads, instantiation, release...
-    // ---------------------------------------------------------------
+    
     public async Task<T> LoadAssetAsync<T>(object keyOrLabel)
     {
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(keyOrLabel);
