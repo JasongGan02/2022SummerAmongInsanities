@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObject-WeaponObject
+  m_EditorClassIdentifier: 
+  m_GroupName: ScriptableObject-WeaponObject
+  m_Data:
+    m_SerializedData: []
+  m_GUID: dab746a46a37d564bbb6e99b216702d5
+  m_SerializeEntries:
+  - m_GUID: 6119f51ced59cd446b95b3d24d30e1bb
+    m_Address: Assets/ScriptableObjects/WeaponObjects/Shovel.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9db6f9cd76dae8b45bccb696cef80a62
+    m_Address: Assets/ScriptableObjects/WeaponObjects/StoneDagger.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: baa2233ce5dbc7049bc9922326bb99e5
+    m_Address: Assets/ScriptableObjects/WeaponObjects/Hand.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dcfcf45f211cf84f889c913b2e17330
+    m_Address: Assets/ScriptableObjects/WeaponObjects/Axe.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30b4db54f79226b4fb30bcbfbf8ad3dc
+    m_Address: Assets/ScriptableObjects/WeaponObjects/Spear.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93aa2cd2c31b0c54a94d779394a2c6eb
+    m_Address: Assets/ScriptableObjects/WeaponObjects/Bow.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 4c47a830f2c96ab45b9673b3b9f1f508, type: 2}
+    - {fileID: 11400000, guid: 8b1939674a2cf5d4c85d577515b57c99, type: 2}

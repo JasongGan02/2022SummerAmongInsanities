@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObject-TowerObject
+  m_EditorClassIdentifier: 
+  m_GroupName: ScriptableObject-TowerObject
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 8c713cff223b7eb4aa4a26f9a1786878
+  m_SerializeEntries:
+  - m_GUID: 5abbbd5fda8b63c488e998bf24a6f587
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/WoodWall.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    - WallObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acad7846dea24f14bbb908684ab32a85
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/StoneWall.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    - WallObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44b95cb48ed225347ab641ddc2309861
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/TrapTower.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    - RangedTowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0c7faabb5db2d24b967f8e0319d6e47
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e029c7fad2307684c81f0e443821cef6
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/CatapultTower.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    - RangedTowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a970880c399df4243a759e6fc8814f1a
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/ArcherTower.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    - RangedTowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 2565ec855a8a5494ebdcb0d184a1374b, type: 2}
+    - {fileID: 11400000, guid: 9919b9d80abf4354cba147b48a1e266f, type: 2}
