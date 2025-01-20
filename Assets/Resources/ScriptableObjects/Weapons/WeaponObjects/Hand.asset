@@ -26,7 +26,7 @@ MonoBehaviour:
   knockBack: 0
   farm: 0.5
   frequency: 1
-  projectileObject: {fileID: 0}
+  onInitializeEffects: []
   onHitEffects: []
   _recipe: []
   _isCraftable: 0
