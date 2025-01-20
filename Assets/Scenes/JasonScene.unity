@@ -2892,6 +2892,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345151679}
   m_CullTransparentMesh: 1
+--- !u!1 &1350630164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3230390306256058291, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1464075472
 GameObject:
   m_ObjectHideFlags: 0
@@ -4704,7 +4709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599598810123795156, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00021315286
+      value: 0.0006022306
       objectReference: {fileID: 0}
     - target: {fileID: 5766533615767834668, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
       propertyPath: animationSprites.Array.size
@@ -4915,6 +4920,10 @@ PrefabInstance:
       propertyPath: inventoryObjects.Array.data[11].inventoryObject
       value: 
       objectReference: {fileID: 11400000, guid: 5abbbd5fda8b63c488e998bf24a6f587, type: 2}
+    - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: QueueUI
+      value: 
+      objectReference: {fileID: 1350630164}
     - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: content
       value: 
