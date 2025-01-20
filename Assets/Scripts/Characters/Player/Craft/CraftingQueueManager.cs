@@ -15,7 +15,7 @@ public class CraftingQueueManager : MonoBehaviour
     public GameObject buttonPrefab;
     private float xOffset = -180f;
     private TextMeshProUGUI ProgressText;
-    private GameObject QueueUI;
+    public GameObject QueueUI;
 
     private CoreArchitectureController coreArchitecture;
     private TimeSystemManager timeSystemManager;
@@ -32,7 +32,6 @@ public class CraftingQueueManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaitForCoreArchitectureAndInitialize());
-        QueueUI = GameObject.Find("QueueUI");
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
         timeSystemManager = FindObjectOfType<TimeSystemManager>();

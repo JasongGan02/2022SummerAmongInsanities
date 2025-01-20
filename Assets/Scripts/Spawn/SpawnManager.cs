@@ -43,6 +43,24 @@ public class SpawnManager : MonoBehaviour
         }
     }
     
+    public void SpawnDebugInitialAsh()
+    {
+        if (ash == null)
+        {
+            Debug.LogWarning("Ash object is not assigned in the SpawnManager.");
+            return;
+        }
+
+        if (coreSpawnPosition == Vector3.zero)
+        {
+            Debug.LogWarning("Core spawn position is not set.");
+            return;
+        }
+
+        GameObject spawnedAsh = ash.GetDroppedGameObject(1, coreSpawnPosition);
+        Debug.Log($"Spawned debug ash at {coreSpawnPosition}: {spawnedAsh.name}");
+    }
+
     
     IEnumerator WaitForCoreArchitectureAndDoSomething()
     {
@@ -56,8 +74,6 @@ public class SpawnManager : MonoBehaviour
         {
             GameObject dropTower = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
-
-        ash.GetDroppedGameObject(400, coreSpawnPosition);
 
     }
 }
@@ -74,9 +90,9 @@ public class SpawnManagerEditor : Editor
         {
             spawnManager.SpawnRamdonWeapon();
         }
-        if (GUILayout.Button("Spawn 10 Frags"))
+        if (GUILayout.Button("Spawn debug initial ash"))
         {
-            //spawnManager.SpawnFrags(10);
+            spawnManager.SpawnDebugInitialAsh();
         }
     }
 }

@@ -17,10 +17,10 @@ MonoBehaviour:
   prefab: {fileID: 5811422692972195447, guid: c2161fd224ed4004a870c00fdb2f2ee8, type: 3}
   baseStats:
     hp: 40
+    armor: 0
     attackDamage: 15
     attackInterval: 1
     attackRange: 2
-    armor: 0
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 3
@@ -28,10 +28,10 @@ MonoBehaviour:
     totalJumps: 1
   maxStats:
     hp: 40
+    armor: 0
     attackDamage: 15
     attackInterval: 1
     attackRange: 2
-    armor: 0
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 3
@@ -45,10 +45,10 @@ MonoBehaviour:
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   enemyStats:
     hp: 40
+    armor: 0
     attackDamage: 15
     attackInterval: 1
     attackRange: 2
-    armor: 0
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 3
@@ -58,8 +58,8 @@ MonoBehaviour:
     soulValue: 60
   soulObject: {fileID: 11400000, guid: e0e44c120cb18f046905d57b784e8903, type: 2}
   minLightLevel: 0
-  maxLightLevel: 0
-  spawnWeight: 0
-  groupSize: 0
+  maxLightLevel: 16
+  spawnWeight: 60
+  groupSize: 2
   biome: 
-  colliderSize: {x: 0, y: 0}
+  colliderSize: {x: 2, y: 1}
