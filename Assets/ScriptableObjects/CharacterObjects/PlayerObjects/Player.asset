@@ -21,15 +21,15 @@ MonoBehaviour:
     attackDamage: 10
     attackInterval: 1.2
     attackRange: 15
-    criticalChance: 5
+    criticalChance: 15
     criticalMultiplier: 1.2
     movingSpeed: 5
     jumpForce: 20
     totalJumps: 1
   maxStats:
-    hp: 100
-    armor: 15
-    attackDamage: 10
+    hp: 210
+    armor: 26
+    attackDamage: 46
     attackInterval: 1.2
     attackRange: 15
     criticalChance: 5
@@ -45,7 +45,7 @@ MonoBehaviour:
     attackDamage: 10
     attackInterval: 1.2
     attackRange: 15
-    criticalChance: 5
+    criticalChance: 15
     criticalMultiplier: 1.2
     movingSpeed: 5
     jumpForce: 20

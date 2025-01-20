@@ -29,7 +29,7 @@ MonoBehaviour:
     attackInterval: 0
     attackRange: 0
     criticalChance: 0
-    criticalMultiplier: 0
+    criticalMultiplier: 0.2
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0

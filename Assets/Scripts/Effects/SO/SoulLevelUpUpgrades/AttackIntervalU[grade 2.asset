@@ -26,7 +26,7 @@ MonoBehaviour:
     hp: 0
     armor: 0
     attackDamage: 0
-    attackInterval: 0
+    attackInterval: -0.1
     attackRange: 0
     criticalChance: 0
     criticalMultiplier: 0

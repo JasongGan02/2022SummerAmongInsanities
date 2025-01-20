@@ -28,7 +28,7 @@ MonoBehaviour:
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
-    criticalChance: 0
+    criticalChance: 10
     criticalMultiplier: 0
     movingSpeed: 0
     jumpForce: 0

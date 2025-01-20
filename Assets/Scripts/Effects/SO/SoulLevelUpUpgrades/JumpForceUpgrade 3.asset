@@ -31,5 +31,5 @@ MonoBehaviour:
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 0
-    jumpForce: 0
+    jumpForce: 10
     totalJumps: 0
