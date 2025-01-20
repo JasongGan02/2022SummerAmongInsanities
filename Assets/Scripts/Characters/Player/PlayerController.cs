@@ -116,7 +116,11 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
         if (playerDropItemsOnDeath)
         {
             Inventory inventory = FindObjectOfType<Inventory>();
+            WeaponInventory weaponInventory = Array.Find(Resources.FindObjectsOfTypeAll<WeaponInventory>(), w => w.gameObject.activeInHierarchy || !w.gameObject.activeInHierarchy);
             inventory.RemoveAllItemsAndDrops();
+            weaponInventory.RemoveAllItemsAndDrops();
+            weaponInventory.DestroyAllSpawnedWeapons();
+
         }
     }
     
@@ -142,17 +146,7 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
 
         UpdateHealthUI();
     }
-
-    public void Heal(float amount)
-    {
-        currentStats.hp += amount;
-        if (currentStats.hp > characterObject.maxStats.hp)
-        {
-            currentStats.hp = characterObject.maxStats.hp;
-        }
-        UpdateHealthUI();
-    }
-
+    
     public void PlayerSurroundingLight()
     {
         personalLight = GetComponent<Light2D>();

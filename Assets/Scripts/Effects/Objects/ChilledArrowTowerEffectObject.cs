@@ -16,7 +16,7 @@ public class ChilledArrowTowerEffectObject : EffectObject
         onChilledEffectObject.ApplyMultipleStacks(effectedGameController, stacksPerHit);
     }
     
-    public override void ExecuteEffectOnAType()
+    public override void InitializeEffectObject()
     {
         // Load the target tower object
         RangedTowerObject archerTower = LoadAssetByName<RangedTowerObject>("ArcherTower");
@@ -56,7 +56,4 @@ public class ChilledArrowTowerEffectObject : EffectObject
         Debug.LogWarning($"No asset of type {typeof(T).Name} found with name '{assetName}'");
         return null; // Return null if no matching asset is found
     }
-
-
-    
 }

@@ -111,35 +111,45 @@ public class CraftingQueueManager : MonoBehaviour
                 craftingProgressSlider.value = 1f; // Set it to full (1)
             }
 
-            Action<int> hourUpdateHandler = null;
-            hourUpdateHandler = (hour) =>
+            // Update crafting progress based on elapsed real time
+            while (remainingCraftingTime > 0)
             {
-                remainingCraftingTime -= 1; // Decrease crafting time
-                float progress = remainingCraftingTime / totalCraftTime;
-                craftingProgressSlider.value = progress; // Update slider
+                yield return null; // Wait for the next frame
 
-                ProgressText.text = remainingCraftingTime.ToString() + "'s"; // Update text
+                // Reduce remaining crafting time by the time elapsed since the last frame
+                float deltaTime = Time.deltaTime;
+                remainingCraftingTime -= deltaTime;
 
-                if (remainingCraftingTime <= 0)
+                // Update slider and progress text
+                if (craftingProgressSlider != null)
                 {
-                    // Crafting complete
-                    if (coreArchitecture != null)
-                        spawn(itemToCraft);
-
-                    craftQueue.Dequeue();
-                    UpdateQueueUI(craftQueue);
-
-                    // Unsubscribe from the event to prevent multiple calls
-                    GameEvents.current.OnHourUpdated -= hourUpdateHandler;
+                    float progress = Mathf.Clamp01(remainingCraftingTime / totalCraftTime);
+                    craftingProgressSlider.value = progress;
                 }
-            };
 
-            GameEvents.current.OnHourUpdated += hourUpdateHandler;
+                if (ProgressText != null)
+                {
+                    ProgressText.text = Mathf.CeilToInt(remainingCraftingTime).ToString() + "s"; // Update text
+                }
+            }
 
-            // Wait for crafting to complete
-            yield return new WaitForSeconds(remainingCraftingTime * timeSystemManager.dayToRealTimeInSecond / 24);
+            // Crafting complete
+            if (coreArchitecture != null)
+            {
+                spawn(itemToCraft);
+            }
+
+            craftQueue.Dequeue();
+            UpdateQueueUI(craftQueue);
+        }
+
+        // Hide the slider when crafting is finished
+        if (craftingProgressSlider != null)
+        {
+            craftingProgressSlider.gameObject.SetActive(false);
         }
     }
+
 
     private void spawn(BaseObject itemToCraft)
     {

@@ -11,6 +11,8 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     public LayerMask groundLayer;
     private Animator animator;
     public bool weaponAnim = true;
+    private bool isWeaponInUse = false;
+
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
@@ -111,6 +113,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         PlaceTileCheck();
         PlaceTileCancelCheck();
         playAnim();
+        HandleQKeyForWeapon();
     }
 
 
@@ -213,16 +216,55 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
 
         if (currentSlotInUse.item is WeaponObject)
         {
+            Debug.Log("Current item is a WeaponObject.");
+
             playerController = GetComponent<PlayerController>();
             gameObjectInUse = (currentSlotInUse.item as WeaponObject).GetSpawnedGameObject(playerController);
             currentWeapon = currentSlotInUse.item as WeaponObject;
             waitTime = 1 / currentWeapon?.getfrequency() ?? 1;
+
+            isWeaponInUse = true; 
         }
         else
         {
+            isWeaponInUse = false; 
             waitTime = 1;
         }
-       
+
+    }
+
+    private void HandleQKeyForWeapon()
+    {
+        if (isWeaponInUse && (Input.GetKeyDown(KeyCode.Q)))
+        {
+           
+            var weaponInventory = Array.Find(Resources.FindObjectsOfTypeAll<WeaponInventory>(), w => w.gameObject.activeInHierarchy || !w.gameObject.activeInHierarchy);
+
+            int targetSlot = -1;
+            for (int i = 0; i < weaponInventory.Database.GetSize(); i++)
+            {
+                var slot = weaponInventory.GetInventorySlotAtIndex(i);
+                Debug.Log($"Slot {i}: {(slot?.item != null ? slot.item.GetType().Name : "empty")}");
+                if (slot?.item == null)
+                {
+                    targetSlot = i;
+                    break;
+                }
+            }
+
+            if (targetSlot == -1)
+            {
+                Debug.LogWarning("No empty slot found in WeaponInventory.");
+            }
+            else
+            {
+                inventory.SwapItemsBetweenInventory(weaponInventory, indexInUse, targetSlot);
+                ClearCurrentItemInUse();
+                
+            }
+
+            isWeaponInUse = false;
+        }
     }
 
     public IInventoryObject GetCurrentInUseItem()
@@ -247,6 +289,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         indexInUse = EMPTY;
         currentSlotInUse = null;
         currentWeapon= null;
+        isWeaponInUse = false;
         currentInUseItemIconUI.SetActive(false);
     }
     

@@ -11,7 +11,7 @@ public class ChilledWallEffectObject : EffectObject
     public float armorMultiplier;
     
     
-    public override void ExecuteEffectOnAType()
+    public override void InitializeEffectObject()
     {
         // Load all wall objects
         WallObject[] walls = LoadAllAssets<WallObject>();

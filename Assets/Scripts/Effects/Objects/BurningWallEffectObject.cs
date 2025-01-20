@@ -18,7 +18,7 @@ public class BurningWallEffectObject : EffectObject
         onFireEffectObject.ApplyMultipleStacks(effectedGameController, stacksPerHit);
     }
     
-    public override void ExecuteEffectOnAType()
+    public override void InitializeEffectObject()
     {
         // Load all wall objects
         WallObject[] walls = LoadAllAssets<WallObject>();
