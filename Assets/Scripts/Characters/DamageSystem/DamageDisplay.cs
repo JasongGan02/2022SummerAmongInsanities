@@ -21,7 +21,7 @@ public class DamageDisplay : MonoBehaviour
     public void ShowDamage(float amount,Transform enemyTransform, float Health, IDamageSource damageSource)
     {
         DamageTextContainer = GameObject.Find("DamageTextContainer");
-        var damageTextMeshPrefab = Resources.Load<TextMeshPro>("DamageDisplay");
+        var damageTextMeshPrefab = Resources.Load<TextMeshPro>("UI/DamageDisplay");
 
         if (damageTextMeshPrefab == null)
         {

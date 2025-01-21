@@ -48,6 +48,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 50efea4a217efb0468d970fffe03f6b0, type: 2}
   - {fileID: 11400000, guid: 11781fb165413dc47aa17166d731e1e5, type: 2}
   - {fileID: 11400000, guid: 758bb2c7939bed84ab09f04b1bb1840d, type: 2}
+  - {fileID: 11400000, guid: 6646d85deceaea04880b5172b926fccc, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -95,6 +96,8 @@ MonoBehaviour:
     - RangedTowerObject
     - WallObject
     - UsableObject
+    - UtilityTowerObject
+    - TileObject
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 2b6c7e4698e48f947901da1940c106e7, type: 2}

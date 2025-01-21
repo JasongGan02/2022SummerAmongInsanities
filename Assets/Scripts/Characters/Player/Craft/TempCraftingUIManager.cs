@@ -15,8 +15,8 @@ using Image = UnityEngine.UI.Image; // For AssetDatabase usage
 [Serializable]
 public class CategoryConfig
 {
-    public string categoryName;    // e.g., "Weapons"
-    public string assetFilter;     // e.g., "t:WeaponObject"
+    [Tooltip("Label or key used to load from Addressables. For multiple items, use a label.")]
+    public string addressOrLabel;     // e.g., "t:WeaponObject"
     public Button categoryButton;  // The button to click in the UI
     [HideInInspector] 
     public BaseObject[] loadedObjects; // Filled at runtime
@@ -79,29 +79,29 @@ public class TempCraftingUIManager : MonoBehaviour
     // -----------------------------------------------------
     //  Monobehaviour: Load asset references, init listeners
     // -----------------------------------------------------
-    private void Awake()
+    private async void Start()
     {
-        // 1) Load each category’s objects from the Editor’s AssetDatabase
-        //    (Only works in the Editor or Editor-like environment)
-        foreach (var cat in categoryConfigs)
-        {
-            cat.loadedObjects = LoadAssets<BaseObject>(cat.assetFilter);
-        }
-    }
-
-    private void Start()
-    {
-        // 2) Find references to needed controllers
+        // 1) Find references
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         inventory = FindObjectOfType<Inventory>();
         uiViewStateManager = FindObjectOfType<UIViewStateManager>();
 
-        // 3) Subscribe to UI view state changes
+        // 2) Load each category’s objects from Addressables
+        //    (assuming you used labels or addresses for each category)
+        foreach (var cat in categoryConfigs)
+        {
+            // loads all BaseObjects that share the label (or address) in cat.addressOrLabel
+            var results = await AddressablesManager.Instance.LoadMultipleAssetsAsync<BaseObject>(cat.addressOrLabel);
+            cat.loadedObjects = results != null ? new List<BaseObject>(results).ToArray() : new BaseObject[0];
+        }
+
+        // 3) Subscribe to UI events
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleCraftUi;
 
-        // 4) Initialize main menu UI
+        // 4) Initialize the UI
         SetupUI();
     }
+
 
     private void OnDestroy()
     {
