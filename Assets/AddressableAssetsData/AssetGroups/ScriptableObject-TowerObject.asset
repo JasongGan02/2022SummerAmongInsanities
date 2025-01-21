@@ -43,6 +43,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - TowerObject
+    - UtilityTowerObject
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e029c7fad2307684c81f0e443821cef6
     m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/CatapultTower.asset
@@ -57,6 +58,13 @@ MonoBehaviour:
     m_SerializedLabels:
     - TowerObject
     - RangedTowerObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b59cb1301e886845bfd594c3d51e81c
+    m_Address: Assets/ScriptableObjects/CharacterObjects/TowerObject/Chest.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TowerObject
+    - UtilityTowerObject
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}
