@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
-using static UnityEditor.Progress;
 using Image = UnityEngine.UI.Image;
-using Text = UnityEngine.UI.Text;
 using TMPro;
 using UnityEngine.UI;  // Import for Slider
 

@@ -11,13 +11,13 @@ public class ChilledWallEffectObject : EffectObject
     public float armorMultiplier;
     
     
-    public override void InitializeEffectObject()
+    public override async void InitializeEffectObject()
     {
         // Load all wall objects
-        WallObject[] walls = LoadAllAssets<WallObject>();
-        if (walls == null || walls.Length == 0)
+        var walls = await AddressablesManager.Instance.LoadMultipleAssetsAsync<WallObject>("WallObject");
+        if (walls == null || walls.Count == 0)
         {
-            Debug.LogWarning("No wall objects found.");
+            Debug.LogWarning("No wall objects found with label/key 'WallObject'.");
             return;
         }
 
@@ -33,20 +33,5 @@ public class ChilledWallEffectObject : EffectObject
                 //((IUpgradeableEffectObject)existingEffect).UpgradeLevel();
             }
         }
-    }
-
-    private T[] LoadAllAssets<T>() where T : ScriptableObject
-    {
-        string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
-        List<T> assets = new List<T>();
-
-        foreach (string guid in guids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            T asset = AssetDatabase.LoadAssetAtPath<T>(path);
-            if (asset != null) assets.Add(asset);
-        }
-
-        return assets.ToArray();
     }
 }

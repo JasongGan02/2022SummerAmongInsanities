@@ -2,9 +2,9 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
-using System.Collections.Generic;
 using UnityEditor;
 #endif
 
