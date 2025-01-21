@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -75,25 +73,6 @@ public class SpawnManager : MonoBehaviour
             GameObject dropTower = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
 
-    }
-}
-
-[CustomEditor(typeof(SpawnManager))]
-public class SpawnManagerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-
-        SpawnManager spawnManager = (SpawnManager)target;
-        if (GUILayout.Button("Spawn ramdon weapon"))
-        {
-            spawnManager.SpawnRamdonWeapon();
-        }
-        if (GUILayout.Button("Spawn debug initial ash"))
-        {
-            spawnManager.SpawnDebugInitialAsh();
-        }
     }
 }
 

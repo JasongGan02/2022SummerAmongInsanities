@@ -1,9 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
-using static UnityEditorInternal.ReorderableList;
 using System.Collections.Generic;
 
 public class DamageDisplay : MonoBehaviour
