@@ -40,9 +40,11 @@ public class TempCraftingUIManager : MonoBehaviour
 
     [FormerlySerializedAs("menuUI")]
     [Header("Core UI")]
+    [SerializeField] private GameObject CharacterUI;
     [SerializeField] private GameObject craftUI;
     [SerializeField] private GameObject craftMenuUI;
-    [SerializeField] private GameObject statsUI;
+    [SerializeField] private GameObject StatsUI;
+
 
     [Header("Tab Buttons")]
     [SerializeField] private Button tabCraftButton;
@@ -98,7 +100,7 @@ public class TempCraftingUIManager : MonoBehaviour
         uiViewStateManager.UpdateUiBeingViewedEvent += ToggleCraftUi;
 
         // 4) Initialize main menu UI
-        SetupMenuUI();
+        SetupUI();
     }
 
     private void OnDestroy()
@@ -132,10 +134,11 @@ public class TempCraftingUIManager : MonoBehaviour
     // -------------------------
     //  Top-Level Menu UI Setup
     // -------------------------
-    private void SetupMenuUI()
+    private void SetupUI()
     {
+        if (StatsUI != null) StatsUI.SetActive(false);
         if (craftUI != null) craftUI.SetActive(false);
-        if (statsUI != null) statsUI.SetActive(false);
+        if (CharacterUI != null) CharacterUI.SetActive(false);
 
         // Hide tab buttons at first
         tabCraftButton.gameObject.SetActive(false);
@@ -188,7 +191,9 @@ public class TempCraftingUIManager : MonoBehaviour
 
     private void CraftUIOn()
     {
+        if (CharacterUI != null) CharacterUI.SetActive(true);
         if (craftUI != null) craftUI.SetActive(true);
+        if (StatsUI != null) StatsUI.SetActive(false);
         tabCraftButton.gameObject.SetActive(true);
         tabStatsButton.gameObject.SetActive(true);
 
@@ -206,8 +211,9 @@ public class TempCraftingUIManager : MonoBehaviour
 
     private void CraftUIOff()
     {
+        if (CharacterUI != null) CharacterUI.SetActive(false);
         if (craftUI != null) craftUI.SetActive(false);
-        if (statsUI != null) statsUI.SetActive(false);
+        if (StatsUI != null) StatsUI.SetActive(false);
         tabCraftButton.gameObject.SetActive(false);
         tabStatsButton.gameObject.SetActive(false);
 
@@ -217,14 +223,14 @@ public class TempCraftingUIManager : MonoBehaviour
     private void ShowCraftUI()
     {
         if (craftUI != null) craftUI.SetActive(true);
-        if (statsUI != null) statsUI.SetActive(false);
+        if (StatsUI != null) StatsUI.SetActive(false);
         UpdateTabIcons(craftImage1, statsImage2);
     }
 
     private void ShowStatsUI()
     {
         if (craftUI != null) craftUI.SetActive(false);
-        if (statsUI != null) statsUI.SetActive(true);
+        if (StatsUI != null) StatsUI.SetActive(true);
         UpdateTabIcons(craftImage2, statsImage1);
     }
 
@@ -239,6 +245,7 @@ public class TempCraftingUIManager : MonoBehaviour
     // ------------------------
     public BaseObject[] RemoveEmptyRecipeItems(BaseObject[] objects)
     {
+
         if (objects == null) return null;
 
         List<BaseObject> filtered = new List<BaseObject>();
@@ -260,6 +267,12 @@ public class TempCraftingUIManager : MonoBehaviour
     // ---------------------------------------
     private void SetupCraftUI(BaseObject[] list)
     {
+        if (list == null || list.Length == 0)
+        {
+            Debug.LogError("No objects to display in the Crafting UI.");
+            return;
+        }
+
         if (craftUI == null) return;
         craftUI.SetActive(true);
 
@@ -294,7 +307,7 @@ public class TempCraftingUIManager : MonoBehaviour
 
             // Set sprite
             image.sprite = list[i].getPrefabSprite();
-
+            CoreArchitectureController coreArchitecture = FindObjectOfType<CoreArchitectureController>();
             // Dim if not craftable or out of range
             ICraftableObject craftObj = list[i] as ICraftableObject;
             if (craftObj == null || !craftObj.getIsCraftable())
@@ -370,6 +383,8 @@ public class TempCraftingUIManager : MonoBehaviour
     private void UpdateUI()
     {
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+        if (coreArchitecture == null)
+            coreArchitecture = CoreArchitectureController.Instance;
         if (craftableObject == null)
         {
             craftButton.gameObject.SetActive(false);
