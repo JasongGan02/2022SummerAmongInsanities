@@ -162,8 +162,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         // Logic for health change, e.g., update UI
     }
 
-    protected virtual void Die()
+    protected virtual async void Die()
     {
+        var deathVFX = await AddressablesManager.Instance.InstantiateAsync("Assets/Prefabs/VFX/VFXDead.prefab", transform.position, transform.rotation);
         PoolManager.Instance.Return(gameObject, characterObject);
         var effects = GetComponents<EffectController>();
         foreach (EffectController effect in effects)
