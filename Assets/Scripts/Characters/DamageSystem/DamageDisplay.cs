@@ -1,9 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
-using static UnityEditorInternal.ReorderableList;
 using System.Collections.Generic;
 
 public class DamageDisplay : MonoBehaviour
@@ -21,7 +18,7 @@ public class DamageDisplay : MonoBehaviour
     public void ShowDamage(float amount,Transform enemyTransform, float Health, IDamageSource damageSource)
     {
         DamageTextContainer = GameObject.Find("DamageTextContainer");
-        var damageTextMeshPrefab = Resources.Load<TextMeshPro>("DamageDisplay");
+        var damageTextMeshPrefab = Resources.Load<TextMeshPro>("UI/DamageDisplay");
 
         if (damageTextMeshPrefab == null)
         {

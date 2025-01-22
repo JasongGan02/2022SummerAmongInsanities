@@ -21,8 +21,7 @@ public class PlayerHPUIController : MonoBehaviour
     
     void Start()
     {
-        GameEvents.current.OnDayStarted += ChangeToSun;
-        GameEvents.current.OnNightStarted += ChangeToMoon;
+     
     }
     // Initialize references
     public void SetupUIElements()
@@ -64,31 +63,6 @@ public class PlayerHPUIController : MonoBehaviour
         // damagedHealthFadeTimer = damagedHealthFadeTimerMax;
     }
     
-    private void ChangeToSun()
-    {
-        TimeSystemUI_Base.sprite = timeUIBaseSprites[0];
-        redMoonDeco.gameObject.SetActive(false);
-    }
-
-    private void ChangeToMoon(bool isRedMoon)
-    {
-        if (isRedMoon)
-        {
-            TimeSystemUI_Base.sprite = timeUIBaseSprites[1];
-            redMoonDeco.gameObject.SetActive(true);
-        }
-        else
-        {
-            TimeSystemUI_Base.sprite = timeUIBaseSprites[0];
-            redMoonDeco.gameObject.SetActive(false);
-        }
-    }
-    
-    private void OnDestroy()
-    {
-        GameEvents.current.OnDayStarted -= ChangeToSun;
-        GameEvents.current.OnNightStarted -= ChangeToMoon;
-    }
     
     const string HPTEXT_UI_NAME = "HPText";
 }

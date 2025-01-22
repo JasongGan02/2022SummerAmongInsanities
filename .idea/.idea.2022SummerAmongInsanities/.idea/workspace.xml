@@ -6,200 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Arrow-0001.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Arrow-0001.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Bow-0001.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Bow-0001.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Bow-0002.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Bow-0002.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/EquipmentAtlas.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/EquipmentAtlas.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Spear-0001.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Spear-0001.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Stone-dagger-0001.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/Stone-dagger-0001.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Axe.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Axe.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Bow.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Bow.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Hand.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Hand.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Shovel.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Shovel.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Spear.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/Spear.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/StoneDagger.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/StoneDagger.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/weapon.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/WeaponObjects/weapon.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/bow_16x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/bow_16x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/bow_32x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/bow_32x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/composite_bow_16x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/composite_bow_16x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/composite_bow_32x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/composite_bow_32x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/desktop.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/desktop.ini.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_axe_16x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_axe_16x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_axe_32x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_axe_32x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_spear_16x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_spear_16x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_spear_32x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/iron_spear_32x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/knife.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/knife.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/stone_axe_16x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/stone_axe_16x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/stone_axe_32x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/stone_axe_32x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/wood_spear_16x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/wood_spear_16x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/wood_spear_32x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Weapons/wood_spear_32x.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/01_19_2025_Build.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/01_19_2025_Build.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Ambient.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Ambient/GearRotating.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Ambient/GearRotating.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Ambient/PlayerSelecting.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Ambient/PlayerSelecting.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/BGMs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/BGMs/DayTime.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/BGMs/DayTime.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/BGMs/NightTime.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/BGMs/NightTime.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Enemy.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Enemy/InjureEnemy.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Enemy/InjureEnemy.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/DoubleJump.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/DoubleJump.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/ItemPickUp.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/ItemPickUp.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/Jump.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/Jump.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/OpenChest.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/OpenChest.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/PlayerDeath.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/PlayerDeath.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/PlayerInjury.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/PlayerInjury.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/PlayerSteps.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/PlayerSteps.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/TileAfterBreaking.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/TileAfterBreaking.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/TileDuringBreaking.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Player/TileDuringBreaking.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/ShootArrow.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/ShootArrow.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Tower.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Tower/CatapultShoot.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Tower/CatapultShoot.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Weapon.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Weapon/BowCharge.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Weapon/BowCharge.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Weapon/WeaponAttack.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/AudioClips/Weapon/WeaponAttack.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/Ash.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/Ash.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/CharacterAtlas.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/CharacterAtlas.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Bat.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Creeper.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Creeper.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Dumb.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Lady.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/Villager.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/VillagerWithWeapon.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/bat.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/dumb.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/lady.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/villager.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/EnemyObjects/villagerWithWeapon.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/PlayerObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/PlayerObjects/Player.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/PlayerObjects/Player.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/ArcherTower.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/ArcherTower.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CatapultTower.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CatapultTower.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/Chest.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/Chest.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/TrapTower.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/TrapTower.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/StoneWall.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/StoneWall.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/WoodWall.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/WallObjects/WoodWall.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject/Iron.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject/Iron.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject/SoulObject.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject/SoulObject.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject/WoodBoard.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/DroppableObject/WoodBoard.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/EquipmentObjects/WeaponObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/ArcherTowerArrowProjectile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/ArcherTowerArrowProjectile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/CatapultProjectile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/CatapultProjectile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/LadyProjectile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/LadyProjectile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/PlayerBowProjectile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/PlayerBowProjectile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/TrapProjectile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/ProjectileObjects/TrapProjectile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/PropObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Block.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Block.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Coal.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Coal.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Dirt.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Dirt.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Gold.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Gold.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Grass.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Grass.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Grass02.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Grass02.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Iron.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Iron.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/NatureAddons.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/NatureAddons.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Stone.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Stone.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/TestLightingSource.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/TestLightingSource.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Tree.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Tree.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Village.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Village.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/VillageTest.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/VillageTest.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/WallTiles.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/UsableObject.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/UsableObject/Medicine.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/UsableObject/Medicine.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Craft/CraftingQueueManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Craft/CraftingQueueManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Craft/CraftingUIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Craft/CraftingUIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Spawn/SpawnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Spawn/SpawnManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/DamageSystem/DamageDisplay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/DamageSystem/DamageDisplay.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -257,6 +64,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Settings/FrameRateController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Spawn/ISpawnable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PlanetIconController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PlayerHPUIController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UISpriteAnimator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/UnityMainThreadDispatcher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/VFX.cs" root0="FORCE_HIGHLIGHTING" />
@@ -326,10 +134,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="31832">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="31832" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -411,6 +219,7 @@
       <workItem from="1736733351656" duration="2581000" />
       <workItem from="1736830254632" duration="13648000" />
       <workItem from="1737157109413" duration="8540000" />
+      <workItem from="1737438100256" duration="593000" />
     </task>
     <servers />
   </component>

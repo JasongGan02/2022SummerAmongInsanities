@@ -22,10 +22,10 @@ public class DetonateChargeEffectObject : EffectObject
     }
     
     
-    public override void InitializeEffectObject()
+    public override async void InitializeEffectObject()
     {
         // Apply the effect to all weapon objects
-        WeaponObject[] allWeaponObjects = LoadAllAssets<WeaponObject>();
+        var allWeaponObjects = await AddressablesManager.Instance.LoadMultipleAssetsAsync<WeaponObject>("WeaponObject");
         foreach (var weaponObject in allWeaponObjects)
         {
             if (!weaponObject.onInitializeEffects.Contains(this))
@@ -54,26 +54,5 @@ public class DetonateChargeEffectObject : EffectObject
             controller.Initialize(this);
             //Debug.Log($"Added {name} effect to weapon instance: {weapon.name}");
         }
-    }
-
-    private T[] LoadAllAssets<T>() where T : ScriptableObject
-    {
-#if UNITY_EDITOR
-        string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
-        List<T> assets = new List<T>();
-        foreach (string guid in guids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            T asset = AssetDatabase.LoadAssetAtPath<T>(path);
-            if (asset != null)
-            {
-                assets.Add(asset);
-            }
-        }
-        return assets.ToArray();
-#else
-        Debug.LogError("LoadAllAssets is only supported in the Unity Editor.");
-        return null;
-#endif
     }
 }
