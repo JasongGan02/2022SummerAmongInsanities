@@ -10,6 +10,7 @@ public class CreeperController : EnemyController
     private Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
+    private float _targetTicker = 1f;
     GameObject target;
 
     public Transform groundCheckCenter;
@@ -28,6 +29,7 @@ public class CreeperController : EnemyController
     protected override string IdleAnimationState { get; }
     protected override string AttackAnimationState { get; }
     protected override string MoveAnimationState { get; }
+    public float defaultTargetTicker = 1f;
 
     protected override void Awake()
     {
@@ -48,24 +50,32 @@ public class CreeperController : EnemyController
         if (!booming) { 
             SenseFrontBlock();
 
-            target = SearchForTargetObject();
+            // Periodically re-check for target
+            if (target == null || _targetTicker < 0)  
+            { 
+                target = SearchForTargetObject(); 
+                // Debug.Log("trying find target");
+                _targetTicker = defaultTargetTicker; 
+            }
+
             if (target == null) { patrol(); }
             else
             {
-                if (villager_sight())
+                // Debug.Log("target is " + target);
+                if (HoriDistanceToTarget(target.transform) < currentStats.attackRange && !isAttacking)
                 {
-                    if (DistanceToTarget(target.transform) < currentStats.attackRange && !isAttacking)
-                    {
-                        attack(target.transform, currentStats.attackInterval); // default:1;  lower -> faster
-                    }
-                    else if (!booming)
-                    {
-                        approach(2.0f * currentStats.movingSpeed, target.transform);
-                        flip(target.transform);
-                    }
+                    attack(target.transform, currentStats.attackInterval); // default:1;  lower -> faster
                 }
+                else if (HoriDistanceToTarget(target.transform) < enemyStats.sensingRange)
+                {
+                    approach(2.0f * currentStats.movingSpeed, target.transform);
+                    flip(target.transform);
+                }
+                
             }
         }
+        // Update tickers
+        _targetTicker -= Time.deltaTime;
     }
 
     void attack(Transform target, float waitingTime)
@@ -173,7 +183,11 @@ public class CreeperController : EnemyController
 
     void approach(float speed, Transform target)
     {
-        if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
+        if (DistanceToTarget(target.transform) < 0.5f * currentStats.attackRange)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        else if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
 

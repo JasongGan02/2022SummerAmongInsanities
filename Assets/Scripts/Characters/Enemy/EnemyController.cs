@@ -87,6 +87,11 @@ public abstract class EnemyController : CharacterController
     {
         return Vector2.Distance(transform.position, target.position);
     }
+
+    protected float HoriDistanceToTarget(Transform target)
+    {
+        return Mathf.Abs(transform.position.x - target.position.x);
+    }
     
     #region Search For Target
     protected GameObject SearchForTargetObject()
@@ -105,7 +110,7 @@ public abstract class EnemyController : CharacterController
 
         if (Hatred == null || Hatred.Count == 0)
         {
-            Debug.LogError("Hatred list is empty.");
+            // Debug.LogError("Hatred list is empty.");
             return null;
         }
 

@@ -89,7 +89,7 @@ public class VillagerWithWeaponController : EnemyController
                 {
                     ApplyDamage(target.GetComponent<CharacterController>());
                 }
-                else { Debug.Log("Distance to Target" + checkD); }
+                // else { Debug.Log("Distance to Target" + checkD); }
                 rest = true;
                 attacking_animation_timer = 0f;
                 Wait = frequency;
