@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine.Serialization;
+#endif
 
 public class RogueGraphNode : ScriptableObject
 {
@@ -17,7 +17,24 @@ public class RogueGraphNode : ScriptableObject
     public bool isRoot = false;
 
 
-    public string BlessingName // Property for 福赠名称
+  
+
+    [SerializeField]
+    public List<RogueGraphNode> childNodes = new();
+    [SerializeField]
+    public List<RogueGraphNode> parentNodes = new();
+    
+    public float GetTotalWeight()
+    {
+        return baseWeight + quality.weight;
+    }
+
+#if UNITY_EDITOR
+    [SerializeField]
+    private Rect rect;
+    private Rect headerRect;
+
+    private string BlessingName // Property for 福赠名称
     {
         get => blessingName;
         set
@@ -30,18 +47,7 @@ public class RogueGraphNode : ScriptableObject
             }
         }
     }
-    
 
-    [SerializeField]
-    public List<RogueGraphNode> childNodes = new();
-    [SerializeField]
-    public List<RogueGraphNode> parentNodes = new();
-
-#if UNITY_EDITOR
-    [SerializeField]
-    private Rect rect;
-    private Rect headerRect;
-    
     private void UpdateAssetName()
     {
         // If Unity is refreshing, defer the update
@@ -251,10 +257,7 @@ public class RogueGraphNode : ScriptableObject
         }
     }
 
-    public float GetTotalWeight()
-    {
-        return baseWeight + quality.weight;
-    }
+    
 
     private const float ConnectingLineWidth = 3f;
     private const float ConnectingLineArrowSize = 6f;

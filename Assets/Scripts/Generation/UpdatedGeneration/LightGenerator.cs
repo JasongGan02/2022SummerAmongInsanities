@@ -27,13 +27,20 @@ public class LightGenerator : MonoBehaviour
             Instance = this;
             //DontDestroyOnLoad(gameObject); // Optional: Keep instance alive across scenes
         }
+        
+        StartCoroutine(WaitForWorldGenerator());
+    }
+    private IEnumerator WaitForWorldGenerator()
+    {
+        // Wait until WorldGenerator.Instance is not null
+        while (WorldGenerator.Instance == null) yield return null;
 
         worldGenerator = WorldGenerator.Instance;
+        // Then start your coroutines or do your initialization
         // Optionally start the DataGenLoop here or allow other scripts to control when it starts
         StartCoroutine(DataGenLoop());
         StartCoroutine(PeriodicLightUpdateCoroutine());
     }
-
     private void OnDisable()
     {
          StopAllCoroutines();

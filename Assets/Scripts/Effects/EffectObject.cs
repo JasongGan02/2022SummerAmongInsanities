@@ -18,50 +18,76 @@ public abstract class EffectObject : ScriptableObject
     public bool isStackable = false;
     public bool isPermanent = false;
     public string description; 
-    public MonoScript componentToApply;
-    public MonoScript effectControllerType;
+    [Header("Select the effect controller type")]
+    // The .txt file that contains the assembly-qualified name (or short name) of the effect controller
+    [SerializeField] private TextAsset effectControllerType;
+
+    [Header("Select some other component that you want this effect to be attached")]
+    // Another .txt file that contains the type name of a component to apply
+    [SerializeField] private TextAsset componentToApplyType;
+    // -------------------------------------------------------------------
+    // PROPERTIES that wrap the logic of reading from the .txt to a System.Type
+    // -------------------------------------------------------------------
+    public virtual Type EffectControllerType => ResolveTypeFromText(effectControllerType);
+    public virtual Type ComponentToApplyType => ResolveTypeFromText(componentToApplyType);
+
     //TODO: Sprite 2DIcon, Potential VFX
     [Header("Visual Effect Settings")]
     public List<VFX> vfxList = new List<VFX>();
 
     
-    public virtual void ExecuteEffect(IEffectableController effectedGameController) //apply effect on a single object
+    public virtual void ExecuteEffect(IEffectableController effectedGameController)
     {
-        // Get the type of the EffectController to be applied
-        Type controllerType = effectControllerType?.GetClass();
+        Type controllerType = EffectControllerType;
         if (controllerType == null)
         {
             Debug.LogError("Effect controller type not set or invalid.");
             return;
         }
 
-        // Add the EffectController component to the target game object
-        EffectController effectController = (effectedGameController as MonoBehaviour).gameObject.AddComponent(controllerType) as EffectController;
+        var monoObj = effectedGameController as MonoBehaviour;
+        if (monoObj == null)
+        {
+            Debug.LogError("Effected object is not a MonoBehaviour. Can't add component.");
+            return;
+        }
+
+        EffectController effectController = 
+            monoObj.gameObject.AddComponent(controllerType) as EffectController;
 
         if (effectController != null)
         {
-            // Initialize the EffectController with this EffectObject
             effectController.Initialize(this);
         }
         else
         {
-            Debug.LogError("Failed to add the effect controller component.");
+            Debug.LogError($"Failed to add effect controller {controllerType.FullName}.");
         }
     }
 
-    
     public virtual void InitializeEffectObject()
     {
-        EffectEvents.ApplyEffect(this, GetComponentToApply());
-    }
-
-    public Type GetComponentToApply()
-    {
-        return componentToApply?.GetClass();
+        Type comp = ComponentToApplyType;
+        if (comp == null)
+        {
+            Debug.LogWarning("No componentToApply was chosen.");
+            return;
+        }
+        // Example usage
+        EffectEvents.ApplyEffect(this, comp);
     }
     
-    public Type GetEffectComponent()
+    // -------------------------------------------------------------------
+    // PRIVATE method that converts a TextAsset into a System.Type
+    // -------------------------------------------------------------------
+    private Type ResolveTypeFromText(TextAsset textAsset)
     {
-        return effectControllerType?.GetClass();
+        if (textAsset == null) return null;
+
+        string rawTypeName = textAsset.name.Trim();
+        if (string.IsNullOrEmpty(rawTypeName)) return null;
+        // Attempt to get the type by the name stored in the .txt
+        
+        return Type.GetType(rawTypeName);
     }
 }
