@@ -19,14 +19,14 @@ MonoBehaviour:
   quality: {r: 0, g: 0, b: 0, a: 0}
   durability: 99
   _maxStack: 1
-  damageCoef: 1
+  damageCoef: 0.2
   rangeCoef: 0.5
   baseDamage: 1
   baseRange: 200
   knockBack: 50
   farm: 0
   frequency: 1
-  projectileObject: {fileID: 0}
+  onInitializeEffects: []
   onHitEffects: []
   _recipe:
   - material: {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}

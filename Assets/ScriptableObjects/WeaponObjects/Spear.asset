@@ -21,11 +21,12 @@ MonoBehaviour:
   _maxStack: 1
   damageCoef: 0.1
   rangeCoef: 0.5
-  baseDamage: 1
+  baseDamage: 1.2
   baseRange: 300
   knockBack: 50
   farm: 0
   frequency: 1
+  onInitializeEffects: []
   onHitEffects: []
   _recipe:
   - material: {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}

@@ -57,7 +57,13 @@ TagManager:
   - name: DroppedObject
     uniqueID: 250587171
     locked: 0
-  - name: Characters
+  - name: Enemies
+    uniqueID: 1851361409
+    locked: 0
+  - name: Lighting
+    uniqueID: 3084399469
+    locked: 0
+  - name: Player
     uniqueID: 3122815825
     locked: 0
   - name: Partical
