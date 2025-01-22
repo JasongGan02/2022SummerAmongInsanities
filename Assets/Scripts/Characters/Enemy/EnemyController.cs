@@ -110,7 +110,7 @@ public abstract class EnemyController : CharacterController
 
         if (Hatred == null || Hatred.Count == 0)
         {
-            Debug.LogError("Hatred list is empty.");
+            // Debug.LogError("Hatred list is empty.");
             return null;
         }
 

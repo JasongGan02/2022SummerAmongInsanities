@@ -61,7 +61,7 @@ public class CreeperController : EnemyController
             if (target == null) { patrol(); }
             else
             {
-                Debug.Log("target is " + target);
+                // Debug.Log("target is " + target);
                 if (HoriDistanceToTarget(target.transform) < currentStats.attackRange && !isAttacking)
                 {
                     attack(target.transform, currentStats.attackInterval); // default:1;  lower -> faster

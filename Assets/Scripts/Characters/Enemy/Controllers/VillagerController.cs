@@ -666,7 +666,7 @@ public class VillagerController : EnemyController
             return;
         }
 
-        DrawPath();
+        // DrawPath();
 
         // Follow path
         if (_pathCounter < PathToTarget.Count)
@@ -713,7 +713,7 @@ public class VillagerController : EnemyController
             return;
         }
 
-        DrawPath();
+        // DrawPath();
 
         if (_pathCounter < PathToTarget.Count)
         {

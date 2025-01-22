@@ -136,7 +136,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 // Check if the archer can fire
                 if (canFire)
                 {
-                    Debug.Log(target);
+                    // Debug.Log(target);
                     // Fire an arrow
                     FireProjectiles(target);
 
