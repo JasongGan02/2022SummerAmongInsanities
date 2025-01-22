@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections.Generic;
 
 public class BaseObject : ScriptableObject
@@ -29,9 +31,12 @@ public class BaseObject : ScriptableObject
     {
         return prefab.GetComponent<SpriteRenderer>().sprite;
     }
+#if UNITY_EDITOR
     private void OnValidate()
     {
+        // Only run this code in the Editor
         itemName = Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(this));
     }
+#endif
 }
 

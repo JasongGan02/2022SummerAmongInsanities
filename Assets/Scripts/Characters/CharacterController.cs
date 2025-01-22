@@ -83,7 +83,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         if (targetType == this.GetType())
         {
             // Add the appropriate EffectController as defined in the EffectObject
-            Type effectControllerType = effect.GetEffectComponent(); // e.g., returns a subclass of EffectController
+            Type effectControllerType = effect.EffectControllerType; // e.g., returns a subclass of EffectController
             if (effectControllerType != null)
             {
                 EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
