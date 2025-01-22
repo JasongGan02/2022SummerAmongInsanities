@@ -18,10 +18,9 @@ MonoBehaviour:
   isStackable: 1
   isPermanent: 0
   description: "\u63D0\u9AD8<color=#FF5733>50</color>\u70B9\u6700\u5927\u751F\u547D\u503C"
-  componentToApply: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
   effectControllerType: {fileID: 11500000, guid: 2294a9200214cfc4aa7d381765f308cd, type: 3}
-  vfxPrefab: {fileID: 0}
-  attachToTarget: 1
+  componentToApplyType: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  vfxList: []
   statChanges:
     hp: 50
     armor: 0

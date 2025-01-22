@@ -18,6 +18,11 @@ MonoBehaviour:
   isStackable: 0
   isPermanent: 0
   description: "\u4F7F\u654C\u4EBA\u65E0\u6CD5\u79FB\u52A8\u548C\u653B\u51FB\uFF0C\u6301\u7EED3\u79D2\uFF0C1s\u4E4B\u5185\u4E0D\u80FD\u53E0\u52A0"
-  componentToApply: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
   effectControllerType: {fileID: 11500000, guid: cb96a2daba349454da139577f20d5375, type: 3}
+  componentToApplyType: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
+  vfxList:
+  - name: 
+    vfxPrefab: {fileID: 9086063055550096475, guid: 3a7750db5c7c92c48aeb4cee607833f9, type: 3}
+    attachAtStart: 1
+    attachToTarget: 1
   cooldownDuration: 1

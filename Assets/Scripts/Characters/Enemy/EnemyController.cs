@@ -344,17 +344,17 @@ public abstract class EnemyController : CharacterController
     {
         isRedMoonNight = isRedMoon;
 
-        // if (isRedMoonNight)
-        // {
-        //     Debug.Log($"{gameObject.name} detected a red moon night! Adjusting behavior...");
-        //     // Modify enemy behavior for red moon night (e.g., increase stats, become aggressive)
-        //     enemyStats.movingSpeed *= 1.5f;  // Example: increase movement speed
-        // }
-        // else
-        // {
-        //     Debug.Log($"{gameObject.name} detected a normal night.");
-        //     // Revert behavior adjustments for normal night
-        //     enemyStats.movingSpeed /= 1.5f;
-        // }
+        if (isRedMoonNight)
+        {
+            //Debug.Log($"{gameObject.name} detected a red moon night! Adjusting behavior...");
+            // Modify enemy behavior for red moon night (e.g., increase stats, become aggressive)
+            enemyStats.movingSpeed *= 1.5f;  // Example: increase movement speed
+        }
+        else
+        {
+            //Debug.Log($"{gameObject.name} detected a normal night.");
+            // Revert behavior adjustments for normal night
+            enemyStats.movingSpeed /= 1.5f;
+        }
     }
 }

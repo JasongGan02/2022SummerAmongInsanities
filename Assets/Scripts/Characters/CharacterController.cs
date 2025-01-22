@@ -83,7 +83,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         if (targetType == this.GetType())
         {
             // Add the appropriate EffectController as defined in the EffectObject
-            Type effectControllerType = effect.GetEffectComponent(); // e.g., returns a subclass of EffectController
+            Type effectControllerType = effect.EffectControllerType; // e.g., returns a subclass of EffectController
             if (effectControllerType != null)
             {
                 EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
@@ -162,8 +162,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         // Logic for health change, e.g., update UI
     }
 
-    protected virtual void Die()
+    protected virtual async void Die()
     {
+        var deathVFX = await AddressablesManager.Instance.InstantiateAsync("Assets/Prefabs/VFX/VFXDead.prefab", transform.position, transform.rotation);
         PoolManager.Instance.Return(gameObject, characterObject);
         var effects = GetComponents<EffectController>();
         foreach (EffectController effect in effects)
@@ -208,6 +209,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public float DamageAmount => currentStats.attackDamage;
     public float CriticalChance => currentStats.criticalChance;
     public float CriticalMultiplier => currentStats.criticalMultiplier;
+    
+    public float AttackInterval => currentStats.attackInterval;
 
     public virtual void ApplyDamage(IDamageable target)
     {
@@ -218,7 +221,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     // Implementation of IDamageable
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp);
+        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp,damageSource);
         ChangeHealth(amount);
     }
 

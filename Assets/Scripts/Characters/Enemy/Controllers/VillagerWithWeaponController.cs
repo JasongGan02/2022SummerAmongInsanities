@@ -1,33 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class VillagerWithWeaponController : EnemyController
 {
-    #region Fields and Variables
+    bool rest = false;
+    bool facingright = false;
+    float patroltime = 0f;
+    private Animator animator;
+    bool patrolToRight = true;
+    float patrolRest = 2f;
+    GameObject target;
 
-    private bool _isResting = false;
-    private bool _isFacingRight = false;
-    private bool _patrolToRight = true;
-
-    private float _patrolTime = 0f;
-    private float _patrolRest = 2f;
-    private float _attackingAnimationTimer = 0f;
-    private float _damageStartTime_0 = 0.17f;
-    private float _wait = 0.3f;
-
-    private float _targetTicker = 1f;
-    private float _pathTicker = 3f;
-    private float _chasingRemainder = 5f;
-    private float _breakObstaclesCD = 1f;
-
-    private int _pathCounter;
-
-    private Animator _animator;
-    private BoxCollider2D _boxCollider;
-
-    public List<Vector2> PathToTarget = new List<Vector2>();
-
-    [Header("Check Transforms")]
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
     public Transform groundCheckRight;
@@ -35,842 +17,278 @@ public class VillagerWithWeaponController : EnemyController
     public Transform backCheck;
     public Transform attackStart;
     public Transform attackEnd;
-    public Transform head;
-    public Transform tileDetect1;
-    public Transform tileDetect2;
-    public Transform tileDetect3;
-    public Transform tileDetect4;
-    public Transform TargetRemainder;
+    LayerMask ground_mask;
 
-    [Header("Path Visualization")]
-    public LineRenderer lineRenderer;
-    private GameObject _lineObj; // For creating a line renderer in runtime
+    private BoxCollider2D boxCollider;
 
-    [Header("Timers / Cooldowns")]
-    // Expose these for balancing; adjust as needed
-    public float defaultChasingRemainder = 5f;
-    public float defaultPathTicker = 2f;
-    public float defaultTargetTicker = 1f;
-    public float attackAnimationDuration = 0.25f; 
-    public float pathFindingRadiusExtra = 3f;
-    public float breakObstacleCDReset = 1f;
-    public float inAir = 0f;
+    private float Wait = 0.3f;
+    private float attacking_animation_timer = 0f;
+    float damage_start_time_0 = 0.30f;
 
-    #endregion
-
-    #region Animation States
-
-    protected override string IdleAnimationState => "villager_idle";
-    protected override string AttackAnimationState => "villager_attack";
-    protected override string MoveAnimationState => "villager_walk";
-
-    #endregion
-
-    #region Unity Lifecycle
+    protected override string IdleAnimationState { get; }
+    protected override string AttackAnimationState { get; }
+    protected override string MoveAnimationState { get; }
 
     protected override void Awake()
     {
         base.Awake();
-
-        // Cache references
-        _animator = GetComponent<Animator>();
-        _boxCollider = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
+        ground_mask = LayerMask.GetMask("ground");
+        groundCheckLeft = transform.Find("groundCheckLeft");
+        groundCheckCenter = transform.Find("groundCheckCenter");
+        groundCheckRight = transform.Find("groundCheckRight");
+        frontCheck = transform.Find("frontCheck");
+        backCheck = transform.Find("backCheck");
+        attackStart = transform.Find("attackStart");
+        attackEnd = transform.Find("attackEnd");
+        boxCollider = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-
-        // Automatically find child transform references if not manually assigned
-        groundCheckLeft = groundCheckLeft ?? transform.Find("groundCheckLeft");
-        groundCheckCenter = groundCheckCenter ?? transform.Find("groundCheckCenter");
-        groundCheckRight = groundCheckRight ?? transform.Find("groundCheckRight");
-        frontCheck = frontCheck ?? transform.Find("frontCheck");
-        backCheck = backCheck ?? transform.Find("backCheck");
-        attackStart = attackStart ?? transform.Find("attackStart");
-        attackEnd = attackEnd ?? transform.Find("attackEnd");
-        head = head ?? transform.Find("head");
-        tileDetect1 = tileDetect1 ?? transform.Find("tileDetect1");
-        tileDetect2 = tileDetect2 ?? transform.Find("tileDetect2");
-        tileDetect3 = tileDetect3 ?? transform.Find("tileDetect3");
-        tileDetect4 = tileDetect4 ?? transform.Find("tileDetect4");
     }
 
-    #endregion
-
-    #region Behavior Updates
-
-    /// <summary>
-    /// This is the high-level Behavior update. 
-    /// Called from EnemyController - runs every frame or on fixed intervals if you want (depending on the architecture).
-    /// </summary>
     protected override void UpdateEnemyBehavior()
     {
-        // Periodically re-check for target
-        if (target == null || _targetTicker < 0) 
-        { 
-            target = SearchForTargetObject(); 
-            // Debug.Log("trying find target");
-            _targetTicker = defaultTargetTicker; 
-        }
+        SenseFrontBlock();
 
-        // If no target in sight or memory
-        if (target == null && TargetRemainder == null) 
-        {
-            PathToTarget.Clear();
-            Patrol();
-            RemovePathLine();
-        }
-        // If no target but we still remember the last known position
-        else if (target == null && TargetRemainder != null) 
-        {
-            FinishExistingPath();
-            _chasingRemainder -= Time.deltaTime;
-        }
-        // If we have a target
+        target = SearchForTargetObject();
+        if (target == null) { patrol(); }
         else
         {
-            // Update the last known target position
-            TargetRemainder = target.transform;
-            _chasingRemainder = defaultChasingRemainder;
-
-            // If path is empty or our pathTicker has run out, re-pathfind
-            if (PathToTarget.Count == 0 || _pathTicker < 0)
+            if (villager_sight())
             {
-                PathToTarget.Clear();
-                PathFind();
-                _pathTicker = defaultPathTicker;
-            }
-            else
-            {
-                PathExecute();
-            }
-
-            // If close enough, try to attack
-            if (DistanceToTarget(target.transform) < currentStats.attackRange ||
-                target.transform.GetComponent<BreakableObjectController>() != null)
-            {
-                AttackHandler(target.transform, enemyStats.attackInterval); 
-            }
-
-            // Additional behavior: Shake player overhead if they are above or below
-            ShakePlayerOverHead();
-        }
-
-        // Update tickers
-        _pathTicker -= Time.deltaTime;
-        _targetTicker -= Time.deltaTime;
-    }
-
-    #endregion
-
-    #region Patrol / Movement
-
-    /// <summary>
-    /// Idle/Walk randomly for a short while.
-    /// </summary>
-    private void Patrol()
-    {
-        RemovePathLine();
-
-        if (_patrolTime <= 0f)
-        {
-            // Prepare for a new patrol cycle
-            _patrolRest = 2f;
-            _animator.Play("villagerWithWeapon_idle");
-            _patrolTime = UnityEngine.Random.Range(1f, 3f);
-
-            _patrolToRight = (UnityEngine.Random.Range(0f, 1f) >= 0.5f);
-        }
-        else if (_patrolRest > 0)
-        {
-            // Rest for a moment in idle
-            _patrolRest -= Time.deltaTime;
-        }
-        else
-        {
-            // Actually move
-            _animator.Play("villagerWithWeapon_walk");
-            SenseFrontBlock();
-            if (!MoveForwardDepthCheck()) return;
-
-            _patrolTime -= Time.deltaTime;
-
-            // Move either left or right
-            if (_patrolToRight)
-            {
-                rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
-                if (!_isFacingRight) Flip();
-            }
-            else
-            {
-                rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
-                if (_isFacingRight) Flip();
+                if (DistanceToTarget(target.transform) < currentStats.attackRange)
+                {
+                    attack(target.transform, 1f /  currentStats.attackInterval); // default:1;  lower -> faster
+                }
+                else
+                {
+                    approach(2.0f *  currentStats.movingSpeed, target.transform);
+                    flip(target.transform);
+                }
             }
         }
     }
 
-    /// <summary>
-    /// Simple approach function. Adjusts orientation and sets velocity.
-    /// </summary>
-    private void Approach(float speed, Transform targetTransform)
+    void attack(Transform target, float frequency)
     {
-        
-        _animator.Play("villagerWithWeapon_walk");
-
-        // Face the target
-        if ((_isFacingRight && targetTransform.position.x < transform.position.x)
-             || (!_isFacingRight && targetTransform.position.x > transform.position.x))
+        // start attack
+        if (!rest && attacking_animation_timer <= 0)
         {
-            Flip();
+            animator.Play("villagerWithWeapon_attack");
+            attacking_animation_timer = 0.3f; // Time & Speed of animation
         }
 
-        // Move left or right
-        if (targetTransform.position.x > transform.position.x)
+        // wait for attack behavior finish
+        else if (attacking_animation_timer > 0) // make sure the attack behavior animation is complete
         {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
+            attacking_animation_timer -= Time.deltaTime;
+
+            if (attacking_animation_timer < (0.3f - damage_start_time_0 + 0.03f) && attacking_animation_timer > (0.3f - damage_start_time_0 - 0.01f))
+            {
+                float checkD = Vector2.Distance(attackEnd.position, player.transform.position);
+                if (checkD < 0.95f) // hurt target successfully
+                {
+                    ApplyDamage(target.GetComponent<CharacterController>());
+                }
+                else { Debug.Log("Distance to Target" + checkD); }
+                rest = true;
+                attacking_animation_timer = 0f;
+                Wait = frequency;
+            }
+
+        }
+
+        // finished attack and wait for next, this else if should be changed to else later!
+        else if (rest)
+        {
+            if (Wait > 0)
+            {
+                Wait -= Time.deltaTime;
+                animator.Play("villagerWithWeapon_idle");
+            }
+            else
+            {
+                rest = false;
+            }
+        }
+
+        flip(target);
+    }
+
+
+    void approach(float speed, Transform target)
+    {
+        if (speed >  currentStats.movingSpeed)
+        {
+            animator.Play("villagerWithWeapon_run");
         }
         else
         {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
+            animator.Play("villagerWithWeapon_walk");
         }
+        if (MoveForwardDepthCheck() == false) { return; }
+        if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
+        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
 
     protected override void MoveTowards(Transform targetTransform)
     {
-        var direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
+        Vector2 direction = (targetTransform.position - transform.position).normalized;
+        rb.velocity = direction *  currentStats.movingSpeed;
     }
-
-    #endregion
-
-    #region Attacking
-
-    /// <summary>
-    /// Manages the full attack sequence.
-    /// </summary>
-    /// <param name="targetTransform">Transform of target</param>
-    /// <param name="attackFrequency">How quickly the next attack can happen</param>
-    private void AttackHandler(Transform targetTransform, float attackFrequency)
+    void patrol()
     {
-        if (!_isResting && _attackingAnimationTimer <= 0)
+        if (patroltime <= 0f)
         {
-            // Start the attack
-            _animator.Play("villagerWithWeapon_attack");
-            _attackingAnimationTimer = attackAnimationDuration;
-        }
-        else if (_attackingAnimationTimer > 0)
-        {
-            // Wait for the animation to reach damage frame
-            _attackingAnimationTimer -= Time.deltaTime;
-
-            // Check if time is within the damage window
-            float current = _attackingAnimationTimer;
-            float damageWindowCenter = attackAnimationDuration - _damageStartTime_0;
-
-            if (current < (damageWindowCenter + 0.03f) && current > (damageWindowCenter - 0.01f))
+            patrolRest = 2f;
+            animator.Play("villagerWithWeapon_idle");
+            patroltime = Random.Range(1f, 3f);
+            if (Random.Range(0f, 1f) < 0.5) // go left
             {
-                var breakable = targetTransform.GetComponent<IDamageable>();
-                if (breakable != null)
-                {
-                    // Breaking a destructible object
-                    ApplyDamage(breakable);
-                    EnterAttackCooldown(attackFrequency);
-                }
-                else
-                {
-                    // Possibly a player or some other character
-                    float checkD = Vector2.Distance(attackEnd.position, targetTransform.position);
-                    if (checkD < 0.75f)
-                    {
-                        var character = targetTransform.GetComponent<CharacterController>();
-                        ApplyDamage(character);
-                    }
-                    EnterAttackCooldown(attackFrequency);
-                }
+                patrolToRight = false;
+            }
+            else                          // go right
+            {
+                patrolToRight = true;
             }
         }
-        else if (_isResting)
+        else if (patrolRest > 0)
         {
-            // Once the attack is done, rest for cooldown
-            if (_wait > 0)
+            patrolRest -= Time.deltaTime;
+        }
+        else
+        {
+            animator.Play("villagerWithWeapon_walk");
+            patroltime -= Time.deltaTime;
+            if (patrolToRight)
             {
-                _wait -= Time.deltaTime;
-                _animator.Play("villagerWithWeapon_idle");
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2( currentStats.movingSpeed, rb.velocity.y);
+                    if (!facingright) { flip(); }
+                }
             }
             else
             {
-                _isResting = false;
+                if (MoveForwardDepthCheck() == true)
+                {
+                    rb.velocity = new Vector2(- currentStats.movingSpeed, rb.velocity.y);
+                    if (facingright) { flip(); }
+                }
             }
         }
-
-        // Flip orientation if needed
-        Flip(targetTransform);
     }
 
-    /// <summary>
-    /// Helper to set the villager into rest mode and reset the wait timer.
-    /// </summary>
-    private void EnterAttackCooldown(float frequency)
+    void flip(Transform target)
     {
-        _isResting = true;
-        _attackingAnimationTimer = 0f;
-        _wait = frequency;
-    }
-
-    #endregion
-
-    #region Flips / Colliders / Jump
-
-    /// <summary>
-    /// Flip based on a target transform's position.
-    /// </summary>
-    private void Flip(Transform targetTransform)
-    {
-        if (targetTransform.position.x >= transform.position.x && !_isFacingRight)
+        if (target.position.x >= transform.position.x && !facingright)
         {
-            _isFacingRight = true;
+            facingright = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
-        else if (targetTransform.position.x < transform.position.x && _isFacingRight)
+        else if (target.position.x < transform.position.x && facingright)
         {
-            _isFacingRight = false;
+            facingright = false;
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
     }
 
-    /// <summary>
-    /// Flip regardless of a target, simple toggle.
-    /// </summary>
-    private void Flip()
+    void flip()
     {
-        _isFacingRight = !_isFacingRight;
-        transform.eulerAngles = _isFacingRight ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);
+        if (facingright)
+        {
+            facingright = false;
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            facingright = true;
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
     }
-    /// <summary>
-    /// Attempt to jump over a small obstacle. 
-    /// </summary>
-    private void Jump(float horizontal)
+
+    new void SenseFrontBlock()
     {
-        // If you want horizontal velocity to carry into jump, uncomment
-        // rb.velocity = new Vector2(horizontal, currentStats.jumpForce);
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+        if (MoveForwardDepthCheck() == false) { return; }
+        headCheck();
+        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
+
         if (hitCenter.transform != null)
         {
-            rb.velocity = new Vector2(horizontal, enemyStats.jumpForce);
-        }
-    }
-
-    private bool AutoLanding(){
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
-        if (hitCenter.transform == null){
-            inAir += Time.deltaTime;
-            if (inAir > 0.9f){
-                float randomDirection = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -1f : 1f;
-                rb.velocity = new Vector2(randomDirection * enemyStats.movingSpeed * 5, -1f * rb.mass);
-                Debug.Log("auto landing");
-                return true;
+            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
+            {
+                if (hitFront.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
             }
-        }else{
-            inAir = 0f;
+            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
+            {
+                if (hitBack.transform != null)
+                {
+                    if (headCheck())
+                    {
+                        Jump();
+                    }
+                }
+            }
         }
-        return false;
     }
-
-    /// <summary>
-    /// Check if there's enough clearance above the head before jumping.
-    /// </summary>
-    private bool HeadCheck()
+    bool headCheck()
     {
         Vector3 direction = transform.TransformDirection(-Vector3.right);
-        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
-
-        if (headRay.collider != null && headRay.collider.CompareTag("ground"))
+        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
+        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
+        //Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
+        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
         {
+            return false;
+        }
+
+        return true;
+    }
+    private void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f,  currentStats.jumpForce);
+    }
+    private bool villager_sight()
+    {
+        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
+        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
+
+        //Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
+        //Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
+
+        float distance1 = Vector2.Distance(targetTop, villagerTop);
+        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
+
+        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
+        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
+        if (checkTop.collider != null &&
+            checkBottom.collider != null &&
+            checkTop.collider.gameObject.CompareTag("ground") &&
+            checkBottom.collider.gameObject.CompareTag("ground"))
+        {
+            //Debug.Log("there is ground block");
             return false;
         }
         return true;
     }
 
-    #endregion
-
-    #region Obstacle / Sensing
-
-    /// <summary>
-    /// Check for obstacles in the forward/back direction, ground checks, etc.
-    /// </summary>
-    private new void SenseFrontBlock()
+    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {
-        if (!MoveForwardDepthCheck()) return;
-        HeadCheck();
-
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
-
-        // Only do the jump logic if center is on ground
-        if (hitCenter.transform != null)
-        {
-            bool movingForward = (_isFacingRight && rb.velocity.x > 0) || (!_isFacingRight && rb.velocity.x < 0);
-            bool movingBackward = (_isFacingRight && rb.velocity.x < 0) || (!_isFacingRight && rb.velocity.x > 0);
-
-            // If blocked in the front
-            if (movingForward && hitFront.transform != null)
-            {
-                if (HeadCheck())
-                {
-                    // Debug.Log("Jumping infront of obstacle");
-                    Jump(2 * currentStats.movingSpeed);
-                }
-            }
-            // If blocked in the back
-            else if (movingBackward && hitBack.transform != null)
-            {
-                if (HeadCheck())
-                {
-                    // Debug.Log("Jumping behind obstacle");
-                    Jump(2 * currentStats.movingSpeed);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Prevent running into a big hole or abyss.
-    /// </summary>
-    private bool MoveForwardDepthCheck()
-    {
-        // Slightly forward from frontCheck
         Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
-        return (hit.collider != null);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
+        if (hit.collider != null) { return true; }
+        return false;
     }
-
-    #endregion
-
-    #region Shake Player Overhead
-
-    /// <summary>
-    /// Additional behavior that shakes the player overhead if they are basically vertical above or below the villager.
-    /// </summary>
-    private void ShakePlayerOverHead()
-    {
-        if (target == null) return;
-
-        Vector2 direction = target.transform.position - transform.position;
-        float distance = direction.magnitude;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        bool isVerticalAngle = (angle >= -95f && angle <= -85f) || (angle >= 85 && angle <= 95);
-        if (isVerticalAngle && distance < 3f)
-        {
-            // Debug.Log("Angle and distance conditions met");
-            float verticalOffset = Mathf.Abs(target.transform.position.y - transform.position.y);
-            if (verticalOffset < 2f)
-            {
-                Vector2 start = transform.position;
-                Vector2 end = target.transform.position;
-                RaycastHit2D hit = Physics2D.Raycast(start, direction.normalized, distance, groundLayerMask);
-
-                if (hit.collider == null)
-                {
-                    // Debug.Log("No obstruction detected. Applying horizontal force.");
-
-                    // Apply random horizontal force
-                    float randomForce = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -20f : 20f;
-                    rb.velocity = new Vector2(randomForce, rb.velocity.y);
-                }
-                else
-                {
-                    // Debug.Log("Obstruction detected. No horizontal force applied.");
-                }
-            }
-        }
-    }
-
-    #endregion
-
-    #region Pathfinding Methods
-
-    /// <summary>
-    /// Attempts to compute an A* path to the target. Stores points in PathToTarget.
-    /// </summary>
-    public void PathFind()
-    {
-        // Ensure there is a valid target, and we are outside attack range
-        if (target == null || DistanceToTarget(target.transform) < currentStats.attackRange)
-        {
-            PathToTarget.Clear();
-            _pathCounter = 0;
-            return;
-        }
-
-        // Get start and end positions
-        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y - 0.25f); // Adjust for collider height
-        Vector2 targetPosition = target.transform.position;
-
-        // Compute bounds with sensing range margins
-        int minX = Mathf.FloorToInt(Mathf.Min(currentPosition.x, targetPosition.x) - enemyStats.sensingRange);
-        int maxX = Mathf.FloorToInt(Mathf.Max(currentPosition.x, targetPosition.x) + enemyStats.sensingRange);
-        int minY = Mathf.FloorToInt(Mathf.Min(currentPosition.y, targetPosition.y) - enemyStats.sensingRange);
-        int maxY = Mathf.FloorToInt(Mathf.Max(currentPosition.y, targetPosition.y) + enemyStats.sensingRange);
-
-        // Grid dimensions
-        int width = maxX - minX + 1;
-        int height = maxY - minY + 1;
-
-        // Initialize health grid
-        int[,] healthGrid = InitializeHealthGrid(minX, maxX, minY, maxY, width, height, currentPosition.y);
-
-        // Convert world coordinates to grid indices
-        Vector2Int start = WorldToGridCoords(currentPosition, minX, minY);
-        Vector2Int end = WorldToGridCoords(targetPosition, minX, minY);
-
-        // Debug: log the health grid
-        Pathfinding.LogHealthGrid(healthGrid);
-
-        // Compute the A* path
-        List<Vector2Int> path = Pathfinding.AstarPath(start, end, healthGrid, width, height, minX, minY);
-
-        if (path.Count > 0)
-        {
-            int totalPathCost = Pathfinding.CalculatePathCost(path, healthGrid, minX, minY);
-            if (totalPathCost >= 99)
-            {
-                // Debug.Log("Path cost too high, clearing path.");
-                PathToTarget.Clear();
-                return;
-            }
-
-            // Convert path to world coordinates (centered)
-            PathToTarget = Pathfinding.PathPointToCenter(path);
-            _pathCounter = 0;
-        }
-        else
-        {
-            // Debug.Log("No path found.");
-        }
-    }
-
-    /// <summary>
-    /// Initializes the health grid with costs for each cell based on terrain and conditions.
-    /// </summary>
-    private int[,] InitializeHealthGrid(int minX, int maxX, int minY, int maxY, int width, int height, float currentY)
-    {
-        int[,] healthGrid = new int[width, height];
-
-        for (int y = minY; y <= maxY; y++)
-        {
-            for (int x = minX; x <= maxX; x++)
-            {
-                Vector2Int gridCoords = new Vector2Int(x - minX, y - minY);
-
-                // Determine grid cost based on terrain
-                int distanceToGround = Pathfinding.DistanceToGround(x, y);
-                if (distanceToGround > 0)
-                {
-                    // Assign costs based on proximity to the ground
-                    healthGrid[gridCoords.x, gridCoords.y] = distanceToGround <= enemyStats.jumpForce - 1 ? distanceToGround : 99;
-                }
-                else
-                {
-                    // Check for specific tile properties
-                    TileObject tile = WorldGenerator.GetDataFromWorldPos(new Vector2Int(x, y));
-                    if (tile == null)
-                    {
-                        // check if there is a wall 
-                        healthGrid[gridCoords.x, gridCoords.y] = 99; // Impassable
-                    }
-                    else if (Pathfinding.IsLadder(x, y))
-                    {
-                        healthGrid[gridCoords.x, gridCoords.y] = 1;
-                    }
-                    else if (Pathfinding.IsNeighborTileReachable(x, y))
-                    {
-                        healthGrid[gridCoords.x, gridCoords.y] = 1 + tile.getHP();
-                    }
-                    else if (y < currentY)
-                    {
-                        healthGrid[gridCoords.x, gridCoords.y] = 1 + tile.getHP();
-                    }
-                    else
-                    {
-                        healthGrid[gridCoords.x, gridCoords.y] = 99; // Impassable
-                    }
-                }
-            }
-        }
-
-        return healthGrid;
-    }
-
-    /// <summary>
-    /// Converts a world position to grid coordinates.
-    /// </summary>
-    private Vector2Int WorldToGridCoords(Vector2 position, int minX, int minY)
-    {
-        return new Vector2Int(
-            Mathf.FloorToInt(position.x) - minX,
-            Mathf.FloorToInt(position.y) - minY
-        );
-    }
-
-
-    /// <summary>
-    /// Execute path movement if needed.
-    /// </summary>
-    public void PathExecute()
-    {
-        if (AutoLanding()) {return;} // Prevent dead stacking
-        if (DistanceToTarget(target.transform) < currentStats.attackRange)
-        {
-            PathToTarget.Clear();
-            RemovePathLine();
-            _pathCounter = 0;
-            return;
-        }
-
-        DrawPath();
-
-        // Follow path
-        if (_pathCounter < PathToTarget.Count)
-        {
-            
-            if (PathToTarget[_pathCounter].y > transform.position.y){
-                Jump(enemyStats.movingSpeed);
-            }
-            BreakObstaclesByAngle(target.transform);
-            Approach(2 * currentStats.movingSpeed, target.transform);
-
-            // Move to next waypoint
-            if (CloseToLocation(PathToTarget[_pathCounter]))
-            {
-                _pathCounter++;
-            }
-        }
-        else
-        {
-            // No more waypoints, just approach directly
-            Approach(2 * currentStats.movingSpeed, target.transform);
-            PathToTarget.Clear();
-            _pathCounter = 0;
-        }
-    }
-
-    /// <summary>
-    /// Continue chasing the last known target position for a while.
-    /// </summary>
-    public void FinishExistingPath()
-    {
-        if (AutoLanding()) {return;} // Prevent dead stacking
-        if (_chasingRemainder < 0f)
-        {
-            TargetRemainder = null;
-            return;
-        }
-
-        if (DistanceToTarget(TargetRemainder) < currentStats.attackRange)
-        {
-            PathToTarget.Clear();
-            RemovePathLine();
-            _pathCounter = 0;
-            return;
-        }
-
-        DrawPath();
-
-        if (_pathCounter < PathToTarget.Count)
-        {
-            Approach(2 * currentStats.movingSpeed, TargetRemainder);
-            // SenseFrontBlock();
-            BreakObstaclesByAngle(TargetRemainder);
-
-            if (CloseToLocation(PathToTarget[_pathCounter]))
-            {
-                _pathCounter++;
-            }
-        }
-        else
-        {
-            Approach(2 * currentStats.movingSpeed, TargetRemainder);
-            PathToTarget.Clear();
-            _pathCounter = 0;
-        }
-    }
-
-    #endregion
-
-    #region Path Drawing
-
-    public void DrawPath()
-    {
-        if (lineRenderer == null)
-        {
-            // If no line renderer, create one
-            _lineObj = new GameObject("PathLine");
-            lineRenderer = _lineObj.AddComponent<LineRenderer>();
-
-            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-            lineRenderer.startColor = new Color(0.5f, 0f, 0.5f, 1f);
-            lineRenderer.endColor = new Color(0.5f, 0f, 0.5f, 1f);
-            lineRenderer.startWidth = 0.3f;
-            lineRenderer.endWidth = 0.3f;
-
-            // Setup sorting
-            _lineObj.layer = 11;
-            lineRenderer.sortingOrder = 11;
-        }
-
-        if (lineRenderer == null)
-        {
-            // Debug.LogError("LineRenderer is not initialized!");
-            return;
-        }
-
-        if (PathToTarget != null)
-        {
-            Vector3[] positions = new Vector3[PathToTarget.Count];
-            for (int i = 0; i < PathToTarget.Count; i++)
-            {
-                positions[i] = new Vector3(PathToTarget[i].x, PathToTarget[i].y, 0);
-            }
-            lineRenderer.positionCount = positions.Length;
-            lineRenderer.SetPositions(positions);
-        }
-    }
-
-    public void RemovePathLine()
-    {
-        if (_lineObj != null)
-        {
-            Destroy(_lineObj);
-            lineRenderer = null;
-        }
-    }
-
-    #endregion
-
-    #region Obstacle Breaking
-
-    /// <summary>
-    /// Pick whether we break top/bottom/horizontal obstacles by analyzing the angle to the target.
-    /// </summary>
-    private void BreakObstaclesByAngle(Transform t)
-    {
-        Vector2 direction = t.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        if (angle >= 75 && angle <= 105)
-        {
-            BreakObstacles("top");
-        }
-        else if (angle >= -105 && angle <= -75)
-        {
-            BreakObstacles("bottom");
-        }
-        else
-        {
-            BreakObstacles("horizontal");
-        }
-    }
-
-    /// <summary>
-    /// Attempt to detect breakable objects and set them as target.
-    /// </summary>
-    public void BreakObstacles(string command)
-    {
-        _breakObstaclesCD -= Time.deltaTime;
-        if (_breakObstaclesCD > 0f) return;
-
-        Vector2 directionSide = _isFacingRight ? Vector2.right : Vector2.left;
-        Vector2 directionUpSide = (_isFacingRight ? Vector2.right : Vector2.left) + Vector2.up;
-        directionUpSide.Normalize();
-
-        float rayLength = 0.05f;
-
-        switch (command)
-        {
-            case "horizontal":
-                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, directionSide, rayLength, groundLayerMask);
-                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, directionSide, rayLength, groundLayerMask);
-                if (hitTileDetect2.transform != null)
-                {
-                    var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();        // ground tile
-                    var breakable11 = hitTileDetect2.transform.GetComponent<TowerController>();                  // wall tile
-                    if (breakable1 != null)
-                    {
-                        target = breakable1.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                        return;
-                    } else if (breakable11 != null)
-                    {
-                        target = breakable11.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                        return;
-                    }
-                }
-                else if (hitTileDetect1.transform != null)
-                {
-                    var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
-                    var breakable22 = hitTileDetect1.transform.GetComponent<TowerController>();
-                    if (breakable2 != null)
-                    {
-                        target = breakable2.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                        return;
-                    } else if (breakable22 != null){
-                        target = breakable22.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                        return;
-                    }
-                }
-                break;
-
-            case "top":
-                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, directionUpSide, rayLength, groundLayerMask);
-                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, Vector2.up, rayLength, groundLayerMask);
-
-                if (hitTileDetect3.transform != null)
-                {
-                    var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
-                    if (breakable3 != null)
-                    {
-                        target = breakable3.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                        return;
-                    }
-                }
-                if (hitTileDetect4.transform != null)
-                {
-                    var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
-                    if (breakable4 != null)
-                    {
-                        target = breakable4.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                    }
-                }
-                break;
-
-            case "bottom":
-                RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, groundLayerMask);
-                if (hitTileDetect5.transform != null)
-                {
-                    var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
-                    if (breakable5 != null)
-                    {
-                        target = breakable5.gameObject;
-                        _breakObstaclesCD = breakObstacleCDReset;
-                    }
-                }
-                break;
-        }
-    }
-
-    #endregion
-
-    #region Utility
-
-    public bool CloseToLocation(Vector2 location)
-    {
-        Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
-        return Vector2.Distance(currentLoc, location) < 1.2f;
-    }
-
-    #endregion
 }

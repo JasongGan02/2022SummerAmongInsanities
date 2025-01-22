@@ -8,7 +8,7 @@ public class EffectUpgradeObject : EffectObject
     [Header("EffectUpgradeObject Fields")] 
     public EffectObject upgradeableEffectObject;
     
-    public override void ExecuteEffectOnAType()
+    public override void InitializeEffectObject()
     {
         if (upgradeableEffectObject is IUpgradeableEffectObject IUpgradeableEffectObject)
         {

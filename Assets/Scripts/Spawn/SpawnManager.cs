@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -43,6 +41,24 @@ public class SpawnManager : MonoBehaviour
         }
     }
     
+    public void SpawnDebugInitialAsh()
+    {
+        if (ash == null)
+        {
+            Debug.LogWarning("Ash object is not assigned in the SpawnManager.");
+            return;
+        }
+
+        if (coreSpawnPosition == Vector3.zero)
+        {
+            Debug.LogWarning("Core spawn position is not set.");
+            return;
+        }
+
+        GameObject spawnedAsh = ash.GetDroppedGameObject(1, coreSpawnPosition);
+        Debug.Log($"Spawned debug ash at {coreSpawnPosition}: {spawnedAsh.name}");
+    }
+
     
     IEnumerator WaitForCoreArchitectureAndDoSomething()
     {
@@ -57,27 +73,6 @@ public class SpawnManager : MonoBehaviour
             GameObject dropTower = each.GetDroppedGameObject(1, coreSpawnPosition);
         }
 
-        ash.GetDroppedGameObject(400, coreSpawnPosition);
-
-    }
-}
-
-[CustomEditor(typeof(SpawnManager))]
-public class SpawnManagerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-
-        SpawnManager spawnManager = (SpawnManager)target;
-        if (GUILayout.Button("Spawn ramdon weapon"))
-        {
-            spawnManager.SpawnRamdonWeapon();
-        }
-        if (GUILayout.Button("Spawn 10 Frags"))
-        {
-            //spawnManager.SpawnFrags(10);
-        }
     }
 }
 

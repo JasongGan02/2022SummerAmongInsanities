@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a5b4c6543b15c349aa0b30e19ef8c82, type: 3}
+  m_Name: Axe
+  m_EditorClassIdentifier: 
+  itemName: Axe
+  sizeRatio: 1
+  prefab: {fileID: 3605020804775853097, guid: 2ccaaa46a7164f546bf32e5f2f9df7e3, type: 3}
+  level: 1
+  quality: {r: 1, g: 1, b: 1, a: 0}
+  durability: 0
+  _maxStack: 1
+  damageCoef: 1.05
+  rangeCoef: 0.5
+  baseDamage: 3
+  baseRange: 200
+  knockBack: 50
+  farm: 0
+  frequency: 1
+  onInitializeEffects: []
+  onHitEffects: []
+  _recipe:
+  - material: {fileID: 11400000, guid: 3989d8550487ca14a9cb6f78b8b12dd6, type: 2}
+    quantity: 2
+  - material: {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+    quantity: 3
+  _isCraftable: 1
+  _isCoreNeeded: 1
+  _craftTime: 3

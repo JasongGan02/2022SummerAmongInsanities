@@ -17,8 +17,8 @@ MonoBehaviour:
   prefab: {fileID: 4192573540381174803, guid: 0d25f4ebb7a44476fab2cd211c647046, type: 3}
   maxStack: 64
   recipe:
-  - material: {fileID: 11400000, guid: 681c780344b4b7c44b2568bfea4222af, type: 2}
-    quantity: 1
+  - material: {fileID: 11400000, guid: 7632adf024062674f8644501144ae956, type: 2}
+    quantity: 2
   isCraftable: 1
   isCoreNeeded: 0
   craftTime: 1

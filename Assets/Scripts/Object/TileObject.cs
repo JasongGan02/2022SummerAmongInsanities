@@ -54,7 +54,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     private bool _isLit; // determine if this tile is a source of light
     
     [SerializeField]
-    private bool _isDynamic; // determine if this tile is a source of light
+    private bool _isDynamic; // determine if this tile is a source of dynamic light
 
     [Range(0f, 15f)] [SerializeField] private float _lightIntensity = 0;
 

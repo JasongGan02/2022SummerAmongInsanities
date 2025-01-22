@@ -16,8 +16,8 @@ MonoBehaviour:
   sizeRatio: 1
   prefab: {fileID: 2428287790915297841, guid: 292f7e07e0f609143bfec8555f92a6b6, type: 3}
   baseStats:
-    hp: 0
-    armor: 0
+    hp: 150
+    armor: 10
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
     jumpForce: 0
     totalJumps: 0
   maxStats:
-    hp: 0
-    armor: 0
+    hp: 150
+    armor: 10
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
   _maxStack: 64
   _recipe:
   - material: {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
-    quantity: 64
+    quantity: 5
   _isCraftable: 1
   _isCoreNeeded: 1
   _craftTime: 5
