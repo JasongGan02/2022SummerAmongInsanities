@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 69766334555454035}
   - component: {fileID: 7684390341102231388}
   - component: {fileID: 8410654040485351539}
+  - component: {fileID: 4587397875706779651}
   m_Layer: 0
   m_Name: PlayerBowArrow
   m_TagString: Untagged
@@ -138,3 +139,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipCategories: []
   spatialBlend: 1
+--- !u!114 &4587397875706779651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658926369847174377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c99deb66ec63042811c4e080d19cb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firingAngle: 45
+  speed: 20
+  gravityScale: 0.1

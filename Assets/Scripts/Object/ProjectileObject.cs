@@ -151,8 +151,7 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
         if (worldGameObject.GetComponent<ProjectileController>() == null)
         {
 
-            Type type = Type.GetType(itemName);
-            worldGameObject.AddComponent(type);
+           Debug.LogError("ProjectileController not attached at " + worldGameObject);
         }
         var controller = worldGameObject.GetComponent<DroppedObjectController>();
         if (controller != null)

@@ -27,7 +27,7 @@ public class TerrainRenderer : MonoBehaviour
             int xIndex = x;
             if (!WorldGenerator.ActiveChunks.ContainsKey(xIndex))
             {
-                Debug.Log("turn on ");
+                //Debug.Log("turn on ");
                 StartCoroutine(GeneratorInstance.CreateChunk(xIndex));
             }
         }

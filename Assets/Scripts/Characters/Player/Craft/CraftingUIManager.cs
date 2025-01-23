@@ -91,7 +91,7 @@ public class CraftingUIManager : MonoBehaviour
         foreach (var cat in categoryConfigs)
         {
             // Log the category being loaded
-            Debug.Log($"Loading category: {cat.addressOrLabel}");
+            //Debug.Log($"Loading category: {cat.addressOrLabel}");
     
             // Attempt to load assets
             var results = await AddressablesManager.Instance.LoadMultipleAssetsAsync<BaseObject>(cat.addressOrLabel);
@@ -101,7 +101,7 @@ public class CraftingUIManager : MonoBehaviour
             }
             else
             {
-                Debug.Log($"Loaded {results.Count} objects for category: {cat.addressOrLabel}");
+                //Debug.Log($"Loaded {results.Count} objects for category: {cat.addressOrLabel}");
             }
             cat.loadedObjects = results != null ? new List<BaseObject>(results).ToArray() : new BaseObject[0];
         }
@@ -155,7 +155,7 @@ public class CraftingUIManager : MonoBehaviour
     {
         if (cat.categoryButton != null)
         {
-            Debug.Log($"Setting up button for category: {cat.addressOrLabel}");
+            //Debug.Log($"Setting up button for category: {cat.addressOrLabel}");
 
             if (!buttonListeners.ContainsKey(cat.categoryButton))
             {
@@ -164,7 +164,7 @@ public class CraftingUIManager : MonoBehaviour
                 {
                     // Aggregate all items tied to this button
                     var aggregatedItems = buttonListeners[cat.categoryButton].ToArray();
-                    Debug.Log($"Showing {aggregatedItems.Length} items for shared button.");
+                    //Debug.Log($"Showing {aggregatedItems.Length} items for shared button.");
                     SetupCraftUI(aggregatedItems);
                 });
             }
@@ -281,7 +281,7 @@ public class CraftingUIManager : MonoBehaviour
             Debug.LogError("No objects to display in the Crafting UI.");
             return;
         }
-        Debug.Log($"Setting up UI for {list.Length} objects.");
+        //Debug.Log($"Setting up UI for {list.Length} objects.");
 
         if (craftUI == null) return;
         craftUI.SetActive(true);

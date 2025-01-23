@@ -14,7 +14,6 @@ public class UIViewStateManager : MonoBehaviour
     {
         currentUI = UIBeingViewed.Null;
         sacrificeStoreRogueManager = FindObjectOfType<SacrificeStoreRogueManager>();
-        Debug.Log(sacrificeStoreRogueManager);
     }
 
     // Update is called once per frame

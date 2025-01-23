@@ -47,7 +47,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
         }
         else
         {
-            Debug.Log("CoreArchitectureController successfully found.");
+            //Debug.Log("CoreArchitectureController successfully found.");
             // You can perform additional initialization here if needed
         }
     }
