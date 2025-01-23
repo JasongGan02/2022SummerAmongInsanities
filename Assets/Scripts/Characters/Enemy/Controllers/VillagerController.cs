@@ -435,7 +435,7 @@ public class VillagerController : EnemyController
     /// <summary>
     /// Check for obstacles in the forward/back direction, ground checks, etc.
     /// </summary>
-    private new void SenseFrontBlock()
+    private void SenseFrontBlock()
     {
         if (!MoveForwardDepthCheck()) return;
         HeadCheck();
