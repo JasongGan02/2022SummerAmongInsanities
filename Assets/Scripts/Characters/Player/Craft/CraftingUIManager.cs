@@ -376,16 +376,24 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftButtonClicked()
     {
-        if (selectedBaseObject == null) return;
-
-        // Attempt craft
-        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
-        if (craftableObject != null)
+        if (selectedBaseObject == null)
         {
-            craftableObject.Craft(inventory);
-            UpdateUI(); // refresh
+            Debug.LogError("CraftButtonClicked: selectedBaseObject is null!");
+            return;
         }
+
+        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+        if (craftableObject == null)
+        {
+            Debug.LogError("CraftButtonClicked: The selectedBaseObject does not implement ICraftableObject!");
+            return;
+        }
+        
+        craftableObject.Craft(inventory);
+
+        UpdateUI(); // refresh
     }
+
 
     // ---------------------
     //  Refresh UI on craft
