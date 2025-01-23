@@ -7,11 +7,11 @@ public class CreeperController : EnemyController
     bool rest = false;
     bool facingright = false;
     float patroltime = 0f;
-    private Animator animator;
+    private new Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
     private float _targetTicker = 1f;
-    GameObject target;
+    new GameObject target;
 
     public Transform groundCheckCenter;
     public Transform frontCheck;
@@ -23,7 +23,7 @@ public class CreeperController : EnemyController
     private CircleCollider2D Collider;
 
     private float Wait = 0.3f;
-    bool isAttacking = false;
+    new bool isAttacking = false;
     bool booming = false;
 
     protected override string IdleAnimationState { get; }
@@ -258,7 +258,7 @@ public class CreeperController : EnemyController
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
-    new void SenseFrontBlock()
+    void SenseFrontBlock()
     {
         headCheck();
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);

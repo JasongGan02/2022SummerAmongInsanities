@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class DumbController : EnemyController
 {
-    private Rigidbody2D rb;
+    private new Rigidbody2D rb;
     private float patrolTime = 0f;
     private bool patrolDirection = false;
-    private bool facingRight = false;
+    private new bool facingRight = false;
     private float fleeTime = 5f;
     private float CurrentHP;
     private float PrevHP;
@@ -14,7 +14,7 @@ public class DumbController : EnemyController
     private float patrolRest = 2f;
     private float hittingback = 0.3f;
 
-    private Animator animator;
+    private new Animator animator;
 
 
     public Transform frontCheck;
@@ -39,7 +39,7 @@ public class DumbController : EnemyController
         backCheck = transform.Find("backCheck");
 
     }
-    private void Start()
+    protected override void Start()
     {
         CurrentHP = currentStats.hp;
         PrevHP = currentStats.hp;
@@ -163,7 +163,7 @@ public class DumbController : EnemyController
         }
     }
 
-    new void SenseFrontBlock()
+    void SenseFrontBlock()
     {
         if(MoveForwardDepthCheck() == false) { return; }
 
