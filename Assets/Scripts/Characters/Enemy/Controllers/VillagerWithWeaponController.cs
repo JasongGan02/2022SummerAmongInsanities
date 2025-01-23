@@ -5,10 +5,10 @@ public class VillagerWithWeaponController : EnemyController
     bool rest = false;
     bool facingright = false;
     float patroltime = 0f;
-    private Animator animator;
+    private new Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
-    GameObject target;
+    new GameObject target;
 
     public Transform groundCheckLeft;
     public Transform groundCheckCenter;
@@ -206,7 +206,7 @@ public class VillagerWithWeaponController : EnemyController
         }
     }
 
-    new void SenseFrontBlock()
+    void SenseFrontBlock()
     {
         if (MoveForwardDepthCheck() == false) { return; }
         headCheck();
