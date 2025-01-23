@@ -57,7 +57,6 @@ public class MobSpawner : MonoBehaviour
 
         if (CanSpawnCategory(mobCategories[1]))
         {
-            Debug.Log("CanSpawn");
             StartCoroutine(SpawnWaveAtPoint(corePosition, (int)(waveNumber * intensityMultiplier), spawnDistance, intensityMultiplier));
         }
     }

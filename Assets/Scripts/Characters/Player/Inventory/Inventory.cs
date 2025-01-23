@@ -60,29 +60,27 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         database.RemoveItemByOne(index);
         UpdateSlotUi(index);
     }
-
- 
-
-   
-
-
+    
     public void CraftItems(CraftRecipe[] recipe, BaseObject outputItem)
     {
+
         if (queueManager.sizeCraftQueue() >= 4)
         {
+            Debug.LogError("CraftItems: Craft queue is full (>=4). Aborting craft.");
             return;
         }
 
         // First, check if all items are available in required quantities
         for (int i = 0; i < recipe.Length; i++)
         {
-            
-            if ((HasEnoughItem(recipe[i].material as IInventoryObject, recipe[i].quantity) == false))
+            // We'll log each recipe check
+
+            if (HasEnoughItem(recipe[i].material as IInventoryObject, recipe[i].quantity) == false)
             {
-                // If any item is not available in required quantity, exit the method
                 return;
             }
         }
+        
 
         // Since all items are available, consume them
         for (int i = 0; i < recipe.Length; i++)
@@ -95,28 +93,33 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
+
     private bool HasEnoughItem(IInventoryObject inventoryObject, int requiredQuantity)
     {
-        bool foundItem = false;
+        if (inventoryObject == null)
+        {
+            Debug.LogError("HasEnoughItem: inventoryObject is null!");
+            return false;
+        }
 
+        int totalFound = 0;
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-
-            if (!slot.IsEmpty && (slot.item as BaseObject) == (inventoryObject as BaseObject))
+            if (!slot.IsEmpty && 
+                slot.item is BaseObject slotBaseObj && 
+                inventoryObject is BaseObject recipeBaseObj && 
+                slotBaseObj.itemName == recipeBaseObj.itemName)
             {
-                foundItem = true;
-
-                if (requiredQuantity > slot.count)
-                {
-                    Debug.Log("Not Enough: " + slot.item.GetItemName());
-                    return false;
-                }
+                //Debug.LogError($"Found {slot.count} of {inventoryObject.GetItemName()} in slot {i}.");
+                totalFound += slot.count;
             }
         }
 
-        return foundItem;
+        //Debug.LogError($"Total found of {inventoryObject.GetItemName()} = {totalFound}, required = {requiredQuantity}");
+        return totalFound >= requiredQuantity;
     }
+
 
 
 
@@ -210,72 +213,48 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
             uiController.Upgrade();
         }
     }
-
-    //Find number of exp in inventory and return it for Inventory Upgrade and Rogue Level Up
-    public int CheckExp()
+    
+  
+    public bool ConsumeItem(IInventoryObject inventoryObject, int amountNeeded)
     {
+        if (inventoryObject == null)
+        {
+            Debug.LogError("ConsumeItem: inventoryObject is null!");
+            return false;
+        }
+
+        int remaining = amountNeeded;
+
+        // Loop over all slots, removing items until we've removed everything
         for (int i = 0; i < database.GetSize(); i++)
         {
+            if (remaining <= 0) break; // Done removing
+
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (slot != null && slot.item is AshObject)
+            if (!slot.IsEmpty && 
+                  slot.item is BaseObject slotBaseObj && 
+                  inventoryObject is BaseObject recipeBaseObj && 
+                  slotBaseObj.itemName == recipeBaseObj.itemName)
             {
-                return slot.count;
+                int canRemove = Mathf.Min(slot.count, remaining); 
+                //Debug.LogError($"ConsumeItem: Removing {canRemove} from slot {i}. (Slot had {slot.count}, need {remaining} total left)");
+                database.RemoveItemByOne(i, canRemove);
+                UpdateSlotUi(i);
+
+                remaining -= canRemove;
             }
         }
-        return 0;
-    }
 
-    public bool SpendExp(int cost)
-    {   
-        
-        for (int i = 0; i < database.GetSize(); i++)
+        if (remaining > 0)
         {
-            InventorySlot slot = database.GetInventorySlotAtIndex(i);
-   
-            if (!slot.IsEmpty && slot.item is AshObject)
-            {
-                
-                if (cost > slot.count)
-                {
-                    Debug.Log("Not Enough Divinity Fragments");
-                    return false;
-                }
-                else 
-                {
-                    database.RemoveItemByOne(i, cost);
-                    UpdateSlotUi(i);
-                    return true;
-                }
-                    
-            }
+            // We still haven't removed everything. Means we didn't have enough items across all slots.
+            //Debug.LogError($"ConsumeItem: After checking all slots, still need {remaining} more of {inventoryObject.GetItemName()}!");
+            return false;
         }
-        
-        return false;
+
+        return true;
     }
 
-    public bool ConsumeItem(IInventoryObject inventoryObject, int num)
-    {
-        for (int i = 0; i < database.GetSize(); i++)
-        {
-            InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (!slot.IsEmpty && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
-            {
-                if (num > slot.count)
-                {
-                    Debug.Log("Not Enough: " + slot.item.GetItemName());
-                    return false;
-                }
-                else
-                {
-                    database.RemoveItemByOne(i, num);
-                    UpdateSlotUi(i);
-                    return true;
-                }
-
-            }
-        }
-        return false;
-    }
 
 
     public InventorySlot FindSlot (IInventoryObject inventoryObject)

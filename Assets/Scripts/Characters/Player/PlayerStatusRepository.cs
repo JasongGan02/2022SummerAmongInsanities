@@ -13,6 +13,6 @@ public static class PlayerStatusRepository
 
     public static bool GetIsViewingUi()
     {
-        return isViewingUi;
+        return UIViewStateManager.IsViewingUI();
     }
 }
