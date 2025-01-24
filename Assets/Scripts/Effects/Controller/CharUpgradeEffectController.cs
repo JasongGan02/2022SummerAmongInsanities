@@ -18,7 +18,7 @@ public class CharUpgradeEffectController : EffectController
         CharacterController characterController = GetComponent<CharacterController>();
         if (characterController != null)
         {
-            characterController.ChangeMaxStats(upgradeEffect.statModifications);
+            characterController.AddMaxStats(upgradeEffect.statModifications);
         }
     }
 }

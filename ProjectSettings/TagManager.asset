@@ -54,8 +54,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: DroppedObject
-    uniqueID: 250587171
+  - name: Nature
+    uniqueID: 3954299929
+    locked: 0
+  - name: Towers
+    uniqueID: 1919574935
     locked: 0
   - name: Enemies
     uniqueID: 1851361409
@@ -65,6 +68,12 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3122815825
+    locked: 0
+  - name: Weapons
+    uniqueID: 3335983471
+    locked: 0
+  - name: DroppedObject
+    uniqueID: 250587171
     locked: 0
   - name: Partical
     uniqueID: 1887778779

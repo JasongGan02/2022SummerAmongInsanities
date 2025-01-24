@@ -29,7 +29,8 @@ public abstract class PickupController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         currentSpeed = initialSpeed;
-        GetComponent<SpriteRenderer>().sortingOrder = 11;
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sortingLayerID = SortingLayer.NameToID("DroppableObject");
         initialPosition = transform.position;
     }
 

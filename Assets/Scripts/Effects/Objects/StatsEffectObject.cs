@@ -9,5 +9,6 @@ public class StatsEffectObject : EffectObject
 {
     [Header("Stats Effect Object")] 
     public CharacterStats statChanges;
+    public bool isMultiply = false;
     
 }

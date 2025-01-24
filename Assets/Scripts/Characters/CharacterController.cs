@@ -189,10 +189,27 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         OnStatsChanged();
     }
 
-    public void ChangeMaxStats(CharacterStats mods)
+    public void AddMaxStats(CharacterStats mods)
     {
         characterObject.maxStats += mods;
         AddCurrentStats(mods);
+    }
+    
+    public void MultiplyMaxStats(CharacterStats mods)
+    {
+        // Backup the old max stats for reference
+        CharacterStats oldMaxStats = characterObject.maxStats.Clone();
+
+        // Apply the multiplication to max stats
+        characterObject.maxStats *= mods;
+
+        MultiplyCurrentStats(mods);
+
+        // Keep current health unchanged, but clamp it to the new max health
+        currentStats.hp = Mathf.Clamp(previousHealth, 0, characterObject.maxStats.hp);
+
+        // Notify listeners about stats change
+        OnStatsChanged();
     }
 
     protected virtual void OnStatsChanged()

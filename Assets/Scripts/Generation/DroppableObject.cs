@@ -72,7 +72,6 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
         drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
-
         return drop;
     }
     #endregion
