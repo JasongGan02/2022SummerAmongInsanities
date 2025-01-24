@@ -13,6 +13,7 @@ public class UIViewStateManager : MonoBehaviour
     void Start()
     {
         currentUI = UIBeingViewed.Null;
+        
         sacrificeStoreRogueManager = FindObjectOfType<SacrificeStoreRogueManager>();
     }
 

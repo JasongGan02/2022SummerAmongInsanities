@@ -193,7 +193,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         }
 
         worldGameObject.name = itemName;
-        if (itemName != "Block")
+        if (itemName != "UnbreakableTile" && itemName != "Block")
         {
             var controller = worldGameObject.AddComponent<BreakableObjectController>();
             controller.Initialize(this, HealthPoint, false);

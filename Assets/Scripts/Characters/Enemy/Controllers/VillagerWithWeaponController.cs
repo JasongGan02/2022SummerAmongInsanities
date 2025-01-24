@@ -53,18 +53,16 @@ public class VillagerWithWeaponController : EnemyController
         if (target == null) { patrol(); }
         else
         {
-            if (villager_sight())
+            if (DistanceToTarget(target.transform) < currentStats.attackRange)
             {
-                if (DistanceToTarget(target.transform) < currentStats.attackRange)
-                {
-                    attack(target.transform, 1f /  currentStats.attackInterval); // default:1;  lower -> faster
-                }
-                else
-                {
-                    approach(2.0f *  currentStats.movingSpeed, target.transform);
-                    flip(target.transform);
-                }
+                attack(target.transform, 1f /  currentStats.attackInterval); // default:1;  lower -> faster
             }
+            else
+            {
+                approach(2.0f *  currentStats.movingSpeed, target.transform);
+                flip(target.transform);
+            }
+            
         }
     }
 
@@ -257,33 +255,7 @@ public class VillagerWithWeaponController : EnemyController
     {
         rb.velocity = new Vector2(rb.velocity.x * 1.0f,  currentStats.jumpForce);
     }
-    private bool villager_sight()
-    {
-        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
-        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-
-        //Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
-        //Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
-
-        float distance1 = Vector2.Distance(targetTop, villagerTop);
-        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
-
-        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
-        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
-        if (checkTop.collider != null &&
-            checkBottom.collider != null &&
-            checkTop.collider.gameObject.CompareTag("ground") &&
-            checkBottom.collider.gameObject.CompareTag("ground"))
-        {
-            //Debug.Log("there is ground block");
-            return false;
-        }
-        return true;
-    }
-
+    
     private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
     {
         Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
