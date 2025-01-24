@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(menuName = "Effects/Stats")]
+[CreateAssetMenu(menuName = "Effects/Stats/Stats")]
 public class StatsEffectObject : EffectObject
 {
     [Header("Stats Effect Object")] 

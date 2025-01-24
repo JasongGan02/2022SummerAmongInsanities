@@ -87,6 +87,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
             if (effectControllerType != null)
             {
                 EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
+                Debug.Log("EffectApplied");
                 controller.Initialize(effect);
             }
         }
@@ -207,8 +208,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
 
         // Keep current health unchanged, but clamp it to the new max health
         currentStats.hp = Mathf.Clamp(previousHealth, 0, characterObject.maxStats.hp);
-
-        // Notify listeners about stats change
         OnStatsChanged();
     }
 

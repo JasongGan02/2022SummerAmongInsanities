@@ -80,7 +80,7 @@ public abstract class EffectObject : ScriptableObject
     // -------------------------------------------------------------------
     // PRIVATE method that converts a TextAsset into a System.Type
     // -------------------------------------------------------------------
-    private Type ResolveTypeFromText(TextAsset textAsset)
+    protected Type ResolveTypeFromText(TextAsset textAsset)
     {
         if (textAsset == null) return null;
 

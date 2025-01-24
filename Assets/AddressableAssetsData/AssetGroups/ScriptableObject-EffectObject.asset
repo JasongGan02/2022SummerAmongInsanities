@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObject-EffectObject
+  m_EditorClassIdentifier: 
+  m_GroupName: ScriptableObject-EffectObject
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 52171ea03284d0142ad87e3e0e986db3
+  m_SerializeEntries:
+  - m_GUID: e2f76c06e89d9434cb99c513c9f979be
+    m_Address: Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EffectObject
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8637f6d471e5570419685f24e954a246, type: 2}
+    - {fileID: 11400000, guid: 177f568e57a69d0479becba5a2b28758, type: 2}
