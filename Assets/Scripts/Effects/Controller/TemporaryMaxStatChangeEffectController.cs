@@ -12,10 +12,19 @@ public class TemporaryMaxStatChangeEffectController : StatsEffectController
             Debug.LogError("Max Stats not attached to a CC");
             return;
         }
+
+        
         if (statsEffectObject.isMultiply)
             characterController.MultiplyMaxStats(statsEffectObject.statChanges);
         else
             characterController.AddMaxStats(statsEffectObject.statChanges);
+        
+        if (characterController is EnemyController enemyController)
+        {
+            Debug.Log("RedMoon After Stats: " + enemyController + " " + enemyController.CurrentStats);   
+            
+        }
+        
     }
 
     protected override void ResetEffect()

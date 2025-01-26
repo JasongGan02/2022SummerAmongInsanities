@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/UIViewStateManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/UIViewStateManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0001.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0001.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0002.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0002.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0003.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0003.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0004.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0004.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0005.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TerrainGeneration/NatureAddons/flower-0005.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/TemporaryMaxStatChangeEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/TemporaryMaxStatChangeEffectController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +47,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectEvents.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EnemyRedMoonEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/IUpgradeableEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/IcedSpikeEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnChilledEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
@@ -224,6 +231,7 @@
       <workItem from="1737157109413" duration="8540000" />
       <workItem from="1737438100262" duration="15039000" />
       <workItem from="1737606269211" duration="5862000" />
+      <workItem from="1737752240451" duration="7511000" />
     </task>
     <servers />
   </component>
