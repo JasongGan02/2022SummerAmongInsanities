@@ -12,8 +12,10 @@ public class TemporaryMaxStatChangeEffectController : StatsEffectController
             Debug.LogError("Max Stats not attached to a CC");
             return;
         }
-        
-        characterController.ChangeMaxStats(statsEffectObject.statChanges);
+        if (statsEffectObject.isMultiply)
+            characterController.MultiplyMaxStats(statsEffectObject.statChanges);
+        else
+            characterController.AddMaxStats(statsEffectObject.statChanges);
     }
 
     protected override void ResetEffect()
@@ -26,6 +28,9 @@ public class TemporaryMaxStatChangeEffectController : StatsEffectController
             return;
         }
         
-        characterController.ChangeMaxStats(-statsEffectObject.statChanges);
+        if (statsEffectObject.isMultiply)
+            characterController.MultiplyMaxStats(statsEffectObject.statChanges.Inverse());
+        else
+            characterController.AddMaxStats(-statsEffectObject.statChanges);
     }
 }

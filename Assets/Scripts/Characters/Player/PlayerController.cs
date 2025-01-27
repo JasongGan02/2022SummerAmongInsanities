@@ -78,8 +78,9 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
         
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            DataPersistenceManager.instance.SaveGame();
-            SceneManager.LoadSceneAsync("MainMenu");
+            //TODO: TEMP DISABLE SAVING
+            //DataPersistenceManager.instance.SaveGame();
+            //SceneManager.LoadSceneAsync("MainMenu");
         }
         
         PlayerSurroundingLight();

@@ -13,7 +13,7 @@ public class LadyController : EnemyController, IRangedAttacker
 
 
     private GameObject arrow;
-    public Animator animator;
+    public new Animator animator;
     
     private float nextFire; // the time at which the archer can fire again
     private float nextMove; // the time at which the archer can fire again
@@ -26,7 +26,7 @@ public class LadyController : EnemyController, IRangedAttacker
     private bool isJump = false;
     private float distance;
 
-    public GameObject target;
+    public new GameObject target;
 
     public float patroltime = 0f;
     public float patrolRest = 2f;
@@ -40,7 +40,7 @@ public class LadyController : EnemyController, IRangedAttacker
     public Transform backCheck;
     LayerMask ground_mask;
 
-    void Start()
+    new void Start()
     {
         startPosition = transform;
         animator = GetComponent<Animator>();
@@ -136,7 +136,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 // Check if the archer can fire
                 if (canFire)
                 {
-                    Debug.Log(target);
+                    // Debug.Log(target);
                     // Fire an arrow
                     FireProjectiles(target);
 
@@ -245,7 +245,7 @@ public class LadyController : EnemyController, IRangedAttacker
         }
         return true;
     }
-    new void SenseFrontBlock()
+    void SenseFrontBlock()
     {
         if (MoveForwardDepthCheck() == false) { return; }
         headCheck();

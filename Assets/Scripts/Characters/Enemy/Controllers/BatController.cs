@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BatController : EnemyController
 {
-    private bool facingRight = false;
+    private new bool facingRight = false;
     private float waitTime;
     private Transform moveTo;
     private bool planned;
@@ -13,7 +13,7 @@ public class BatController : EnemyController
     private bool is_dashing;
     private Vector2 dash_end;
     private Vector2 stop_point;
-    private Animator animator;
+    private new Animator animator;
 
     private bool attacked;
 
@@ -21,14 +21,14 @@ public class BatController : EnemyController
     private ParticleSystem Ps;
     private float BatTimer;
 
-    private GameObject target;
+    private new GameObject target;
 
     private float startX;
     private float startY;
     private Transform GroupApproachTarget;
 
     // Start is called before the first frame update
-    protected void Start()
+    protected override void Start()
     {
         GameObject destination = new GameObject("newObject");
         moveTo = destination.transform;
@@ -135,7 +135,7 @@ public class BatController : EnemyController
         waitTime -= Time.deltaTime;
     }
 
-    new void ApproachingTarget(Transform target_transform)
+    void ApproachingTarget(Transform target_transform)
     {
         transform.position = Vector2.MoveTowards(transform.position, target_transform.position, currentStats.movingSpeed * Time.deltaTime);
         if (target_transform.position.x < transform.position.x && facingRight || target_transform.position.x > transform.position.x && !facingRight)

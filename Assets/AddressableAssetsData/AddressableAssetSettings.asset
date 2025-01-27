@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 8c713cff223b7eb4aa4a26f9a1786878
   m_CachedHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: bc410251ce2538c1547e55d0b5ead418
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -49,6 +49,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11781fb165413dc47aa17166d731e1e5, type: 2}
   - {fileID: 11400000, guid: 758bb2c7939bed84ab09f04b1bb1840d, type: 2}
   - {fileID: 11400000, guid: 6646d85deceaea04880b5172b926fccc, type: 2}
+  - {fileID: 11400000, guid: 396cefdd8660a2b4a9ca3489c9b6ef31, type: 2}
+  - {fileID: 11400000, guid: e1b7dbb2b74ed304f98c85dd72702162, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -98,6 +100,8 @@ MonoBehaviour:
     - UsableObject
     - UtilityTowerObject
     - TileObject
+    - VFX
+    - EffectObject
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 2b6c7e4698e48f947901da1940c106e7, type: 2}

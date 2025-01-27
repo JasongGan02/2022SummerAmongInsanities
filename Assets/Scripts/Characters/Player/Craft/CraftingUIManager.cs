@@ -22,7 +22,7 @@ public class CategoryConfig
     public BaseObject[] loadedObjects; // Filled at runtime
 }
 
-public class TempCraftingUIManager : MonoBehaviour
+public class CraftingUIManager : MonoBehaviour
 {
     // -----------------------
     //  Data / Dependencies
@@ -90,8 +90,19 @@ public class TempCraftingUIManager : MonoBehaviour
         //    (assuming you used labels or addresses for each category)
         foreach (var cat in categoryConfigs)
         {
-            // loads all BaseObjects that share the label (or address) in cat.addressOrLabel
+            // Log the category being loaded
+            //Debug.Log($"Loading category: {cat.addressOrLabel}");
+    
+            // Attempt to load assets
             var results = await AddressablesManager.Instance.LoadMultipleAssetsAsync<BaseObject>(cat.addressOrLabel);
+            if (results == null || results.Count == 0)
+            {
+                Debug.LogError($"No objects found for category: {cat.addressOrLabel}");
+            }
+            else
+            {
+                //Debug.Log($"Loaded {results.Count} objects for category: {cat.addressOrLabel}");
+            }
             cat.loadedObjects = results != null ? new List<BaseObject>(results).ToArray() : new BaseObject[0];
         }
 
@@ -110,69 +121,67 @@ public class TempCraftingUIManager : MonoBehaviour
             uiViewStateManager.UpdateUiBeingViewedEvent -= ToggleCraftUi;
         }
     }
-
-    // ------------------------------
-    // Generic load method by filter
-    // ------------------------------
-    private T[] LoadAssets<T>(string filter) where T : ScriptableObject
-    {
-#if UNITY_EDITOR
-        string[] guids = AssetDatabase.FindAssets(filter);
-        T[] objects = new T[guids.Length];
-        for (int i = 0; i < guids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            objects[i] = AssetDatabase.LoadAssetAtPath<T>(path);
-        }
-        return objects;
-#else
-        // In a runtime build, you'd need a different system.
-        return new T[0];
-#endif
-    }
-
+    
     // -------------------------
     //  Top-Level Menu UI Setup
     // -------------------------
     private void SetupUI()
+{
+    if (StatsUI != null) StatsUI.SetActive(false);
+    if (craftUI != null) craftUI.SetActive(false);
+    if (CharacterUI != null) CharacterUI.SetActive(false);
+
+    // Hide tab buttons at first
+    tabCraftButton.gameObject.SetActive(false);
+    tabStatsButton.gameObject.SetActive(false);
+
+    // Swap icons: default to craft tab
+    tabCraftButton.GetComponent<Image>().sprite = craftImage1;
+    tabStatsButton.GetComponent<Image>().sprite = statsImage2;
+
+    // Listen to tab button events
+    tabCraftButton.onClick.AddListener(ShowCraftUI);
+    tabStatsButton.onClick.AddListener(ShowStatsUI);
+
+    // Listen to craft button
+    craftButton.onClick.AddListener(CraftButtonClicked);
+    craftButton.gameObject.SetActive(false);
+
+    // Dictionary to track which buttons already have listeners
+    var buttonListeners = new Dictionary<Button, List<BaseObject>>();
+
+    // Now set up each category button in the UI
+    foreach (var cat in categoryConfigs)
     {
-        if (StatsUI != null) StatsUI.SetActive(false);
-        if (craftUI != null) craftUI.SetActive(false);
-        if (CharacterUI != null) CharacterUI.SetActive(false);
-
-        // Hide tab buttons at first
-        tabCraftButton.gameObject.SetActive(false);
-        tabStatsButton.gameObject.SetActive(false);
-
-        // Swap icons: default to craft tab
-        tabCraftButton.GetComponent<Image>().sprite = craftImage1;
-        tabStatsButton.GetComponent<Image>().sprite = statsImage2;
-
-        // Listen to tab button events
-        tabCraftButton.onClick.AddListener(ShowCraftUI);
-        tabStatsButton.onClick.AddListener(ShowStatsUI);
-
-        // Listen to craft button
-        craftButton.onClick.AddListener(CraftButtonClicked);
-        craftButton.gameObject.SetActive(false);
-
-        // Now set up each category button in the UI
-        // By hooking them to call SetupCraftUI
-        foreach (var cat in categoryConfigs)
+        if (cat.categoryButton != null)
         {
-            if (cat.categoryButton != null)
+            //Debug.Log($"Setting up button for category: {cat.addressOrLabel}");
+
+            if (!buttonListeners.ContainsKey(cat.categoryButton))
             {
-                // Local reference capture
-                var localCat = cat;
-                cat.categoryButton.onClick.AddListener(() => 
+                buttonListeners[cat.categoryButton] = new List<BaseObject>();
+                cat.categoryButton.onClick.AddListener(() =>
                 {
-                    // Filter out objects with empty recipes, then pass them in
-                    var filtered = RemoveEmptyRecipeItems(localCat.loadedObjects);
-                    SetupCraftUI(filtered);
+                    // Aggregate all items tied to this button
+                    var aggregatedItems = buttonListeners[cat.categoryButton].ToArray();
+                    //Debug.Log($"Showing {aggregatedItems.Length} items for shared button.");
+                    SetupCraftUI(aggregatedItems);
                 });
             }
+
+            // Add the loaded objects to the shared list
+            if (cat.loadedObjects != null)
+            {
+                buttonListeners[cat.categoryButton].AddRange(RemoveEmptyRecipeItems(cat.loadedObjects));
+            }
+        }
+        else
+        {
+            Debug.LogError($"No button assigned for category: {cat.addressOrLabel}");
         }
     }
+}
+
 
     // --------------------------------------------
     //  Show / Hide entire Craft or Stats UI logic
@@ -252,7 +261,7 @@ public class TempCraftingUIManager : MonoBehaviour
         foreach (BaseObject obj in objects)
         {
             ICraftableObject craftableObject = obj as ICraftableObject;
-            if (craftableObject != null &&
+            if (craftableObject != null && craftableObject.IsCraftable &&
                 craftableObject.getRecipe() != null &&
                 craftableObject.getRecipe().Length > 0)
             {
@@ -272,6 +281,7 @@ public class TempCraftingUIManager : MonoBehaviour
             Debug.LogError("No objects to display in the Crafting UI.");
             return;
         }
+        //Debug.Log($"Setting up UI for {list.Length} objects.");
 
         if (craftUI == null) return;
         craftUI.SetActive(true);
@@ -366,16 +376,24 @@ public class TempCraftingUIManager : MonoBehaviour
 
     private void CraftButtonClicked()
     {
-        if (selectedBaseObject == null) return;
-
-        // Attempt craft
-        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
-        if (craftableObject != null)
+        if (selectedBaseObject == null)
         {
-            craftableObject.Craft(inventory);
-            UpdateUI(); // refresh
+            Debug.LogError("CraftButtonClicked: selectedBaseObject is null!");
+            return;
         }
+
+        ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
+        if (craftableObject == null)
+        {
+            Debug.LogError("CraftButtonClicked: The selectedBaseObject does not implement ICraftableObject!");
+            return;
+        }
+        
+        craftableObject.Craft(inventory);
+
+        UpdateUI(); // refresh
     }
+
 
     // ---------------------
     //  Refresh UI on craft

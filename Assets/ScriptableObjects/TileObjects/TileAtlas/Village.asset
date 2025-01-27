@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dirt: {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
   stone: {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
-  grass: {fileID: 11400000, guid: 681c780344b4b7c44b2568bfea4222af, type: 2}
+  grass: {fileID: 11400000, guid: d22ebd23b38509042b87ba6a377de449, type: 2}
   natureAddons: {fileID: 11400000, guid: 7632adf024062674f8644501144ae956, type: 2}
   tree: {fileID: 11400000, guid: 996c4f5b911bb4a4a9bf2e18d15f8d9c, type: 2}
   coal: {fileID: 11400000, guid: ca186f7b55da4614eaf1134ae197627e, type: 2}

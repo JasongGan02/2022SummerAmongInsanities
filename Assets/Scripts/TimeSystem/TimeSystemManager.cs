@@ -19,7 +19,9 @@ public class TimeSystemManager : MonoBehaviour
     public int duskEndHour = 20; // Hour dusk ends
     public bool isDay;
     public bool isDebugDayTime = false;
-    
+    [SerializeField] private int firstDayStartHour = 8; // Default to 8 AM
+    [SerializeField] private int firstDayStartMinute = 0; // Default to 0 minutes
+
     
     private Text timeText; //hours and minutes
     private Text calendarText; //days
@@ -45,7 +47,9 @@ public class TimeSystemManager : MonoBehaviour
 
 
     private void Start()
-    {
+    { 
+        currentHour = firstDayStartHour;
+        currentMinute = firstDayStartMinute;
         if (isDebugDayTime) SetToDaytime();
         else InitializeTimeBasedOnCurrentHour();
     }

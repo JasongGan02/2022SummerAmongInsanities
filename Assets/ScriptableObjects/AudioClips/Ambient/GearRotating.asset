@@ -15,5 +15,5 @@ MonoBehaviour:
   audioName: GearRotating
   clipsWithVolume:
   - clip: {fileID: 8300000, guid: 711ef2c62ea86d143835d14e6fd02efa, type: 3}
-    volume: 0.3
+    volume: 0.055
   loop: 1

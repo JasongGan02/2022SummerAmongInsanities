@@ -87,6 +87,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
             if (effectControllerType != null)
             {
                 EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
+                Debug.Log("EffectApplied");
                 controller.Initialize(effect);
             }
         }
@@ -162,8 +163,9 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         // Logic for health change, e.g., update UI
     }
 
-    protected virtual void Die()
+    protected virtual async void Die()
     {
+        var deathVFX = await AddressablesManager.Instance.InstantiateAsync("Assets/Prefabs/VFX/VFXDead.prefab", transform.position, transform.rotation);
         PoolManager.Instance.Return(gameObject, characterObject);
         var effects = GetComponents<EffectController>();
         foreach (EffectController effect in effects)
@@ -188,10 +190,25 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         OnStatsChanged();
     }
 
-    public void ChangeMaxStats(CharacterStats mods)
+    public void AddMaxStats(CharacterStats mods)
     {
         characterObject.maxStats += mods;
         AddCurrentStats(mods);
+    }
+    
+    public void MultiplyMaxStats(CharacterStats mods)
+    {
+        // Backup the old max stats for reference
+        CharacterStats oldMaxStats = characterObject.maxStats.Clone();
+
+        // Apply the multiplication to max stats
+        characterObject.maxStats *= mods;
+
+        MultiplyCurrentStats(mods);
+
+        // Keep current health unchanged, but clamp it to the new max health
+        currentStats.hp = Mathf.Clamp(previousHealth, 0, characterObject.maxStats.hp);
+        OnStatsChanged();
     }
 
     protected virtual void OnStatsChanged()

@@ -11,7 +11,10 @@ public class PermanentMaxStatChangeEffectController : StatsEffectController
             Debug.LogError("Max Stats not attached to a CC");
             return;
         }
-        Debug.Log(statsEffectObject);
-        characterController.ChangeMaxStats(statsEffectObject.statChanges);
+
+        if (statsEffectObject.isMultiply)
+            characterController.MultiplyMaxStats(statsEffectObject.statChanges);
+        else
+            characterController.AddMaxStats(statsEffectObject.statChanges);
     }
 }

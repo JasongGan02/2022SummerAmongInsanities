@@ -18,7 +18,9 @@ MonoBehaviour:
   tileLayer: 3
   _maxStack: 99
   _healthPoint: 4
-  _drops: []
+  _drops:
+  - droppedItem: {fileID: 11400000}
+    chance: 2
   _prefabs:
   - {fileID: 7400510951586041090, guid: 97d85591df3b762468794bea93cba057, type: 3}
   - {fileID: 6658070493931298410, guid: 198414fb46f001c4b8dc2dfbc543aa21, type: 3}
@@ -26,10 +28,15 @@ MonoBehaviour:
   - {fileID: 7544069019748072705, guid: 059be93c828fc654480c2720d7d925f8, type: 3}
   - {fileID: 4584287241636241228, guid: 0317bc1605349dc4a954f1c616e6dde2, type: 3}
   _recipe: []
-  _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0
   _needsBackground: 0
   _isLit: 0
+  _isDynamic: 0
   _lightIntensity: 0
+  SpecifiedTiles: []
+  AnotherSpecifiedTiles: []
+  TargetSprite: []
+  hasSpecialFunctionality: 0
+  isGrassTile: 0

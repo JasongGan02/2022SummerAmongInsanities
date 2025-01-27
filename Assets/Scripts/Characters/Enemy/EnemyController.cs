@@ -8,7 +8,6 @@ public abstract class EnemyController : CharacterController
 {
     protected EnemyStats enemyStats => (EnemyStats)currentStats;
     protected GameObject player;
-    protected GameObject Core;
     protected Rigidbody2D rb;
     protected bool facingRight = true;
     
@@ -23,8 +22,6 @@ public abstract class EnemyController : CharacterController
     //Status variables
     public bool IsGroupAttacking { get; set; }
     public bool IsFrozen { get; set; } // Tracks if the enemy is frozen
-    private bool isRedMoonNight = false;
-    
     
     //Animation Properties
     protected abstract string IdleAnimationState { get; }
@@ -87,25 +84,18 @@ public abstract class EnemyController : CharacterController
     {
         return Vector2.Distance(transform.position, target.position);
     }
+
+    protected float HoriDistanceToTarget(Transform target)
+    {
+        return Mathf.Abs(transform.position.x - target.position.x);
+    }
     
     #region Search For Target
     protected GameObject SearchForTargetObject()
     {
-        if (isRedMoonNight)
-        {
-            if (Core == null)
-            {
-                Core = GameObject.Find("CoreArchitecture");
-            }
-            float distance = Vector2.Distance(transform.position, Core.transform.position);
-            if (distance < 20f){    // test value
-                return Core;
-            }
-        }
-
         if (Hatred == null || Hatred.Count == 0)
         {
-            Debug.LogError("Hatred list is empty.");
+            // Debug.LogError("Hatred list is empty.");
             return null;
         }
 
@@ -335,21 +325,15 @@ public abstract class EnemyController : CharacterController
         }
     }
 
-    private void HandleNightStarted(bool isRedMoon)
+    private async void HandleNightStarted(bool isRedMoon)
     {
-        isRedMoonNight = isRedMoon;
-
-        if (isRedMoonNight)
+        if (isRedMoon)
         {
-            //Debug.Log($"{gameObject.name} detected a red moon night! Adjusting behavior...");
-            // Modify enemy behavior for red moon night (e.g., increase stats, become aggressive)
-            enemyStats.movingSpeed *= 1.5f;  // Example: increase movement speed
-        }
-        else
-        {
-            //Debug.Log($"{gameObject.name} detected a normal night.");
-            // Revert behavior adjustments for normal night
-            enemyStats.movingSpeed /= 1.5f;
+            var enemyRedMoonEffect = await AddressablesManager.Instance.LoadAssetAsync<StatsEffectObject>("Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset");
+            Debug.Log("RedMoonBefore Stats: " + enemyStats.ToString());
+            enemyRedMoonEffect.ExecuteEffect(GetComponent<IEffectableController>());
+            Debug.Log("RedMoonaAfter Stats: " + enemyStats.ToString());
+            //TODO: Abstract the moveTowards(Transform) method, and set a flag here, attempt to go the position of core.
         }
     }
 }
