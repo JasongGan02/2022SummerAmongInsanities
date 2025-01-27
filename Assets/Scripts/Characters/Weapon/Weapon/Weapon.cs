@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
 
-    public float attackCycleTime => characterController.AttackInterval;
+    
     protected float windupRatio = 0.2f; 
     protected float followThroughRatio = 0.2f;
     protected float minWindupTime = 0.2f; 
@@ -33,7 +33,8 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     protected float finalDamage;
     protected float attackRange;    
     protected float knockbackForce;
-    protected float speed = 15f;
+    protected float attackInterval;
+    protected float speed = 10f;
 
     protected Vector3 idleOffset = new Vector3(0, 0f, 0);
     protected float idleBobSpeed = 2f;
@@ -46,6 +47,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
     public float CriticalMultiplier => characterController.CriticalMultiplier;
+    public float attackCycleTime => attackInterval;
 
     public virtual void Start()
     {
@@ -59,9 +61,13 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     {
         this.characterController = characterController;
         this.weaponStats = weaponObject;
+
         finalDamage = weaponObject.BaseDamage + characterController.CurrentStats.attackDamage * weaponObject.DamageCoef;
         attackRange = (weaponObject.BaseRange + characterController.CurrentStats.attackRange * weaponObject.RangeCoef) / 100;
         knockbackForce = weaponObject.KnockBack;
+        attackInterval = (weaponObject.BaseAttackSpeed + characterController.CurrentStats.attackInterval * weaponObject.AttackSpeedCoef);
+
+
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -105,10 +111,20 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
         Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
 
-        if (playerMovement != null)
+        if (targetEnemy != null)
         {
-            float angle = playerMovement.facingRight ? 270 : 90;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            Vector2 directionToEnemy = (targetEnemy.position - transform.position).normalized;
+            float angleToEnemy = Mathf.Atan2(directionToEnemy.y, directionToEnemy.x) * Mathf.Rad2Deg - 90; 
+            transform.rotation = Quaternion.Euler(0, 0, angleToEnemy);
+        }
+
+        else
+        {
+            if (playerMovement != null)
+            {
+                float angle = playerMovement.facingRight ? 270 : 90; 
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
         }
     }
 
@@ -172,6 +188,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
         }
 
         yield return StartCoroutine(ReturnToPlayer(adjustedFollowThroughTime, adjustedIntervalTime));
+        targetEnemy = null;
     }
 
     IEnumerator ReturnToPlayer(float followThroughTime, float intervalTime)

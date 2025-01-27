@@ -16,10 +16,16 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     private float rangeCoef;
 
     [SerializeField]
+    private float attackIntervalCoef;
+
+    [SerializeField]
     private float baseDamage;
 
     [SerializeField]
     private float baseRange;
+
+    [SerializeField]
+    private float baseAttackInterval;
 
     [SerializeField]
     private float knockBack;
@@ -50,6 +56,15 @@ public class WeaponObject : EquipmentObject , ICraftableObject
         get => knockBack;
     }
 
+    public float BaseAttackSpeed
+    {
+        get => baseAttackInterval;
+    }
+
+    public float AttackSpeedCoef
+    {
+        get => attackIntervalCoef;
+    }
 
 
     [SerializeField]

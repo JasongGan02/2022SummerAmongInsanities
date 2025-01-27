@@ -23,7 +23,16 @@ public class InventoryDatabase
             inventory.Add(new InventorySlot(null, 0));
         }
     }
-    
+    public InventoryDatabase(int defaultNumberOfRow,int maxExtraRow, int slotPerRow)
+    {
+        maxSize = (defaultNumberOfRow + maxExtraRow) * slotPerRow;
+        size = defaultNumberOfRow * slotPerRow;
+        for (int i = 0; i < maxSize; i++)
+        {
+            inventory.Add(new InventorySlot(null, 0));
+        }
+    }
+
     public InventoryDatabase(int defaultNumberOfRow, IInventoryObject defaultInventoryObject, int maxExtraRow)
     {
         maxSize = (defaultNumberOfRow + maxExtraRow) * slotPerRow;
