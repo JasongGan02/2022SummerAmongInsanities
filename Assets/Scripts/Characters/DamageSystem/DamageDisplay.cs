@@ -11,11 +11,11 @@ public class DamageDisplay : MonoBehaviour
     private Color RedColor = Color.red;
     private Color GreenColor = Color.green;
     private Color DefaultColor = Color.white;
-    private Dictionary<System.Type, Color> damageSourceColors = new Dictionary<System.Type, Color>();
+
+    [SerializeField] private List<DamageSourceColorMapping> damageSourceColors = new List<DamageSourceColorMapping>();
     private GameObject DamageTextContainer;
 
-
-    public void ShowDamage(float amount,Transform enemyTransform, float Health, IDamageSource damageSource)
+    public void ShowDamage(float amount, Transform enemyTransform, float Health, IDamageSource damageSource)
     {
         DamageTextContainer = GameObject.Find("DamageTextContainer");
         var damageTextMeshPrefab = Resources.Load<TextMeshPro>("UI/DamageDisplay");
@@ -25,6 +25,7 @@ public class DamageDisplay : MonoBehaviour
             Debug.LogError("Damage Text Mesh Prefab not found in Resources. Please check the path.");
             return;
         }
+
         Color damageColor = GetColorForDamageSource(damageSource);
 
         bool isPlayer = enemyTransform.CompareTag("Player");
@@ -32,10 +33,9 @@ public class DamageDisplay : MonoBehaviour
 
         TextMeshPro textMesh = Instantiate(damageTextMeshPrefab, enemyTransform.position, Quaternion.identity, DamageTextContainer.transform);
 
-
         if (amount < 0)
         {
-            textMesh.text = "+" + Mathf.Abs(Mathf.RoundToInt(amount)).ToString(); 
+            textMesh.text = "+" + Mathf.Abs(Mathf.RoundToInt(amount)).ToString();
             textMesh.color = GreenColor;
         }
         else
@@ -43,7 +43,7 @@ public class DamageDisplay : MonoBehaviour
             if (isPlayer || isTower)
             {
                 textMesh.text = "-" + Mathf.RoundToInt(amount).ToString();
-                textMesh.color = RedColor; 
+                textMesh.color = RedColor;
             }
             else
             {
@@ -52,43 +52,30 @@ public class DamageDisplay : MonoBehaviour
             }
         }
 
-
-       
-        float damageRatio = amount / Health;  
-        float minFontSize = 3f;  
-        float maxFontSize = 9f;  
+        float damageRatio = amount / Health;
+        float minFontSize = 3f;
+        float maxFontSize = 9f;
 
         textMesh.fontSize = Mathf.Lerp(minFontSize, maxFontSize, damageRatio);
 
-
         DamageTextContainer.GetComponent<MonoBehaviour>().StartCoroutine(AnimateDamageText(textMesh, enemyTransform.position));
-
-
-
     }
 
     private Color GetColorForDamageSource(IDamageSource damageSource)
     {
-        
+        if (damageSource.SourceGameObject == null)
+            return DefaultColor;
 
-        System.Type sourceType = damageSource.GetType();
-
-        if (!damageSourceColors.ContainsKey(sourceType))
+        foreach (var mapping in damageSourceColors)
         {
-            if (sourceType == typeof(OnFireEffectController))
+            if (mapping.sourceGameObject != null && mapping.sourceGameObject.GetType() == damageSource.SourceGameObject.GetType())
             {
-                damageSourceColors[sourceType] = Color.yellow; 
-            }
-            else
-            {
-                return DefaultColor;
+                return mapping.color;
             }
         }
 
-        return damageSourceColors[sourceType];
+        return DefaultColor;
     }
-
-
 
     private IEnumerator AnimateDamageText(TextMeshPro textMesh, Vector3 centerPosition)
     {
@@ -102,31 +89,28 @@ public class DamageDisplay : MonoBehaviour
         float elapsedTime = 0f;
 
         Vector3 randomStartOffset = Random.insideUnitCircle * 0.5f;
-        Vector3 randomEndOffset = Random.insideUnitCircle * 0.7f; 
+        Vector3 randomEndOffset = Random.insideUnitCircle * 0.7f;
 
         Vector3 startPos = centerPosition + randomStartOffset;
-        Vector3 floatUpPos = centerPosition + randomEndOffset + new Vector3(0, 1f, 0); 
+        Vector3 floatUpPos = centerPosition + randomEndOffset + new Vector3(0, 1f, 0);
 
         textMesh.transform.position = startPos;
 
-
         float parabolaHeight = 0.7f;
-        float parabolaDuration = appearTime + holdTime; 
+        float parabolaDuration = appearTime + holdTime;
 
- 
         while (elapsedTime < parabolaDuration)
         {
             elapsedTime += Time.deltaTime;
             float progress = elapsedTime / parabolaDuration;
-            float heightOffset = 4 * parabolaHeight * progress * (1 - progress); 
+            float heightOffset = 4 * parabolaHeight * progress * (1 - progress);
             Vector3 position = Vector3.Lerp(startPos, floatUpPos, progress);
-            position.y += heightOffset; 
+            position.y += heightOffset;
             textMesh.transform.position = position;
 
             yield return null;
         }
 
-     
         elapsedTime = 0f;
         while (elapsedTime < shrinkTime)
         {
@@ -141,11 +125,4 @@ public class DamageDisplay : MonoBehaviour
 
         Destroy(textMesh.gameObject);
     }
-
-
-
-
-
 }
-
-

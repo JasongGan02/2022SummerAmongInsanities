@@ -21,7 +21,7 @@ public class WeaponInventory : BaseInventory
     protected override void Awake()
     {
         inventoryGrid = GameObject.Find(Constants.Name.WEAPONINVENTORY_GRID);
-        database = new InventoryDatabase(1, 0); 
+        database = new InventoryDatabase(1, 0, 2); 
         uiController = new InventoryUiController(
             1,
             defaultRow, 
@@ -71,6 +71,17 @@ public class WeaponInventory : BaseInventory
             Destroy(spawnedWeapons[slotIndex]);
             spawnedWeapons.Remove(slotIndex); // Remove the entry after destruction
         }
+    }
+
+
+
+    public override void RemoveAllItemsAndDrops()
+    {
+        base.RemoveAllItemsAndDrops();
+        DestroyAllSpawnedWeapons();
+
+
+       
     }
 
     public void DestroyAllSpawnedWeapons()

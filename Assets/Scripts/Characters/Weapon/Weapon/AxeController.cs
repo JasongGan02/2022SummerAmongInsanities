@@ -15,25 +15,32 @@ public class AxeController : Weapon
 
     protected override void FollowPlayerWithFloat()
     {
-    
         idleBobTime += Time.deltaTime * idleBobSpeed;
         float bobOffset = Mathf.Sin(idleBobTime) * idleBobAmount;
 
         Vector3 targetPosition = player.transform.position + idleOffset + new Vector3(0, bobOffset, 0);
-
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
 
-        transform.rotation = Quaternion.Euler(0, 0, isLeftSide ? -45 : 45);
-        transform.localScale = new Vector3(isLeftSide ? -1 : 1, 1, 1);
-
-
-
-
+    
+        if (targetEnemy != null)
+        {
+            Vector2 directionToEnemy = (targetEnemy.position - player.transform.position).normalized;
+            transform.rotation = Quaternion.Euler(0, 0, directionToEnemy.x < 0 ? -45 : 45);
+            transform.localScale = new Vector3(directionToEnemy.x < 0 ? -1 : 1, 1, 1);
+        }
+        else
+        {
+            if (playerMovement != null)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, !playerMovement.facingRight ? -45 : 45); 
+                transform.localScale = new Vector3(!playerMovement.facingRight ? -1 : 1, 1, 1); 
+            }
+        }
     }
 
     protected override void DetectAndAttackEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange*0.8f);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);
         foreach (Collider2D hit in hits)
         {
             if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
@@ -97,7 +104,6 @@ public class AxeController : Weapon
             Vector2 offset = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad)) * attackRange;
             transform.position = playerCenter + offset;
 
-            transform.localScale = new Vector3(isLeftSide ? -1 : 1, 1, 1);
             transform.rotation = Quaternion.Euler(0, 0, currentAxeZ);
 
             yield return null;
