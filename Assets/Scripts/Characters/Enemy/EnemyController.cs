@@ -9,8 +9,10 @@ public abstract class EnemyController : CharacterController
     protected EnemyStats enemyStats => (EnemyStats)currentStats;
     protected GameObject player;
     protected Rigidbody2D rb;
-    protected bool facingRight = true;
-    
+    protected bool facingRight = false;
+    public Transform groundCheckCenter;
+    public Transform frontCheck;
+    public Transform backCheck;
     protected LayerMask groundLayerMask;
     protected LayerMask targetLayerMask;
     
@@ -88,6 +90,98 @@ public abstract class EnemyController : CharacterController
     protected float HoriDistanceToTarget(Transform target)
     {
         return Mathf.Abs(transform.position.x - target.position.x);
+    }
+
+    protected void SenseFrontBlock()
+    {
+        if (!MoveForwardDepthCheck()) return;
+        headCheck();
+
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
+        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
+
+        // Only do the jump logic if center is on ground
+        if (hitCenter.transform != null)
+        {
+            bool movingForward = (facingRight && rb.velocity.x > 0) || (!facingRight && rb.velocity.x < 0);
+            bool movingBackward = (facingRight && rb.velocity.x < 0) || (!facingRight && rb.velocity.x > 0);
+
+            // If blocked in the front
+            if (movingForward && hitFront.transform != null)
+            {
+                if (headCheck())
+                {
+                    Jump();
+                }
+            }
+            // If blocked in the back
+            else if (movingBackward && hitBack.transform != null)
+            {
+                if (headCheck())
+                {
+                    Jump();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Prevent running into a big hole or abyss.
+    /// </summary>
+    protected bool MoveForwardDepthCheck()
+    {
+        // Slightly forward from frontCheck
+        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
+        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
+        return hit.collider != null;
+    }
+    protected bool headCheck()
+    {
+        Vector3 direction = transform.TransformDirection(-Vector3.right);
+        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
+        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, groundLayerMask);
+        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
+        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
+        {
+            return false;
+        }
+
+        return true;
+    }
+    protected void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
+    }
+    protected void Flip()
+    {
+        if (facingRight)
+        {
+            facingRight = false;
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            facingRight = true;
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
+    }
+
+    /// <summary>
+    /// Flip based on a target transform's position.
+    /// </summary>
+    protected void Flip(Transform targetTransform)
+    {
+        if (targetTransform.position.x >= transform.position.x && !facingRight)
+        {
+            facingRight = true;
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (targetTransform.position.x < transform.position.x && facingRight)
+        {
+            facingRight = false;
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        }
     }
     
     #region Search For Target
@@ -221,8 +315,6 @@ public abstract class EnemyController : CharacterController
         public float DistanceSquared { get; set; }
     }
     #endregion
-
-    protected abstract void MoveTowards(Transform targetTransform);
 
     protected virtual void Approach(Vector2? targetPosition, bool isRunning)
     {

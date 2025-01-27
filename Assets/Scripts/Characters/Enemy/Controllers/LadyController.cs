@@ -10,34 +10,21 @@ public class LadyController : EnemyController, IRangedAttacker
     private Transform startPosition;
 
 
-
-
     private GameObject arrow;
     public new Animator animator;
     
     private float nextFire; // the time at which the archer can fire again
-    private float nextMove; // the time at which the archer can fire again
     private bool canFire = true; // flag to check if the archer can fire
-    private bool canMove = true;
 
-
-    private float nextJump;
-    private bool canJump = true;
-    private bool isJump = false;
-    private float distance;
 
     public new GameObject target;
 
     public float patroltime = 0f;
     public float patrolRest = 2f;
     private bool patrolToRight = false;
-    private bool facingright = false;
 
     public Transform groundCheckLeft;
-    public Transform groundCheckCenter;
     public Transform groundCheckRight;
-    public Transform frontCheck;
-    public Transform backCheck;
     LayerMask ground_mask;
 
     new void Start()
@@ -131,7 +118,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 }
             }
 
-            if (Vector2.Distance(transform.position, target.transform.position) <= currentStats.attackRange && lady_sight())
+            if (Vector2.Distance(transform.position, target.transform.position) <= currentStats.attackRange)
             {
                 // Check if the archer can fire
                 if (canFire)
@@ -191,7 +178,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 if (MoveForwardDepthCheck() == true)
                 {
                     rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
-                    if (!facingright) { flip(); }
+                    if (!facingRight) { Flip(); }
                 }
             }
             else
@@ -199,107 +186,12 @@ public class LadyController : EnemyController, IRangedAttacker
                 if (MoveForwardDepthCheck() == true)
                 {
                     rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
-                    if (facingright) { flip(); }
+                    if (facingRight) { Flip(); }
                 }
             }
         }
     }
 
-    void flip()
-    {
-        if (facingright)
-        {
-            facingright = false;
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            facingright = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }
-    }
-
-    private bool lady_sight()
-    {
-        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
-        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-
-        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
-        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
-
-        float distance1 = Vector2.Distance(targetTop, villagerTop);
-        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
-
-        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
-        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
-        if (checkTop.collider != null &&
-            checkBottom.collider != null &&
-            checkTop.collider.gameObject.CompareTag("ground") &&
-            checkBottom.collider.gameObject.CompareTag("ground"))
-        {
-            //Debug.Log("there is ground block");
-            return false;
-        }
-        return true;
-    }
-    void SenseFrontBlock()
-    {
-        if (MoveForwardDepthCheck() == false) { return; }
-        headCheck();
-        RaycastHit2D hitLeft = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitRight = Physics2D.Raycast(groundCheckRight.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
-
-        Debug.DrawRay(frontCheck.position, Vector2.left * 0.05f, Color.red); // Debug statement to display the raycast
-        Debug.DrawRay(backCheck.position, Vector2.right * 0.05f, Color.red); // Debug statement to display the raycast
-
-        if (hitCenter.transform != null)
-        {
-            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
-            {
-                if (hitFront.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump();
-                    }
-                }
-            }
-            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
-            {
-                if (hitBack.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump();
-                    }
-                }
-            }
-        }
-        //else { Debug.Log("foot in the air"); }
-    }
-    public bool headCheck()
-    {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position + new Vector3(0, -0.1f, 0);
-        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.3f, ground_mask);
-        Debug.DrawRay(origin, direction * 0.3f, Color.red);        // bottom right
-        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
-        {
-            return false;
-        }
-
-        return true;
-    }
-    private void Jump()
-    {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
-    }
     
     void approach(float speed, Transform target, float distance)
     {
@@ -323,23 +215,11 @@ public class LadyController : EnemyController, IRangedAttacker
         }
         else { animator.SetFloat("movingSpeed", 0f); }
     }
-
-    protected override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
-    }
-    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
-    {
-        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
-        if (hit.collider != null) { return true; }
-        return false;
-    }
+    
     private bool RetreatDepthCheck() // when retreat from Player, don't go to abyss
     {
         Vector2 backDepthDetector = new Vector2();
-        if (facingright)
+        if (facingRight)
         {
             backDepthDetector = new Vector2(backCheck.position.x - 0.35f, frontCheck.position.y);
         }

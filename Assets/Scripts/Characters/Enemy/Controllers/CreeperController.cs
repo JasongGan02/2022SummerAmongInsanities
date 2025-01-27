@@ -5,17 +5,13 @@ using UnityEngine;
 public class CreeperController : EnemyController
 {
     bool rest = false;
-    bool facingright = false;
+    
     float patroltime = 0f;
     private new Animator animator;
     bool patrolToRight = true;
     float patrolRest = 2f;
     private float _targetTicker = 1f;
     new GameObject target;
-
-    public Transform groundCheckCenter;
-    public Transform frontCheck;
-    public Transform backCheck;
     LayerMask ground_mask;
     LayerMask enemy_mask;
     LayerMask flyEnemy_mask;
@@ -190,12 +186,7 @@ public class CreeperController : EnemyController
         else if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
         else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
     }
-
-    protected override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
-    }
+    
     void patrol()
     {
         if (patroltime <= 0f)
@@ -223,142 +214,28 @@ public class CreeperController : EnemyController
             if (patrolToRight)
             {
                 rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
-                if (!facingright) { flip(); }
+                if (!facingRight) { Flip(); }
             }
             else
             {
                 rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
-                if (facingright) { flip(); }
+                if (facingRight) { Flip(); }
             }
         }
     }
     void flip(Transform target)
     {
-        if (target.position.x >= transform.position.x && !facingright)
+        if (target.position.x >= transform.position.x && !facingRight)
         {
-            facingright = true;
+            facingRight = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
-        else if (target.position.x < transform.position.x && facingright)
+        else if (target.position.x < transform.position.x && facingRight)
         {
-            facingright = false;
+            facingRight = false;
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
     }
-    void flip()
-    {
-        if (facingright)
-        {
-            facingright = false;
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            facingright = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }
-    }
-    void SenseFrontBlock()
-    {
-        headCheck();
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
-
-        if (hitCenter.transform != null)
-        {
-            if ((facingright && rb.velocity.x > 0) || (!facingright && rb.velocity.x < 0))
-            {
-                if (hitFront.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump();
-                    }
-                }
-            }
-            else if ((facingright && rb.velocity.x < 0) || (!facingright && rb.velocity.x > 0))
-            {
-                if (hitBack.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump();
-                    }
-                }
-            }
-        }
-    }
-    bool headCheck()
-    {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
-        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
-        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
-        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
-        {
-            return false;
-        }
-
-        return true;
-    }
-    private void Jump()
-    {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
-    }
-    private bool villager_sight()
-    {
-        Rigidbody2D targetRB = target.GetComponent<Rigidbody2D>();
-        Vector2 targetTop = targetRB.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerTop = rb.position + Vector2.up * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 targetBottom = targetRB.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-        Vector2 villagerBottom = rb.position + Vector2.down * GetComponent<Collider2D>().bounds.extents.y;
-
-        Debug.DrawRay(targetTop, villagerTop - targetTop, Color.red);   // top
-        Debug.DrawRay(targetBottom, villagerBottom - targetBottom, Color.red);   // bottom
-
-        float distance1 = Vector2.Distance(targetTop, villagerTop);
-        float distance2 = Vector2.Distance(targetBottom, villagerBottom);
-
-        RaycastHit2D checkTop = Physics2D.Raycast(targetTop, villagerTop - targetTop, distance1, ground_mask);
-        RaycastHit2D checkBottom = Physics2D.Raycast(targetBottom, villagerBottom - targetBottom, distance2, ground_mask);
-        if (checkTop.collider != null &&
-            checkBottom.collider != null &&
-            checkTop.collider.gameObject.CompareTag("ground") &&
-            checkBottom.collider.gameObject.CompareTag("ground"))
-        {
-            //Debug.Log("there is ground block");
-            return false;
-        }
-        return true;
-    }
-
-    void ChangeCollider(string status)
-    {
-        float horizontal = transform.position.x;
-        float vertical = transform.position.y;
-        if (status == "creeper_idle")
-        {
-            Collider.offset = new Vector2 { x = -0.2630091f + horizontal, y = -3.62576f + vertical };
-            Collider.radius = 9.307809f;
-        }
-        else if (status == "creeper_preBoom")
-        {
-            Collider.offset = new Vector2 { x = -0.05069017f + horizontal, y = -2.169847f + vertical };
-            Collider.radius = 8.97416f;
-        }
-        else if (status == "creeper_boom")
-        {
-            //Collider.offset = new Vector2 { x = 0.8289242f + horizontal, y = -0.1376402f + vertical };
-            //Collider.radius = 5.759026f;
-            Collider.radius = 0.1f;
-            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-        }
-        else if (status == "creeper_posBoom")
-        {
-            Collider.radius = 0f;
-            transform.localScale = new Vector3(0.4f, 0.4f, transform.localScale.z);
-            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-        }
-    }
+    
+    
 }
