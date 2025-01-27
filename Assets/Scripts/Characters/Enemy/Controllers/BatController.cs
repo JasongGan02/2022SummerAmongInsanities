@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BatController : EnemyController
 {
-    private new bool facingRight = false;
     private float waitTime;
     private Transform moveTo;
     private bool planned;
@@ -30,8 +29,7 @@ public class BatController : EnemyController
     // Start is called before the first frame update
     protected override void Start()
     {
-        GameObject destination = new GameObject("newObject");
-        moveTo = destination.transform;
+        moveTo = transform.Find("destination").transform;
         // initial moveTo
 
         waitTime = 3;
@@ -229,26 +227,6 @@ public class BatController : EnemyController
         }
     }
 
-
-    void Flip()
-    {
-        facingRight = !facingRight;
-
-        Vector3 transformScale = transform.localScale;
-        transformScale.x *= -1;
-        transform.localScale = transformScale;
-    }
-
-
-    // check for collision with player
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.name == "Player")
-        {
-            //Debug.Log("contacted");
-        }
-    }
-
     // check if two points are close enough
     bool CloseEnough(Vector2 first, Vector2 second)
     {
@@ -256,10 +234,5 @@ public class BatController : EnemyController
         return false;
     }
 
-    protected override void MoveTowards(Transform targetTransform)
-    {
-        GroupApproachTarget = targetTransform;
-        IsGroupAttacking = true;
-    }
 }
 

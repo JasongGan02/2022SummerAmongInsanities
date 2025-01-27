@@ -20,7 +20,7 @@ MonoBehaviour:
     armor: 5
     attackDamage: 10
     attackInterval: 1.2
-    attackRange: 2
+    attackRange: 1
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
@@ -46,7 +46,7 @@ MonoBehaviour:
     armor: 5
     attackDamage: 10
     attackInterval: 1.2
-    attackRange: 2
+    attackRange: 1
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
