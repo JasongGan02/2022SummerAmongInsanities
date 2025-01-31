@@ -6,7 +6,6 @@ public class VillagerController : EnemyController
     #region Fields and Variables
 
     private bool _isResting = false;
-    private bool _isFacingRight = false;
     private bool _patrolToRight = true;
 
     private float _patrolTime = 0f;
@@ -29,10 +28,7 @@ public class VillagerController : EnemyController
 
     [Header("Check Transforms")]
     public Transform groundCheckLeft;
-    public Transform groundCheckCenter;
     public Transform groundCheckRight;
-    public Transform frontCheck;
-    public Transform backCheck;
     public Transform attackStart;
     public Transform attackEnd;
     public Transform head;
@@ -198,12 +194,12 @@ public class VillagerController : EnemyController
             if (_patrolToRight)
             {
                 rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
-                if (!_isFacingRight) Flip();
+                if (!facingRight) Flip();
             }
             else
             {
                 rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
-                if (_isFacingRight) Flip();
+                if (facingRight) Flip();
             }
         }
     }
@@ -223,8 +219,8 @@ public class VillagerController : EnemyController
         }
 
         // Face the target
-        if ((_isFacingRight && targetTransform.position.x < transform.position.x)
-             || (!_isFacingRight && targetTransform.position.x > transform.position.x))
+        if ((facingRight && targetTransform.position.x < transform.position.x)
+             || (!facingRight && targetTransform.position.x > transform.position.x))
         {
             Flip();
         }
@@ -238,12 +234,6 @@ public class VillagerController : EnemyController
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
-    }
-
-    protected override void MoveTowards(Transform targetTransform)
-    {
-        var direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
     }
 
     #endregion
@@ -327,32 +317,6 @@ public class VillagerController : EnemyController
     #region Flips / Colliders / Jump
 
     /// <summary>
-    /// Flip based on a target transform's position.
-    /// </summary>
-    private void Flip(Transform targetTransform)
-    {
-        if (targetTransform.position.x >= transform.position.x && !_isFacingRight)
-        {
-            _isFacingRight = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }
-        else if (targetTransform.position.x < transform.position.x && _isFacingRight)
-        {
-            _isFacingRight = false;
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-    }
-
-    /// <summary>
-    /// Flip regardless of a target, simple toggle.
-    /// </summary>
-    private void Flip()
-    {
-        _isFacingRight = !_isFacingRight;
-        transform.eulerAngles = _isFacingRight ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);
-    }
-
-    /// <summary>
     /// Update the collider shape if idle vs. moving vs. crouching, etc.
     /// </summary>
     private void UpdateColliderBasedOnAnimation()
@@ -413,21 +377,6 @@ public class VillagerController : EnemyController
         return false;
     }
 
-    /// <summary>
-    /// Check if there's enough clearance above the head before jumping.
-    /// </summary>
-    private bool HeadCheck()
-    {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        RaycastHit2D headRay = Physics2D.Raycast(head.position, direction, 0.34f, groundLayerMask);
-
-        if (headRay.collider != null && headRay.collider.CompareTag("ground"))
-        {
-            return false;
-        }
-        return true;
-    }
-
     #endregion
 
     #region Obstacle / Sensing
@@ -435,52 +384,7 @@ public class VillagerController : EnemyController
     /// <summary>
     /// Check for obstacles in the forward/back direction, ground checks, etc.
     /// </summary>
-    private void SenseFrontBlock()
-    {
-        if (!MoveForwardDepthCheck()) return;
-        HeadCheck();
-
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, groundLayerMask);
-
-        // Only do the jump logic if center is on ground
-        if (hitCenter.transform != null)
-        {
-            bool movingForward = (_isFacingRight && rb.velocity.x > 0) || (!_isFacingRight && rb.velocity.x < 0);
-            bool movingBackward = (_isFacingRight && rb.velocity.x < 0) || (!_isFacingRight && rb.velocity.x > 0);
-
-            // If blocked in the front
-            if (movingForward && hitFront.transform != null)
-            {
-                if (HeadCheck())
-                {
-                    // Debug.Log("Jumping infront of obstacle");
-                    Jump(2 * currentStats.movingSpeed);
-                }
-            }
-            // If blocked in the back
-            else if (movingBackward && hitBack.transform != null)
-            {
-                if (HeadCheck())
-                {
-                    // Debug.Log("Jumping behind obstacle");
-                    Jump(2 * currentStats.movingSpeed);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Prevent running into a big hole or abyss.
-    /// </summary>
-    private bool MoveForwardDepthCheck()
-    {
-        // Slightly forward from frontCheck
-        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
-        return (hit.collider != null);
-    }
+    
 
     #endregion
 
@@ -818,8 +722,8 @@ public class VillagerController : EnemyController
         _breakObstaclesCD -= Time.deltaTime;
         if (_breakObstaclesCD > 0f) return;
 
-        Vector2 directionSide = _isFacingRight ? Vector2.right : Vector2.left;
-        Vector2 directionUpSide = (_isFacingRight ? Vector2.right : Vector2.left) + Vector2.up;
+        Vector2 directionSide = facingRight ? Vector2.right : Vector2.left;
+        Vector2 directionUpSide = (facingRight ? Vector2.right : Vector2.left) + Vector2.up;
         directionUpSide.Normalize();
 
         float rayLength = 0.05f;

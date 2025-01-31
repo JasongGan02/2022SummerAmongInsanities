@@ -6,7 +6,6 @@ public class DumbController : EnemyController
     private new Rigidbody2D rb;
     private float patrolTime = 0f;
     private bool patrolDirection = false;
-    private new bool facingRight = false;
     private float fleeTime = 5f;
     private float CurrentHP;
     private float PrevHP;
@@ -15,12 +14,6 @@ public class DumbController : EnemyController
     private float hittingback = 0.3f;
 
     private new Animator animator;
-
-
-    public Transform frontCheck;
-    public Transform groundCheckCenter;
-    public Transform backCheck;
-    LayerMask ground_mask;
 
 
     // Start is called before the first frame update
@@ -33,11 +26,9 @@ public class DumbController : EnemyController
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        ground_mask = LayerMask.GetMask("ground");
         groundCheckCenter = transform.Find("groundCheckCenter");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
-
     }
     protected override void Start()
     {
@@ -100,35 +91,23 @@ public class DumbController : EnemyController
         {
             animator.Play("dumb_walk");
             patrolTime -= Time.deltaTime;
-            if (patrolDirection)
+            
+            if (patrolDirection)    // walk to right side
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
-                    if (!facingRight) { flip(); }
+                    rb.velocity = new Vector2(enemyStats.movingSpeed, rb.velocity.y);
+                    if (!facingRight) { Flip(); Debug.Log("dumb idle walk Turn right");}
                 }
             }
-            else
+            else                    // walk to left side
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
-                    if (facingRight) { flip(); }
+                    rb.velocity = new Vector2(-enemyStats.movingSpeed, rb.velocity.y);
+                    if (facingRight) { Flip(); Debug.Log("dumb idle walk Turn left");}
                 }
             }
-        }
-    }
-    void flip()
-    {
-        if (facingRight)
-        {
-            facingRight = false;
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            facingRight = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
     void flee()
@@ -143,7 +122,7 @@ public class DumbController : EnemyController
                 if (MoveForwardDepthCheck())
                 {
                     rb.velocity = new Vector2(currentStats.movingSpeed * -2, rb.velocity.y);
-                    if (facingRight) { flip(); }
+                    if (facingRight) { Flip(); }
                 }
             }
             else
@@ -151,7 +130,7 @@ public class DumbController : EnemyController
                 if (MoveForwardDepthCheck())
                 {
                     rb.velocity = new Vector2(currentStats.movingSpeed * 2, rb.velocity.y);
-                    if (!facingRight) { flip(); }
+                    if (!facingRight) { Flip(); }
                 }
             }
         }
@@ -161,71 +140,5 @@ public class DumbController : EnemyController
             fleeTime = 5f;
             isFleeing = false;
         }
-    }
-
-    void SenseFrontBlock()
-    {
-        if(MoveForwardDepthCheck() == false) { return; }
-
-        headCheck();
-        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, ground_mask);
-        RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, ground_mask);
-        RaycastHit2D hitBack = Physics2D.Raycast(backCheck.position, Vector2.right, 0.1f, ground_mask);
-
-        if (hitCenter.transform != null)
-        {
-            if ((facingRight && rb.velocity.x > 0) || (!facingRight && rb.velocity.x < 0))
-            {
-                if (hitFront.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump();
-                    }
-                }
-            }
-            else if ((facingRight && rb.velocity.x < 0) || (!facingRight && rb.velocity.x > 0))
-            {
-                if (hitBack.transform != null)
-                {
-                    if (headCheck())
-                    {
-                        Jump();
-                    }
-                }
-            }
-        }
-
-    }
-    bool headCheck()
-    {
-        Vector3 direction = transform.TransformDirection(-Vector3.right);
-        Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
-        RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, ground_mask);
-        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
-        if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
-        {
-            return false;
-        }
-
-        return true;
-    }
-    private void Jump()
-    {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
-    }
-
-    private bool MoveForwardDepthCheck() // when walking forward, don't go to abyss
-    {
-        Vector2 frontDepthDetector = new Vector2(frontCheck.position.x + 0.35f, frontCheck.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, ground_mask);
-        if (hit.collider != null) { return true; }
-        return false;
-    }
-
-    protected override void MoveTowards(Transform targetTransform)
-    {
-        Vector2 direction = (targetTransform.position - transform.position).normalized;
-        rb.velocity = direction * currentStats.movingSpeed;
     }
 }

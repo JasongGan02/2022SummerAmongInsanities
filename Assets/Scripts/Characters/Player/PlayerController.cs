@@ -120,8 +120,6 @@ public class PlayerController : CharacterController, IDataPersistence, IAudioabl
             WeaponInventory weaponInventory = Array.Find(Resources.FindObjectsOfTypeAll<WeaponInventory>(), w => w.gameObject.activeInHierarchy || !w.gameObject.activeInHierarchy);
             inventory.RemoveAllItemsAndDrops();
             weaponInventory.RemoveAllItemsAndDrops();
-            weaponInventory.DestroyAllSpawnedWeapons();
-
         }
     }
     

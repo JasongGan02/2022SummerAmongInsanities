@@ -2253,6 +2253,14 @@ PrefabInstance:
       propertyPath: graph
       value: 
       objectReference: {fileID: 11400000, guid: 56a4d10b3d12ea74aa21982af86ad733, type: 2}
+    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: isDay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: isDebugDayTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
       value: 
