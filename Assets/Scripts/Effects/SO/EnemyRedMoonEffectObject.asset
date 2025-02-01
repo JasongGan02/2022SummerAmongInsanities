@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70f02d85c07e354990098609f54f648, type: 3}
   m_Name: EnemyRedMoonEffectObject
   m_EditorClassIdentifier: 
-  duration: 0
+  duration: 12
   tickDuration: 1
   requiresReset: 1
   isStackable: 0
   isPermanent: 0
   description: 
-  effectControllerType: {fileID: 11500000, guid: 65a8cc1db83706942b7b191f47ac157d, type: 3}
+  effectControllerType: {fileID: 11500000, guid: 297c119c04e781a42b1d5c78e234b781, type: 3}
   componentToApplyType: {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
-  vfxList: []
+  vfxList:
+  - name: 
+    vfxPrefab: {fileID: 8423029588219032371, guid: 43a214b9e28fe7e4e850c70941d7d1f7, type: 3}
+    attachAtStart: 1
+    attachToTarget: 1
   statChanges:
     hp: 0
     armor: 0

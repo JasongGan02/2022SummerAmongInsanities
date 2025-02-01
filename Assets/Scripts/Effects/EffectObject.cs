@@ -17,7 +17,8 @@ public abstract class EffectObject : ScriptableObject
     public bool requiresReset = false;
     public bool isStackable = false;
     public bool isPermanent = false;
-    public string description; 
+    public string description;
+
     [Header("Select the effect controller type")]
     // The .txt file that contains the assembly-qualified name (or short name) of the effect controller
     [SerializeField] private TextAsset effectControllerType;
@@ -25,6 +26,7 @@ public abstract class EffectObject : ScriptableObject
     [Header("Select some other component that you want this effect to be attached")]
     // Another .txt file that contains the type name of a component to apply
     [SerializeField] private TextAsset componentToApplyType;
+
     // -------------------------------------------------------------------
     // PROPERTIES that wrap the logic of reading from the .txt to a System.Type
     // -------------------------------------------------------------------
@@ -35,13 +37,12 @@ public abstract class EffectObject : ScriptableObject
     [Header("Visual Effect Settings")]
     public List<VFX> vfxList = new List<VFX>();
 
-    
     public virtual void ExecuteEffect(IEffectableController effectedGameController)
     {
         Type controllerType = EffectControllerType;
         if (controllerType == null)
         {
-            Debug.LogError("Effect controller type not set or invalid.");
+            Debug.LogError("Effect controller type not set or invalid!");
             return;
         }
 
@@ -52,7 +53,7 @@ public abstract class EffectObject : ScriptableObject
             return;
         }
 
-        EffectController effectController = 
+        EffectController effectController =
             monoObj.gameObject.AddComponent(controllerType) as EffectController;
 
         if (effectController != null)
@@ -73,10 +74,12 @@ public abstract class EffectObject : ScriptableObject
             Debug.LogWarning("No componentToApply was chosen.");
             return;
         }
+
         // Example usage
+        Debug.Log("comp to apply: " + comp.FullName);
         EffectEvents.ApplyEffect(this, comp);
     }
-    
+
     // -------------------------------------------------------------------
     // PRIVATE method that converts a TextAsset into a System.Type
     // -------------------------------------------------------------------
@@ -87,7 +90,7 @@ public abstract class EffectObject : ScriptableObject
         string rawTypeName = textAsset.name.Trim();
         if (string.IsNullOrEmpty(rawTypeName)) return null;
         // Attempt to get the type by the name stored in the .txt
-        
+
         return Type.GetType(rawTypeName);
     }
 }

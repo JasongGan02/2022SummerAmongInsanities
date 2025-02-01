@@ -1,30 +1,55 @@
 using System;
-using System.Globalization;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
+using System.Threading.Tasks;
 
 public class DifficultyManager : MonoBehaviour
 {
     public bool stopLevelingUp = false;
     public int playerCount = 1; // Number of players in the game
     public float difficultyValue = 1; // 1 for Easy, 2 for Medium, 3 for Hard
-    public EnemyObject[] enemyObjects;
+
+    private List<EnemyObject> enemyObjects = new List<EnemyObject>(); // Dynamically loaded enemy objects
     private int daysCompleted = 0; // Days completed in the game
-    private bool isRedMoon = false;
     private float timeInMinutes = 0; // Time in minutes since the game started
-    
+
     private int enemyLevel;
     private float playerFactor;
     private TimeSystemManager timeSystemManager;
     private float _coeff;
+    private EnemyRedMoonEffectObject enemyRedMoonEffectObject;
 
-    private void Start()
+    private async void Start()
     {
         timeSystemManager = FindObjectOfType<TimeSystemManager>();
-        
+
         GameEvents.current.OnDayUpdated += OnDayPassed;
         GameEvents.current.OnNightStarted += OnRedMoonNight;
         GameEvents.current.OnNightStarted += UpdateSpawnDiff;
+
+        enemyRedMoonEffectObject = await AddressablesManager.Instance.LoadAssetAsync<EnemyRedMoonEffectObject>("Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset");
+        // Load enemy objects dynamically
+        LoadEnemyObjects();
+    }
+
+    private async void LoadEnemyObjects()
+    {
+        try
+        {
+            var loadedEnemies = await AddressablesManager.Instance.LoadMultipleAssetsExactTypeAsync<EnemyObject>("EnemyObject");
+            if (loadedEnemies != null && loadedEnemies.Count > 0)
+            {
+                enemyObjects.AddRange(loadedEnemies);
+            }
+            else
+            {
+                Debug.LogWarning("No enemy objects loaded. Ensure assets are tagged correctly.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to load enemy objects: {ex.Message}");
+        }
     }
 
     private void OnDestroy()
@@ -36,23 +61,22 @@ public class DifficultyManager : MonoBehaviour
 
     private void Update()
     {
-        timeInMinutes += Time.deltaTime / 60; // Convert seconds to minutes
-        if (!stopLevelingUp)
-            UpdateDifficultyCoefficient();
-    }
+        if (stopLevelingUp) return;
 
-    
+        timeInMinutes += Time.deltaTime / 60; // Convert seconds to minutes
+        UpdateDifficultyCoefficient();
+    }
 
     private void UpdateDifficultyCoefficient()
     {
-        float playerFactor = 1 + 0.3f * (playerCount - 1);
+        // Cache player factor and time factor to avoid recalculating every frame
+        playerFactor = 1 + 0.3f * (playerCount - 1);
         float timeFactor = 0.0506f * difficultyValue * Mathf.Pow(playerCount, 0.2f);
         float daysFactor = Mathf.Pow(1.13f, daysCompleted);
 
         _coeff = (playerFactor + timeInMinutes * timeFactor) * daysFactor;
-        
-        // Use coeff to adjust enemy levels, money costs, and rewards as necessary
-        // For example: 
+
+        // Update game systems based on the new coefficient
         UpdateEnemyLevels(_coeff);
         UpdateInteractableCosts(_coeff);
         UpdateEnemyRewards(_coeff);
@@ -65,7 +89,10 @@ public class DifficultyManager : MonoBehaviour
 
     private void OnRedMoonNight(bool isRedMoon)
     {
-        daysCompleted++;
+        if (isRedMoon)
+        {
+            enemyRedMoonEffectObject.InitializeEffectObject();
+        }
     }
 
     private void UpdateEnemyLevels(float coeff)
@@ -73,41 +100,64 @@ public class DifficultyManager : MonoBehaviour
         int newEnemyLevel = (int)(-2 + (coeff - playerFactor) / 0.33f);
         if (newEnemyLevel > enemyLevel)
         {
-            Debug.Log(newEnemyLevel);
+            Debug.Log($"Enemy level updated to: {newEnemyLevel}");
             enemyLevel = newEnemyLevel;
             UpdateAllEnemies();
         }
-
     }
 
     private void UpdateAllEnemies()
     {
+        if (enemyObjects == null || enemyObjects.Count == 0)
+        {
+            Debug.LogWarning("No enemy objects available to update.");
+            return;
+        }
+
+        // Update dynamically loaded enemy objects
         foreach (var enemyObject in enemyObjects)
         {
             enemyObject.LevelUp();
         }
-        // Find all EnemyController instances and update them
-        foreach (var enemy in MobSpawner.enemyList)
+
+        // Update spawned enemies in the scene
+        if (MobSpawner.enemyList != null)
         {
-            enemy.GetComponent<EnemyController>().LevelUp();
+            foreach (var enemy in MobSpawner.enemyList)
+            {
+                if (enemy != null)
+                {
+                    var controller = enemy.GetComponent<EnemyController>();
+                    if (controller != null)
+                    {
+                        controller.LevelUp();
+                    }
+                }
+            }
         }
     }
-    
+
     public void UpdateSpawnDiff(bool isRedMoon)
     {
-        MobSpawner.waveNumber *= (int)(MobSpawner.waveNumber * (1 + 0.2 * _coeff)) ;
+        if (MobSpawner.waveNumber <= 0)
+        {
+            Debug.LogWarning("Invalid wave number. Cannot update spawn difficulty.");
+            return;
+        }
+
+        MobSpawner.waveNumber = (int)(MobSpawner.waveNumber * (1 + 0.2f * _coeff));
     }
 
     private void UpdateInteractableCosts(float coeff)
     {
+        // Example: Adjust interactable costs based on difficulty
         // moneyCost = baseCost * Mathf.Pow(coeff, 1.25f);
-        // Adjust the cost of interactables in the game environment
     }
 
     private void UpdateEnemyRewards(float coeff)
     {
+        // Example: Adjust enemy rewards based on difficulty
         // enemyXPReward = coeff * monsterValue * rewardMultiplier;
         // enemyGoldReward = 2 * coeff * monsterValue * rewardMultiplier;
-        // Adjust the rewards given by enemies
     }
 }

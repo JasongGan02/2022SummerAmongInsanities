@@ -37,13 +37,8 @@ public abstract class EnemyController : CharacterController
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("ground");
         targetLayerMask = LayerMask.GetMask("player", "tower");
-        SubscribeToGameEvents();
     }
-    private void OnDestroy()        // debug is needs to be moved to other file
-    {
-        UnsubscribeFromGameEvents();
-    }
-    
+
     protected virtual void Start()
     {
         FindPlayer();
@@ -398,33 +393,6 @@ public abstract class EnemyController : CharacterController
         if (player == null) 
         { 
             player = GameObject.FindWithTag("Player");
-        }
-    }
-
-    private void SubscribeToGameEvents()
-    {
-        if (GameEvents.current != null)
-        {
-            GameEvents.current.OnNightStarted += HandleNightStarted;
-        }
-    }
-
-    private void UnsubscribeFromGameEvents()
-    {
-        if (GameEvents.current != null)
-        {
-            GameEvents.current.OnNightStarted -= HandleNightStarted;
-        }
-    }
-
-    private async void HandleNightStarted(bool isRedMoon)
-    {
-        if (isRedMoon)
-        {
-            var enemyRedMoonEffect = await AddressablesManager.Instance.LoadAssetAsync<StatsEffectObject>("Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset");
-            Debug.Log("RedMoon Befpre Stats: " + this + " " + CurrentStats);   
-            enemyRedMoonEffect.ExecuteEffect(GetComponent<IEffectableController>());
-            //TODO: Abstract the moveTowards(Transform) method, and set a flag here, attempt to go the position of core.
         }
     }
 }

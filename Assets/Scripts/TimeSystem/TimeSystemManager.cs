@@ -22,24 +22,26 @@ public class TimeSystemManager : MonoBehaviour
     [SerializeField] private int firstDayStartHour = 8; // Default to 8 AM
     [SerializeField] private int firstDayStartMinute = 0; // Default to 0 minutes
 
-    
+
     private Text timeText; //hours and minutes
     private Text calendarText; //days
     private float currentMinute = 0;
     private int currentHour = 0;
     private int currentDay = 0;
-    
+
     //LightManager variables
     private int lastSunlightLevelUpdate = -1;
-    private float maxSunlightLevel = 15; 
+    private float maxSunlightLevel = 15;
     private float minSunlightLevel = 4;
 
     private float gameMinuteInRealSec;
+
     private AudioEmitter _audioEmitter;
+
     // Start is called before the first frame update
     void Awake()
     {
-       //timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
+        //timeText = GameObject.Find(Constants.Name.TIME_TEXT).GetComponent<Text>();
         //calendarText = GameObject.Find(Constants.Name.CALENDAR_TEXT).GetComponent<Text>();
         gameMinuteInRealSec = 24f * 60f / dayToRealTimeInSecond;
         _audioEmitter = GetComponent<AudioEmitter>();
@@ -47,7 +49,7 @@ public class TimeSystemManager : MonoBehaviour
 
 
     private void Start()
-    { 
+    {
         currentHour = firstDayStartHour;
         currentMinute = firstDayStartMinute;
         if (isDebugDayTime) SetToDaytime();
@@ -60,7 +62,7 @@ public class TimeSystemManager : MonoBehaviour
         GameEvents.current.DayStarted();
         isDay = true;
     }
-    
+
     private void InitializeTimeBasedOnCurrentHour()
     {
         if (currentHour >= dayStartHour && currentHour < nightStartHour)
@@ -83,7 +85,7 @@ public class TimeSystemManager : MonoBehaviour
     {
         return nightStartHour - dayStartHour;
     }
-    
+
     private int GetNightTimePassedForToday()
     {
         if (currentHour >= nightStartHour)
@@ -104,9 +106,9 @@ public class TimeSystemManager : MonoBehaviour
     public float GetHowMuchPercentageOfNightTimeHasPassed()
     {
         if (IsInDaytime()) return 0;
-        return (float) GetNightTimePassedForToday() / (24 - GetDayTimeLengthInHour());
+        return (float)GetNightTimePassedForToday() / (24 - GetDayTimeLengthInHour());
     }
-    
+
     private void IncrementTime(float gameMinutesToAdvance)
     {
         currentMinute += gameMinutesToAdvance;
@@ -129,7 +131,7 @@ public class TimeSystemManager : MonoBehaviour
             GameEvents.current.DayUpdated(currentDay);
         }
     }
-    
+
     void FixedUpdate()
     {
         float gameTimeAdvancePerFixedUpdate = gameMinuteInRealSec * Time.fixedDeltaTime;
@@ -143,12 +145,13 @@ public class TimeSystemManager : MonoBehaviour
         if (!isDebugDayTime) IncrementTime(gameMinutesToAdvance);
         // Update the UI and check for day/night transition as before.
         UpdateTimeUI();
-        
+
         CalculateAndUpdateSunlight();
     }
 
     private bool dayStarted = false;
     private bool nightStarted = false;
+
     private void CheckForDayNightTransition()
     {
         if (currentHour == dayStartHour && !dayStarted)
@@ -176,7 +179,9 @@ public class TimeSystemManager : MonoBehaviour
         //timeText.text = $"{formattedHour}:{formattedMinute}";
         //calendarText.text = $"{currentDay+1}";
     }
+
     public float GetCurrentTime() => currentHour + currentMinute / 60f;
+
     public void CalculateAndUpdateSunlight()
     {
         float currentHour = GetCurrentTime();
@@ -221,10 +226,9 @@ public class TimeSystemManager : MonoBehaviour
 
         return sunlightLevel;
     }
-    
+
     public int GetCurrentHour()
     {
-        
         return currentHour;
     }
 
@@ -232,7 +236,4 @@ public class TimeSystemManager : MonoBehaviour
     {
         return currentDay;
     }
-
-    
-
 }
