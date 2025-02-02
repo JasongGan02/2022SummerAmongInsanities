@@ -6,33 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AddressableAssetSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AddressableAssetSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/Prefabs-VFX.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/Prefabs-VFX.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXCharge.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXCharge.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXChargeReady.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXChargeReady.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXDead.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXDead.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXExplosion.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXExplosion.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFire.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFire.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFireExplode.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFireExplode.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFireWeapon.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFireWeapon.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFrost.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFrost.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFrozen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXFrozen.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXHeal.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXHeal.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXOnHit.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/VFXOnHit.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/DifficultyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/DifficultyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/PickUpController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Inventory/PickUpController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/TemporaryMaxStatChangeEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/TemporaryMaxStatChangeEffectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EnemyRedMoonEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EnemyRedMoonEffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/StatsEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/StatsEffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/Graph/RogueGraphNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainRenderer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +230,7 @@
       <workItem from="1737606269211" duration="5862000" />
       <workItem from="1737752240451" duration="7511000" />
       <workItem from="1737943807965" duration="2192000" />
-      <workItem from="1738388254623" duration="4442000" />
+      <workItem from="1738388254623" duration="9920000" />
     </task>
     <servers />
   </component>
