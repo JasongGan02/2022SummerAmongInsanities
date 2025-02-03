@@ -10,7 +10,7 @@ public class EnemyRedMoonEffectObject : StatsEffectObject
     public override void InitializeEffectObject()
     {
         if (duration == 0)
-            duration = FindObjectOfType<TimeSystemManager>().dayToRealTimeInSecond / 2f;
+            duration = TimeSystemManager.Instance.dayToRealTimeInSecond / 2f;
         Debug.Log($"Applied redMoon effect for {duration} seconds");
         base.InitializeEffectObject();
     }

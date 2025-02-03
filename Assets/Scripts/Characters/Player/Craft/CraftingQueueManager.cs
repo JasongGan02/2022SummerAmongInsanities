@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Image = UnityEngine.UI.Image;
 using TMPro;
-using UnityEngine.UI;  // Import for Slider
+using UnityEngine.UI; // Import for Slider
 
 public class CraftingQueueManager : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class CraftingQueueManager : MonoBehaviour
 
     public Slider craftingProgressSlider; // Reference to the Slider
     private float currentCraftTime = 0f; // Track the time passed during crafting
-    private float totalCraftTime = 0f;   // Total time to craft the current item
+    private float totalCraftTime = 0f; // Total time to craft the current item
 
     public int sizeCraftQueue()
     {
@@ -31,7 +31,7 @@ public class CraftingQueueManager : MonoBehaviour
         StartCoroutine(WaitForCoreArchitectureAndInitialize());
         coreArchitecture = FindObjectOfType<CoreArchitectureController>();
         ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
-        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+        timeSystemManager = TimeSystemManager.Instance;
         GameObject sliderObject = GameObject.Find("CraftingProgressSlider");
         if (sliderObject != null)
         {
@@ -44,7 +44,6 @@ public class CraftingQueueManager : MonoBehaviour
             craftingProgressSlider.value = 1f;
             craftingProgressSlider.gameObject.SetActive(false); // Hide the slider when no crafting
         }
-
     }
 
     private void UpdateQueueUI(Queue<BaseObject> craftQueue)

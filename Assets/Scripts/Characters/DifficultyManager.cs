@@ -15,19 +15,13 @@ public class DifficultyManager : MonoBehaviour
 
     private int enemyLevel;
     private float playerFactor;
-    private TimeSystemManager timeSystemManager;
     private float _coeff;
-    private EnemyRedMoonEffectObject enemyRedMoonEffectObject;
 
     private async void Start()
     {
-        timeSystemManager = FindObjectOfType<TimeSystemManager>();
-
         GameEvents.current.OnDayUpdated += OnDayPassed;
-        GameEvents.current.OnNightStarted += OnRedMoonNight;
         GameEvents.current.OnNightStarted += UpdateSpawnDiff;
 
-        enemyRedMoonEffectObject = await AddressablesManager.Instance.LoadAssetAsync<EnemyRedMoonEffectObject>("Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset");
         // Load enemy objects dynamically
         LoadEnemyObjects();
     }
@@ -55,7 +49,6 @@ public class DifficultyManager : MonoBehaviour
     private void OnDestroy()
     {
         GameEvents.current.OnDayUpdated -= OnDayPassed;
-        GameEvents.current.OnNightStarted -= OnRedMoonNight;
         GameEvents.current.OnNightStarted -= UpdateSpawnDiff;
     }
 
@@ -87,13 +80,6 @@ public class DifficultyManager : MonoBehaviour
         daysCompleted++;
     }
 
-    private void OnRedMoonNight(bool isRedMoon)
-    {
-        if (isRedMoon)
-        {
-            enemyRedMoonEffectObject.InitializeEffectObject();
-        }
-    }
 
     private void UpdateEnemyLevels(float coeff)
     {

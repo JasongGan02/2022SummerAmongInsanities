@@ -20,16 +20,18 @@ public class MobSpawner : MonoBehaviour
     private List<int> currentTickActiveChunk = new();
     public static List<GameObject> enemyList = new(); // TODO: get a dic for all lists;
     private GameObject player;
+    private EnemyRedMoonEffectObject enemyRedMoonEffectObject;
 
     #endregion
 
     #region Unity Callbacks
 
-    private void Start()
+    private async void Start()
     {
         // spawnRate = Time.fixedDeltaTime;
         player = GameObject.FindGameObjectWithTag("Player");
         groundLayerMask = LayerMask.GetMask("ground");
+        enemyRedMoonEffectObject = await AddressablesManager.Instance.LoadAssetAsync<EnemyRedMoonEffectObject>("Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset");
         InitializeTotalWeights();
         StartCoroutine(SpawnCycleCoroutine());
         GameEvents.current.OnNightStarted += HandleNightStart;
@@ -82,6 +84,7 @@ public class MobSpawner : MonoBehaviour
     {
         // Normal intensity for regular nights; red moon nights spawn with double intensity.
         StartWaveSpawning(isRedMoon ? 2f : 1f);
+        enemyRedMoonEffectObject.InitializeEffectObject();
     }
 
     #endregion
@@ -282,6 +285,11 @@ public class MobSpawner : MonoBehaviour
         if (parent != null)
         {
             enemy.transform.SetParent(parent, true);
+        }
+
+        if (TimeSystemManager.Instance.IsRedMoon)
+        {
+            enemyRedMoonEffectObject.ExecuteEffect(enemy.GetComponent<IEffectableController>());
         }
 
         RegisterMob(enemy, category);
