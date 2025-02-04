@@ -8,7 +8,7 @@ public class InventoryDatabase
 {
     private readonly List<InventorySlot> inventory = new();
 
-    private int slotPerRow = 10;
+    private int slotPerRow = 8;
 
     private int size;
     private int maxSize;
@@ -16,6 +16,7 @@ public class InventoryDatabase
 
     public InventoryDatabase(int defaultNumberOfRow, int maxExtraRow)
     {
+
         maxSize = (defaultNumberOfRow + maxExtraRow) * slotPerRow;
         size = defaultNumberOfRow * slotPerRow;
         for (int i = 0; i < maxSize; i++)
@@ -179,7 +180,7 @@ public class InventoryDatabase
 
     public void Upgrade()
     {
-        size += 10;
+        size += 8;
         UpdateNextEmptySlot();
     }
 

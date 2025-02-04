@@ -180,21 +180,14 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         {
             UseItemInHotbarSlot(7);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            UseItemInHotbarSlot(8);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            UseItemInHotbarSlot(9);
-        }
+        
        
     }
 
 
     private void UseItemInHotbarSlot(int index)
     {
-        if (index > 9) return;
+        if (index > 7) return;
 
         GameObject slot = hotbar.transform.GetChild(0).GetChild(index).gameObject;
         if (slot.transform.childCount > 0)
