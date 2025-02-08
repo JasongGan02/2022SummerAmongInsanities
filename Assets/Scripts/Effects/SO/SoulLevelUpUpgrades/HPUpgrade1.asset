@@ -20,6 +20,7 @@ MonoBehaviour:
   description: "\u63D0\u9AD8<color=#FF5733>10</color>\u70B9\u6700\u5927\u751F\u547D\u503C"
   effectControllerType: {fileID: 11500000, guid: 2294a9200214cfc4aa7d381765f308cd, type: 3}
   componentToApplyType: {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  icon: {fileID: -1368724607, guid: 3cc5eadc79121344dbe083b543422d36, type: 3}
   vfxList: []
   statChanges:
     hp: 10
@@ -32,3 +33,4 @@ MonoBehaviour:
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
+  isMultiply: 0

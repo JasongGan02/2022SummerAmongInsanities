@@ -33,8 +33,8 @@ public abstract class EffectObject : ScriptableObject
     public virtual Type EffectControllerType => ResolveTypeFromText(effectControllerType);
     public virtual Type ComponentToApplyType => ResolveTypeFromText(componentToApplyType);
 
-    //TODO: Sprite 2DIcon, Potential VFX
     [Header("Visual Effect Settings")]
+    public Sprite icon;
     public List<VFX> vfxList = new List<VFX>();
 
     public virtual void ExecuteEffect(IEffectableController effectedGameController)
