@@ -7,8 +7,8 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "Effects/Stats/Stats")]
 public class StatsEffectObject : EffectObject
 {
-    [Header("Stats Effect Object")] 
+    [Header("Stats Effect Object")]
     public CharacterStats statChanges;
+
     public bool isMultiply = false;
-    
 }

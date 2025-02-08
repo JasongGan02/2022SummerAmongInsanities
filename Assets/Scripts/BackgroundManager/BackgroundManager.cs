@@ -15,12 +15,12 @@ public class BackgroundManager : MonoBehaviour
     private TimeSystemManager timeSystemManager;
     private WorldGenerator worldGenerator;
 
-    private Transform[] backgrounds; // ÐèÒª¹ö¶¯µÄ±³¾°
-    private float[] parallaxScales; // Ã¿¸ö±³¾°µÄÒÆ¶¯±ÈÀý
-    public float smoothing = 1f; // Æ½»¬ÒÆ¶¯µÄ²ÎÊý
+    private Transform[] backgrounds; // ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
+    private float[] parallaxScales; // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float smoothing = 1f; // Æ½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
 
-    private Transform cam; // Ö÷Ïà»úµÄtransform
-    private Vector3 previousCamPos; // Ïà»úµÄÉÏÒ»¸öÎ»ÖÃ
+    private Transform cam; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½transform
+    private Vector3 previousCamPos; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Î»ï¿½ï¿½
 
     void Awake()
     {
@@ -30,7 +30,7 @@ public class BackgroundManager : MonoBehaviour
         moon = BG.transform.Find(Constants.Name.MOON).gameObject;
         redMoon = BG.transform.Find(Constants.Name.RED_MOON).gameObject;
         backgroundLight = background.transform.Find(Constants.Name.BACKGROUND_LIGHT).gameObject;
-        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+        timeSystemManager = TimeSystemManager.Instance;
         worldGenerator = FindObjectOfType<WorldGenerator>();
 
         BG.transform.position = new Vector3(BG.transform.position.x, worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f, BG.transform.position.z);
@@ -38,7 +38,7 @@ public class BackgroundManager : MonoBehaviour
         cam = Camera.main.transform;
         previousCamPos = cam.position;
 
-        // ¼ÙÉèÄãµÄ±³¾°Í¼²ã¶¼ÊÇBGµÄ×Ó¶ÔÏó
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Í¼ï¿½ã¶¼ï¿½ï¿½BGï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½
         List<Transform> backgroundList = new List<Transform>();
         foreach (Transform child in BG.transform)
         {
@@ -47,6 +47,7 @@ public class BackgroundManager : MonoBehaviour
                 backgroundList.Add(child);
             }
         }
+
         backgrounds = backgroundList.ToArray();
         parallaxScales = new float[backgrounds.Length];
         for (int i = 0; i < backgrounds.Length; i++)
@@ -70,6 +71,7 @@ public class BackgroundManager : MonoBehaviour
             Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x, backgroundTargetPosY, backgrounds[i].position.z);
             backgrounds[i].position = Vector3.Lerp(backgrounds[i].position, backgroundTargetPos, smoothing * Time.deltaTime);
         }
+
         previousCamPos = cam.position;
     }
 

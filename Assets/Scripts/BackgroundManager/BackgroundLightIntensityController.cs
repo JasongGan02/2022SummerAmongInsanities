@@ -15,10 +15,11 @@ public class BackgroundLightIntensityController : MonoBehaviour
     private bool sunset = false;
 
     GameObject Player;
+
     // Start is called before the first frame update
     void Awake()
     {
-        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+        timeSystemManager = TimeSystemManager.Instance;
         backgroundLight = GetComponent<Light2D>();
         transitionTimeInRealSecond = timeSystemManager.dayToRealTimeInSecond / 24 * transitionTimeInGameHour;
         //backgroundLight.intensity = 0.2f;
@@ -37,6 +38,7 @@ public class BackgroundLightIntensityController : MonoBehaviour
             backgroundLight.intensity = 1; // or whatever daytime intensity you prefer
             return;
         }
+
         if (Player == null)
         {
             Player = GameObject.FindGameObjectWithTag("Player");

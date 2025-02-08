@@ -11,7 +11,7 @@ public class TerrainRenderer : MonoBehaviour
     {
         GeneratorInstance = GetComponent<WorldGenerator>();
     }
-    
+
     void Update()
     {
         // Only handle rendering of chunks when the player is near them
@@ -38,7 +38,7 @@ public class TerrainRenderer : MonoBehaviour
         {
             int chunkX = activeChunk.Key;
             //Debug.Log();
-            if (chunkX < plrChunkX - RenderDistance || chunkX > plrChunkX + RenderDistance)
+            if ((chunkX < plrChunkX - RenderDistance || chunkX > plrChunkX + RenderDistance) && (chunkX is < -2 or > 2))
             {
                 chunksToDisable.Add(chunkX);
             }

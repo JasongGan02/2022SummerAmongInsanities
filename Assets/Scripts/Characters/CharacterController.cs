@@ -80,16 +80,29 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     
     private void HandleEffectApplied(EffectObject effect, Type targetType)
     {
-        if (targetType == this.GetType())
+        Debug.Log($"HandleEffectApplied called for target type: {targetType}");
+
+        // Check if the targetType is assignable from the current type (including derived types)
+        if (targetType.IsAssignableFrom(this.GetType()))
         {
+            Debug.Log($"Effect target type matches or is a base type: {targetType}");
+
             // Add the appropriate EffectController as defined in the EffectObject
             Type effectControllerType = effect.EffectControllerType; // e.g., returns a subclass of EffectController
             if (effectControllerType != null)
             {
+                Debug.Log($"Adding effect controller: {effectControllerType.Name}");
                 EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
-                Debug.Log("EffectApplied");
                 controller.Initialize(effect);
             }
+            else
+            {
+                Debug.LogError("EffectControllerType is null.");
+            }
+        }
+        else
+        {
+            Debug.Log($"Effect target type does not match: {targetType} is not assignable from {this.GetType()}");
         }
     }
 
@@ -145,7 +158,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     
     #region Health Management
 
-    public virtual void ChangeHealth(float amount)
+    public virtual async void ChangeHealth(float amount, IDamageSource damageSource)
     {
         Health -= amount;
         if (Health <= 0)
@@ -155,6 +168,37 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         else if (amount > 0 && gameObject.activeSelf)
         {
             //StartCoroutine(FlashRed());
+            GameObject onHitVFX = await AddressablesManager.Instance.InstantiateAsync("Assets/Prefabs/VFX/VFXOnHit.prefab", transform.position, transform.rotation);
+    
+            if (onHitVFX != null)
+            {
+                onHitVFX.name = "OnHitVFX"; // Rename for clarity
+
+                // Apply force over time if the damage source is a MonoBehaviour (has position)
+                if (damageSource is MonoBehaviour sourceMono)
+                {
+                    Vector3 forceDirection = (transform.position - sourceMono.transform.position).normalized; // Direction from damage source
+                    float forceAmount = Mathf.Clamp(amount / 10f, 3f, 20f);
+
+                    // Find all ParticleSystem components in the spawned prefab (including children)
+                    ParticleSystem[] particleSystems = onHitVFX.GetComponentsInChildren<ParticleSystem>();
+
+                    foreach (var ps in particleSystems)
+                    {
+                        var psMain = ps.main;
+
+                        if (psMain.simulationSpace == ParticleSystemSimulationSpace.Local) // Apply force only if using world space
+                        {
+                            var psForceOverLifetime = ps.forceOverLifetime;
+                            psForceOverLifetime.enabled = true;
+                            psForceOverLifetime.x = new ParticleSystem.MinMaxCurve(forceAmount * forceDirection.x);
+                            psForceOverLifetime.y = new ParticleSystem.MinMaxCurve(forceAmount * forceDirection.y);
+                            psForceOverLifetime.z = new ParticleSystem.MinMaxCurve(forceAmount * forceDirection.z);
+                        }
+                    }
+                }
+            }
+          
         }
     }
 
@@ -238,7 +282,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
         damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp,damageSource);
-        ChangeHealth(amount);
+        ChangeHealth(amount, damageSource);
     }
 
     public virtual float CalculateDamage(float incomingDamage, float attackerCritChance, float attackerCritMultiplier)

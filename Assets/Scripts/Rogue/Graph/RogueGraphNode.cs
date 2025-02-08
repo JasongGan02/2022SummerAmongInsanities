@@ -17,21 +17,16 @@ public class RogueGraphNode : ScriptableObject
     public bool isRoot = false;
 
 
-  
+    [SerializeField] public List<RogueGraphNode> childNodes = new();
+    [SerializeField] public List<RogueGraphNode> parentNodes = new();
 
-    [SerializeField]
-    public List<RogueGraphNode> childNodes = new();
-    [SerializeField]
-    public List<RogueGraphNode> parentNodes = new();
-    
     public float GetTotalWeight()
     {
         return baseWeight + quality.weight;
     }
 
 #if UNITY_EDITOR
-    [SerializeField]
-    private Rect rect;
+    [SerializeField] private Rect rect;
     private Rect headerRect;
 
     private string BlessingName // Property for 福赠名称
@@ -67,7 +62,6 @@ public class RogueGraphNode : ScriptableObject
     }
 
 
-    
     private static readonly Dictionary<ItemRarity, (Color color, float weight, float cost)> RarityMappings = new()
     {
         { ItemRarity.Common, (Color.gray, 20f, 0f) },
@@ -84,7 +78,7 @@ public class RogueGraphNode : ScriptableObject
         this.isRoot = isRoot;
         EditorUtility.SetDirty(this);
     }
-    
+
 
     public void Draw(GUIStyle style)
     {
@@ -138,9 +132,10 @@ public class RogueGraphNode : ScriptableObject
         BlessingName = EditorGUI.TextField(blessingNameFieldRect, "Blessing Name", BlessingName);
 
         // Display Effect field
-        Rect objectFieldRect = new Rect(5f, blessingNameFieldRect.yMax + 5f, rect.width - 10f, EditorGUIUtility.singleLineHeight);
+        Rect objectFieldRect = new Rect(5f, blessingNameFieldRect.yMax + 5f, rect.width - 10f,
+            EditorGUIUtility.singleLineHeight);
         effect = EditorGUI.ObjectField(objectFieldRect, "Effect", effect, typeof(EffectObject), false) as EffectObject;
-        
+
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -151,12 +146,10 @@ public class RogueGraphNode : ScriptableObject
     }
 
 
-
     public void Move(Vector2 delta)
     {
         rect.position += delta;
         EditorUtility.SetDirty(this);
-       
     }
 
     public bool IsMouseIn(Vector2 mousePosition)
@@ -213,10 +206,10 @@ public class RogueGraphNode : ScriptableObject
     {
         Queue<RogueGraphNode> queue = new();
         queue.Enqueue(this);
-        while(queue.Count > 0)
+        while (queue.Count > 0)
         {
             RogueGraphNode currentNode = queue.Dequeue();
-            foreach(RogueGraphNode parentNode in currentNode.parentNodes)
+            foreach (RogueGraphNode parentNode in currentNode.parentNodes)
             {
                 queue.Enqueue(parentNode);
                 if (parentNode == node)
@@ -228,7 +221,7 @@ public class RogueGraphNode : ScriptableObject
 
         return false;
     }
-    
+
     private void OnValidate()
     {
         if (EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode)
@@ -237,7 +230,7 @@ public class RogueGraphNode : ScriptableObject
         }
 
         UpdateAssetName(); // Safe call to update the asset name
-        
+
         quality ??= new Quality();
 
         if (RarityMappings.TryGetValue(quality.rarity, out var mapping))
@@ -257,12 +250,8 @@ public class RogueGraphNode : ScriptableObject
         }
     }
 
-    
 
     private const float ConnectingLineWidth = 3f;
     private const float ConnectingLineArrowSize = 6f;
 #endif
 }
-
-
-

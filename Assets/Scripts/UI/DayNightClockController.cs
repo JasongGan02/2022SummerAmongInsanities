@@ -3,25 +3,25 @@ using UnityEngine.UI;
 
 public class DayNightClockController : MonoBehaviour
 {
-    [Header("Time System Reference")]
-    [SerializeField] private TimeSystemManager timeSystemManager;
-
     [Header("Day and Night Objects")]
     [SerializeField] private GameObject dayClockObject; // Day clock GameObject
     [SerializeField] private GameObject nightClockObject; // Night clock GameObject
 
     [Header("Day and Night Sprites")]
-    [SerializeField] private Sprite[] dayFrames;   // 12 day sprites
+    [SerializeField] private Sprite[] dayFrames; // 12 day sprites
     [SerializeField] private Sprite[] nightFrames; // 12 night sprites
 
     private Image dayClockImage;
     private Image nightClockImage;
-    
+    private TimeSystemManager timeSystemManager;
+
     private int currentFrame = 0; // Tracks the current sprite frame
     private bool isDay;
 
     private void Start()
     {
+        timeSystemManager = TimeSystemManager.Instance;
+
         dayClockImage = dayClockObject.GetComponent<Image>();
         nightClockImage = nightClockObject.GetComponent<Image>();
 
@@ -39,11 +39,11 @@ public class DayNightClockController : MonoBehaviour
 
         InitializeClockState();
     }
-    
+
     private void InitializeClockState()
     {
         // Determine if the current time is daytime or nighttime
-        if (timeSystemManager.IsInDaytime())
+        if (timeSystemManager.IsDayTime())
         {
             OnDayStarted();
         }
@@ -62,7 +62,7 @@ public class DayNightClockController : MonoBehaviour
         dayClockObject.SetActive(true);
         nightClockObject.SetActive(false);
     }
-    
+
     private void OnNightStarted(bool isBloodMoon)
     {
         isDay = false;

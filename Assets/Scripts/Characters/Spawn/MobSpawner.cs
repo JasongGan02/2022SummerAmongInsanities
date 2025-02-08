@@ -2,31 +2,38 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MobSpawner : MonoBehaviour
 {
+    #region Fields
+
     [SerializeField] private List<MobCategory> mobCategories;
     [SerializeField] private float safeZoneRadius = 20f;
     [SerializeField] private float spawnRate;
     [SerializeField] private float despawnDistance = 80f;
     [SerializeField] public static int waveNumber = 5;
-    
-    //public static Dictionary<int, GameObject> Global
-    private float totalWeight = 0f;
-    private List<int> currentTickActiveChunk = new List<int>();
-    public static List<GameObject> enemyList = new List<GameObject>(); //TODO: get a dic for all lists;
-    private GameObject player;
+    private LayerMask groundLayerMask;
 
-    private void Start()
+    private float totalWeight = 0f;
+    private List<int> currentTickActiveChunk = new();
+    public static List<GameObject> enemyList = new(); // TODO: get a dic for all lists;
+    private GameObject player;
+    private EnemyRedMoonEffectObject enemyRedMoonEffectObject;
+
+    #endregion
+
+    #region Unity Callbacks
+
+    private async void Start()
     {
-        //spawnRate = Time.fixedDeltaTime;
+        // spawnRate = Time.fixedDeltaTime;
         player = GameObject.FindGameObjectWithTag("Player");
+        groundLayerMask = LayerMask.GetMask("ground");
+        enemyRedMoonEffectObject = await AddressablesManager.Instance.LoadAssetAsync<EnemyRedMoonEffectObject>("Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset");
         InitializeTotalWeights();
-        StartCoroutine(SpawnCycleCoroutine()); 
+        StartCoroutine(SpawnCycleCoroutine());
         GameEvents.current.OnNightStarted += HandleNightStart;
     }
 
@@ -35,73 +42,266 @@ public class MobSpawner : MonoBehaviour
         GameEvents.current.OnNightStarted -= HandleNightStart;
     }
 
+    #endregion
+
+    #region Public Methods
+
     public static void UpdateSpawnDiff(float coeff)
     {
-        Debug.Log("coeff: " + 1 + 0.4 * coeff);
-        waveNumber = (int) (waveNumber * (1 + 0.4 * coeff));
+        Debug.Log("coeff: " + (1 + 0.4 * coeff));
+        waveNumber = (int)(waveNumber * (1 + 0.4 * coeff));
         Debug.Log(waveNumber);
     }
-    
+
+    public static List<EnemyController> FindEnemyNearby(Vector3 worldPosition)
+    {
+        var chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(worldPosition);
+        var nearbyEnemies = new List<EnemyController>();
+
+        // Check the specified chunk and its immediate neighbors.
+        for (var offset = -1; offset <= 1; offset++)
+        {
+            var currentChunk = chunkCoord + offset;
+            if (WorldGenerator.ActiveChunks.ContainsKey(currentChunk))
+            {
+                nearbyEnemies.AddRange(
+                    WorldGenerator.ActiveChunks[currentChunk]
+                        .transform.Find("MobContainer")
+                        .Find("EnemyContainer")
+                        .GetComponentsInChildren<EnemyController>()
+                );
+            }
+        }
+
+        return nearbyEnemies;
+    }
+
+    #endregion
+
+    #region Event Handlers
+
     private void HandleNightStart(bool isRedMoon)
     {
-        StartWaveSpawning(isRedMoon ? 2f : 1f); // Normal intensity for regular nights
+        // Normal intensity for regular nights; red moon nights spawn with double intensity.
+        StartWaveSpawning(isRedMoon ? 2f : 1f);
+        enemyRedMoonEffectObject.InitializeEffectObject();
     }
-    
+
+    #endregion
+
+    #region Wave Spawning
+
     private void StartWaveSpawning(float intensityMultiplier)
     {
         if (CoreArchitectureController.Instance == null)
             return;
-        float energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance();
-        float spawnDistance = energyZoneRadius + 20f;
-        Vector3 corePosition = CoreArchitectureController.Instance.transform.position;
 
+        var energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance();
+        var spawnDistance = energyZoneRadius + 20f;
+        var corePosition = CoreArchitectureController.Instance.transform.position;
+
+        // Assuming WaveEnemy is at index 1 in the mobCategories list.
         if (CanSpawnCategory(mobCategories[1]))
         {
-            StartCoroutine(SpawnWaveAtPoint(corePosition, (int)(waveNumber * intensityMultiplier), spawnDistance, intensityMultiplier));
+            StartCoroutine(
+                SpawnWaveAtPoint(corePosition, (int)(waveNumber * intensityMultiplier), spawnDistance, intensityMultiplier)
+            );
         }
     }
+
     private IEnumerator SpawnWaveAtPoint(Vector3 corePosition, int waveNumber, float spawnDistance, float intensityMultiplier)
     {
-        // Assuming a constant spacing to spread out the wave along a line parallel to the core
-        for (int i = 0; i < waveNumber; i++)
+        // Spawn a wave of enemies along a line parallel to the core position.
+        for (var i = 0; i < waveNumber; i++)
         {
-            if (!CanSpawnCategory(mobCategories[1])) yield break;
-            
-            // Generate offset to create a line of enemies along the x-axis from both sides
-            Vector2Int offset = GenerateTriangularDistributedOffset(8);
-            Vector3 spawnPointLeft = new Vector3(corePosition.x - spawnDistance + offset.x, corePosition.y, 0);
-            Vector3 spawnPointRight = new Vector3(corePosition.x + spawnDistance + offset.x, corePosition.y, 0);
+            if (!CanSpawnCategory(mobCategories[1]))
+                yield break;
 
-            // Calculate the actual spawn points based on terrain data for both sides
-            SpawnEnemyAtGround(spawnPointLeft);
-            SpawnEnemyAtGround(spawnPointRight);
+            // Generate an offset to position enemies along the x-axis from both sides.
+            var offset = GenerateTriangularDistributedOffset(8);
+            var spawnPointLeft = new Vector3(corePosition.x - spawnDistance + offset.x, corePosition.y, 0);
+            var spawnPointRight = new Vector3(corePosition.x + spawnDistance + offset.x, corePosition.y, 0);
 
-            // Delay next spawn in the wave for staggered appearance
-            float randomDelay = Random.Range(1f, 5f) / intensityMultiplier;
-            yield return new WaitForSeconds(randomDelay); // Faster spawning for more intense nights
+            // Select enemy prefab from the WaveEnemy category.
+            var enemyPrefab = SelectEnemyObjectBasedOnWeight(mobCategories[1]) as EnemyObject;
+
+            SpawnEnemy(enemyPrefab, spawnPointLeft, mobCategories[1], null);
+            SpawnEnemy(enemyPrefab, spawnPointRight, mobCategories[1], null);
+
+            // Delay the next spawn for a staggered appearance.
+            var randomDelay = Random.Range(1f, 5f) / intensityMultiplier;
+            yield return new WaitForSeconds(randomDelay);
         }
     }
-    
-    private void SpawnEnemyAtGround(Vector3 spawnPoint)
+
+    #endregion
+
+    #region Spawning Cycle
+
+    private IEnumerator SpawnCycleCoroutine()
     {
-        RaycastHit2D hit = Physics2D.Raycast(spawnPoint + Vector3.up * 50, Vector3.down, 100);
-        if (hit.collider != null)
+        while (true)
         {
-            // Adjust to spawn on the topmost solid ground
-            spawnPoint.y = hit.point.y + 1; // Ensure the enemy is slightly above the ground
-            
-            // Select the enemy type and spawn
-            GameObject enemy = PoolManager.Instance.Get(SelectEnemyObjectBasedOnWeight(mobCategories[1]) as EnemyObject);
-            enemy.transform.position = spawnPoint;
-            RegisterMob(enemy, mobCategories[1]);
-            
+            CollectMobCapData();
+            RunSpawningAttempts();
+            DespawnEntities();
+            yield return new WaitForSeconds(spawnRate);
         }
     }
-    
-    
+
+    private void CollectMobCapData()
+    {
+        // Update current mob counts for each category.
+        foreach (var category in mobCategories)
+            category.currentMob = category.mobList.Count;
+    }
+
+    private void RunSpawningAttempts()
+    {
+        // Iterate through each mob category (except "WaveEnemy") and attempt to spawn mobs.
+        foreach (var category in mobCategories)
+        {
+            if (category.categoryName != "WaveEnemy" && CanSpawnCategory(category))
+                AttemptSpawnMobs(category);
+        }
+    }
+
+    private bool CanSpawnCategory(MobCategory category)
+    {
+        // Additional checks for "WaveEnemy" can be implemented here if needed.
+        return category.currentMob < category.baseMobCap;
+    }
+
+    private void AttemptSpawnMobs(MobCategory category)
+    {
+        currentTickActiveChunk = new List<int>(
+            WorldGenerator.ActiveChunks.Keys.Where(chunkId => WorldGenerator.ReadyChunks.Contains(chunkId))
+        );
+        if (currentTickActiveChunk.Count == 0)
+            return;
+
+        var randomChunkIndex = Random.Range(0, currentTickActiveChunk.Count);
+        var chunkCoord = new Vector2Int(currentTickActiveChunk[randomChunkIndex], 0);
+        var lightData = WorldGenerator.WorldLightData[chunkCoord];
+        var terrainData = WorldGenerator.WorldData[chunkCoord];
+
+        var chosenX = Random.Range(0, WorldGenerator.ChunkSize.x);
+        var maxY = FindHighestBlock(terrainData, chosenX);
+        if (maxY == int.MinValue)
+            return;
+
+        var chosenY = Random.Range(0, maxY);
+        var spawnableMob = SelectEnemyObjectBasedOnWeight(category);
+        if (spawnableMob == null)
+            return;
+
+        for (var packIndex = 0; packIndex < spawnableMob.PackSize; packIndex++)
+        {
+            var offset = GenerateTriangularDistributedOffset(8);
+            var finalX = Mathf.Clamp(chosenX + offset.x, 0, WorldGenerator.ChunkSize.x - 1);
+            var finalY = Mathf.Clamp(chosenY + offset.y, 0, maxY);
+
+            if (CheckSafeZone(finalX, chunkCoord, finalY))
+                continue; // Skip spawning if within a safe zone.
+
+            if (ShouldSpawnHere(terrainData, lightData, finalX, finalY, spawnableMob.ColliderSize,
+                    spawnableMob.MinLightLevel, spawnableMob.MaxLightLevel))
+            {
+                var spawnPosition = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
+                // Use the unified spawn function without ground adjustment.
+                SpawnEnemy(spawnableMob as EnemyObject, spawnPosition, category);
+            }
+        }
+    }
+
+    private void DespawnEntities()
+    {
+        var playerObj = GameObject.FindGameObjectWithTag("Player"); // Assuming the player has a tag "Player".
+        if (playerObj == null)
+            return;
+        var playerPosition = playerObj.transform.position;
+
+        for (var i = enemyList.Count - 1; i >= 0; i--)
+        {
+            var enemy = enemyList[i];
+            var distance = Vector3.Distance(playerPosition, enemy.transform.position);
+            if (distance > despawnDistance)
+            {
+                // Remove enemy from the global list.
+                enemyList.RemoveAt(i);
+                // Remove enemy from its category.
+                var category = mobCategories.FirstOrDefault(c => c.mobList.Contains(enemy));
+                if (category != null)
+                    category.mobList.Remove(enemy);
+
+                // Return the enemy to the pool.
+                PoolManager.Instance.Return(
+                    enemy,
+                    enemy.GetComponent<IPoolableObjectController>().PoolableObject
+                );
+            }
+        }
+    }
+
+    #endregion
+
+    #region Unified Spawning Function
+
+    /// <summary>
+    /// Unified spawning function to handle all enemy spawns.
+    /// </summary>
+    /// <param name="enemyPrefab">The enemy prefab to spawn.</param>
+    /// <param name="spawnPoint">The initial spawn position.</param>
+    /// <param name="category">The mob category to register the enemy with.</param>
+    /// <param name="parent">Optional parent transform for the spawned enemy.</param>
+    /// <param name="useGroundAdjustment">
+    /// If true, perform a raycast from above the spawn point downward to adjust the spawn position
+    /// so that the enemy sits on the ground.
+    /// </param>
+    private void SpawnEnemy(EnemyObject enemyPrefab, Vector3 spawnPoint, MobCategory category, Transform parent = null)
+    {
+        if (enemyPrefab == null)
+            return;
+
+        // Always perform a ground check using the provided ground layer mask.
+        RaycastHit2D hit = Physics2D.Raycast(spawnPoint + Vector3.up * 50, Vector3.down, 100, groundLayerMask);
+        if (hit.collider == null)
+            return; // No valid ground found.
+
+        // Adjust spawn point so the enemy sits slightly above the ground.
+        spawnPoint.y = hit.point.y + 1;
+
+        // If no parent was provided, determine it based on the spawn point.
+        if (parent == null)
+        {
+            parent = GetEnemyContainerForSpawnPoint(spawnPoint);
+        }
+
+        // Get the enemy from your pool and set its position.
+        var enemy = PoolManager.Instance.Get(enemyPrefab);
+        enemy.transform.position = spawnPoint;
+
+        // Set the parent if it was found.
+        if (parent != null)
+        {
+            enemy.transform.SetParent(parent, true);
+        }
+
+        if (TimeSystemManager.Instance.IsRedMoon)
+        {
+            enemyRedMoonEffectObject.ExecuteEffect(enemy.GetComponent<IEffectableController>());
+        }
+
+        RegisterMob(enemy, category);
+    }
+
+    #endregion
+
+    #region Utility Methods
+
     private void InitializeTotalWeights()
     {
-        foreach (MobCategory mc in mobCategories)
+        foreach (var mc in mobCategories)
         {
             foreach (var o in mc.mobScriptableObjects)
             {
@@ -111,131 +311,34 @@ public class MobSpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnCycleCoroutine()
-    {
-        while (true)
-        {
-            CollectMobCapData();
-            RunSpawningAttempts();
-            DespawnEntities();
-            
-            yield return new WaitForSeconds(spawnRate);
-        }
-    }
-
-    private void CalculateGlobalCap() //for multiplayer dont need to care now global = mobcap-value * totalSpawnableCap / a pre-defined default spawnable chunks number
-    {
-        foreach (MobCategory mc in mobCategories)
-        {
-            
-        }
-    }
-    private void CollectMobCapData()
-    {
-        // Calculate current mob counts per category and update mobsInCategory dictionary
-        foreach (var category in mobCategories)
-        {
-            category.currentMob = category.mobList.Count;
-        }
-        
-    }
-
-    private void RunSpawningAttempts()
-    {
-        // Iterate through each mob category
-        foreach (var category in mobCategories)
-        {
-            // Check if the global mob cap allows spawning in this category
-            if (category.categoryName != "WaveEnemy" && CanSpawnCategory(category))
-            {
-                AttemptSpawnMobs(category);
-            }
-        }
-        
-    }
-
-    private bool CanSpawnCategory(MobCategory category)
-    {
-        if (category.categoryName == "WaveEnemy")
-        {
-            /*Debug.Log($"Checking if can spawn category: {category.categoryName}");
-            Debug.Log($"Current mob count: {category.currentMob}");
-            Debug.Log($"Base mob cap: {category.baseMobCap}");
-            Debug.Log($"Can spawn? {category.currentMob < category.baseMobCap}");*/
-        }
-        return category.currentMob < category.baseMobCap; // Placeholder change baseMob to global mob for multiple players
-    }
-
-    private void AttemptSpawnMobs(MobCategory category)
-    {
-        currentTickActiveChunk = new List<int>(WorldGenerator.ActiveChunks.Keys.Where(chunkId => WorldGenerator.ReadyChunks.Contains(chunkId)));
-        if (currentTickActiveChunk.Count == 0)
-            return;
-        int randomChunkIndex = Random.Range(0, currentTickActiveChunk.Count);
-        Vector2Int chunkCoord = new Vector2Int(currentTickActiveChunk[randomChunkIndex], 0);
-        float[,] lightData = WorldGenerator.WorldLightData[chunkCoord];
-        TileObject[,,] terrainData = WorldGenerator.WorldData[chunkCoord];
-        int chosenX = Random.Range(0, WorldGenerator.ChunkSize.x);
-        int maxY = FindHighestBlock(terrainData, chosenX); if (maxY == int.MinValue) return;
-        
-        int chosenY = Random.Range(0, maxY);
-        
-        //if (terrainData[chosenX, chosenY, 1] == null) return; TODO: instead of == null this should check if the block is able to spawn thing
-        ISpawnable spawnableMob = SelectEnemyObjectBasedOnWeight(category);
-        if (spawnableMob == null) return;
-
-        for (int packIndex = 0; packIndex < spawnableMob.PackSize; packIndex++)
-        {
-            Vector2Int offset = GenerateTriangularDistributedOffset(8);
-            int finalX = Mathf.Clamp(chosenX + offset.x, 0, WorldGenerator.ChunkSize.x - 1);
-            int finalY = Mathf.Clamp(chosenY + offset.y, 0, maxY);
-            
-            if (CheckSafeZone(finalX, chunkCoord, finalY)) continue; // Skip spawning this mob due to being within the safe zone
-
-            if (ShouldSpawnHere(terrainData, lightData, finalX, finalY, spawnableMob.ColliderSize, spawnableMob.MinLightLevel, spawnableMob.MaxLightLevel))
-            {
-                if (WorldGenerator.ActiveChunks.ContainsKey(chunkCoord.x))
-                {
-                    GameObject spawnedGameObject = PoolManager.Instance.Get(spawnableMob as EnemyObject);
-                    spawnedGameObject.transform.position = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
-                    Transform enemyContainer = WorldGenerator.ActiveChunks[chunkCoord.x].transform.Find("MobContainer").Find("EnemyContainer");
-                    spawnedGameObject.transform.SetParent(enemyContainer, true);
-                    RegisterMob(spawnedGameObject, category);
-                }
-            }
-        }
-    }
-
     private bool CheckSafeZone(int finalX, Vector2Int chunkCoord, int finalY)
     {
-        if (player == null){
-            player =  GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
             if (player == null)
                 return true;
-        }   
+        }
 
-        Vector3 playerPosition = player.transform.position;
-        Vector3 potentialSpawnPosition = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
-        // Check if potential spawn position is within the safe zone radius
+        var playerPosition = player.transform.position;
+        var potentialSpawnPosition = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
+
+        // Check if the potential spawn position is within the player's safe zone.
         if (Vector3.Distance(playerPosition, potentialSpawnPosition) < safeZoneRadius)
-        {
             return true;
-        }
-        
-        // Now check against the core architecture's energy zone
-        float energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance() * 1.2f;
-        Vector3 corePosition = CoreArchitectureController.Instance.transform.position;
-        if (Vector3.Distance(corePosition, potentialSpawnPosition) < energyZoneRadius) {
-            return true; // Too close to the core architecture's energy zone
-        }
 
-        return false; // Not within the safe zones, spawn is allowed
+        // Check against the core architecture's energy zone.
+        var energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance() * 1.2f;
+        var corePosition = CoreArchitectureController.Instance.transform.position;
+        if (Vector3.Distance(corePosition, potentialSpawnPosition) < energyZoneRadius)
+            return true;
+
+        return false;
     }
-
 
     private int FindHighestBlock(TileObject[,,] terrainData, int chosenX)
     {
-        for (int y = WorldGenerator.ChunkSize.y - 1; y >= 0; y--)
+        for (var y = WorldGenerator.ChunkSize.y - 1; y >= 0; y--)
         {
             if (terrainData[chosenX, y, 1] != null)
                 return y;
@@ -243,145 +346,127 @@ public class MobSpawner : MonoBehaviour
 
         return int.MinValue;
     }
-    
+
     private Vector2Int GenerateTriangularDistributedOffset(int range)
     {
-        // Generate two random numbers in the range [0, 1)
-        float u1 = Random.Range(0f, 1f);
-        float u2 = Random.Range(0f, 1f);
+        // Generate two random numbers in [0, 1).
+        var u1 = Random.Range(0f, 1f);
+        var u2 = Random.Range(0f, 1f);
 
-        // Use the square root of the inverse triangular distribution function
-        float sign = u1 < 0.5f ? -1f : 1f; // Decide if we're in the lower or upper segment
-        float factor = Mathf.Sqrt(2 * u2);
+        // Decide the sign based on u1 and calculate the factor.
+        var sign = u1 < 0.5f ? -1f : 1f;
+        var factor = Mathf.Sqrt(2 * u2);
 
-        // Calculate offsets based on the triangular distribution
-        int offsetX = (int)(sign * range * (1 - factor));
-        int offsetY = (int)(sign * range * (1 - factor));
-
+        // Calculate the offset using the triangular distribution.
+        var offsetX = (int)(sign * range * (1 - factor));
+        var offsetY = (int)(sign * range * (1 - factor));
         return new Vector2Int(offsetX, offsetY);
     }
 
-
-    private void DespawnEntities()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player"); // Assuming the player has a tag "Player"
-        if (player == null) return;
-
-        Vector3 playerPosition = player.transform.position;
-
-        for (int i = enemyList.Count - 1; i >= 0; i--)
-        {
-            float distance = Vector3.Distance(playerPosition, enemyList[i].transform.position);
-            if (distance > despawnDistance)
-            {
-                GameObject toDespawn = enemyList[i];
-                enemyList.RemoveAt(i);
-                var category = mobCategories.FirstOrDefault(c => c.mobList.Contains(toDespawn));
-                if (category != null)
-                {
-                    category.mobList.Remove(toDespawn);
-                }
-                PoolManager.Instance.Return(toDespawn, toDespawn.GetComponent<IPoolableObjectController>().PoolableObject); // Assuming you have a method to return it to the pool or destroy it
-            }
-        }
-    }
-
-
-    
- 
     private bool ShouldSpawnHere(TileObject[,,] tiles, float[,] lightData, int x, int y, Vector2Int colliderSize, float minLightLevel, float maxLightLevel)
     {
+        if (!IsGroundAndLightSuitable(tiles, lightData, x, y, minLightLevel, maxLightLevel))
+            return false;
 
-        if (!IsGroundAndLightSuitable(tiles, lightData, x, y, minLightLevel, maxLightLevel)) return false;
+        var startX = x - colliderSize.x / 2;
+        var endX = startX + colliderSize.x - 1;
+        var startY = y + 1;
+        var endY = startY + colliderSize.y - 1;
 
-    
-        int startX = x - (colliderSize.x / 2);
-        int endX = startX + colliderSize.x - 1;
-        int startY = y + 1;
-        int endY = startY + colliderSize.y - 1; // if y = 0, start y is 1, collider size is 2, then check endy to 3
-
-        for (int checkX = startX; checkX <= endX; checkX++)
+        for (var checkX = startX; checkX <= endX; checkX++)
         {
-            for (int checkY = startY; checkY <= endY; checkY++)
+            for (var checkY = startY; checkY <= endY; checkY++)
             {
-                // Ensure the check is within bounds (assuming y+2 is within bounds since y is the base)
-                if (checkX < 0 || checkX >= WorldGenerator.ChunkSize.x || checkY < 0 || checkY >= WorldGenerator.ChunkSize.y)
-                {
-                    return false; // Out of bounds, cannot spawn here
-                }
-                
+                // Ensure the check is within bounds.
+                if (checkX < 0 || checkX >= WorldGenerator.ChunkSize.x ||
+                    checkY < 0 || checkY >= WorldGenerator.ChunkSize.y)
+                    return false;
+
                 if (tiles[checkX, checkY, 1] != null)
-                {
-                    return false; // Entity present at the base level
-                }
+                    return false;
             }
         }
 
-        return true; // Suitable location found
+        return true;
     }
 
-    // Helper method to check if a specific tile is suitable based on ground and light conditions
     private bool IsGroundAndLightSuitable(TileObject[,,] tiles, float[,] lightData, int x, int y, float minLightLevel, float maxLightLevel)
     {
-        bool isGround = tiles[x, y, 1] != null; // Assuming layer 1 is the entity layer, such as ground
-        float lightLevel = 15 * (1 - lightData[x, y]);
-        bool isLightSuitable = lightLevel >= minLightLevel && lightLevel <= maxLightLevel;
-       
+        var isGround = tiles[x, y, 1] != null; // Assuming layer 1 represents ground.
+        var lightLevel = 15 * (1 - lightData[x, y]);
+        var isLightSuitable = lightLevel >= minLightLevel && lightLevel <= maxLightLevel;
         return isGround && isLightSuitable;
     }
 
-    
     private ISpawnable SelectEnemyObjectBasedOnWeight(MobCategory category)
     {
-        float randomWeight = Random.Range(0, category.totalWeight);
-        float currentWeight = 0f;
-        
+        var randomWeight = Random.Range(0, category.totalWeight);
+        var currentWeight = 0f;
         foreach (var enemy in category.mobScriptableObjects)
         {
             if (enemy != null)
             {
                 currentWeight += (enemy as ISpawnable).SpawnWeight;
                 if (currentWeight >= randomWeight)
-                {
                     return enemy as ISpawnable;
-                }
             }
         }
-        
-        return null; 
+
+        return null;
     }
-    
+
     public void RegisterMob(GameObject mob, MobCategory mobCategory)
     {
         enemyList.Add(mob);
         mobCategory.mobList.Add(mob);
     }
 
-    public static List<EnemyController> FindEnemyNearby(Vector3 worldPosition)
+    private Transform GetEnemyContainerForSpawnPoint(Vector3 spawnPoint)
     {
-        int chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(worldPosition);
-        List<EnemyController> nearbyEnemies = new List<EnemyController>();
+        // Get the chunk coordinate for the spawnPoint.
+        int chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(spawnPoint);
+        // Optionally, if you want the local coordinates within the chunk:
+        // Vector2Int localCoords = WorldGenerator.WorldToLocalCoords(new Vector2Int((int)spawnPoint.x, (int)spawnPoint.y), chunkCoord);
 
-        // Check the specified chunk and its immediate neighbors
-        for (int offset = -1; offset <= 1; offset++)
+        // Look for the chunk in the ActiveChunks dictionary.
+        if (WorldGenerator.ActiveChunks.TryGetValue(chunkCoord, out GameObject chunk))
         {
-            int currentChunk = chunkCoord + offset;
-            if (WorldGenerator.ActiveChunks.ContainsKey(currentChunk))
+            // Assuming that the chunk GameObject has a child "MobContainer"
+            // and under that a child "EnemyContainer".
+            Transform mobContainer = chunk.transform.Find("MobContainer");
+            if (mobContainer != null)
             {
-                nearbyEnemies.AddRange(WorldGenerator.ActiveChunks[currentChunk].transform.Find("MobContainer").Find("EnemyContainer").GetComponentsInChildren<EnemyController>());
+                Transform enemyContainer = mobContainer.Find("EnemyContainer");
+                return enemyContainer;
             }
         }
-        return nearbyEnemies;
+
+        return null;
     }
+
+    #endregion
+
+    #region Unused / Placeholder Methods
+
+    private void CalculateGlobalCap()
+    {
+        // For multiplayer: global = mobcap-value * totalSpawnableCap / a pre-defined default spawnable chunks number.
+        foreach (var mc in mobCategories)
+        {
+            // No implementation provided.
+        }
+    }
+
+    #endregion
 }
 
-[System.Serializable]
+[Serializable]
 public class MobCategory
 {
     public string categoryName;
     public int baseMobCap;
     internal int currentMob;
     internal float totalWeight;
-    public List<CharacterObject> mobScriptableObjects; 
-    public List<GameObject> mobList = new List<GameObject>();
+    public List<CharacterObject> mobScriptableObjects;
+    public List<GameObject> mobList = new();
 }
