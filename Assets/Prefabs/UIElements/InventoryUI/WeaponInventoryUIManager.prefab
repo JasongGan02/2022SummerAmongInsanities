@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultRow: {fileID: 961959249126568429, guid: 75017ba3cfcc37d4aac544a28fdca689, type: 3}
-  template: {fileID: 169284352082792497, guid: 849c4e2ac3781c14cac1e7979200eaf4, type: 3}
+  template: {fileID: 169284352082792497, guid: 7892b2410a2bfe148999ff11dac09e64, type: 3}
   background: {fileID: 1265524727952192137, guid: 5a5b3dcce459dcd4786c31ce8bf3dd9b, type: 3}
   defaultNumberOfRow: 1
