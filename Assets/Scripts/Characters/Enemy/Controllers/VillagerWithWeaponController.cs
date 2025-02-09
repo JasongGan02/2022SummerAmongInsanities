@@ -22,8 +22,8 @@ public class VillagerWithWeaponController : EnemyController
     private int _pathCounter;
 
     private Animator _animator;
-    private BoxCollider2D _boxCollider;
-
+    // private BoxCollider2D _boxCollider;
+    private CapsuleCollider2D CapsuleCollider;
     public List<Vector2> PathToTarget = new List<Vector2>();
 
     [Header("Check Transforms")]
@@ -70,7 +70,7 @@ public class VillagerWithWeaponController : EnemyController
 
         // Cache references
         _animator = GetComponent<Animator>();
-        _boxCollider = GetComponent<BoxCollider2D>();
+        CapsuleCollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
 
         // Automatically find child transform references if not manually assigned

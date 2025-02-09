@@ -562,12 +562,15 @@ public class VillagerController : EnemyController
     public void PathExecute()
     {
         if (AutoLanding()) {return;} // Prevent dead stacking
-        if (DistanceToTarget(target.transform) < currentStats.attackRange)
+        if (DistanceToTarget(target.transform) < currentStats.attackRange )
         {
+            Debug.Log("Close to target, clearing path.");
             PathToTarget.Clear();
             RemovePathLine();
             _pathCounter = 0;
             return;
+        }else{
+            Debug.Log("Not close enough to target: " + DistanceToTarget(target.transform));
         }
 
         // DrawPath();

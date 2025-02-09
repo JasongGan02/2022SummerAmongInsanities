@@ -42,6 +42,7 @@ MonoBehaviour:
     chance: 5
   hatred:
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
   - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   enemyStats:
     hp: 17

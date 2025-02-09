@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 
 
 public abstract class EnemyController : CharacterController
@@ -30,7 +32,7 @@ public abstract class EnemyController : CharacterController
     protected abstract string AttackAnimationState { get; }
     protected abstract string MoveAnimationState { get; }
     //protected abstract string DeathAnimationState { get; }
-
+    
     protected override void Awake()
     {
         base.Awake();
@@ -205,7 +207,7 @@ public abstract class EnemyController : CharacterController
             {
                 Type targetType = targetComponent.GetType();
                 int typePriority = Hatred.FindIndex(hatredType => hatredType == targetType);
-                
+
                 // If the type is not directly in the list, check inheritance
                 if (typePriority == -1)
                 {
@@ -298,7 +300,7 @@ public abstract class EnemyController : CharacterController
 
         RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, groundLayerMask);
         //Debug.DrawLine(eyePosition, targetPosition, Color.red);
-        if (hit.collider == null && distance < enemyStats.sensingRange) // just testing!!!!
+        if ((hit.collider == null && distance < enemyStats.sensingRange) || target.gameObject.name == "CoreArchitecture") // because core position is too low
         {
             // Line of sight is clear
             return true;
