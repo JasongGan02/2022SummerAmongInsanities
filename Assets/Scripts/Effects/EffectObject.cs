@@ -75,8 +75,6 @@ public abstract class EffectObject : ScriptableObject
             return;
         }
 
-        // Example usage
-        Debug.Log("comp to apply: " + comp.FullName);
         EffectEvents.ApplyEffect(this, comp);
     }
 

@@ -114,8 +114,6 @@ public class TimeSystemManager : MonoBehaviour
             }
 
             bool isRed = effectiveDay != 0 && effectiveDay % redMoonNightInterval == 0 && !isDay;
-            Debug.Log($"[TimeSystemManager] IsRedMoon computed: {isRed} (EffectiveDay: {effectiveDay}, CurrentDay: {currentDay}, " +
-                      $"RedMoonInterval: {redMoonNightInterval}, IsDayTime: {IsDayTime()}, CurrentHour: {currentHour})");
             return isRed;
         }
     }

@@ -18,6 +18,8 @@ public abstract class PickupController : MonoBehaviour
 
     protected GameObject player;
     protected bool shouldFlyToPlayer = false;
+    private SpriteRenderer spriteRenderer;
+
     private readonly float targetWorldSize = 0.35f;
     private float currentSpeed;
     private bool isGrounded = false;
@@ -25,12 +27,13 @@ public abstract class PickupController : MonoBehaviour
     private bool isWaitingToFloat = false;
     private Vector3 initialPosition;
 
+
     protected virtual void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         currentSpeed = initialSpeed;
-        var spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sortingLayerID = SortingLayer.NameToID("DroppableObject");
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sortingLayerID = SortingLayer.NameToID("DroppedObject");
         initialPosition = transform.position;
     }
 

@@ -11,7 +11,6 @@ public class EnemyRedMoonEffectObject : StatsEffectObject
     {
         if (duration == 0)
             duration = TimeSystemManager.Instance.dayToRealTimeInSecond / 2f;
-        Debug.Log($"Applied redMoon effect for {duration} seconds");
         base.InitializeEffectObject();
     }
 }

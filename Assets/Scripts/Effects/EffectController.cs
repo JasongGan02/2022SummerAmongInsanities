@@ -64,7 +64,6 @@ public class EffectController : MonoBehaviour
                 GameObject newVFX =
                     Instantiate(vfx.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
                 activeVFXList.Add(newVFX);
-                Debug.Log($"Created VFX: {vfx.name} for effect: {effectObject.name}");
             }
         }
     }
@@ -83,8 +82,6 @@ public class EffectController : MonoBehaviour
 
                 var main = particleSystem.main;
                 main.startSize = Mathf.Clamp(0.5f + stackCount * 0.1f, 0.5f, 2.0f); // Example: Scale size by stacks
-
-                Debug.Log($"Updated VFX for {effectObject.name}: stackCount={stackCount}");
             }
             else
             {
@@ -183,7 +180,7 @@ public class EffectController : MonoBehaviour
             // If another instance of the same type exists and it's not this one
             if (controller != this && controller.GetType() == GetType())
             {
-                Debug.Log($"Non-stackable effect already exists. Resetting duration for: {controller}");
+                //Debug.Log($"Non-stackable effect already exists. Resetting duration for: {controller}");
                 controller.ResetEffectDuration();
                 Destroy(this); // Destroy the current instance
                 return;
@@ -193,7 +190,7 @@ public class EffectController : MonoBehaviour
 
     protected virtual void ResetEffectDuration()
     {
-        Debug.Log($"Resetting duration for effect: {this}");
+        //Debug.Log($"Resetting duration for effect: {this}");
         StopAllCoroutines();
         StartCoroutine(EffectDurationCoroutine());
     }
