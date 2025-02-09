@@ -111,13 +111,15 @@ public class MobSpawner : MonoBehaviour
 
     private IEnumerator SpawnWaveAtPoint(Vector3 corePosition, int waveNumber, float spawnDistance, float intensityMultiplier)
     {
+        yield return new WaitUntil(() => CoreArchitectureController.Instance != null);
+
         // Spawn a wave of enemies along a line parallel to the core position.
         for (var i = 0; i < waveNumber; i++)
         {
             if (!CanSpawnCategory(mobCategories[1]))
                 yield break;
 
-            // Generate an offset to position enemies along the x-axis from both sides.
+            // Generate an offset to position enemies along the x-axis.
             var offset = GenerateTriangularDistributedOffset(8);
             var spawnPointLeft = new Vector3(corePosition.x - spawnDistance + offset.x, corePosition.y, 0);
             var spawnPointRight = new Vector3(corePosition.x + spawnDistance + offset.x, corePosition.y, 0);
@@ -125,8 +127,17 @@ public class MobSpawner : MonoBehaviour
             // Select enemy prefab from the WaveEnemy category.
             var enemyPrefab = SelectEnemyObjectBasedOnWeight(mobCategories[1]) as EnemyObject;
 
-            SpawnEnemy(enemyPrefab, spawnPointLeft, mobCategories[1], null);
-            SpawnEnemy(enemyPrefab, spawnPointRight, mobCategories[1], null);
+            // Randomly choose how to spawn:
+            // 0: spawn only left, 1: spawn only right.
+            int spawnChoice = Random.Range(0, 2);
+            if (spawnChoice == 0)
+            {
+                SpawnEnemy(enemyPrefab, spawnPointLeft, mobCategories[1], null, "WaveSpawnLeft");
+            }
+            else if (spawnChoice == 1)
+            {
+                SpawnEnemy(enemyPrefab, spawnPointRight, mobCategories[1], null, "WaveSpawnRight");
+            }
 
             // Delay the next spawn for a staggered appearance.
             var randomDelay = Random.Range(1f, 5f) / intensityMultiplier;
@@ -140,7 +151,9 @@ public class MobSpawner : MonoBehaviour
 
     private IEnumerator SpawnCycleCoroutine()
     {
-        while (true)
+        yield return new WaitUntil(() => CoreArchitectureController.Instance != null);
+
+        while (CoreArchitectureController.Instance != null)
         {
             CollectMobCapData();
             RunSpawningAttempts();
@@ -201,15 +214,13 @@ public class MobSpawner : MonoBehaviour
             var finalX = Mathf.Clamp(chosenX + offset.x, 0, WorldGenerator.ChunkSize.x - 1);
             var finalY = Mathf.Clamp(chosenY + offset.y, 0, maxY);
 
-            if (CheckSafeZone(finalX, chunkCoord, finalY))
-                continue; // Skip spawning if within a safe zone.
 
             if (ShouldSpawnHere(terrainData, lightData, finalX, finalY, spawnableMob.ColliderSize,
                     spawnableMob.MinLightLevel, spawnableMob.MaxLightLevel))
             {
-                var spawnPosition = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
-                // Use the unified spawn function without ground adjustment.
-                SpawnEnemy(spawnableMob as EnemyObject, spawnPosition, category);
+                var spawnPosition = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY, 0);
+                if (!CheckSafeZone(spawnPosition))
+                    SpawnEnemy(spawnableMob as EnemyObject, spawnPosition, category, null, "CycleSpawn");
             }
         }
     }
@@ -258,15 +269,21 @@ public class MobSpawner : MonoBehaviour
     /// If true, perform a raycast from above the spawn point downward to adjust the spawn position
     /// so that the enemy sits on the ground.
     /// </param>
-    private void SpawnEnemy(EnemyObject enemyPrefab, Vector3 spawnPoint, MobCategory category, Transform parent = null)
+    private void SpawnEnemy(EnemyObject enemyPrefab, Vector3 spawnPoint, MobCategory category, Transform parent = null, string debugSource = "Unknown")
     {
         if (enemyPrefab == null)
+        {
+            Debug.LogWarning($"[SpawnEnemy] Called from {debugSource}: enemyPrefab is null, spawn aborted.");
             return;
+        }
 
         // Always perform a ground check using the provided ground layer mask.
-        RaycastHit2D hit = Physics2D.Raycast(spawnPoint + Vector3.up * 50, Vector3.down, 100, groundLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(spawnPoint + Vector3.up, Vector3.down, 2, groundLayerMask);
         if (hit.collider == null)
+        {
+            Debug.LogWarning($"[SpawnEnemy] Called from {debugSource}: no valid ground found at spawnPoint {spawnPoint}");
             return; // No valid ground found.
+        }
 
         // Adjust spawn point so the enemy sits slightly above the ground.
         spawnPoint.y = hit.point.y + 1;
@@ -293,6 +310,32 @@ public class MobSpawner : MonoBehaviour
         }
 
         RegisterMob(enemy, category);
+
+        // Draw debug lines to indicate distances to the player and core.
+        if (player != null)
+        {
+            // Draw a line from the enemy to the player (magenta).
+            Debug.DrawLine(enemy.transform.position, player.transform.position, Color.magenta, 2f);
+            Debug.Log($"[SpawnEnemy] {enemyPrefab.name} spawned at {spawnPoint} from {debugSource}. Distance to Player: {Vector3.Distance(enemy.transform.position, player.transform.position):F2}");
+        }
+        else
+        {
+            Debug.LogWarning("[SpawnEnemy]: Player reference is missing.");
+        }
+
+        if (CoreArchitectureController.Instance != null)
+        {
+            // Draw a line from the enemy to the core (cyan).
+            Debug.DrawLine(enemy.transform.position, CoreArchitectureController.Instance.transform.position, Color.cyan, 2f);
+            Debug.Log($"[SpawnEnemy] Distance to Core: {Vector3.Distance(enemy.transform.position, CoreArchitectureController.Instance.transform.position):F2}");
+        }
+        else
+        {
+            Debug.LogWarning("[SpawnEnemy]: CoreArchitectureController instance is missing.");
+        }
+
+        // Debug output indicating a successful spawn.
+        Debug.Log($"[SpawnEnemy] {enemyPrefab.name} spawned at {spawnPoint} from {debugSource} and registered under category '{category.categoryName}'.");
     }
 
     #endregion
@@ -311,30 +354,48 @@ public class MobSpawner : MonoBehaviour
         }
     }
 
-    private bool CheckSafeZone(int finalX, Vector2Int chunkCoord, int finalY)
+    private bool CheckSafeZone(Vector3 spawnPosition)
     {
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player");
             if (player == null)
-                return true;
+            {
+                Debug.LogWarning("[CheckSafeZone]: No player found.");
+                return true; // Prevent spawning if no player is found.
+            }
         }
 
-        var playerPosition = player.transform.position;
-        var potentialSpawnPosition = new Vector3(finalX + chunkCoord.x * WorldGenerator.ChunkSize.x, finalY + 1, 0);
+        // Log player position and safe zone radius.
+        Debug.Log($"[CheckSafeZone] Player position: {player.transform.position}, SafeZoneRadius: {safeZoneRadius}");
 
-        // Check if the potential spawn position is within the player's safe zone.
-        if (Vector3.Distance(playerPosition, potentialSpawnPosition) < safeZoneRadius)
+        float distanceToPlayer = Vector3.Distance(player.transform.position, spawnPosition);
+        Debug.Log($"[CheckSafeZone] Spawn position: {spawnPosition}, Computed distance to Player: {distanceToPlayer}");
+
+        if (distanceToPlayer < safeZoneRadius)
+        {
+            Debug.Log($"[CheckSafeZone]: Spawn position {spawnPosition} is within the player's safe zone (distance: {distanceToPlayer}).");
             return true;
+        }
 
-        // Check against the core architecture's energy zone.
-        var energyZoneRadius = CoreArchitectureController.Instance.GetConstructableDistance() * 1.2f;
-        var corePosition = CoreArchitectureController.Instance.transform.position;
-        if (Vector3.Distance(corePosition, potentialSpawnPosition) < energyZoneRadius)
-            return true;
+        if (CoreArchitectureController.Instance != null)
+        {
+            Vector3 corePosition = CoreArchitectureController.Instance.transform.position;
+            float energyRadius = CoreArchitectureController.Instance.GetConstructableDistance() * 1.2f;
+            float distanceToCore = Vector3.Distance(corePosition, spawnPosition);
+            Debug.Log($"[CheckSafeZone] Core position: {corePosition}, EnergyRadius: {energyRadius}, Computed distance to Core: {distanceToCore}");
 
+            if (distanceToCore < energyRadius)
+            {
+                Debug.Log($"[CheckSafeZone]: Spawn position {spawnPosition} is within the core's safe zone (distance: {distanceToCore}).");
+                return true;
+            }
+        }
+
+        Debug.Log($"[CheckSafeZone]: Spawn position {spawnPosition} passed safe zone check.");
         return false;
     }
+
 
     private int FindHighestBlock(TileObject[,,] terrainData, int chosenX)
     {

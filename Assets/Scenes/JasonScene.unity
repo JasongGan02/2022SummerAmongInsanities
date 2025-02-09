@@ -1237,13 +1237,6 @@ MonoBehaviour:
   stopLevelingUp: 1
   playerCount: 1
   difficultyValue: 1
-  enemyObjects:
-  - {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
-  - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
-  - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
-  - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
-  - {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
-  - {fileID: 11400000, guid: f2173db18eaa566429fc56b8fb170c60, type: 2}
 --- !u!4 &1797734688
 Transform:
   m_ObjectHideFlags: 0
@@ -2269,6 +2262,14 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 831146460}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: spawnRate
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: mobCategories.Array.data[1].baseMobCap
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: num0
       value: 

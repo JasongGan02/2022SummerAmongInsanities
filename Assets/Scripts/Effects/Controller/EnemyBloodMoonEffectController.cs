@@ -19,11 +19,6 @@ public class EnemyBloodMoonEffectController : StatsEffectController
             characterController.MultiplyCurrentStats(statsEffectObject.statChanges);
         else
             characterController.AddCurrentStats(statsEffectObject.statChanges);
-
-        if (characterController is EnemyController enemyController)
-        {
-            Debug.Log("RedMoon After Stats: " + enemyController + " " + enemyController.CurrentStats);
-        }
     }
 
     protected override IEnumerator EffectDurationCoroutine()
