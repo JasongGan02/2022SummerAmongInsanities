@@ -108,7 +108,7 @@ public class InventoryUiController
             }
             hotbar.transform.SetParent(hotbarContainer.transform);
             RectTransform rowRectTransform = hotbar.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(450,-30);
+            rowRectTransform.anchoredPosition = new Vector2(600,-20);
         }
 
         for (int i = 0; i < defaultNumberOfRow - 1; i++)
@@ -120,7 +120,7 @@ public class InventoryUiController
             }
             row.transform.SetParent(inventoryContainer.transform);
             RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-            rowRectTransform.anchoredPosition = new Vector2(450, 90 * i);
+            rowRectTransform.anchoredPosition = new Vector2(600, 110 * i);
         }
 
         Button sortButton = actionsContainer.transform.Find("Sort").GetComponent<Button>();
@@ -283,27 +283,42 @@ public class InventoryUiController
         }
         row.transform.SetParent(inventoryContainer.transform);
         RectTransform rowRectTransform = row.GetComponent<RectTransform>();
-        rowRectTransform.anchoredPosition = new Vector2(450, - 90 * (inventoryContainer.transform.childCount - 1));
+        rowRectTransform.anchoredPosition = new Vector2(600, - 110* (inventoryContainer.transform.childCount - 1));
     }
 
     private GameObject GetInventorySlotUiByIndex(int index)
     {
+        const int SLOTS_PER_ROW = 8; // 每行 8 个 slot
+
         if (hotbarContainer == null)
         {
-            return inventoryContainer.transform.GetChild(index / 10).GetChild(index % 10).gameObject;
+            return inventoryContainer.transform
+                .GetChild(index / SLOTS_PER_ROW) // 行索引
+                .GetChild(index % SLOTS_PER_ROW) // 列索引
+                .gameObject;
         }
         else
         {
-            if (index < 10)
+            // Hotbar 有 8 个 slot (0-7)
+            if (index < SLOTS_PER_ROW)
             {
-                return hotbarContainer.transform.GetChild(index / 10).GetChild(index % 10).gameObject;
+                return hotbarContainer.transform
+                    .GetChild(0) // Hotbar 只有一行
+                    .GetChild(index % SLOTS_PER_ROW)
+                    .gameObject;
             }
             else
             {
-                return inventoryContainer.transform.GetChild(index / 10 - 1).GetChild(index % 10).gameObject;
+                // 普通背包槽位计算
+                int adjustedIndex = index - SLOTS_PER_ROW;
+                return inventoryContainer.transform
+                    .GetChild(adjustedIndex / SLOTS_PER_ROW)
+                    .GetChild(adjustedIndex % SLOTS_PER_ROW)
+                    .gameObject;
             }
         }
     }
+
     private GameObject GetChestInventorySlotUiByIndex(int index)
     {
             return inventoryContainer.transform.GetChild(index / 10).GetChild(index % 10).gameObject;

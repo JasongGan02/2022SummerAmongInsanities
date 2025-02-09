@@ -15,19 +15,19 @@ public class PlanetMovementController : MonoBehaviour
     private WorldGenerator worldGenerator;
 
     private float timeCounter = -Mathf.PI / 2;
+
     private void Awake()
     {
         mainCamera = Camera.main;
-        timeSystemManager = FindObjectOfType<TimeSystemManager>();
+        timeSystemManager = TimeSystemManager.Instance;
         worldGenerator = FindObjectOfType<WorldGenerator>();
         heightOffset = worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f;
     }
 
     private void OnEnable()
     {
-        
         timeCounter = -Mathf.PI / 2 + Mathf.PI * timeSystemManager.GetHowMuchPercentageOfNightTimeHasPassed();
-        if (timeSystemManager.IsInDaytime())
+        if (timeSystemManager.IsDayTime())
         {
             duration = timeSystemManager.GetDayTimeLengthInHour();
         }

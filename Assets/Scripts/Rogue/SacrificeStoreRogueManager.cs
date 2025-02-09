@@ -95,7 +95,7 @@ public class SacrificeStoreRogueManager : RogueManagerBase
             ashCostUI.GetComponent<TMP_Text>().text = $"{ashCost} 烬";
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
             buffSelectionController.Init(node, buffContainer.transform, new Vector2(460 + 500 * i, 590f));
-            buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
+            buffSelectionController.onBuffSelectedEvent += HandleBuffSelectedEvent;
         }
     }
     
