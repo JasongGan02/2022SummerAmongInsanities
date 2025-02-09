@@ -2264,7 +2264,11 @@ PrefabInstance:
       objectReference: {fileID: 831146460}
     - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: spawnRate
-      value: 0.5
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: despawnDistance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: mobCategories.Array.data[1].baseMobCap

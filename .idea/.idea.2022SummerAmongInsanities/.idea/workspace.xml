@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Spawn/MobSpawner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/EnemyBloodMoonEffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Controller/EnemyBloodMoonEffectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/EffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EnemyRedMoonEffectObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EnemyRedMoonEffectObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TimeSystem/TimeSystemManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,7 +228,7 @@
       <workItem from="1737752240451" duration="7511000" />
       <workItem from="1737943807965" duration="2192000" />
       <workItem from="1738388254623" duration="16044000" />
-      <workItem from="1739048811370" duration="10089000" />
+      <workItem from="1739048811370" duration="10277000" />
     </task>
     <servers />
   </component>
