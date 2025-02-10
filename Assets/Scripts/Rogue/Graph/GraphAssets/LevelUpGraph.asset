@@ -972,7 +972,7 @@ MonoBehaviour:
   m_Name: "\u653B\u901F\u63D0\u53471"
   m_EditorClassIdentifier: 
   blessingName: "\u653B\u901F\u63D0\u53471"
-  effect: {fileID: 11400000, guid: 30113d3c4a8ea1846a804ab887ae5f2d, type: 2}
+  effect: {fileID: 11400000, guid: 62eb0e31a7336c647ae6103d2026c6f7, type: 2}
   isReselectable: 1
   baseWeight: 5
   quality:
