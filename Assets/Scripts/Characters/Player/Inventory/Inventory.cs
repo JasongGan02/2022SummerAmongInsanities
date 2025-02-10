@@ -66,7 +66,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
         if (queueManager.sizeCraftQueue() >= 4)
         {
-            Debug.LogError("CraftItems: Craft queue is full (>=4). Aborting craft.");
+            Debug.Log("CraftItems: Craft queue is full (>=4). Aborting craft.");
             return;
         }
 
@@ -329,7 +329,6 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         // Ensure that inventoryObject is not null
         if (inventoryObject == null)
         {
-            Debug.LogError("inventoryObject is null");
             return 0;
         }
 

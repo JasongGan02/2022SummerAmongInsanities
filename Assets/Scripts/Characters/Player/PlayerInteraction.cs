@@ -238,7 +238,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         if (isWeaponInUse && (Input.GetKeyDown(KeyCode.Q)))
         {
            
-            var weaponInventory = Array.Find(Resources.FindObjectsOfTypeAll<WeaponInventory>(), w => w.gameObject.activeInHierarchy || !w.gameObject.activeInHierarchy);
+            var weaponInventory = FindObjectOfType<WeaponInventory>(true);
 
             int targetSlot = -1;
             for (int i = 0; i < weaponInventory.Database.GetSize(); i++)
