@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdaf60cf95067d64cb85de6d4948aef5, type: 3}
+  m_Name: DetonateChargeEffect
+  m_EditorClassIdentifier: 
+  duration: 0
+  tickDuration: 0
+  requiresReset: 0
+  isStackable: 0
+  isPermanent: 1
+  description: 
+  effectControllerType: {fileID: 0}
+  componentToApplyType: {fileID: 0}
+  icon: {fileID: 0}
+  vfxList:
+  - name: ChargeUp
+    vfxPrefab: {fileID: 8423029588219032371, guid: 181d84a48e6b79f4d98e9605f418c6ae, type: 3}
+    attachAtStart: 0
+    attachToTarget: 1
+  - name: ChargeReady
+    vfxPrefab: {fileID: 8423029588219032371, guid: 2e40a01b15d834f429f5dd3147ec820d, type: 3}
+    attachAtStart: 0
+    attachToTarget: 1
+  needsLevel: 1
+  currentLevel: 0
+  upgradableParameters: []
+  chargeDuration: 5
+  onDetonateEffectObject: {fileID: 11400000, guid: 6e7b1bdcb9d0b7d43aaf167b78665aef, type: 2}

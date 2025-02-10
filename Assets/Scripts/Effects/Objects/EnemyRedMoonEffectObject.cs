@@ -7,9 +7,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effects/Stats/EnemyRedMoonEffect")]
 public class EnemyRedMoonEffectObject : StatsEffectObject
 {
-    public override void ExecuteEffect(IEffectableController effectedGameController)
+    public override void InitializeEffectObject()
     {
-        duration = FindObjectOfType<TimeSystemManager>().dayToRealTimeInSecond / 2f;
-        base.ExecuteEffect(effectedGameController);
+        if (duration == 0)
+            duration = TimeSystemManager.Instance.dayToRealTimeInSecond / 2f;
+        base.InitializeEffectObject();
     }
 }

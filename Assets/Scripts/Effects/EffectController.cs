@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,11 @@ public class EffectController : MonoBehaviour
         OnEffectStarted();
     }
 
+    protected void OnDisable()
+    {
+        EndEffect();
+    }
+
     protected virtual void OnEffectStarted()
     {
         if (!gameObject.activeInHierarchy)
@@ -20,7 +26,7 @@ public class EffectController : MonoBehaviour
             Debug.LogWarning($"Cannot start effect on inactive GameObject: {gameObject.name}");
             return;
         }
-        
+
         if (effectObject.isStackable)
             HandleStacking();
         else
@@ -28,25 +34,26 @@ public class EffectController : MonoBehaviour
             // Handle non-stackable behavior
             HandleNonStackable();
         }
-        
+
         //Preparation like special effect or one time instant change
         StartEffect();
         StartVFX();
-        
+
         if (!gameObject.activeInHierarchy)
         {
             Debug.LogWarning($"Cannot start effect on inactive GameObject: {gameObject.name}");
             return;
         }
+
         //Duration
         StartCoroutine(EffectDurationCoroutine());
     }
-    
+
     protected virtual void StartEffect()
     {
         // Perform any necessary updates here
     }
-    
+
     protected virtual void StartVFX()
     {
         foreach (var vfx in effectObject.vfxList)
@@ -54,9 +61,9 @@ public class EffectController : MonoBehaviour
             if (vfx.vfxPrefab != null && vfx.attachAtStart)
             {
                 Transform parentTransform = vfx.attachToTarget ? transform : null;
-                GameObject newVFX = Instantiate(vfx.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
+                GameObject newVFX =
+                    Instantiate(vfx.vfxPrefab, transform.position, Quaternion.identity, parentTransform);
                 activeVFXList.Add(newVFX);
-                Debug.Log($"Created VFX: {vfx.name} for effect: {effectObject.name}");
             }
         }
     }
@@ -75,8 +82,6 @@ public class EffectController : MonoBehaviour
 
                 var main = particleSystem.main;
                 main.startSize = Mathf.Clamp(0.5f + stackCount * 0.1f, 0.5f, 2.0f); // Example: Scale size by stacks
-
-                Debug.Log($"Updated VFX for {effectObject.name}: stackCount={stackCount}");
             }
             else
             {
@@ -84,7 +89,7 @@ public class EffectController : MonoBehaviour
             }
         }
     }
-    
+
     protected virtual IEnumerator EffectDurationCoroutine()
     {
         float elapsedTime = 0f;
@@ -98,37 +103,37 @@ public class EffectController : MonoBehaviour
                 EndEffect(); // Call a method to handle cleanup
                 yield break; // Exit the coroutine
             }
-            
+
             if (Time.timeScale == 0f)
             {
                 //Debug.Log("Time.timeScale is 0, waiting for time to resume.");
                 yield return new WaitUntil(() => Time.timeScale > 0f); // Wait for timeScale to resume
             }
+
             //Debug.Log("Effect progress: " + elapsedTime + "/" + effectObject.duration);
             DuringEffect(); // Trigger the effect logic
             yield return new WaitForSeconds(tickDuration); // Wait for the tick duration
             elapsedTime += tickDuration; // Increment elapsed time by tick duration
-
         }
 
         EndEffect();
     }
-    
+
     protected virtual void DuringEffect()
     {
         // Perform any necessary updates here if the effect is not a one-time effect
     }
-    
+
     protected virtual void ResetEffect()
     {
         // Reset any temporary effect-related stats or variables here
     }
-    
+
     protected virtual void EndEffect()
     {
         if (effectObject.requiresReset)
             ResetEffect(); // Reset temporary changes if needed
-        
+
         if (!effectObject.isPermanent)
         {
             EndVFX();
@@ -159,9 +164,15 @@ public class EffectController : MonoBehaviour
         // Override this function in derived classes to specify stacking behavio
         Debug.LogWarning($"Stacking is enabled, but no stacking logic implemented for effect: {effectObject.name}");
     }
-    
+
     protected virtual void HandleNonStackable()
     {
+        if (effectObject.duration <= 0)
+        {
+            Destroy(this); // Destroy the current instance
+            return;
+        }
+
         var existingControllers = GetComponents<EffectController>();
 
         foreach (var controller in existingControllers)
@@ -169,17 +180,17 @@ public class EffectController : MonoBehaviour
             // If another instance of the same type exists and it's not this one
             if (controller != this && controller.GetType() == GetType())
             {
-                Debug.Log($"Non-stackable effect already exists. Resetting duration for: {controller}");
+                //Debug.Log($"Non-stackable effect already exists. Resetting duration for: {controller}");
                 controller.ResetEffectDuration();
                 Destroy(this); // Destroy the current instance
                 return;
             }
         }
     }
-    
+
     protected virtual void ResetEffectDuration()
     {
-        Debug.Log($"Resetting duration for effect: {this}");
+        //Debug.Log($"Resetting duration for effect: {this}");
         StopAllCoroutines();
         StartCoroutine(EffectDurationCoroutine());
     }
@@ -192,7 +203,7 @@ public class EffectController : MonoBehaviour
         {
             return;
         }
+
         Destroy(this);
     }
-
 }

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9ebc9ae351beb439fdb3bf7a94d81b, type: 3}
+  m_Name: PlayerBowProjectile
+  m_EditorClassIdentifier: 
+  itemName: PlayerBowProjectile
+  sizeRatio: 2
+  prefab: {fileID: 658926369847174377, guid: 6b68158036cb76247b94ff4691693de3, type: 3}
+  damageCoef: 1
+  onHitEffects: []
+  _maxStack: 99
+  _recipe:
+  - material: {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+    quantity: 1
+  _isCraftable: 1
+  _isCoreNeeded: 1
+  _craftTime: 2

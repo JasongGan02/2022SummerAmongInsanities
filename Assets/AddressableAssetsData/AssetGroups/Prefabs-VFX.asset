@@ -80,8 +80,7 @@ MonoBehaviour:
   - m_GUID: 19b5d3102bfeac84eb7aa9a1a29880c4
     m_Address: Assets/Prefabs/VFX/VFXOnHit.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - VFX
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}

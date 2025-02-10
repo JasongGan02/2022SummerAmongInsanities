@@ -47,7 +47,13 @@ MonoBehaviour:
     m_SerializedLabels:
     - WeaponObject
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 93aa2cd2c31b0c54a94d779394a2c6eb
+  - m_GUID: dbcbbb029cf6e184f8baa85e59362d54
+    m_Address: Assets/ScriptableObjects/WeaponObjects/PlayerBowProjectile.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 584fcd6bd8ddaa9409c8fe7b345db670
     m_Address: Assets/ScriptableObjects/WeaponObjects/Bow.asset
     m_ReadOnly: 0
     m_SerializedLabels:

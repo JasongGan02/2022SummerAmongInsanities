@@ -11,12 +11,13 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     #region Fields
 
     protected CharacterObject characterObject; // Holds the character's base object
-    protected CharacterStats currentStats;     // Holds the character's current stats
+    protected CharacterStats currentStats; // Holds the character's current stats
     protected AudioEmitter audioEmitter;
     protected DamageDisplay damageDisplay;
     protected Animator animator;
     protected string currentAnimationState;
     public event Action OnWeaponStatsChanged;
+
     #endregion
 
     #region Properties
@@ -48,7 +49,6 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         }
     }
 
-
     #endregion
 
     #region Unity Methods
@@ -67,7 +67,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
             Die();
         }
     }
-    
+
     protected virtual void OnEnable()
     {
         EffectEvents.OnEffectApplied += HandleEffectApplied;
@@ -77,24 +77,29 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     {
         EffectEvents.OnEffectApplied -= HandleEffectApplied;
     }
-    
+
     private void HandleEffectApplied(EffectObject effect, Type targetType)
     {
-        if (targetType == this.GetType())
+        // Check if the targetType is assignable from the current type (including derived types)
+        if (targetType.IsInstanceOfType(this))
         {
             // Add the appropriate EffectController as defined in the EffectObject
             Type effectControllerType = effect.EffectControllerType; // e.g., returns a subclass of EffectController
             if (effectControllerType != null)
             {
+                //Debug.Log($"Adding effect controller: {effectControllerType.Name}");
                 EffectController controller = gameObject.AddComponent(effectControllerType) as EffectController;
-                Debug.Log("EffectApplied");
                 controller.Initialize(effect);
+            }
+            else
+            {
+                Debug.LogError("EffectControllerType is null.");
             }
         }
     }
 
     #endregion
-    
+
     #region Initialization
 
     public virtual void Initialize(CharacterObject characterObject)
@@ -112,6 +117,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     {
         Initialize(characterObject);
     }
+
     /*
     private void CopyFieldsFromCharacterObject(CharacterObject characterObject)
     {
@@ -141,11 +147,12 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         }
     }
     */
+
     #endregion
-    
+
     #region Health Management
 
-    public virtual void ChangeHealth(float amount)
+    public virtual async void ChangeHealth(float amount, IDamageSource damageSource)
     {
         Health -= amount;
         if (Health <= 0)
@@ -155,6 +162,36 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         else if (amount > 0 && gameObject.activeSelf)
         {
             //StartCoroutine(FlashRed());
+            GameObject onHitVFX = await AddressablesManager.Instance.InstantiateAsync("Assets/Prefabs/VFX/VFXOnHit.prefab", transform.position, transform.rotation);
+
+            if (onHitVFX != null)
+            {
+                onHitVFX.name = "OnHitVFX"; // Rename for clarity
+
+                // Apply force over time if the damage source is a MonoBehaviour (has position)
+                if (damageSource is MonoBehaviour sourceMono)
+                {
+                    Vector3 forceDirection = (transform.position - sourceMono.transform.position).normalized; // Direction from damage source
+                    float forceAmount = Mathf.Clamp(amount / 10f, 3f, 20f);
+
+                    // Find all ParticleSystem components in the spawned prefab (including children)
+                    ParticleSystem[] particleSystems = onHitVFX.GetComponentsInChildren<ParticleSystem>();
+
+                    foreach (var ps in particleSystems)
+                    {
+                        var psMain = ps.main;
+
+                        if (psMain.simulationSpace == ParticleSystemSimulationSpace.Local) // Apply force only if using world space
+                        {
+                            var psForceOverLifetime = ps.forceOverLifetime;
+                            psForceOverLifetime.enabled = true;
+                            psForceOverLifetime.x = new ParticleSystem.MinMaxCurve(forceAmount * forceDirection.x);
+                            psForceOverLifetime.y = new ParticleSystem.MinMaxCurve(forceAmount * forceDirection.y);
+                            psForceOverLifetime.z = new ParticleSystem.MinMaxCurve(forceAmount * forceDirection.z);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -174,7 +211,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     }
 
     #endregion
-    
+
     #region Stats Management
 
     public void AddCurrentStats(CharacterStats mods)
@@ -183,7 +220,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         currentStats.hp = Mathf.Clamp(currentStats.hp, Mathf.NegativeInfinity, characterObject.maxStats.hp);
         OnStatsChanged();
     }
-    
+
     public void MultiplyCurrentStats(CharacterStats mods)
     {
         currentStats *= mods;
@@ -195,7 +232,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         characterObject.maxStats += mods;
         AddCurrentStats(mods);
     }
-    
+
     public void MultiplyMaxStats(CharacterStats mods)
     {
         // Backup the old max stats for reference
@@ -217,7 +254,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     }
 
     #endregion
-    
+
     #region Damage Handling
 
     // Implementation of IDamageSource
@@ -225,7 +262,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     public float DamageAmount => currentStats.attackDamage;
     public float CriticalChance => currentStats.criticalChance;
     public float CriticalMultiplier => currentStats.criticalMultiplier;
-    
+
     public float AttackInterval => currentStats.attackInterval;
 
     public virtual void ApplyDamage(IDamageable target)
@@ -237,8 +274,8 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     // Implementation of IDamageable
     public virtual void TakeDamage(float amount, IDamageSource damageSource)
     {
-        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp,damageSource);
-        ChangeHealth(amount);
+        damageDisplay?.ShowDamage(amount, transform, characterObject.maxStats.hp, damageSource);
+        ChangeHealth(amount, damageSource);
     }
 
     public virtual float CalculateDamage(float incomingDamage, float attackerCritChance, float attackerCritMultiplier)
@@ -250,7 +287,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     }
 
     #endregion
-   
+
     #region Visual Effects
 
     private Coroutine flashCoroutine;
@@ -264,6 +301,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
         {
             StopCoroutine(flashCoroutine);
         }
+
         flashCoroutine = StartCoroutine(FlashRedRoutine(spriteRenderer));
     }
 
@@ -278,6 +316,7 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
             spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(flashDuration);
         }
+
         flashCoroutine = null;
     }
 
@@ -300,13 +339,13 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
     }
 
     #endregion
-    
+
     #region Animator
 
     protected void ChangeAnimationState(string newState)
     {
         if (currentAnimationState == newState) return;
-        
+
         animator.Play(newState);
 
         currentAnimationState = newState;
@@ -314,4 +353,3 @@ public abstract class CharacterController : MonoBehaviour, IEffectableController
 
     #endregion
 }
-

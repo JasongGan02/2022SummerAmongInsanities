@@ -73,7 +73,7 @@ public class DetonateChargeEffectController : EffectController
 
         // Apply the detonate effect
         var detonateEffectController = target.gameObject.AddComponent<OnDetonateEffectController>();
-        detonateEffectController.Initialize(chargeEffectObject.detonateEffect);
+        detonateEffectController.Initialize(chargeEffectObject.onDetonateEffectObject);
 
         // Consume the charge
         isCharged = false;

@@ -93,7 +93,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             GameObject buffCard = Instantiate(buffSelectionTemplate);
             BuffSelectionController buffSelectionController = buffCard.GetComponent<BuffSelectionController>();
             buffSelectionController.Init(node, buffContainer.transform, new Vector2(460 + 500 * i, 590f));
-            buffSelectionController.OnBuffSelectedEvent += HandleBuffSelectedEvent;
+            buffSelectionController.onBuffSelectedEvent += HandleBuffSelectedEvent;
         }
     }
     
@@ -105,7 +105,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             BuffSelectionController buffSelectionController = child.GetComponent<BuffSelectionController>();
             if (buffSelectionController != null)
             {
-                buffSelectionController.OnBuffSelectedEvent -= HandleBuffSelectedEvent;
+                buffSelectionController.onBuffSelectedEvent -= HandleBuffSelectedEvent;
             }
             Destroy(child.gameObject);
         }
@@ -202,9 +202,6 @@ public abstract class RogueManagerBase : MonoBehaviour
         ClearBuffCards();
     }
     
-    
-
-        
     private void OnRerollButtonClicked()
     {
         int currentCost = CalculateRerollCost();

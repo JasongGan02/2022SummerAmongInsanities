@@ -13,11 +13,13 @@ public abstract class PickupController : MonoBehaviour
 
     // Floating properties
     public float floatAmplitude = 0.06f; // Height of the floating motion
-    public float floatFrequency = 1.2f;  // Speed of the floating motion
-    public float floatingDelay = 0.8f;   // Delay before starting to float
+    public float floatFrequency = 1.2f; // Speed of the floating motion
+    public float floatingDelay = 0.8f; // Delay before starting to float
 
     protected GameObject player;
     protected bool shouldFlyToPlayer = false;
+    private SpriteRenderer spriteRenderer;
+
     private readonly float targetWorldSize = 0.35f;
     private float currentSpeed;
     private bool isGrounded = false;
@@ -25,12 +27,13 @@ public abstract class PickupController : MonoBehaviour
     private bool isWaitingToFloat = false;
     private Vector3 initialPosition;
 
+
     protected virtual void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         currentSpeed = initialSpeed;
-        var spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sortingLayerID = SortingLayer.NameToID("DroppableObject");
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sortingLayerID = SortingLayer.NameToID("DroppedObject");
         initialPosition = transform.position;
     }
 
@@ -73,7 +76,8 @@ public abstract class PickupController : MonoBehaviour
     {
         if (WorldGenerator.TotalChunks.ContainsKey(WorldGenerator.GetChunkCoordsFromPosition(transform.position)))
         {
-            GameObject currentChunk = WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
+            GameObject currentChunk =
+                WorldGenerator.TotalChunks[WorldGenerator.GetChunkCoordsFromPosition(transform.position)];
             transform.SetParent(currentChunk.transform, true);
         }
         else
@@ -96,7 +100,8 @@ public abstract class PickupController : MonoBehaviour
     protected virtual void MoveTowardsPlayer()
     {
         currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.deltaTime, maxSpeed);
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, currentSpeed * Time.deltaTime);
+        transform.position =
+            Vector3.MoveTowards(transform.position, player.transform.position, currentSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, player.transform.position) < distanceThreshold)
         {
@@ -148,6 +153,7 @@ public abstract class PickupController : MonoBehaviour
         {
             StartFloating();
         }
+
         isWaitingToFloat = false; // Allow further floating attempts if needed
     }
 
@@ -156,10 +162,10 @@ public abstract class PickupController : MonoBehaviour
         if (!isFloating)
         {
             isFloating = true;
-            
             Vector3 currentPosition = transform.position;
             float groundLevel = GetGroundLevel();
-            initialPosition = new Vector3(currentPosition.x, Mathf.Max(currentPosition.y, groundLevel + 0.25f), currentPosition.z);
+            initialPosition = new Vector3(currentPosition.x, Mathf.Max(currentPosition.y, groundLevel + 0.25f),
+                currentPosition.z);
 
             StartCoroutine(FloatCoroutine());
         }
@@ -176,6 +182,7 @@ public abstract class PickupController : MonoBehaviour
         {
             return hit.point.y; // Return the y-position of the hit point
         }
+
         return transform.position.y; // Default to current position if no ground detected
     }
 

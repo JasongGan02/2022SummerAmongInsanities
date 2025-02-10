@@ -32,7 +32,7 @@ public class OnDetonateEffectController : EffectController
             var target = GetComponent<CharacterController>();
             float criticalMultiplier = target.CurrentStats.criticalMultiplier;
             var damage = stacks * onDetonateEffectObject.onFireEffectObject.statChanges.hp;
-            var finalDamage = ((IDamageable)target).CalculateDamage(damage, onDetonateEffectObject.chance,criticalMultiplier);
+            var finalDamage = ((IDamageable)target).CalculateDamage(damage, onDetonateEffectObject.criticalChance,criticalMultiplier);
             target.TakeDamage(finalDamage, null);
         }
     }

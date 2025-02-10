@@ -7,13 +7,13 @@ public class DroppedObjectController : PickupController
     private int amount = 1;
     private IInventoryObject item;
     private Inventory inventory;
-    
+
     protected override void Start()
     {
         base.Start();
         inventory = FindObjectOfType<Inventory>();
     }
-    
+
     public void Initialize(IInventoryObject item, int amount)
     {
         this.amount = amount;
@@ -26,10 +26,10 @@ public class DroppedObjectController : PickupController
     {
         return inventory.CanAddItem(item);
     }
-    
+
     protected override void OnPickup()
     {
-        shouldFlyToPlayer = false;      
+        shouldFlyToPlayer = false;
 
         inventory.AddItem(item, amount);
         if (item is IPoolableObject)
@@ -42,6 +42,7 @@ public class DroppedObjectController : PickupController
             {
                 projectileControllerComponent.enabled = true;
             }
+
             PoolManager.Instance.Return(gameObject, item as BaseObject);
             Destroy(this);
         }
@@ -49,6 +50,7 @@ public class DroppedObjectController : PickupController
         {
             Destroy(gameObject);
         }
+
         player.GetComponent<CharacterController>().GetAudioEmitter().PlayClipFromCategory("ItemPickUp");
     }
 
@@ -64,6 +66,7 @@ public class DroppedObjectController : PickupController
             {
                 projectileControllerComponent.enabled = true;
             }
+
             PoolManager.Instance.Return(gameObject, item as BaseObject);
             Destroy(this);
         }

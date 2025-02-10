@@ -919,51 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0cc53c330e4644c8597554ae78a42d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &648248910
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 648248912}
-  - component: {fileID: 648248911}
-  m_Layer: 0
-  m_Name: DebugSceneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &648248911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648248910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 270cac6f245ab6246946affd64b3aa0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  KeyCodes: 320100003001000072000000
---- !u!4 &648248912
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648248910}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.889349, y: 39.543617, z: 0.7633797}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &701233753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4878420192029176314, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
@@ -1059,7 +1014,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &928127817
 GameObject:
@@ -1282,12 +1237,6 @@ MonoBehaviour:
   stopLevelingUp: 1
   playerCount: 1
   difficultyValue: 1
-  enemyObjects:
-  - {fileID: 11400000, guid: f8c2acb24dc582d4f92022164c322971, type: 2}
-  - {fileID: 11400000, guid: e56c469e9e7fbf140bc693c35091931c, type: 2}
-  - {fileID: 11400000, guid: 09e85a956f48017429697dbbb29e3083, type: 2}
-  - {fileID: 11400000, guid: cbf97f3f3d0dc6e4cae4e6a4e252818c, type: 2}
-  - {fileID: 11400000, guid: acdbc532d22067a4b82690c44b4b3bfb, type: 2}
 --- !u!4 &1797734688
 Transform:
   m_ObjectHideFlags: 0
@@ -2293,13 +2242,17 @@ PrefabInstance:
       propertyPath: graph
       value: 
       objectReference: {fileID: 11400000, guid: 56a4d10b3d12ea74aa21982af86ad733, type: 2}
+    - target: {fileID: 1927551330, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: IPoolableObjectPools.Array.data[1].poolableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: dbcbbb029cf6e184f8baa85e59362d54, type: 2}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: isDay
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 906681678812916057, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: isDebugDayTime
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1017719581052903655, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: EnergyText
@@ -2313,6 +2266,18 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 831146460}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: spawnRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: despawnDistance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: mobCategories.Array.data[1].baseMobCap
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: num0
       value: 
