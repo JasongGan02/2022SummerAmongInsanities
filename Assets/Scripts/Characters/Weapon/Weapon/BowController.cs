@@ -8,98 +8,87 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class BowController : RangedWeaponController
 {
-    Vector3 directionToEnemy;
-    
-    private void Flip()
-    {
 
-        Vector3 theScale = transform.localScale;
-        if (directionToEnemy.x > 0)
-        {
 
-            theScale.y = 1.5f;
-            theScale.x = 1.5f;
-            transform.localScale = theScale;
-            transform.position = player.transform.position + new Vector3(1f, 0, 0);
-
-        }
-        else
-        {
-            theScale.y = -1.5f;
-            theScale.x = -1.5f;
-            transform.localScale = theScale;
-            transform.position = player.transform.position + new Vector3(-1f, 0, 0);
-        }
-    }
-    public override void Update()
-    {
-        Flip();
-        startPosition = transform;
-
-        if (!isAttacking && inventory.FindItemCount(ProjectileObject)>=1)
-        {
-            DetectAndAttackEnemy();
-        }
-
-    }
 
 
     protected override void DetectAndAttackEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attackRange * 1.2f);
+        float minDistance = float.MaxValue;
+        Transform closestTarget = null;
+
         foreach (Collider2D hit in hits)
         {
             if (hit.TryGetComponent<EnemyController>(out EnemyController enemy))
             {
+                float distance = Vector2.Distance(player.transform.position, enemy.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestTarget = enemy.transform;
 
-                directionToEnemy = (enemy.transform.position - player.transform.position).normalized;
-                StartCoroutine(PrepareAttack(hit.gameObject));
-                break;
-
+                }
             }
         }
-
+        targetEnemy = closestTarget;
+        if (targetEnemy != null && !isAttacking)
+        {
+            StartCoroutine(Attack(targetEnemy.gameObject));
+        }
     }
 
-    IEnumerator PrepareAttack(GameObject target)
+    IEnumerator Attack(GameObject target)
     {
-        yield return new WaitForSeconds(1f);
         if (isAttacking)
             yield break;
 
         isAttacking = true;
 
+ 
+        float adjustedWindupTime = Mathf.Clamp(attackCycleTime * windupRatio, minWindupTime, maxWindupTime);
+        float adjustedFollowThroughTime = Mathf.Clamp(attackCycleTime * followThroughRatio, minFollowThroughTime, maxFollowThroughTime);
+        float adjustedIntervalTime = attackCycleTime - (adjustedWindupTime + adjustedFollowThroughTime);
+
+
         _audioEmitter.PlayClipFromCategory("BowCharge");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(adjustedWindupTime);
+
+
         FireProjectiles(target);
 
+   
+        yield return new WaitForSeconds(adjustedFollowThroughTime);
 
+
+        float intervalStartTime = Time.time;
+        while (Time.time - intervalStartTime < adjustedIntervalTime)
+        {
+            Flip();
+            yield return null;
+        }
+
+        isAttacking = false;
+        targetEnemy = null;
     }
-    
-
 
     public override void FireProjectiles(GameObject target)
     {
-
         if (!inventory.ConsumeItem(projectileObject, 1))
             return;
-        // Calculate the force and damage based on charge time
 
-        float force = AttackRange/8;
+        float force = attackRange*2;
         float damage = characterController.CurrentStats.attackDamage;
-        
+
         GameObject arrow = PoolManager.Instance.Get(projectileObject);
-        arrow.transform.SetParent(transform, true);
         arrow.transform.position = startPosition.transform.position;
         var playerBowArrow = arrow.GetComponent<PlayerBowProjectileController>();
-      
+
         if (playerBowArrow != null)
         {
             playerBowArrow.Initialize(characterController, projectileObject, force, damage, knockbackForce);
             _audioEmitter.PlayClipFromCategory("ShootArrow");
-            playerBowArrow.Launch(target,startPosition); 
-            isAttacking = false;
-
+            playerBowArrow.Launch(target, startPosition);
         }
     }
 

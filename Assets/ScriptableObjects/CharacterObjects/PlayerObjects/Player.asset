@@ -27,18 +27,19 @@ MonoBehaviour:
     jumpForce: 20
     totalJumps: 1
   maxStats:
-    hp: 210
-    armor: 26
-    attackDamage: 46
+    hp: 100
+    armor: 15
+    attackDamage: 10
     attackInterval: 1.2
     attackRange: 15
-    criticalChance: 5
+    criticalChance: 15
     criticalMultiplier: 1.2
     movingSpeed: 5
     jumpForce: 20
     totalJumps: 1
   drops: []
-  hatred: []
+  hatred:
+  - {fileID: 11500000, guid: e8b3d4b39258acb4db21903bd86aa5ca, type: 3}
   playerStats:
     hp: 100
     armor: 15

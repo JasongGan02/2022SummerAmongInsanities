@@ -15,10 +15,8 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     protected WeaponObject weaponStats;
     protected GameObject player;
     protected PlayerMovement playerMovement;
-
     protected Transform targetEnemy;
     protected Inventory inventory;
-
     protected WeaponState currentState = WeaponState.Idle;
     protected bool isAttacking = false;
 
@@ -41,8 +39,8 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
     protected float idleBobAmount = 0.5f;
     protected float idleBobTime;
     protected bool hasDealtDamage = false;
-
     protected Vector2 targetDirection;
+
     public GameObject SourceGameObject => gameObject;
     public float DamageAmount => finalDamage;
     public float CriticalChance => characterController.CriticalChance;
@@ -85,7 +83,7 @@ public class Weapon : MonoBehaviour, IDamageSource, IEffectableController
         knockbackForce = weaponStats.KnockBack;
     }
 
-    public virtual void Update()
+    public virtual void FixedUpdate()
     {
         switch (currentState)
         {
