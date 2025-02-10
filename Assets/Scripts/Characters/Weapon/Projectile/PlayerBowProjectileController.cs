@@ -12,13 +12,8 @@ public class PlayerBowProjectileController : ProjectileController
         this.finalDamage = damage * (projectileObject?.DamageCoef ?? 1);
         this.knockbackForce = knockbackForce;
     }
-    public void Launch(Vector2 startPosition)
-    {
-        // Set the projectile's velocity
-        Vector2 launchDirection = ((Vector3)startPosition - transform.position ).normalized;
-        rb.velocity = launchDirection * speed;
-        
-    }
+  
+    
 
     protected override void OnTriggerEnter2D(Collider2D collider)
     {
