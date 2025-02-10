@@ -25,30 +25,32 @@ public class FrostbiteArrowEffectObject : EffectObject, IDamageSource
         float damageDealt = target.CalculateDamage(DamageAmount, 0, 0);
         target.TakeDamage(damageDealt, this);
     }
-    
+
     public override void ExecuteEffect(IEffectableController effectedGameController)
     {
         ApplyDamage(effectedGameController as IDamageable);
     }
-    
-    public override async void InitializeEffectObject()
+
+    protected override async void OnInitializeEffect()
     {
-        // Load the target tower object
+        // Load the target tower asset via Addressables.
         RangedTowerObject archerTower = await AddressablesManager.Instance.LoadAssetAsync<RangedTowerObject>("Assets/ScriptableObjects/CharacterObjects/TowerObject/ArcherTower.asset");
 
         if (archerTower != null)
         {
+            // Check for an existing effect of the same type on the tower's projectile.
             var existingEffect = archerTower.projectileObject.onHitEffects.Find(effect =>
                 effect.GetType() == GetType());
 
             if (existingEffect == null)
             {
+                // If no existing effect is found, add this effect.
                 archerTower.projectileObject.onHitEffects.Add(this);
             }
-            else
-            {
-                (this as IUpgradeableEffectObject).UpgradeLevel();
-            }
+        }
+        else
+        {
+            Debug.LogWarning("Failed to load ArcherTower asset for FrostbiteArrowEffectObject initialization.");
         }
     }
 }

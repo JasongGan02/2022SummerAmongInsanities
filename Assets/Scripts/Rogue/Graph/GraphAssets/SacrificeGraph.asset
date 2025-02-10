@@ -29,8 +29,8 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 404
-    y: 276
+    x: 353
+    y: 204
     width: 200
     height: 100
 --- !u!114 &-6564606303037030254
@@ -62,8 +62,8 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 164
-    y: 274
+    x: 113
+    y: 202
     width: 200
     height: 100
 --- !u!114 &-6200536035804829123
@@ -95,8 +95,41 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 903
-    y: 278
+    x: 575
+    y: 199
+    width: 200
+    height: 100
+--- !u!114 &-5431096328655282392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u51B0\u5D4C"
+  m_EditorClassIdentifier: 
+  blessingName: "\u51B0\u5D4C"
+  effect: {fileID: 11400000, guid: 1bf150935ffd93d4a87f4d8894d6977d, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 805
+    y: 427
     width: 200
     height: 100
 --- !u!114 &-1338076678103998442
@@ -128,8 +161,8 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 1144
-    y: 274
+    x: 570
+    y: 312
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -153,6 +186,8 @@ MonoBehaviour:
   - {fileID: -1338076678103998442}
   - {fileID: 4593185830271567135}
   - {fileID: 8049688264405866874}
+  - {fileID: 5017545550766755902}
+  - {fileID: -5431096328655282392}
   rootNode: {fileID: 5968854803820520060}
 --- !u!114 &4593185830271567135
 MonoBehaviour:
@@ -183,8 +218,41 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 1355
-    y: 269
+    x: 796
+    y: 198
+    width: 200
+    height: 100
+--- !u!114 &5017545550766755902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
+  m_Name: "\u711A\u5D4C"
+  m_EditorClassIdentifier: 
+  blessingName: "\u711A\u5D4C"
+  effect: {fileID: 11400000, guid: 5b28613ba1922d2449e54a94d196101b, type: 2}
+  isReselectable: 1
+  baseWeight: 0
+  quality:
+    rarity: 0
+    color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    weight: 20
+    cost: 0
+    sprite: {fileID: 0}
+  blessingIcon: {fileID: 0}
+  isRoot: 0
+  childNodes: []
+  parentNodes:
+  - {fileID: 5968854803820520060}
+  rect:
+    serializedVersion: 2
+    x: 796
+    y: 309
     width: 200
     height: 100
 --- !u!114 &5968854803820520060
@@ -197,9 +265,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d19e6739759c4b409808d31bd2a5468, type: 3}
-  m_Name: Unnamed Node
+  m_Name: Root
   m_EditorClassIdentifier: 
-  blessingName: Unnamed Node
+  blessingName: Root
   effect: {fileID: 0}
   isReselectable: 1
   baseWeight: 0
@@ -219,11 +287,13 @@ MonoBehaviour:
   - {fileID: -1338076678103998442}
   - {fileID: 4593185830271567135}
   - {fileID: 8049688264405866874}
+  - {fileID: 5017545550766755902}
+  - {fileID: -5431096328655282392}
   parentNodes: []
   rect:
     serializedVersion: 2
-    x: 403
-    y: 73
+    x: 352
+    y: 1
     width: 200
     height: 100
 --- !u!114 &8049688264405866874
@@ -255,8 +325,8 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 592
-    y: 443
+    x: 115
+    y: 316
     width: 200
     height: 100
 --- !u!114 &8518759689788473351
@@ -288,7 +358,7 @@ MonoBehaviour:
   - {fileID: 5968854803820520060}
   rect:
     serializedVersion: 2
-    x: 652
-    y: 280
+    x: 345
+    y: 318
     width: 200
     height: 100

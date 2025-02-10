@@ -18,8 +18,9 @@ MonoBehaviour:
   isStackable: 0
   isPermanent: 1
   description: 
-  componentToApply: {fileID: 0}
   effectControllerType: {fileID: 0}
+  componentToApplyType: {fileID: 0}
+  icon: {fileID: 0}
   vfxList:
   - name: ChargeUp
     vfxPrefab: {fileID: 8423029588219032371, guid: 181d84a48e6b79f4d98e9605f418c6ae, type: 3}
@@ -29,5 +30,8 @@ MonoBehaviour:
     vfxPrefab: {fileID: 8423029588219032371, guid: 2e40a01b15d834f429f5dd3147ec820d, type: 3}
     attachAtStart: 0
     attachToTarget: 1
+  needsLevel: 1
+  currentLevel: 0
+  upgradableParameters: []
   chargeDuration: 5
-  detonateEffect: {fileID: 11400000, guid: 6e7b1bdcb9d0b7d43aaf167b78665aef, type: 2}
+  onDetonateEffectObject: {fileID: 11400000, guid: 6e7b1bdcb9d0b7d43aaf167b78665aef, type: 2}

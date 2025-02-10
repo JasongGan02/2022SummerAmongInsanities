@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Effects/Weapon/DetonateChargeEffect")]
 public class DetonateChargeEffectObject : EffectObject
 {
     [Header("Detonate Charge Properties")]
     public float chargeDuration; // Time required to fully charge
-    public OnDetonateEffectObject detonateEffect; // Reference to the detonate effect
+    public OnDetonateEffectObject onDetonateEffectObject; // Reference to the detonate effect
 
     public override void ExecuteEffect(IEffectableController effectedGameController)
     {
@@ -20,9 +21,9 @@ public class DetonateChargeEffectObject : EffectObject
             controller.Initialize(this);
         }
     }
-    
-    
-    public override async void InitializeEffectObject()
+
+
+    protected override async void OnInitializeEffect()
     {
         // Apply the effect to all weapon objects
         var allWeaponObjects = await AddressablesManager.Instance.LoadMultipleAssetsAsync<WeaponObject>("WeaponObject");
@@ -35,12 +36,18 @@ public class DetonateChargeEffectObject : EffectObject
             }
             //TODO: if weapon objcet is ranged, then the projectile will carry the effect.
         }
+
         // Apply the effect to all existing weapon instances in the scene
-        Weapon[] activeWeapons = Object.FindObjectsOfType<Weapon>();
+        Weapon[] activeWeapons = FindObjectsOfType<Weapon>();
         foreach (var weapon in activeWeapons)
         {
             AddEffectToWeaponInstance(weapon);
         }
+    }
+
+    protected override void OnUpgradeEffect()
+    {
+        onDetonateEffectObject.UpgradeEffect();
     }
 
     private void AddEffectToWeaponInstance(Weapon weapon)

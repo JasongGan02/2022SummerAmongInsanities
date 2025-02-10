@@ -18,9 +18,12 @@ MonoBehaviour:
   isStackable: 1
   isPermanent: 0
   description: 
-  componentToApply: {fileID: 11500000, guid: 37a68bd692fecdc40aa15d1d2599f42d, type: 3}
   effectControllerType: {fileID: 11500000, guid: 72846ed9f6d8cf74daa315b22eabc170, type: 3}
-  vfxPrefab: {fileID: 0}
-  attachToTarget: 1
+  componentToApplyType: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
+  icon: {fileID: 0}
+  vfxList: []
+  needsLevel: 0
+  currentLevel: 0
+  upgradableParameters: []
   maxStacks: 5
   armorMultiplier: 0.3
