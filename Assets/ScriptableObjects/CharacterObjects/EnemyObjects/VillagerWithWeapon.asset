@@ -20,7 +20,7 @@ MonoBehaviour:
     armor: 5
     attackDamage: 10
     attackInterval: 1.2
-    attackRange: 1
+    attackRange: 1.1
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
@@ -39,14 +39,15 @@ MonoBehaviour:
     totalJumps: 1
   drops: []
   hatred:
-  - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   - {fileID: 11500000, guid: ab47ca43c25f7e444b30eccb50f57254, type: 3}
+  - {fileID: 11500000, guid: ccac90eb9f1f4cb429445cc27aedca0d, type: 3}
+  - {fileID: 11500000, guid: 55df8bf8296c144439ba26fba334bbc4, type: 3}
   enemyStats:
     hp: 35
     armor: 5
     attackDamage: 10
     attackInterval: 1.2
-    attackRange: 1
+    attackRange: 1.1
     criticalChance: 5
     criticalMultiplier: 1.5
     movingSpeed: 2
