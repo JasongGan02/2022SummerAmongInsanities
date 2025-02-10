@@ -17,10 +17,10 @@ public class BurningWallEffectObject : EffectObject
     {
         onFireEffectObject.ApplyMultipleStacks(effectedGameController, stacksPerHit);
     }
-    
-    public override async void InitializeEffectObject()
+
+    protected override async void OnInitializeEffect()
     {
-        // 1) Load all wall objects (returns an IList<WallObject>)
+        // 1) Load all WallObject assets with the key/label "WallObject" using Addressables.
         var walls = await AddressablesManager.Instance.LoadMultipleAssetsAsync<WallObject>("WallObject");
         if (walls == null || walls.Count == 0)
         {
@@ -28,31 +28,18 @@ public class BurningWallEffectObject : EffectObject
             return;
         }
 
-        // 2) Iterate through each WallObject
+        // 2) Iterate through each WallObject.
         foreach (var wall in walls)
         {
-            // If onHitEffects is a list of IEffectObject or something similar,
-            // find an existing effect matching the type of 'onFireEffectObject'.
+            // Check if an on-fire effect of the same type as onFireEffectObject is already present.
             var existingEffect = wall.onHitEffects.Find(effect =>
                 effect.GetType() == onFireEffectObject.GetType());
 
             if (existingEffect == null)
             {
-                // Here, decide whether to add `this` or `onFireEffectObject`
-                // If 'this' is your effect object, do:
-                //    wall.onHitEffects.Add(this);
-                // If you want to add the onFireEffectObject instance, do:
-                //    wall.onHitEffects.Add(onFireEffectObject);
-
-                wall.onHitEffects.Add(this); 
-            }
-            else
-            {
-                // If the existing effect implements IUpgradeableEffectObject,
-                // call UpgradeLevel on it.
-                ((IUpgradeableEffectObject)existingEffect).UpgradeLevel();
+                // If no matching effect is found, add this effect (or the onFireEffectObject instance).
+                wall.onHitEffects.Add(this);
             }
         }
     }
-
 }

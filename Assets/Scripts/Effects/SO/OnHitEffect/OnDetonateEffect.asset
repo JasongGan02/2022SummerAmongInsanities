@@ -20,9 +20,19 @@ MonoBehaviour:
   description: "\u5F15\u7206\u71C3\u70E7\u5C42\u6570\uFF0C\u9020\u6210\u5269\u4F59\u4F24\u5BB3\u7684x\u500D\u603B\u4F24\u5BB3\uFF0C\u9644\u52A0y%\u66B4\u51FB\u7387"
   effectControllerType: {fileID: 11500000, guid: 9f8589fa88f633340af7a97e093cfe13, type: 3}
   componentToApplyType: {fileID: 11500000, guid: 93df78d039dc6f447ab988447ef135e2, type: 3}
-  vfxList: []
-  detonateDamageMultiplier: 1
-  chance: 0
-  onFireEffectObject: {fileID: 11400000, guid: 3e988668d345a3943b1583e1ee1d7686, type: 2}
-  levelConfig: {fileID: 11400000, guid: 2e2b068bec5536443a36ba905d17156c, type: 2}
+  icon: {fileID: 0}
+  vfxList:
+  - name: 
+    vfxPrefab: {fileID: 952171129757363047, guid: 8d4e9baa0d126884fb682237a4b419b7, type: 3}
+    attachAtStart: 1
+    attachToTarget: 0
+  needsLevel: 0
   currentLevel: 1
+  upgradableParameters:
+  - attributeName: detonateDamageMultiplier
+    attributeValue: 0.5
+  - attributeName: criticalChance
+    attributeValue: 0.1
+  detonateDamageMultiplier: 1
+  criticalChance: 0
+  onFireEffectObject: {fileID: 11400000, guid: 3e988668d345a3943b1583e1ee1d7686, type: 2}
