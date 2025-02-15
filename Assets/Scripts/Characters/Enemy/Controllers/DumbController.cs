@@ -96,7 +96,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(enemyStats.movingSpeed, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(enemyStats.movingSpeed, rb.linearVelocity.y);
                     if (!facingRight) { Flip(); Debug.Log("dumb idle walk Turn right");}
                 }
             }
@@ -104,7 +104,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(-enemyStats.movingSpeed, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(-enemyStats.movingSpeed, rb.linearVelocity.y);
                     if (facingRight) { Flip(); Debug.Log("dumb idle walk Turn left");}
                 }
             }
@@ -121,7 +121,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(currentStats.movingSpeed * -2, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(currentStats.movingSpeed * -2, rb.linearVelocity.y);
                     if (facingRight) { Flip(); }
                 }
             }
@@ -129,7 +129,7 @@ public class DumbController : EnemyController
             {
                 if (MoveForwardDepthCheck())
                 {
-                    rb.velocity = new Vector2(currentStats.movingSpeed * 2, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(currentStats.movingSpeed * 2, rb.linearVelocity.y);
                     if (!facingRight) { Flip(); }
                 }
             }

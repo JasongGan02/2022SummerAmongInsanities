@@ -59,7 +59,7 @@ public class ProjectileController : MonoBehaviour, IDamageSource
         Vector2 directionToTarget = (target.transform.position - startPosition.position).normalized;
 
         // Set the projectile's velocity towards the target
-        rb.velocity = directionToTarget * speed;
+        rb.linearVelocity = directionToTarget * speed;
 
         // Adjust the gravity scale for minor gravity effect
         rb.gravityScale = gravityScale;
@@ -96,10 +96,10 @@ public class ProjectileController : MonoBehaviour, IDamageSource
 
     protected void AlignToVelocity()
     {
-        if (rb.velocity != Vector2.zero)
+        if (rb.linearVelocity != Vector2.zero)
         {
             // Calculate the angle from velocity
-            float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
 
             // Align the arrow to 45 degrees from its velocity vector
             transform.rotation = Quaternion.AngleAxis(angle - 45, Vector3.forward);

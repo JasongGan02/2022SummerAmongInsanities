@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using UnityEngine.Rendering.Universal;
-using static UnityEngine.Experimental.Rendering.RayTracingAccelerationStructure;
+using static UnityEngine.Rendering.RayTracingAccelerationStructure;
 using System;
 
 public class DataGenerator

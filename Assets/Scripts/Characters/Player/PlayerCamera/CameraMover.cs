@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public class CameraMover : MonoBehaviour {
 
     public float speed;
     float inputX;
     float inputZ;
-     private PixelPerfectCamera pixelPerfectCamera;
+     private UnityEngine.Rendering.Universal.PixelPerfectCamera pixelPerfectCamera;
 
     private void Start()
     {
         // Get the reference to the PixelPerfectCamera component on the main camera
-        pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
+        pixelPerfectCamera = Camera.main.GetComponent<UnityEngine.Rendering.Universal.PixelPerfectCamera>();
     }
 
     // Update is called once per frame

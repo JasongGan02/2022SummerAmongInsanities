@@ -191,12 +191,12 @@ public class VillagerWithWeaponController : EnemyController
             // Move either left or right
             if (_patrolToRight)
             {
-                rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(currentStats.movingSpeed, rb.linearVelocity.y);
                 if (!facingRight) Flip();
             }
             else
             {
-                rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(-currentStats.movingSpeed, rb.linearVelocity.y);
                 if (facingRight) Flip();
             }
         }
@@ -226,11 +226,11 @@ public class VillagerWithWeaponController : EnemyController
         // Move left or right
         if (targetTransform.position.x > transform.position.x)
         {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
+            rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
         }
         else
         {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
+            rb.linearVelocity = new Vector2(-speed, rb.linearVelocity.y);
         }
     }
 
@@ -327,7 +327,7 @@ public class VillagerWithWeaponController : EnemyController
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
         if (hitCenter.transform != null)
         {
-            rb.velocity = new Vector2(horizontal, enemyStats.jumpForce);
+            rb.linearVelocity = new Vector2(horizontal, enemyStats.jumpForce);
         }
     }
 
@@ -337,7 +337,7 @@ public class VillagerWithWeaponController : EnemyController
             inAir += Time.deltaTime;
             if (inAir > 0.9f){
                 float randomDirection = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -1f : 1f;
-                rb.velocity = new Vector2(randomDirection * enemyStats.movingSpeed * 5, -1f * rb.mass);
+                rb.linearVelocity = new Vector2(randomDirection * enemyStats.movingSpeed * 5, -1f * rb.mass);
                 //Debug.Log("auto landing");
                 return true;
             }
@@ -394,7 +394,7 @@ public class VillagerWithWeaponController : EnemyController
 
                     // Apply random horizontal force
                     float randomForce = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -20f : 20f;
-                    rb.velocity = new Vector2(randomForce, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(randomForce, rb.linearVelocity.y);
                 }
                 else
                 {

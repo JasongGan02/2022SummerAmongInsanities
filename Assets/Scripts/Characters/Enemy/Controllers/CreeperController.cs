@@ -107,7 +107,7 @@ public class CreeperController : EnemyController
             ApplyDamage(target.GetComponent<CharacterController>());
             Vector2 direction = player.transform.position - transform.position;
             direction.Normalize();
-            player.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(2f * direction.x * currentStats.jumpForce, 2f * direction.y * currentStats.jumpForce); // effect on player
+            player.transform.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(2f * direction.x * currentStats.jumpForce, 2f * direction.y * currentStats.jumpForce); // effect on player
             rest = true;
             Wait = 1.0f * currentStats.attackInterval;
         }
@@ -142,10 +142,10 @@ public class CreeperController : EnemyController
     {
         if (DistanceToTarget(target.transform) < 0.5f * currentStats.attackRange)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-        else if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+        else if (target.position.x > transform.position.x) { rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y); }
+        else { rb.linearVelocity = new Vector2(-speed, rb.linearVelocity.y); }
     }
     
     void patrol()
@@ -174,12 +174,12 @@ public class CreeperController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(currentStats.movingSpeed, rb.linearVelocity.y);
                 if (!facingRight) { Flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(-currentStats.movingSpeed, rb.linearVelocity.y);
                 if (facingRight) { Flip(); }
             }
         }
