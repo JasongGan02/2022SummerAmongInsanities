@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour, IAudioable
             }
         }
 
-        animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
 
         if (availableJumps == 0 && !isGrounded)
         {
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour, IAudioable
                 StopGliding();
             }
         }
-        animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
     void FixedUpdate()
@@ -132,7 +132,7 @@ public class PlayerMovement : MonoBehaviour, IAudioable
 
     private void ClearHorizontalVelocity()
     {
-        rb.velocity = new Vector2(0f, rb.velocity.y);
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
         animator.SetFloat(Constants.Animator.SPEED, 0);
     }
 
@@ -153,12 +153,12 @@ public class PlayerMovement : MonoBehaviour, IAudioable
         animator.SetFloat(Constants.Animator.SPEED, Mathf.Abs(moveInput));
         //speed: 0 idle, 3.5 walking, 7 running
 
-        rb.velocity = new Vector2(moveInput, rb.velocity.y);
+        rb.linearVelocity = new Vector2(moveInput, rb.linearVelocity.y);
 
         if ((moveInput > 0 && !facingRight || moveInput < 0 && facingRight))
             Flip();
 
-        if (Mathf.Abs(moveInput) > 0 && rb.velocity.y == 0)
+        if (Mathf.Abs(moveInput) > 0 && rb.linearVelocity.y == 0)
         {
             float newInterval = isRunning ? runFootstepInterval : walkFootstepInterval;
 
@@ -197,7 +197,7 @@ public class PlayerMovement : MonoBehaviour, IAudioable
             multipleJump = true;
             availableJumps--;
 
-            rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 1 * jumpForce);
             animator.Play("playerJump");
             _audioEmitter.PlayClipFromCategory("Jump");
 
@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour, IAudioable
             {
                 availableJumps--;
                 
-                rb.velocity = new Vector2(rb.velocity.x, 1 * jumpForce);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 1 * jumpForce);
                 animator.Play("playerDoubleJump");
                 _audioEmitter.PlayClipFromCategory("DoubleJump");
             }
@@ -269,7 +269,7 @@ public class PlayerMovement : MonoBehaviour, IAudioable
     private void StartGliding()
     {
         isGliding = true;
-        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
     }
 
     private void StopGliding()
@@ -288,6 +288,6 @@ public class PlayerMovement : MonoBehaviour, IAudioable
             }
             facingRight = moveInput > 0;
         }
-        rb.velocity = new Vector2(glideSpeed * moveInput, rb.velocity.y * 0.5f);
+        rb.linearVelocity = new Vector2(glideSpeed * moveInput, rb.linearVelocity.y * 0.5f);
     }
 }

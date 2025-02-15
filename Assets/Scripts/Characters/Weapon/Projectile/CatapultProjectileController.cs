@@ -29,7 +29,7 @@ public class CatapultProjectileController : ProjectileController
         Vector2 velocity = new Vector2(velocityMagnitude * Mathf.Cos(firingAngle * Mathf.Deg2Rad) * direction, velocityMagnitude * Mathf.Sin(firingAngle * Mathf.Deg2Rad));
 
         // Apply the calculated velocity to the Rigidbody2D
-        rb.velocity = velocity;
+        rb.linearVelocity = velocity;
         rb.AddTorque(-5);
         rb.gravityScale = 3.5f;
     }

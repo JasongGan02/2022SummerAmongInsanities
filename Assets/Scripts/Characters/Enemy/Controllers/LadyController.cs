@@ -88,7 +88,7 @@ public class LadyController : EnemyController, IRangedAttacker
 
         target = SearchForTargetObject();
 
-        if (rb.velocity.x != 0) SenseFrontBlock();
+        if (rb.linearVelocity.x != 0) SenseFrontBlock();
         if (target == null)
         {
             patrol();
@@ -177,7 +177,7 @@ public class LadyController : EnemyController, IRangedAttacker
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(currentStats.movingSpeed, rb.linearVelocity.y);
                     if (!facingRight) { Flip(); }
                 }
             }
@@ -185,7 +185,7 @@ public class LadyController : EnemyController, IRangedAttacker
             {
                 if (MoveForwardDepthCheck() == true)
                 {
-                    rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
+                    rb.linearVelocity = new Vector2(-currentStats.movingSpeed, rb.linearVelocity.y);
                     if (facingRight) { Flip(); }
                 }
             }
@@ -203,12 +203,12 @@ public class LadyController : EnemyController, IRangedAttacker
             {
                 if (target.position.x > transform.position.x)
                 {
-                    rb.velocity = new Vector2(-1f * speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                    rb.linearVelocity = new Vector2(-1f * speed, rb.linearVelocity.y); animator.SetFloat("movingSpeed", 1f);
                     //Debug.Log("going Left");
                 }
                 else
                 {
-                    rb.velocity = new Vector2(speed, rb.velocity.y); animator.SetFloat("movingSpeed", 1f);
+                    rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y); animator.SetFloat("movingSpeed", 1f);
                     //Debug.Log("going Right");
                 }
             }

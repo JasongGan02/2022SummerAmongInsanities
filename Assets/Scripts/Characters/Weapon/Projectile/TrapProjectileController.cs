@@ -31,7 +31,7 @@ public class TrapProjectileController : ProjectileController
         }
 
         // Set the projectile's velocity in the determined direction
-        rb.velocity = launchDirection * speed;
+        rb.linearVelocity = launchDirection * speed;
         rb.gravityScale = 0; // Ensure no gravity effect
         initialSpot = startPosition.position;
     }

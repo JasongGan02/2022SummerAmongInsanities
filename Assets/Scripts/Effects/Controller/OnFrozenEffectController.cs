@@ -36,8 +36,8 @@ public class OnFrozenEffectController : EffectController
         rb2D = GetComponent<Rigidbody2D>();
         if (rb2D != null)
         {
-            storedVelocity2D = rb2D.velocity; // Save current velocity
-            rb2D.velocity = Vector2.zero;    // Stop movement
+            storedVelocity2D = rb2D.linearVelocity; // Save current velocity
+            rb2D.linearVelocity = Vector2.zero;    // Stop movement
             wasKinematic = rb2D.isKinematic;
             rb2D.isKinematic = true;         // Freeze Rigidbody
         }
@@ -58,7 +58,7 @@ public class OnFrozenEffectController : EffectController
         if (rb2D != null)
         {
             rb2D.isKinematic = wasKinematic; // Restore kinematic state
-            rb2D.velocity = storedVelocity2D; // Restore velocity
+            rb2D.linearVelocity = storedVelocity2D; // Restore velocity
         }
 
         //Debug.Log("Object unfrozen.");
