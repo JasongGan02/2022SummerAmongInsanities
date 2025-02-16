@@ -17,7 +17,7 @@ public class BackgroundLightIntensityController : MonoBehaviour
     GameObject Player;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         timeSystemManager = TimeSystemManager.Instance;
         backgroundLight = GetComponent<Light2D>();

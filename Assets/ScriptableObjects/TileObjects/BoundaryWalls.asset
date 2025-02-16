@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa17fa77a81428c4d95228e473e50361, type: 3}
-  m_Name: Block
+  m_Name: BoundaryWalls
   m_EditorClassIdentifier: 
-  itemName: Block
+  itemName: BoundaryWalls
   sizeRatio: 1
-  prefab: {fileID: 1306158573666937238, guid: be13caefde161bd43a09a851be012380, type: 3}
+  prefab: {fileID: 3600867342684971928, guid: 3a8967e0f95189946b2b619609cc371b, type: 3}
   tileLayer: 1
-  _maxStack: 0
-  _healthPoint: 0
-  _drops: []
-  _prefabs:
-  - {fileID: 1306158573666937238, guid: be13caefde161bd43a09a851be012380, type: 3}
+  maxStack: 0
+  healthPoint: 0
+  drops: []
+  prefabs: []
   _recipe: []
-  _quantity: 
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0
   _needsBackground: 0
   _isLit: 0
+  _isDynamic: 0
   _lightIntensity: 0
+  isBreakable: 0
   SpecifiedTiles: []
   AnotherSpecifiedTiles: []
   TargetSprite: []

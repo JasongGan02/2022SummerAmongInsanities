@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa17fa77a81428c4d95228e473e50361, type: 3}
+  m_Name: BaseGround
+  m_EditorClassIdentifier: 
+  itemName: BaseGround
+  sizeRatio: 1
+  prefab: {fileID: 3600867342684971928, guid: 3a8967e0f95189946b2b619609cc371b, type: 3}
+  tileLayer: 1
+  maxStack: 0
+  healthPoint: 0
+  drops: []
+  prefabs: []
+  _recipe: []
+  _isCraftable: 0
+  _isCoreNeeded: 0
+  _craftTime: 0
+  _needsBackground: 0
+  _isLit: 0
+  _isDynamic: 0
+  _lightIntensity: 0
+  isBreakable: 0
+  SpecifiedTiles:
+  - {fileID: 11400000, guid: cdce44ea88d9170448635b58f4441d90, type: 2}
+  - {fileID: 11400000, guid: e1b229678f2a5c442b3c45e516dffefe, type: 2}
+  - {fileID: 11400000, guid: 681c780344b4b7c44b2568bfea4222af, type: 2}
+  AnotherSpecifiedTiles: []
+  TargetSprite:
+  - {fileID: 1652245630, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: -94942824, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: 494360830, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: 171407558, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: -993694454, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: -1221594946, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: -1150088989, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: -1845916205, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  - {fileID: -1774410483, guid: afb32bbc7a2d97e44b02a95d8210c0dc, type: 3}
+  hasSpecialFunctionality: 1
+  isGrassTile: 1
