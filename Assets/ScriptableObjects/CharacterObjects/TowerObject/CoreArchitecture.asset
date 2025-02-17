@@ -69,4 +69,4 @@ MonoBehaviour:
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
-    constructableDistance: 20
+    constructableDistance: 30

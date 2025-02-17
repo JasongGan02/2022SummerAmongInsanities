@@ -7,14 +7,13 @@ public class NewCustomRuleTile : RuleTile<NewCustomRuleTile.Neighbor>
 {
     public TileBase[] Specified;
     public TileBase[] Any;
+
     public class Neighbor : RuleTile.TilingRule.Neighbor
     {
         public const int Any = 3;
         public const int Specified = 4;
         public const int NotSpecified = 5;
         public const int Nothing = 6;
-
- 
     }
 
     public override bool RuleMatch(int neighbor, TileBase tile)
@@ -27,8 +26,8 @@ public class NewCustomRuleTile : RuleTile<NewCustomRuleTile.Neighbor>
             case Neighbor.Specified: return CheckSpecified(tile);
             case Neighbor.NotSpecified: return CheckNotSpecified(tile);
             case Neighbor.Nothing: return CheckNothing(tile);
-            
         }
+
         return base.RuleMatch(neighbor, tile);
     }
 

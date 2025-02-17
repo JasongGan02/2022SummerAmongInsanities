@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coreController: {fileID: 0}
-  indicatorColor: {r: 1, g: 0.7957734, b: 0, a: 0.3}
-  indicatorHeight: 5
+  indicatorColor: {r: 1, g: 0.94359255, b: 0.3160377, a: 0.3}
+  indicatorHeight: 8
   pixelsPerUnit: 100
 --- !u!1 &2767627944182598563
 GameObject:
