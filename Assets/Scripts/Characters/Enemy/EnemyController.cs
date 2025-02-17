@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 
 
 public abstract class EnemyController : CharacterController
@@ -30,7 +32,7 @@ public abstract class EnemyController : CharacterController
     protected abstract string AttackAnimationState { get; }
     protected abstract string MoveAnimationState { get; }
     //protected abstract string DeathAnimationState { get; }
-
+    
     protected override void Awake()
     {
         base.Awake();
@@ -99,8 +101,8 @@ public abstract class EnemyController : CharacterController
         // Only do the jump logic if center is on ground
         if (hitCenter.transform != null)
         {
-            bool movingForward = (facingRight && rb.velocity.x > 0) || (!facingRight && rb.velocity.x < 0);
-            bool movingBackward = (facingRight && rb.velocity.x < 0) || (!facingRight && rb.velocity.x > 0);
+            bool movingForward = (facingRight && rb.linearVelocity.x > 0) || (!facingRight && rb.linearVelocity.x < 0);
+            bool movingBackward = (facingRight && rb.linearVelocity.x < 0) || (!facingRight && rb.linearVelocity.x > 0);
 
             // If blocked in the front
             if (movingForward && hitFront.transform != null)
@@ -146,7 +148,7 @@ public abstract class EnemyController : CharacterController
     }
     protected void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x * 1.0f, currentStats.jumpForce);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.0f, currentStats.jumpForce);
     }
     protected void Flip()
     {
@@ -200,7 +202,7 @@ public abstract class EnemyController : CharacterController
             {
                 Type targetType = targetComponent.GetType();
                 int typePriority = Hatred.FindIndex(hatredType => hatredType == targetType);
-                
+
                 // If the type is not directly in the list, check inheritance
                 if (typePriority == -1)
                 {
@@ -293,7 +295,7 @@ public abstract class EnemyController : CharacterController
 
         RaycastHit2D hit = Physics2D.Raycast(eyePosition, direction, distance, groundLayerMask);
         //Debug.DrawLine(eyePosition, targetPosition, Color.red);
-        if (hit.collider == null && distance < enemyStats.sensingRange) // just testing!!!!
+        if ((hit.collider == null && distance < enemyStats.sensingRange) || target.gameObject.name == "CoreArchitecture") // because core position is too low
         {
             // Line of sight is clear
             return true;
@@ -316,9 +318,9 @@ public abstract class EnemyController : CharacterController
         if (targetPosition != null)
         {
             Vector2 direction = (targetPosition.Value - (Vector2) transform.position).normalized;
-            direction = new Vector2(direction.x,  rb.velocity.y).normalized;
+            direction = new Vector2(direction.x,  rb.linearVelocity.y).normalized;
             float speed = isRunning ? currentStats.movingSpeed : currentStats.movingSpeed / 2f;
-            rb.velocity = direction * speed;
+            rb.linearVelocity = direction * speed;
             //Debug.Log(speed);
             Flip(direction.x);
             ChangeAnimationState(MoveAnimationState);

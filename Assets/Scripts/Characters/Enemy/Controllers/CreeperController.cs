@@ -12,10 +12,7 @@ public class CreeperController : EnemyController
     float patrolRest = 2f;
     private float _targetTicker = 1f;
     new GameObject target;
-    LayerMask ground_mask;
-    LayerMask enemy_mask;
-    LayerMask flyEnemy_mask;
-
+    LayerMask combinedMask;
     private CircleCollider2D Collider;
 
     private float Wait = 0.3f;
@@ -31,9 +28,7 @@ public class CreeperController : EnemyController
     {
         base.Awake();
         animator = GetComponent<Animator>();
-        ground_mask = LayerMask.GetMask("ground");
-        enemy_mask = LayerMask.GetMask("enemy");
-        flyEnemy_mask = LayerMask.GetMask("flyenemy");
+        combinedMask = LayerMask.GetMask("ground", "enemy", "flyenemy");
         groundCheckCenter = transform.Find("groundCheckCenter");
         frontCheck = transform.Find("frontCheck");
         backCheck = transform.Find("backCheck");
@@ -112,7 +107,7 @@ public class CreeperController : EnemyController
             ApplyDamage(target.GetComponent<CharacterController>());
             Vector2 direction = player.transform.position - transform.position;
             direction.Normalize();
-            player.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(2f * direction.x * currentStats.jumpForce, 2f * direction.y * currentStats.jumpForce); // effect on player
+            player.transform.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(2f * direction.x * currentStats.jumpForce, 2f * direction.y * currentStats.jumpForce); // effect on player
             rest = true;
             Wait = 1.0f * currentStats.attackInterval;
         }
@@ -130,49 +125,15 @@ public class CreeperController : EnemyController
 
     void BreakSurrounding(float range, float Damage)
     {
-        int numberOfDirections = 30; // Number of directions to cast rays in (one for each degree in a circle)
-        float angleStep = 360.0f / numberOfDirections; // Calculate the angle step based on the number of directions
-
-        // Iterate over each direction based on the number of directions and angle step
-        for (int i = 0; i < numberOfDirections; i++)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, combinedMask);
+    
+        foreach (Collider2D hit in hits)
         {
-            float angleInRadians = (angleStep * i) * Mathf.Deg2Rad; // Convert current angle to radians
-                                                                    // Calculate the direction vector based on the current angle
-            Vector2 dir = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
-
-            // Cast a ray in the current direction for the specified range
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, range, ground_mask);
-            RaycastHit2D[] enemyHits = Physics2D.RaycastAll(transform.position, dir, range, enemy_mask);
-            RaycastHit2D[] flyEnemyHits = Physics2D.RaycastAll(transform.position, dir, range, flyEnemy_mask);
-
-            // Iterate over each hit in the current direction
-            foreach (RaycastHit2D hit in hits)
+            // Apply damage based on component
+            var damageable = hit.GetComponent<IDamageable>();
+            if (damageable != null)
             {
-                var breakable = hit.transform.GetComponent<IDamageable>();
-                if (breakable != null)
-                {
-                    ApplyDamage(breakable);
-                }
-            }
-            
-            foreach (RaycastHit2D hit in enemyHits)
-            {
-                var enemyController = hit.transform.GetComponent<CharacterController>();
-                if (enemyController != null)
-                {
-                    ApplyDamage(enemyController);
-                    //Debug.Log("Damaging Enemy");
-                }
-            }
-
-            foreach (RaycastHit2D hit in flyEnemyHits)
-            {
-                var enemyController = hit.transform.GetComponent<CharacterController>();
-                if (enemyController != null)
-                {
-                    ApplyDamage(enemyController);
-                    //Debug.Log("Damaging Fly Enemy");
-                }
+                ApplyDamage(damageable);
             }
         }
     }
@@ -181,10 +142,10 @@ public class CreeperController : EnemyController
     {
         if (DistanceToTarget(target.transform) < 0.5f * currentStats.attackRange)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-        else if (target.position.x > transform.position.x) { rb.velocity = new Vector2(speed, rb.velocity.y); }
-        else { rb.velocity = new Vector2(-speed, rb.velocity.y); }
+        else if (target.position.x > transform.position.x) { rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y); }
+        else { rb.linearVelocity = new Vector2(-speed, rb.linearVelocity.y); }
     }
     
     void patrol()
@@ -213,12 +174,12 @@ public class CreeperController : EnemyController
             patroltime -= Time.deltaTime;
             if (patrolToRight)
             {
-                rb.velocity = new Vector2(currentStats.movingSpeed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(currentStats.movingSpeed, rb.linearVelocity.y);
                 if (!facingRight) { Flip(); }
             }
             else
             {
-                rb.velocity = new Vector2(-currentStats.movingSpeed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(-currentStats.movingSpeed, rb.linearVelocity.y);
                 if (facingRight) { Flip(); }
             }
         }

@@ -53,7 +53,7 @@ MonoBehaviour:
     jumpForce: 10
     totalJumps: 1
     sensingRange: 0
-    soulValue: 200
+    soulValue: 40
   soulObject: {fileID: 11400000, guid: e0e44c120cb18f046905d57b784e8903, type: 2}
   minLightLevel: 6
   maxLightLevel: 16

@@ -202,9 +202,6 @@ public abstract class RogueManagerBase : MonoBehaviour
         ClearBuffCards();
     }
     
-    
-
-        
     private void OnRerollButtonClicked()
     {
         int currentCost = CalculateRerollCost();

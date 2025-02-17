@@ -43,7 +43,7 @@ public class CraftingUIManager : MonoBehaviour
     [SerializeField] private GameObject CharacterUI;
     [SerializeField] private GameObject craftUI;
     [SerializeField] private GameObject craftMenuUI;
-    [SerializeField] private GameObject StatsUI;
+    [SerializeField] private List<GameObject> statsUIList = new List<GameObject>();
 
 
     [Header("Tab Buttons")]
@@ -127,9 +127,15 @@ public class CraftingUIManager : MonoBehaviour
     // -------------------------
     private void SetupUI()
 {
-    if (StatsUI != null) StatsUI.SetActive(false);
+        if (statsUIList != null)
+        {
+            foreach (var statsUI in statsUIList)
+            {
+                if (statsUI != null) statsUI.SetActive(false);
+            }
+        }
     if (craftUI != null) craftUI.SetActive(false);
-    if (CharacterUI != null) CharacterUI.SetActive(false);
+    //if (CharacterUI != null) CharacterUI.SetActive(false);
 
     // Hide tab buttons at first
     tabCraftButton.gameObject.SetActive(false);
@@ -202,7 +208,13 @@ public class CraftingUIManager : MonoBehaviour
     {
         if (CharacterUI != null) CharacterUI.SetActive(true);
         if (craftUI != null) craftUI.SetActive(true);
-        if (StatsUI != null) StatsUI.SetActive(false);
+        if (statsUIList != null)
+        {
+            foreach (var statsUI in statsUIList)
+            {
+                if (statsUI != null) statsUI.SetActive(false);
+            }
+        }
         tabCraftButton.gameObject.SetActive(true);
         tabStatsButton.gameObject.SetActive(true);
 
@@ -220,9 +232,15 @@ public class CraftingUIManager : MonoBehaviour
 
     private void CraftUIOff()
     {
-        if (CharacterUI != null) CharacterUI.SetActive(false);
+        //if (CharacterUI != null) CharacterUI.SetActive(false);
         if (craftUI != null) craftUI.SetActive(false);
-        if (StatsUI != null) StatsUI.SetActive(false);
+        if (statsUIList != null)
+        {
+            foreach (var statsUI in statsUIList)
+            {
+                if (statsUI != null) statsUI.SetActive(false);
+            }
+        }
         tabCraftButton.gameObject.SetActive(false);
         tabStatsButton.gameObject.SetActive(false);
 
@@ -232,14 +250,26 @@ public class CraftingUIManager : MonoBehaviour
     private void ShowCraftUI()
     {
         if (craftUI != null) craftUI.SetActive(true);
-        if (StatsUI != null) StatsUI.SetActive(false);
+        if (statsUIList != null)
+        {
+            foreach (var statsUI in statsUIList)
+            {
+                if (statsUI != null) statsUI.SetActive(false);
+            }
+        }
         UpdateTabIcons(craftImage1, statsImage2);
     }
 
     private void ShowStatsUI()
     {
         if (craftUI != null) craftUI.SetActive(false);
-        if (StatsUI != null) StatsUI.SetActive(true);
+        if (statsUIList != null)
+        {
+            foreach (var statsUI in statsUIList)
+            {
+                if (statsUI != null) statsUI.SetActive(true);
+            }
+        }
         UpdateTabIcons(craftImage2, statsImage1);
     }
 

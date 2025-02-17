@@ -6,11 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effects/Tower Upgrades/ChilledWallEffectObject")]
 public class ChilledWallEffectObject : EffectObject
 {
-    [Header("ChilledWallEffectObject Fields")] 
+    [Header("ChilledWallEffectObject Fields")]
     public int maxStacks;
     public float armorMultiplier;
-    
-    
+
+
     public override async void InitializeEffectObject()
     {
         // Load all wall objects
@@ -27,10 +27,6 @@ public class ChilledWallEffectObject : EffectObject
             if (existingEffect == null)
             {
                 wall.onHitEffects.Add(this);
-            }
-            else
-            {
-                //((IUpgradeableEffectObject)existingEffect).UpgradeLevel();
             }
         }
     }

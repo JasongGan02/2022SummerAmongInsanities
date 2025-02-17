@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,7 @@ using System;
 using static Constants;
 
 [CreateAssetMenu(fileName = "weapon", menuName = "Objects/Weapon Object")]
-public class WeaponObject : EquipmentObject , ICraftableObject
+public class WeaponObject : EquipmentObject, ICraftableObject
 {
     [Header("Weapon Stats")]
     [SerializeField]
@@ -73,10 +72,9 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     private float frequency;
 
 
-  
     public List<EffectObject> onInitializeEffects = new List<EffectObject>();
     public List<EffectObject> onHitEffects = new List<EffectObject>();
-    
+
     [Header("Craft")]
     [SerializeField]
     private CraftRecipe[] _recipe;
@@ -86,7 +84,7 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     private bool _isCoreNeeded;
     [SerializeField]
     private int _craftTime;
-    
+
 
     public float getfrequency()
     {
@@ -117,7 +115,8 @@ public class WeaponObject : EquipmentObject , ICraftableObject
             worldGameObject.GetComponent<Collider2D>().isTrigger = true;
             worldGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
         }
-        Type type = Type.GetType(itemName+"Controller");
+
+        Type type = Type.GetType(itemName + "Controller");
         var controller = worldGameObject.AddComponent(type);
         //controller.transform.SetParent(character.transform, false);
         (controller as Weapon).Initialize(this, character);
@@ -127,7 +126,9 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     /**
      * implementation of ICraftableObject
      */
+
     #region
+
     public CraftRecipe[] Recipe
     {
         get => _recipe;
@@ -138,20 +139,20 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     {
         return Recipe;
     }
+
     public void Craft(Inventory inventory)
     {
         inventory.CraftItems(Recipe, this);
     }
 
-
     #endregion
 
     #region
+
     public bool IsCraftable
     {
         get => _isCraftable;
         set => _isCraftable = value;
-
     }
 
     public bool getIsCraftable()
@@ -180,7 +181,6 @@ public class WeaponObject : EquipmentObject , ICraftableObject
     {
         return _craftTime;
     }
+
     #endregion
-
-
 }

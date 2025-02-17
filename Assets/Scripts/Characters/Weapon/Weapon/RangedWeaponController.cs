@@ -17,6 +17,52 @@ public class RangedWeaponController : Weapon, IRangedAttacker
         base.Start();
         projectileObject = ((RangedWeaponObject)weaponStats).projectileObject;
     }
+    protected void Flip()
+    {
+        if (targetEnemy != null)
+        {
+           
+            Vector2 directionToEnemy = (targetEnemy.position - player.transform.position).normalized;
+
+          
+            float angle = Mathf.Atan2(directionToEnemy.y, directionToEnemy.x) * Mathf.Rad2Deg;
+
+         
+            float offset = -45f;
+            transform.rotation = Quaternion.Euler(0, 0, angle + offset);
+
+           
+            float radius = 1f; 
+            Vector2 bowPosition = (Vector2)player.transform.position + directionToEnemy * radius;
+            transform.position = bowPosition;
+        }
+        else
+        {
+            float defaultAngle = playerMovement.facingRight ? -45f : 135f;
+            transform.rotation = Quaternion.Euler(0, 0, defaultAngle);
+
+            transform.position = player.transform.position + new Vector3(playerMovement.facingRight ? 1f : -1f, 0, 0);
+        }
+
+        transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    public override void FixedUpdate()
+    {
+        Flip();
+        startPosition = transform;
+
+        if (!isAttacking && inventory.FindItemCount(ProjectileObject) >= 1)
+        {
+            DetectAndAttackEnemy();
+        }
+
+    }
+
+    
+
+
+
 
     public virtual void FireProjectiles(GameObject target)
     {
