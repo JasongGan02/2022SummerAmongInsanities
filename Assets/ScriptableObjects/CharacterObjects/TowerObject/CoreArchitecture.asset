@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4905c1f9df4233340ba3daace951c88d, type: 3}
+  m_Script: {fileID: 11500000, guid: 81cbb6ad08154994f8e1e0c8bb9cc40a, type: 3}
   m_Name: CoreArchitecture
   m_EditorClassIdentifier: 
   itemName: CoreArchitecture
   sizeRatio: 1
   prefab: {fileID: 2767627944182598563, guid: 881ea817df899664cb502686f5086589, type: 3}
   baseStats:
-    hp: 2000
+    hp: 200
     armor: 20
     attackDamage: 0
     attackInterval: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
     jumpForce: 0
     totalJumps: 0
   maxStats:
-    hp: 0
-    armor: 0
+    hp: 200
+    armor: 20
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -40,8 +40,8 @@ MonoBehaviour:
   drops: []
   hatred: []
   towerStats:
-    hp: 2000
-    armor: 20
+    hp: 0
+    armor: 0
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -58,3 +58,15 @@ MonoBehaviour:
   _isCraftable: 0
   _isCoreNeeded: 0
   _craftTime: 0
+  coreStats:
+    hp: 200
+    armor: 20
+    attackDamage: 0
+    attackInterval: 0
+    attackRange: 0
+    criticalChance: 0
+    criticalMultiplier: 0
+    movingSpeed: 0
+    jumpForce: 0
+    totalJumps: 0
+    constructableDistance: 20

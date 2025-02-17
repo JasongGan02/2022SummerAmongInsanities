@@ -1,34 +1,63 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class cameraFollow : MonoBehaviour
+public class CameraFollow : MonoBehaviour
 {
-    private GameObject player;
-    public float Ahead;//当角色向右移动时，摄像机比任务位置领先，当角色向左移动时，摄像机比角色落后
-    public Vector3 Targetpos;//摄像机的最终目标
-    public float smooth;//摄像机平滑移动的值
+    [Header("Settings")]
+    [SerializeField] private float aheadDistance = 0f;
+    [SerializeField] private float smoothSpeed = 720f;
+    [SerializeField] private float zOffset = -1f;
 
-    // Update is called once per frame
-    void Update()
+    private Transform playerTransform;
+    private bool isFollowing = true;
+
+    private void Update()
     {
-        if(player == null)
+        if (playerTransform == null)
         {
-            player = GameObject.FindWithTag("Player");
+            FindPlayer();
+            return;
         }
-        else{
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z-1);
-            Targetpos = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
-            if (player.transform.localScale.x > 0)
-            {
-                Targetpos = new Vector3(player.transform.position.x + Ahead, transform.position.y, transform.position.z);
-            }
-            if (player.transform.localScale.x < 0)
-            {
-                Targetpos = new Vector3(player.transform.position.x - Ahead, transform.position.y, transform.position.z);
-            }
-            //让摄像机进行平滑的移动
-            transform.position = Vector3.Lerp(transform.position, Targetpos, smooth);
+
+        if (isFollowing)
+        {
+            UpdateCameraPosition();
         }
+    }
+
+    private void FindPlayer()
+    {
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null) playerTransform = player.transform;
+    }
+
+    private void UpdateCameraPosition()
+    {
+        Vector3 targetPosition = GetPlayerTargetPosition();
+
+        transform.position = Vector3.Lerp(
+            transform.position,
+            targetPosition,
+            smoothSpeed * Time.unscaledDeltaTime
+        );
+    }
+
+    // 公开计算玩家目标位置的方法
+    public Vector3 GetPlayerTargetPosition()
+    {
+        if (playerTransform == null)
+        {
+            return transform.position;
+        }
+
+        Vector3 targetPosition = playerTransform.position + new Vector3(0, 0, zOffset);
+        float directionMultiplier = Mathf.Sign(playerTransform.localScale.x);
+        targetPosition.x += aheadDistance * directionMultiplier;
+        return targetPosition;
+    }
+
+    public void SetFollowing(bool enable)
+    {
+        isFollowing = enable;
+        if (enable) UpdateCameraPosition();
     }
 }

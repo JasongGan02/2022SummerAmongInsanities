@@ -4,28 +4,27 @@ using UnityEngine;
 
 public class TowerController : CharacterController
 {
-
     protected TowerStats TowerStats => (TowerStats)currentStats;
-    
+
     //run-time variables
-    protected ConstructionMode constructionMode;
-    protected bool isDestroyedByPlayer =false;
+    protected ConstructionModeManager constructionModeManager;
+    protected bool isDestroyedByPlayer = false;
 
     protected override void Update()
     {
         TestDrop();
     }
- 
+
     protected override void Die()
     {
-        constructionMode = FindObjectOfType<ConstructionMode>();
-        constructionMode.EnergyConsumption(TowerStats.energyCost*-1);
+        constructionModeManager = FindObjectOfType<ConstructionModeManager>();
+        constructionModeManager.ConsumeEnergy(TowerStats.energyCost * -1);
         Destroy(gameObject);
         OnObjectReturned(isDestroyedByPlayer);
     }
-    
 
-    public void TestDrop() 
+
+    public void TestDrop()
     {
         if (Input.GetMouseButtonDown(1)) // Check if right mouse button was clicked
         {
@@ -40,5 +39,4 @@ public class TowerController : CharacterController
             }
         }
     }
-
 }

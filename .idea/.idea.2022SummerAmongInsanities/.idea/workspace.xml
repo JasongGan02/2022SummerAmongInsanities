@@ -5,34 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442d2ca5-fbd4-41c1-8424-edaa97dc4222" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/Core/ConstructionRangeIndicator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/Core/ConstructionRangeIndicator.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2022SummerAmongInsanities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/Built In Data.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/Built In Data.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JasonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Block.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Block.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Lighting.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/Lighting.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/TileAtlas/Village.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/TileAtlas/Village.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/TileAtlas/VillageTest.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/TileAtlas/VillageTest.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/UnbreakableTile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/TileObjects/UnbreakableTile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BackgroundManager/BackgroundLightIntensityController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BackgroundManager/BackgroundLightIntensityController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BackgroundManager/PlanetMovementController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BackgroundManager/PlanetMovementController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Editor/SpawnManagerEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Editor/SpawnManagerEditor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/TerrainGeneration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/TerrainGeneration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainSettings.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/TerrainSettings.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generation/UpdatedGeneration/WorldGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Object/TileObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Object/TileObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rogue/RogueManagerBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Spawn/SpawnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Spawn/SpawnManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprite/TileBlocks/Base/BaseSprite.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprite/TileBlocks/Base/BaseSprite.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/URP/Lighting/pipeline.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/URP/Lighting/pipeline.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/URP/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/URP/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/ScriptableObject-TowerObject.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/ScriptableObject-TowerObject.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/link.xml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Core/Core-Architecture.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Constructions/Core/Core-Architecture.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_15_Build.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_15_Build.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/CharacterObjects/TowerObject/CoreArchitecture.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterStats.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/CharacterStats.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerCamera/CameraMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerCamera/CameraMover.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerCamera/cameraFollow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerCamera/cameraFollow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerInteraction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/CoreArchitectureController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/CoreArchitectureController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerConstruction/ConstructionMode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerConstruction/ConstructionModeManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerConstruction/ConstructionMode.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerConstruction/ConstructionModeManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerConstruction/ShadowObjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerConstruction/ShadowObjectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObject.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +49,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/PlayerExperienceUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/LevelSystem/SoulObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/UsableObject/UsableObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/CoreObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/HideInDerivedInspectorDrawer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/RangedTowerObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Tower/TowerObjects/WallObject.cs" root0="FORCE_HIGHLIGHTING" />
@@ -66,11 +60,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/ChilledWallEffectController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/DetonateChargeEffectController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Controller/OnChilledEffectController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/EffectEvents.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EffectUpgradeObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/EnemyRedMoonEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/IUpgradeableEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/IcedSpikeEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnChilledEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Effects/Objects/OnFireEffectObject.cs" root0="FORCE_HIGHLIGHTING" />
@@ -93,7 +84,6 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/DebugSceneManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/UnityMainThreadDispatcher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/VFX.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f3d0e7ec4efc44199bb22a77b1c8eff446a800/d8/190cef38/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -102,6 +92,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2dQZxgRCY3b0GXHFH8PEmKh6sNw" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -260,6 +253,7 @@
       <workItem from="1739148024517" duration="4856000" />
       <workItem from="1739682788307" duration="2676000" />
       <workItem from="1739688138697" duration="1416000" />
+      <workItem from="1739751082959" duration="7137000" />
     </task>
     <servers />
   </component>

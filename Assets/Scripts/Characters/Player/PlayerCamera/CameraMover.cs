@@ -1,60 +1,89 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.Rendering.Universal;
 
+public class CameraMover : MonoBehaviour
+{
+    [Header("Settings")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private int zoomOutPPU = 16;
+    [SerializeField] private float transitionDuration = 0.5f;
 
-public class CameraMover : MonoBehaviour {
+    [Header("Zoom Settings")]
+    [SerializeField] private int minPPU = 32; // 最小视野（数值越小，视野越大）
+    [SerializeField] private int maxPPU = 128; // 最大视野（数值越大，视野越小）
+    [SerializeField] private int zoomStep = 4; // 每次滚轮滚动调整的数值
 
-    public float speed;
-    float inputX;
-    float inputZ;
-     private UnityEngine.Rendering.Universal.PixelPerfectCamera pixelPerfectCamera;
+    [Header("References")]
+    [SerializeField] private CameraFollow cameraFollow;
+    private PixelPerfectCamera pixelPerfectCamera;
+
+    // 不再缓存原始位置，而是在重置时动态计算
+    private bool isInTransition;
 
     private void Start()
     {
-        // Get the reference to the PixelPerfectCamera component on the main camera
-        pixelPerfectCamera = Camera.main.GetComponent<UnityEngine.Rendering.Universal.PixelPerfectCamera>();
+        pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        inputX = Input.GetAxis("Horizontal");
-        inputZ = Input.GetAxis("Vertical");
-
-        if (inputX != 0)
-            moveX();
-        if (inputZ != 0)
-            moveZ();
-
-        if (!PlayerStatusRepository.GetIsViewingUi())
+        // 监听鼠标滚轮输入，并调整视野大小
+        float scroll = -Input.mouseScrollDelta.y;
+        if (scroll != 0 && !isInTransition)
         {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
-            {
-                // Decrease assetsPPU to zoom out
-                pixelPerfectCamera.assetsPPU += 4;
-            }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            {
-                // Increase assetsPPU to zoom in
-                pixelPerfectCamera.assetsPPU -= 4;
-            }
+            int newPPU = pixelPerfectCamera.assetsPPU - (int)(scroll * zoomStep);
+            newPPU = Mathf.Clamp(newPPU, minPPU, maxPPU);
+            pixelPerfectCamera.assetsPPU = newPPU;
         }
-
-        // Clamp the assetsPPU to a reasonable range (adjust the range as needed)
-        pixelPerfectCamera.assetsPPU = Mathf.Clamp(pixelPerfectCamera.assetsPPU, 8, 40);
     }
 
+    public void FocusOnCore(Vector3 corePosition)
+    {
+        if (isInTransition) return;
 
-        void moveZ()
+        cameraFollow.SetFollowing(false);
+        StartCoroutine(TransitionCamera(
+            targetPosition: corePosition,
+            targetPPU: zoomOutPPU
+        ));
+    }
+
+    public void ResetToPlayer()
+    {
+        if (isInTransition) return;
+
+        // 使用 CameraFollow 计算出的目标位置作为重置目标
+        Vector3 targetPosition = cameraFollow.GetPlayerTargetPosition();
+        StartCoroutine(TransitionCamera(
+            targetPosition: targetPosition,
+            targetPPU: pixelPerfectCamera.assetsPPU, // 或者你希望的其他数值
+            onComplete: () => cameraFollow.SetFollowing(true)
+        ));
+    }
+
+    private IEnumerator TransitionCamera(Vector3 targetPosition, int targetPPU, System.Action onComplete = null)
+    {
+        isInTransition = true;
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        int startPPU = pixelPerfectCamera.assetsPPU;
+
+        while (elapsed < transitionDuration)
         {
-            transform.position += transform.up * inputZ * speed * Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
+            float t = elapsed / transitionDuration;
+
+            transform.position = Vector3.Lerp(startPos, targetPosition, t);
+            pixelPerfectCamera.assetsPPU = Mathf.RoundToInt(Mathf.Lerp(startPPU, targetPPU, t));
+
+            yield return null;
         }
 
+        transform.position = targetPosition;
+        pixelPerfectCamera.assetsPPU = targetPPU;
+        isInTransition = false;
 
-        void moveX()
-        {
-            transform.position += transform.right * inputX * speed * Time.deltaTime;
-        }
-
+        onComplete?.Invoke();
+    }
 }
