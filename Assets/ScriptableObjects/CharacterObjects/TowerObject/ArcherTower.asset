@@ -16,10 +16,10 @@ MonoBehaviour:
   sizeRatio: 1
   prefab: {fileID: 5122404738386094519, guid: 9bcd92f096a5aa84c9c5987cdda7c9c4, type: 3}
   baseStats:
-    hp: 100
-    armor: 3
+    hp: 200
+    armor: 0
     attackDamage: 5
-    attackInterval: 0.8
+    attackInterval: 1
     attackRange: 15
     criticalChance: 0
     criticalMultiplier: 0
@@ -64,17 +64,17 @@ MonoBehaviour:
   _isCoreNeeded: 1
   _craftTime: 10
   rangedTowerStats:
-    hp: 100
-    armor: 3
+    hp: 200
+    armor: 0
     attackDamage: 5
-    attackInterval: 0.8
+    attackInterval: 1
     attackRange: 15
     criticalChance: 0
     criticalMultiplier: 0
     movingSpeed: 0
     jumpForce: 0
     totalJumps: 0
-    energyCost: 10
+    energyCost: 27
     rotateAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
     curAngle: {x: 0, y: 0, z: 0, w: 1}
     projectilesPerShot: 1

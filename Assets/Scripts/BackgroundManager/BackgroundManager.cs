@@ -15,12 +15,16 @@ public class BackgroundManager : MonoBehaviour
     private TimeSystemManager timeSystemManager;
     private WorldGenerator worldGenerator;
 
-    private Transform[] backgrounds; // ��Ҫ�����ı���
-    private float[] parallaxScales; // ÿ���������ƶ�����
-    public float smoothing = 1f; // ƽ���ƶ��Ĳ���
+    private Transform[] backgrounds; 
+    private float[] parallaxScales; 
+    public float smoothing = 1f;
+    public float scrollSpeed = 0.5f;
+    public float backgroundWidth = 20f;
 
-    private Transform cam; // �������transform
-    private Vector3 previousCamPos; // �������һ��λ��
+    private Transform cam; 
+    private Vector3 previousCamPos; 
+
+    private Vector3 currentCamPos;
 
     void Awake()
     {
@@ -64,12 +68,27 @@ public class BackgroundManager : MonoBehaviour
 
     private void Update()
     {
+        Vector3 camMoveDelta = cam.position - previousCamPos;
+
+
         for (int i = 0; i < backgrounds.Length; i++)
         {
             float parallax = (previousCamPos.y - cam.position.y) * parallaxScales[i];
             float backgroundTargetPosY = backgrounds[i].position.y + parallax;
             Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x, backgroundTargetPosY, backgrounds[i].position.z);
             backgrounds[i].position = Vector3.Lerp(backgrounds[i].position, backgroundTargetPos, smoothing * Time.deltaTime);
+        }
+
+        for (int i = 0; i < backgrounds.Length; i++)
+        {
+            float parallaxX = camMoveDelta.x * parallaxScales[i] * scrollSpeed;
+            backgrounds[i].position += new Vector3(parallaxX, 0, 0);
+
+            // **检查是否超出视野，进行重置**
+            if (cam.position.x - backgrounds[i].position.x >= backgroundWidth)
+            {
+                backgrounds[i].position += new Vector3(backgroundWidth * backgrounds.Length, 0, 0);
+            }
         }
 
         previousCamPos = cam.position;
