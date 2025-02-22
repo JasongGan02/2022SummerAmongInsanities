@@ -131,6 +131,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldGenerator
       objectReference: {fileID: 0}
+    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+      propertyPath: seed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677015888933098898, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
+      propertyPath: coreArchitectureSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 7880bc1e5dcf1f4448f085db8ef9ecda, type: 2}
     - target: {fileID: 4677015888933098899, guid: 743cdc4b28a41c2469698d7f924ae168, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -856,9 +864,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca42adf1e8c67348a0353c13dcde33a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ahead: 0
-  Targetpos: {x: 0, y: 0, z: 0}
-  smooth: 1
+  aheadDistance: 0
+  smoothSpeed: 720
+  zOffset: -1
 --- !u!114 &301439334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,7 +879,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e57d7f97747c34a909da7d75ddb5e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  moveSpeed: 5
+  zoomOutPPU: 16
+  transitionDuration: 0.5
+  minPPU: 32
+  maxPPU: 128
+  zoomStep: 4
+  cameraFollow: {fileID: 0}
 --- !u!114 &301439335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2290,6 +2304,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1272352765 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7270988910066579922, guid: 0aba37f0282e336449c4afe835b8bcdf, type: 3}
+  m_PrefabInstance: {fileID: 5022870085592352527}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1350630164 stripped
@@ -4132,6 +4157,14 @@ PrefabInstance:
       propertyPath: content
       value: 
       objectReference: {fileID: 763498279}
+    - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: queueUI
+      value: 
+      objectReference: {fileID: 1350630164}
+    - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: craftingProgressSlider
+      value: 
+      objectReference: {fileID: 1272352765}
     - target: {fileID: 8685695344788396458, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: m_RootOrder
       value: 6

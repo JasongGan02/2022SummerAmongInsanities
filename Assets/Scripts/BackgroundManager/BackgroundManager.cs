@@ -15,14 +15,14 @@ public class BackgroundManager : MonoBehaviour
     private TimeSystemManager timeSystemManager;
     private WorldGenerator worldGenerator;
 
-    private Transform[] backgrounds; 
-    private float[] parallaxScales; 
+    private Transform[] backgrounds;
+    private float[] parallaxScales;
     public float smoothing = 1f;
     public float scrollSpeed = 0.5f;
     public float backgroundWidth = 20f;
 
-    private Transform cam; 
-    private Vector3 previousCamPos; 
+    private Transform cam;
+    private Vector3 previousCamPos;
 
     private Vector3 currentCamPos;
 
@@ -35,7 +35,7 @@ public class BackgroundManager : MonoBehaviour
         redMoon = BG.transform.Find(Constants.Name.RED_MOON).gameObject;
         backgroundLight = background.transform.Find(Constants.Name.BACKGROUND_LIGHT).gameObject;
         timeSystemManager = TimeSystemManager.Instance;
-        worldGenerator = FindObjectOfType<WorldGenerator>();
+        worldGenerator = FindFirstObjectByType<WorldGenerator>();
 
         BG.transform.position = new Vector3(BG.transform.position.x, worldGenerator.settings[0].heightAddition + worldGenerator.settings[0].heightMultiplier * 0.6f, BG.transform.position.z);
 

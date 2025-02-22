@@ -9,12 +9,10 @@ using UnityEngine.Experimental.Rendering;
 
 public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 {
-
     public GameObject extraRow;
     public int maxExtraRow = 4;
     private GameObject hotbar;
     private CraftingQueueManager queueManager;
-    
 
 
     protected override void Awake()
@@ -28,14 +26,14 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
             inventoryGrid,
             template,
             this,
-            FindObjectOfType<UIViewStateManager>()
-            );
+            FindFirstObjectByType<UIViewStateManager>()
+        );
 
         uiController.SetupUi();
         hotbar = inventoryGrid.transform.GetChild(0).gameObject;
 
         eventBus = new InventoryEventBus();
-        queueManager = FindObjectOfType<CraftingQueueManager>();
+        queueManager = FindFirstObjectByType<CraftingQueueManager>();
     }
 
     protected override void Update()
@@ -54,16 +52,14 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-
     public void RemoveItemByOne(int index)
     {
         database.RemoveItemByOne(index);
         UpdateSlotUi(index);
     }
-    
+
     public void CraftItems(CraftRecipe[] recipe, BaseObject outputItem)
     {
-
         if (queueManager.sizeCraftQueue() >= 4)
         {
             Debug.Log("CraftItems: Craft queue is full (>=4). Aborting craft.");
@@ -80,7 +76,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
                 return;
             }
         }
-        
+
 
         // Since all items are available, consume them
         for (int i = 0; i < recipe.Length; i++)
@@ -89,9 +85,8 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         }
 
         // Add the output item to the crafting queue
-        queueManager.AddToQueue(outputItem);
+        queueManager.AddToQueue(outputItem, () => { AddItem(outputItem as IInventoryObject, 1); });
     }
-
 
 
     private bool HasEnoughItem(IInventoryObject inventoryObject, int requiredQuantity)
@@ -106,9 +101,9 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (!slot.IsEmpty && 
-                slot.item is BaseObject slotBaseObj && 
-                inventoryObject is BaseObject recipeBaseObj && 
+            if (!slot.IsEmpty &&
+                slot.item is BaseObject slotBaseObj &&
+                inventoryObject is BaseObject recipeBaseObj &&
                 slotBaseObj.itemName == recipeBaseObj.itemName)
             {
                 //Debug.LogError($"Found {slot.count} of {inventoryObject.GetItemName()} in slot {i}.");
@@ -119,8 +114,6 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         //Debug.LogError($"Total found of {inventoryObject.GetItemName()} = {totalFound}, required = {requiredQuantity}");
         return totalFound >= requiredQuantity;
     }
-
-
 
 
     public bool CanAddItem(IInventoryObject item)
@@ -144,44 +137,47 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-    
-
-    private void HandleHotbarKeyPress() 
+    private void HandleHotbarKeyPress()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             UseItemInHotbarSlot(0);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             UseItemInHotbarSlot(1);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             UseItemInHotbarSlot(2);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             UseItemInHotbarSlot(3);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             UseItemInHotbarSlot(4);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             UseItemInHotbarSlot(5);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             UseItemInHotbarSlot(6);
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             UseItemInHotbarSlot(7);
         }
-        
-       
     }
 
 
@@ -196,7 +192,6 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         }
     }
 
-    
 
     public void Upgrade()
     {
@@ -206,8 +201,8 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
             uiController.Upgrade();
         }
     }
-    
-  
+
+
     public bool ConsumeItem(IInventoryObject inventoryObject, int amountNeeded)
     {
         if (inventoryObject == null)
@@ -224,12 +219,12 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
             if (remaining <= 0) break; // Done removing
 
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-            if (!slot.IsEmpty && 
-                  slot.item is BaseObject slotBaseObj && 
-                  inventoryObject is BaseObject recipeBaseObj && 
-                  slotBaseObj.itemName == recipeBaseObj.itemName)
+            if (!slot.IsEmpty &&
+                slot.item is BaseObject slotBaseObj &&
+                inventoryObject is BaseObject recipeBaseObj &&
+                slotBaseObj.itemName == recipeBaseObj.itemName)
             {
-                int canRemove = Mathf.Min(slot.count, remaining); 
+                int canRemove = Mathf.Min(slot.count, remaining);
                 //Debug.LogError($"ConsumeItem: Removing {canRemove} from slot {i}. (Slot had {slot.count}, need {remaining} total left)");
                 database.RemoveItemByOne(i, canRemove);
                 UpdateSlotUi(i);
@@ -249,19 +244,15 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     }
 
 
-
-    public InventorySlot FindSlot (IInventoryObject inventoryObject)
-    {   
-        
+    public InventorySlot FindSlot(IInventoryObject inventoryObject)
+    {
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
-    
+
             if (slot != null && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
             {
-                
                 return slot;
-                    
             }
         }
 
@@ -271,33 +262,28 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
     public int FindSlotindex(IInventoryObject inventoryObject)
     {
-
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
 
             if (slot != null && (slot.item as BaseObject).itemName == (inventoryObject as BaseObject).itemName)
             {
-
                 return i;
-
             }
         }
 
         return -1;
     }
+
     public int FindSlotIndex(string inventoryObject)
     {
-
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
 
             if (slot != null && (slot.item as BaseObject).itemName == inventoryObject)
             {
-
                 return i;
-
             }
         }
 
@@ -307,16 +293,13 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
     public InventorySlot findSlot(string inventoryObject)
     {
-       
         for (int i = 0; i < database.GetSize(); i++)
         {
             InventorySlot slot = database.GetInventorySlotAtIndex(i);
 
             if (slot != null && (slot.item as BaseObject).itemName == inventoryObject)
             {
-
                 return slot;
-
             }
         }
 
@@ -359,7 +342,6 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
         return count;
     }
-
 
 
     public void DropAxe()

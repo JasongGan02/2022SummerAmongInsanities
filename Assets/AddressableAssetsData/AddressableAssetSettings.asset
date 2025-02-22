@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 8c713cff223b7eb4aa4a26f9a1786878
   m_currentHash:
     serializedVersion: 2
-    Hash: 2a67dbf8cafdc240ff8fa029cf72d33f
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -105,18 +105,17 @@ MonoBehaviour:
     m_ProfileVersion: 1
   m_LabelTable:
     m_LabelNames:
-    - default
     - ScriptableObject
     - WeaponObject
     - TowerObject
     - RangedTowerObject
     - WallObject
-    - UsableObject
     - UtilityTowerObject
     - TileObject
     - VFX
     - EffectObject
     - EnemyObject
+    - UsableObject
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 2b6c7e4698e48f947901da1940c106e7, type: 2}

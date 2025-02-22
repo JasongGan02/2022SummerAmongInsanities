@@ -16,9 +16,9 @@ using Image = UnityEngine.UI.Image; // For AssetDatabase usage
 public class CategoryConfig
 {
     [Tooltip("Label or key used to load from Addressables. For multiple items, use a label.")]
-    public string addressOrLabel;     // e.g., "t:WeaponObject"
-    public Button categoryButton;  // The button to click in the UI
-    [HideInInspector] 
+    public string addressOrLabel; // e.g., "t:WeaponObject"
+    public Button categoryButton; // The button to click in the UI
+    [HideInInspector]
     public BaseObject[] loadedObjects; // Filled at runtime
 }
 
@@ -58,8 +58,8 @@ public class CraftingUIManager : MonoBehaviour
 
     [Header("Craft UI References")]
     [SerializeField] private GameObject buttonPrefab; // Prefab used to list items in the scroll area
-    [SerializeField] private RectTransform content;   // Parent of the scrolling content
-    [SerializeField] private ScrollView scrollView;   // If using UI Toolkit's ScrollView
+    [SerializeField] private RectTransform content; // Parent of the scrolling content
+    [SerializeField] private ScrollView scrollView; // If using UI Toolkit's ScrollView
     [SerializeField] private Button craftButton;
     [SerializeField] private Image outputItem;
     [SerializeField] private Image inputItem0;
@@ -82,9 +82,9 @@ public class CraftingUIManager : MonoBehaviour
     private async void Start()
     {
         // 1) Find references
-        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
-        inventory = FindObjectOfType<Inventory>();
-        uiViewStateManager = FindObjectOfType<UIViewStateManager>();
+        coreArchitecture = FindFirstObjectByType<CoreArchitectureController>();
+        inventory = FindFirstObjectByType<Inventory>();
+        uiViewStateManager = FindFirstObjectByType<UIViewStateManager>();
 
         // 2) Load each category’s objects from Addressables
         //    (assuming you used labels or addresses for each category)
@@ -92,7 +92,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             // Log the category being loaded
             //Debug.Log($"Loading category: {cat.addressOrLabel}");
-    
+
             // Attempt to load assets
             var results = await AddressablesManager.Instance.LoadMultipleAssetsAsync<BaseObject>(cat.addressOrLabel);
             if (results == null || results.Count == 0)
@@ -103,6 +103,7 @@ public class CraftingUIManager : MonoBehaviour
             {
                 //Debug.Log($"Loaded {results.Count} objects for category: {cat.addressOrLabel}");
             }
+
             cat.loadedObjects = results != null ? new List<BaseObject>(results).ToArray() : new BaseObject[0];
         }
 
@@ -121,12 +122,12 @@ public class CraftingUIManager : MonoBehaviour
             uiViewStateManager.UpdateUiBeingViewedEvent -= ToggleCraftUi;
         }
     }
-    
+
     // -------------------------
     //  Top-Level Menu UI Setup
     // -------------------------
     private void SetupUI()
-{
+    {
         if (statsUIList != null)
         {
             foreach (var statsUI in statsUIList)
@@ -134,59 +135,60 @@ public class CraftingUIManager : MonoBehaviour
                 if (statsUI != null) statsUI.SetActive(false);
             }
         }
-    if (craftUI != null) craftUI.SetActive(false);
-    //if (CharacterUI != null) CharacterUI.SetActive(false);
 
-    // Hide tab buttons at first
-    tabCraftButton.gameObject.SetActive(false);
-    tabStatsButton.gameObject.SetActive(false);
+        if (craftUI != null) craftUI.SetActive(false);
+        //if (CharacterUI != null) CharacterUI.SetActive(false);
 
-    // Swap icons: default to craft tab
-    tabCraftButton.GetComponent<Image>().sprite = craftImage1;
-    tabStatsButton.GetComponent<Image>().sprite = statsImage2;
+        // Hide tab buttons at first
+        tabCraftButton.gameObject.SetActive(false);
+        tabStatsButton.gameObject.SetActive(false);
 
-    // Listen to tab button events
-    tabCraftButton.onClick.AddListener(ShowCraftUI);
-    tabStatsButton.onClick.AddListener(ShowStatsUI);
+        // Swap icons: default to craft tab
+        tabCraftButton.GetComponent<Image>().sprite = craftImage1;
+        tabStatsButton.GetComponent<Image>().sprite = statsImage2;
 
-    // Listen to craft button
-    craftButton.onClick.AddListener(CraftButtonClicked);
-    craftButton.gameObject.SetActive(false);
+        // Listen to tab button events
+        tabCraftButton.onClick.AddListener(ShowCraftUI);
+        tabStatsButton.onClick.AddListener(ShowStatsUI);
 
-    // Dictionary to track which buttons already have listeners
-    var buttonListeners = new Dictionary<Button, List<BaseObject>>();
+        // Listen to craft button
+        craftButton.onClick.AddListener(CraftButtonClicked);
+        craftButton.gameObject.SetActive(false);
 
-    // Now set up each category button in the UI
-    foreach (var cat in categoryConfigs)
-    {
-        if (cat.categoryButton != null)
+        // Dictionary to track which buttons already have listeners
+        var buttonListeners = new Dictionary<Button, List<BaseObject>>();
+
+        // Now set up each category button in the UI
+        foreach (var cat in categoryConfigs)
         {
-            //Debug.Log($"Setting up button for category: {cat.addressOrLabel}");
-
-            if (!buttonListeners.ContainsKey(cat.categoryButton))
+            if (cat.categoryButton != null)
             {
-                buttonListeners[cat.categoryButton] = new List<BaseObject>();
-                cat.categoryButton.onClick.AddListener(() =>
+                //Debug.Log($"Setting up button for category: {cat.addressOrLabel}");
+
+                if (!buttonListeners.ContainsKey(cat.categoryButton))
                 {
-                    // Aggregate all items tied to this button
-                    var aggregatedItems = buttonListeners[cat.categoryButton].ToArray();
-                    //Debug.Log($"Showing {aggregatedItems.Length} items for shared button.");
-                    SetupCraftUI(aggregatedItems);
-                });
-            }
+                    buttonListeners[cat.categoryButton] = new List<BaseObject>();
+                    cat.categoryButton.onClick.AddListener(() =>
+                    {
+                        // Aggregate all items tied to this button
+                        var aggregatedItems = buttonListeners[cat.categoryButton].ToArray();
+                        //Debug.Log($"Showing {aggregatedItems.Length} items for shared button.");
+                        SetupCraftUI(aggregatedItems);
+                    });
+                }
 
-            // Add the loaded objects to the shared list
-            if (cat.loadedObjects != null)
-            {
-                buttonListeners[cat.categoryButton].AddRange(RemoveEmptyRecipeItems(cat.loadedObjects));
+                // Add the loaded objects to the shared list
+                if (cat.loadedObjects != null)
+                {
+                    buttonListeners[cat.categoryButton].AddRange(RemoveEmptyRecipeItems(cat.loadedObjects));
+                }
             }
-        }
-        else
-        {
-            Debug.LogError($"No button assigned for category: {cat.addressOrLabel}");
+            else
+            {
+                Debug.LogError($"No button assigned for category: {cat.addressOrLabel}");
+            }
         }
     }
-}
 
 
     // --------------------------------------------
@@ -194,7 +196,7 @@ public class CraftingUIManager : MonoBehaviour
     // --------------------------------------------
     private void ToggleCraftUi(object sender, UIBeingViewed ui)
     {
-        if(ui == UIBeingViewed.Craft)
+        if (ui == UIBeingViewed.Craft)
         {
             CraftUIOn();
         }
@@ -215,6 +217,7 @@ public class CraftingUIManager : MonoBehaviour
                 if (statsUI != null) statsUI.SetActive(false);
             }
         }
+
         tabCraftButton.gameObject.SetActive(true);
         tabStatsButton.gameObject.SetActive(true);
 
@@ -241,6 +244,7 @@ public class CraftingUIManager : MonoBehaviour
                 if (statsUI != null) statsUI.SetActive(false);
             }
         }
+
         tabCraftButton.gameObject.SetActive(false);
         tabStatsButton.gameObject.SetActive(false);
 
@@ -257,6 +261,7 @@ public class CraftingUIManager : MonoBehaviour
                 if (statsUI != null) statsUI.SetActive(false);
             }
         }
+
         UpdateTabIcons(craftImage1, statsImage2);
     }
 
@@ -270,6 +275,7 @@ public class CraftingUIManager : MonoBehaviour
                 if (statsUI != null) statsUI.SetActive(true);
             }
         }
+
         UpdateTabIcons(craftImage2, statsImage1);
     }
 
@@ -284,7 +290,6 @@ public class CraftingUIManager : MonoBehaviour
     // ------------------------
     public BaseObject[] RemoveEmptyRecipeItems(BaseObject[] objects)
     {
-
         if (objects == null) return null;
 
         List<BaseObject> filtered = new List<BaseObject>();
@@ -298,6 +303,7 @@ public class CraftingUIManager : MonoBehaviour
                 filtered.Add(obj);
             }
         }
+
         return filtered.ToArray();
     }
 
@@ -370,8 +376,9 @@ public class CraftingUIManager : MonoBehaviour
         // Hide output
         if (outputItem != null)
         {
-            outputItem.color = new Color(1,1,1,0);
+            outputItem.color = new Color(1, 1, 1, 0);
         }
+
         if (timeText != null)
         {
             timeText.color = new Color(timeText.color.r, timeText.color.g, timeText.color.b, 0);
@@ -389,7 +396,7 @@ public class CraftingUIManager : MonoBehaviour
         if (outputItem != null && itemSprite != null)
         {
             outputItem.sprite = itemSprite;
-            outputItem.color = new Color(1,1,1,1);
+            outputItem.color = new Color(1, 1, 1, 1);
         }
 
         // Show craft time
@@ -418,7 +425,7 @@ public class CraftingUIManager : MonoBehaviour
             Debug.LogError("CraftButtonClicked: The selectedBaseObject does not implement ICraftableObject!");
             return;
         }
-        
+
         craftableObject.Craft(inventory);
 
         UpdateUI(); // refresh
@@ -484,7 +491,7 @@ public class CraftingUIManager : MonoBehaviour
 
     private void HideInputItem(Image image, TMP_Text text)
     {
-        if (image != null) image.color = new Color(1,1,1,0);
+        if (image != null) image.color = new Color(1, 1, 1, 0);
         if (text != null) text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
     }
 
@@ -500,7 +507,7 @@ public class CraftingUIManager : MonoBehaviour
         if (image != null)
         {
             image.sprite = recipe.material.getPrefabSprite();
-            image.color = new Color(1,1,1,1);
+            image.color = new Color(1, 1, 1, 1);
         }
 
         if (text != null)
