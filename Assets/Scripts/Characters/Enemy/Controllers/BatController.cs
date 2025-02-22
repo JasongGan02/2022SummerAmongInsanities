@@ -97,10 +97,15 @@ public class BatController : EnemyController
             else
             {
                 //Debug.Log("Bat is patroling 2");
-                Patrol();
-                if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
-                {
-                    Flip();
+                if (TimeSystemManager.Instance.IsRedMoon){
+                    Debug.Log("It's a red moon night! The villagers are spooked!");
+                    ApproachingTarget(Core.transform);
+                }else{
+                    Patrol();
+                    if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
+                    {
+                        Flip();
+                    }
                 }
             }
         }
