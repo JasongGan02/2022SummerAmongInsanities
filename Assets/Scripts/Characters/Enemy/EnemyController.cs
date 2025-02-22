@@ -26,6 +26,7 @@ public abstract class EnemyController : CharacterController
     //Status variables
     public bool IsGroupAttacking { get; set; }
     public bool IsFrozen { get; set; } // Tracks if the enemy is frozen
+    public GameObject Core;
     
     //Animation Properties
     protected abstract string IdleAnimationState { get; }
@@ -44,6 +45,7 @@ public abstract class EnemyController : CharacterController
     protected virtual void Start()
     {
         FindPlayer();
+        Core = GameObject.Find("CoreArchitecturer");
     }
     
     protected override void Update()

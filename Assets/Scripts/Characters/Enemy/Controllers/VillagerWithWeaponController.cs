@@ -98,6 +98,8 @@ public class VillagerWithWeaponController : EnemyController
     /// </summary>
     protected override void UpdateEnemyBehavior()
     {   
+        if (Core == null){Core = GameObject.Find("CoreArchitecture");}
+
         // Periodically re-check for target
         if (target == null || _targetTicker < 0) 
         { 
@@ -110,8 +112,13 @@ public class VillagerWithWeaponController : EnemyController
         if (target == null && TargetRemainder == null) 
         {
             PathToTarget.Clear();
-            Patrol();
             RemovePathLine();
+            if (TimeSystemManager.Instance.IsRedMoon){
+                Debug.Log("It's a red moon night! The villagers are spooked!");
+                Approach(currentStats.movingSpeed, Core.transform);
+            }else{
+                Patrol();
+            }
         }
         // If no target but we still remember the last known position
         else if (target == null && TargetRemainder != null) 
