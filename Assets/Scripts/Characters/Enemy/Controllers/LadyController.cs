@@ -83,7 +83,7 @@ public class LadyController : EnemyController, IRangedAttacker
     {
         // Escape from the tower
         //
-
+        if (Core == null){Core = GameObject.Find("CoreArchitecture");}
         // Approaches and escapes from the player
 
         target = SearchForTargetObject();
@@ -91,7 +91,12 @@ public class LadyController : EnemyController, IRangedAttacker
         if (rb.linearVelocity.x != 0) SenseFrontBlock();
         if (target == null)
         {
-            patrol();
+            if (TimeSystemManager.Instance.IsRedMoon){
+                Debug.Log("It's a red moon night! The villagers are spooked!");
+                approach(currentStats.movingSpeed, Core.transform, currentStats.attackRange - 0.2f);
+            }else{
+                patrol();
+            }
         }
         else
         {

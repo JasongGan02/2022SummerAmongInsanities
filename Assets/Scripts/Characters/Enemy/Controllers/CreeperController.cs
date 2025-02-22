@@ -38,6 +38,8 @@ public class CreeperController : EnemyController
 
     protected override void UpdateEnemyBehavior()
     {
+        if (Core == null){Core = GameObject.Find("CoreArchitecture");}
+        
         if (!booming) { 
             SenseFrontBlock();
 
@@ -49,7 +51,14 @@ public class CreeperController : EnemyController
                 _targetTicker = defaultTargetTicker; 
             }
 
-            if (target == null) { patrol(); }
+            if (target == null) { 
+                if (TimeSystemManager.Instance.IsRedMoon){
+                    Debug.Log("It's a red moon night! The villagers are spooked!");
+                    approach(currentStats.movingSpeed, Core.transform);
+                }else{
+                    patrol();
+                }
+            }
             else
             {
                 // Debug.Log("target is " + target);
