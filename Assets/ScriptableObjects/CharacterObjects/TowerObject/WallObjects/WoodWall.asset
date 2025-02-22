@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 3397657003104583585, guid: e8b0da03e9b2e7b4c92dfeb7de975321, type: 3}
   baseStats:
     hp: 1000
-    armor: 5
+    armor: 15
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   _craftTime: 5
   wallStats:
     hp: 1000
-    armor: 5
+    armor: 15
     attackDamage: 0
     attackInterval: 0
     attackRange: 0
