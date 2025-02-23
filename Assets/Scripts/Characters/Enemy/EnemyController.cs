@@ -94,7 +94,7 @@ public abstract class EnemyController : CharacterController
     protected void SenseFrontBlock()
     {
         if (!MoveForwardDepthCheck()) return;
-        headCheck();
+        HeadCheck();
 
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
         RaycastHit2D hitFront = Physics2D.Raycast(frontCheck.position, Vector2.left, 0.1f, groundLayerMask);
@@ -109,7 +109,7 @@ public abstract class EnemyController : CharacterController
             // If blocked in the front
             if (movingForward && hitFront.transform != null)
             {
-                if (headCheck())
+                if (HeadCheck())
                 {
                     Jump();
                 }
@@ -117,7 +117,7 @@ public abstract class EnemyController : CharacterController
             // If blocked in the back
             else if (movingBackward && hitBack.transform != null)
             {
-                if (headCheck())
+                if (HeadCheck())
                 {
                     Jump();
                 }
@@ -135,7 +135,7 @@ public abstract class EnemyController : CharacterController
         RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
         return hit.collider != null;
     }
-    protected bool headCheck()
+    protected bool HeadCheck()
     {
         Vector3 direction = transform.TransformDirection(-Vector3.right);
         Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);

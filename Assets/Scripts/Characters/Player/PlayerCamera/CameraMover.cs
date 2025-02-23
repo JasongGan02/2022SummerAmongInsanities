@@ -18,19 +18,23 @@ public class CameraMover : MonoBehaviour
     [SerializeField] private CameraFollow cameraFollow;
     private PixelPerfectCamera pixelPerfectCamera;
 
-    // 不再缓存原始位置，而是在重置时动态计算
+    public bool IsInTransition => isInTransition;
+
     private bool isInTransition;
+    private int preConstructionPPU;
+
 
     private void Start()
     {
-        pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
+        if (Camera.main != null) pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
     }
 
     private void Update()
     {
-        // 监听鼠标滚轮输入，并调整视野大小
+        if (isInTransition) return; // 过渡期间禁用缩放
+
         float scroll = -Input.mouseScrollDelta.y;
-        if (scroll != 0 && !isInTransition)
+        if (scroll != 0)
         {
             int newPPU = pixelPerfectCamera.assetsPPU - (int)(scroll * zoomStep);
             newPPU = Mathf.Clamp(newPPU, minPPU, maxPPU);
@@ -41,6 +45,8 @@ public class CameraMover : MonoBehaviour
     public void FocusOnCore(Vector3 corePosition)
     {
         if (isInTransition) return;
+        isInTransition = true;
+        preConstructionPPU = pixelPerfectCamera.assetsPPU;
 
         cameraFollow.SetFollowing(false);
         StartCoroutine(TransitionCamera(
@@ -52,19 +58,19 @@ public class CameraMover : MonoBehaviour
     public void ResetToPlayer()
     {
         if (isInTransition) return;
-
+        isInTransition = true;
         // 使用 CameraFollow 计算出的目标位置作为重置目标
         Vector3 targetPosition = cameraFollow.GetPlayerTargetPosition();
+
         StartCoroutine(TransitionCamera(
             targetPosition: targetPosition,
-            targetPPU: pixelPerfectCamera.assetsPPU, // 或者你希望的其他数值
+            targetPPU: preConstructionPPU,
             onComplete: () => cameraFollow.SetFollowing(true)
         ));
     }
 
     private IEnumerator TransitionCamera(Vector3 targetPosition, int targetPPU, System.Action onComplete = null)
     {
-        isInTransition = true;
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         int startPPU = pixelPerfectCamera.assetsPPU;

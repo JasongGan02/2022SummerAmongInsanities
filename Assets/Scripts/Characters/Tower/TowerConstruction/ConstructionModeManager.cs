@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -8,8 +9,6 @@ public class ConstructionModeManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private CameraMover cameraMover;
-    [SerializeField] private CoreArchitectureController coreArchitecture;
-    [SerializeField] private UIViewStateManager uiViewStateManager;
 
     [Header("UI Elements")]
     [SerializeField] private GameObject constructionUI;
@@ -19,22 +18,25 @@ public class ConstructionModeManager : MonoBehaviour
     [SerializeField] private int maxEnergy = 100;
     [SerializeField] private int currentEnergy = 0;
 
+    private CoreArchitectureController coreArchitecture;
+    private UIViewStateManager uiViewStateManager;
+
     void Start()
     {
         // 优先从单例或者场景中找到对应组件
         if (coreArchitecture == null)
         {
-            coreArchitecture = CoreArchitectureController.Instance;
+            StartCoroutine(WaitForCoreArchitectureAndInitialize());
         }
 
         if (uiViewStateManager == null)
         {
-            uiViewStateManager = FindObjectOfType<UIViewStateManager>();
+            uiViewStateManager = UIViewStateManager.Instance;
         }
 
         if (cameraMover == null)
         {
-            cameraMover = FindObjectOfType<CameraMover>();
+            cameraMover = FindFirstObjectByType<CameraMover>();
         }
 
         UpdateEnergyText();
@@ -57,9 +59,31 @@ public class ConstructionModeManager : MonoBehaviour
     /// <summary>
     /// 根据 UI 状态更新是否进入建造模式
     /// </summary>
+    // ConstructionModeManager.cs
     private void OnUpdateUiBeingViewed(object sender, UIBeingViewed ui)
     {
+        // 增强检查逻辑
+        if (ShouldBlockModeSwitch(ui)) return;
+
         IsInConstructionMode = (ui == UIBeingViewed.Construction);
+        ExecuteModeTransition();
+    }
+
+    private bool ShouldBlockModeSwitch(UIBeingViewed ui)
+    {
+        // 1. 检查过渡状态
+        if (cameraMover != null && cameraMover.IsInTransition) return true;
+
+        // 2. 检查是否已经是目标状态
+        bool targetMode = (ui == UIBeingViewed.Construction);
+        if (IsInConstructionMode == targetMode) return true;
+
+        // 3. 检查必要组件
+        return coreArchitecture == null || cameraMover == null;
+    }
+
+    private void ExecuteModeTransition()
+    {
         if (IsInConstructionMode)
         {
             EnterConstructionMode();
@@ -75,7 +99,7 @@ public class ConstructionModeManager : MonoBehaviour
     /// </summary>
     private void EnterConstructionMode()
     {
-        if (coreArchitecture == null || cameraMover == null) return;
+        if (coreArchitecture == null || (cameraMover != null && cameraMover.IsInTransition)) return;
 
         Time.timeScale = 0f;
         constructionUI.SetActive(true);
@@ -91,7 +115,7 @@ public class ConstructionModeManager : MonoBehaviour
     /// </summary>
     private void ExitConstructionMode()
     {
-        if (coreArchitecture == null || cameraMover == null) return;
+        if (coreArchitecture == null || (cameraMover != null && cameraMover.IsInTransition)) return;
 
         Time.timeScale = 1f;
         constructionUI.SetActive(false);
@@ -145,5 +169,15 @@ public class ConstructionModeManager : MonoBehaviour
         {
             ExitConstructionMode();
         }
+    }
+
+    IEnumerator WaitForCoreArchitectureAndInitialize()
+    {
+        while (CoreArchitectureController.Instance == null)
+        {
+            yield return null;
+        }
+
+        coreArchitecture = CoreArchitectureController.Instance;
     }
 }

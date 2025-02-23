@@ -39,11 +39,11 @@ public class CoreArchitectureController : CharacterController
         }
     }
 
-    public void ToggleConstructionIndicator(bool setActive)
+    public void ToggleConstructionIndicator(bool show)
     {
         if (constructionRangeIndicator != null)
         {
-            constructionRangeIndicator.gameObject.SetActive(setActive);
+            constructionRangeIndicator.SetVisibility(show);
         }
         else
         {
