@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: Prefabs-VFX
   m_EditorClassIdentifier: 
   m_GroupName: Prefabs-VFX
-  m_Data:
-    m_SerializedData: []
   m_GUID: 0568c25c3cf4dbf488decfd0665f84f6
   m_SerializeEntries:
   - m_GUID: 181d84a48e6b79f4d98e9605f418c6ae
     m_Address: Assets/Prefabs/VFX/VFXCharge.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - VFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19b5d3102bfeac84eb7aa9a1a29880c4
+    m_Address: Assets/Prefabs/VFX/VFXOnHit.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - VFX
@@ -29,26 +33,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - VFX
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f9dc90d745af57b42919b37184fc2938
-    m_Address: Assets/Prefabs/VFX/VFXDead.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - VFX
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8d4e9baa0d126884fb682237a4b419b7
-    m_Address: Assets/Prefabs/VFX/VFXExplosion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - VFX
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 74d58455e208f0145ad7e07c61f0e019
-    m_Address: Assets/Prefabs/VFX/VFXFire.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - VFX
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ea6514ad5e0467c4796d9638f88d226d
-    m_Address: Assets/Prefabs/VFX/VFXFireExplode.prefab
+  - m_GUID: 3a7750db5c7c92c48aeb4cee607833f9
+    m_Address: Assets/Prefabs/VFX/VFXFrozen.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - VFX
@@ -65,8 +51,14 @@ MonoBehaviour:
     m_SerializedLabels:
     - VFX
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3a7750db5c7c92c48aeb4cee607833f9
-    m_Address: Assets/Prefabs/VFX/VFXFrozen.prefab
+  - m_GUID: 74d58455e208f0145ad7e07c61f0e019
+    m_Address: Assets/Prefabs/VFX/VFXFire.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - VFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d4e9baa0d126884fb682237a4b419b7
+    m_Address: Assets/Prefabs/VFX/VFXExplosion.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - VFX
@@ -77,10 +69,17 @@ MonoBehaviour:
     m_SerializedLabels:
     - VFX
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 19b5d3102bfeac84eb7aa9a1a29880c4
-    m_Address: Assets/Prefabs/VFX/VFXOnHit.prefab
+  - m_GUID: ea6514ad5e0467c4796d9638f88d226d
+    m_Address: Assets/Prefabs/VFX/VFXFireExplode.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - VFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9dc90d745af57b42919b37184fc2938
+    m_Address: Assets/Prefabs/VFX/VFXDead.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - VFX
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}

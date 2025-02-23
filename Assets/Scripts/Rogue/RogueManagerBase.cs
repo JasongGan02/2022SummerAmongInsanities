@@ -25,16 +25,16 @@ public abstract class RogueManagerBase : MonoBehaviour
     protected UIViewStateManager uiViewStateManager;
     protected GameObject buffContainer;
     protected AudioEmitter _audioEmitter;
-    
+
     protected GameObject rogueUI;
     protected TMP_Text insufficientFundsText;
     protected Button rerollButton;
     protected TMP_Text selectedBuffText;
-    
+
 
     protected List<RogueGraphNode> selectedNodes = new List<RogueGraphNode>();
-    
-    
+
+
     //For reroll function
     protected PlayerExperience playerExperience;
     [SerializeField]
@@ -50,17 +50,18 @@ public abstract class RogueManagerBase : MonoBehaviour
         selectedNodes.Add(graph.rootNode);
         playerExperience = FindObjectOfType<PlayerExperience>();
         SetupUI();
-        
+
         uiViewStateManager.UpdateUiBeingViewedEvent += OnUIUpdated;
         GameEvents.current.OnDayStarted += ResetRerollCount;
     }
-    
+
     protected virtual void OnDestroy()
     {
         if (uiViewStateManager != null)
         {
             uiViewStateManager.UpdateUiBeingViewedEvent -= OnUIUpdated;
         }
+
         GameEvents.current.OnDayStarted -= ResetRerollCount;
     }
 
@@ -77,12 +78,13 @@ public abstract class RogueManagerBase : MonoBehaviour
             int nextCost = CalculateRerollCost();
             rerollCostText.text = $"{nextCost}";
         }
+
         rerollButton.onClick.AddListener(OnRerollButtonClicked);
         rogueUI.SetActive(false);
     }
 
     protected abstract void OnUIUpdated(object sender, UIBeingViewed ui);
-    
+
     protected virtual void AddBuffs(bool needReroll = false)
     {
         ClearBuffCards();
@@ -96,7 +98,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             buffSelectionController.onBuffSelectedEvent += HandleBuffSelectedEvent;
         }
     }
-    
+
     protected virtual void ClearBuffCards()
     {
         // Remove existing buff cards
@@ -107,6 +109,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             {
                 buffSelectionController.onBuffSelectedEvent -= HandleBuffSelectedEvent;
             }
+
             Destroy(child.gameObject);
         }
     }
@@ -135,7 +138,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             return WeightedRandomSelection(candidateNodes, 3);
         }
     }
-    
+
     protected virtual List<RogueGraphNode> WeightedRandomSelection(List<RogueGraphNode> candidateNodes, int selectionCount)
     {
         List<RogueGraphNode> selected = new List<RogueGraphNode>();
@@ -146,10 +149,9 @@ public abstract class RogueManagerBase : MonoBehaviour
         {
             totalWeight += node.quality.weight;
         }
-        
+
         for (int i = 0; i < selectionCount && available.Count > 0; i++)
         {
-
             float randomValue = UnityEngine.Random.Range(0f, totalWeight);
             float cumulative = 0f;
             RogueGraphNode selectedNode = null;
@@ -198,10 +200,10 @@ public abstract class RogueManagerBase : MonoBehaviour
         // Apply the effect
         if (node.effect != null)
             node.effect.InitializeEffectObject();
-        
+
         ClearBuffCards();
     }
-    
+
     private void OnRerollButtonClicked()
     {
         int currentCost = CalculateRerollCost();
@@ -212,6 +214,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             if (playerExperience == null)
                 return;
         }
+
         // Check if the player has enough EXP
         if (playerExperience.SpendAsh(currentCost))
         {
@@ -220,7 +223,7 @@ public abstract class RogueManagerBase : MonoBehaviour
 
             // Play reroll sound effect
             _audioEmitter.PlayClipFromCategory("PlayerReroll");
-            
+
             // Add new buffs
             AddBuffs(true);
 
@@ -246,13 +249,13 @@ public abstract class RogueManagerBase : MonoBehaviour
             rerollCostText.text = $"{nextCost}";
         }
     }
-    
+
     private int CalculateRerollCost()
     {
         return CostCalculator.CalculateRerollCost("RogueManagerBase", rerollCount); //TODO: If there are multiple player, use their IDs for contexts
     }
 
-    
+
     protected void UpdateRerollUI(int lastCost)
     {
         // Example: Update a TMP_Text element to show the next reroll cost
@@ -278,12 +281,12 @@ public abstract class RogueManagerBase : MonoBehaviour
     {
         return "您没有足够的烬献祭以重新抽取赐福";
     }
-    
+
     protected virtual string GetPurchaseInsufficientFundsMessage()
     {
         return "您没有足够的烬献祭以获得该赐福";
     }
-    
+
     protected void ShowInsufficientFundsNotification(string message)
     {
         if (insufficientFundsText != null)
@@ -301,7 +304,7 @@ public abstract class RogueManagerBase : MonoBehaviour
             insufficientFundsText.text = "";
         }
     }
-    
+
     protected void PauseGame()
     {
         Time.timeScale = 0f;
@@ -312,15 +315,13 @@ public abstract class RogueManagerBase : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    
+
     protected abstract string NameRogueUI { get; }
     protected const string NAME_INSUFFICIENCY_TEXT = "InsuffiencyText";
     protected const string NAME_SELECTED_BUFF_TEXT = "SelectedBuffText";
     protected const string NAME_BUFF_CONTAINER = "BuffContainer";
     protected const string NAME_HOVERING_BUFF = "HoveringBuffUI";
     protected const string NAME_REROLL_BUTTON = "RerollButton";
-    
-    
 }
 
 public static class CostCalculator
@@ -328,7 +329,7 @@ public static class CostCalculator
     private const float InitCost = 10f; // P_init
     private const float GrowthRate = 0.045f; // a
     private const float NonlinearFactor = 2f; // b
-    private const float RerollGrowthRate = 0.2f; // r
+    private const float RerollGrowthRate = 0.05f; // r
 
     private static Dictionary<string, int> purchaseTrackers = new Dictionary<string, int>();
 
@@ -377,4 +378,3 @@ public static class CostCalculator
         purchaseTrackers.Clear();
     }
 }
-

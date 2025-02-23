@@ -11,13 +11,38 @@ namespace Editor
             DrawDefaultInspector();
 
             SpawnManager spawnManager = (SpawnManager)target;
-            if (GUILayout.Button("Spawn random weapon"))
+
+            GUILayout.Space(10);
+            GUILayout.Label("Debug Spawning Functions", EditorStyles.boldLabel);
+
+            if (GUILayout.Button("Spawn Equipment"))
             {
-                spawnManager.SpawnRamdonWeapon();
+                spawnManager.SpawnEquipment();
             }
-            if (GUILayout.Button("Spawn debug initial ash"))
+
+            if (GUILayout.Button("Spawn Towers"))
             {
-                spawnManager.SpawnDebugInitialAsh();
+                spawnManager.SpawnTowers();
+            }
+
+            if (GUILayout.Button("Spawn Ash"))
+            {
+                spawnManager.SpawnAsh();
+            }
+
+            if (spawnManager.isDebug)
+            {
+                if (GUILayout.Button("Spawn Random Weapon (Equipment + Towers)"))
+                {
+                    spawnManager.SpawnRandomWeapon();
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Spawn Initial Items"))
+                {
+                    spawnManager.SpawnInitialItems();
+                }
             }
         }
     }

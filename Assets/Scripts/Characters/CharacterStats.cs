@@ -38,7 +38,7 @@ public class CharacterStats
     {
         CopyFrom(source);
     }
-    
+
     public CharacterStats Clone()
     {
         CharacterStats clone = (CharacterStats)Activator.CreateInstance(this.GetType());
@@ -46,9 +46,10 @@ public class CharacterStats
         {
             field.SetValue(clone, field.GetValue(this));
         }
+
         return clone;
     }
-    
+
     public CharacterStats Inverse()
     {
         // Create a new instance of the same type as the current instance
@@ -74,7 +75,7 @@ public class CharacterStats
 
         return inverse;
     }
-    
+
     // Add stats from two CharacterStats instances using reflection
     public static CharacterStats operator +(CharacterStats stats1, CharacterStats stats2)
     {
@@ -105,7 +106,7 @@ public class CharacterStats
 
         return result;
     }
-    
+
     // Subtract stats from two CharacterStats instances using reflection
     public static CharacterStats operator -(CharacterStats stats1, CharacterStats stats2)
     {
@@ -137,7 +138,7 @@ public class CharacterStats
         return result;
     }
 
-    
+
     // Negate all stats using reflection
     public static CharacterStats operator -(CharacterStats stats)
     {
@@ -164,7 +165,7 @@ public class CharacterStats
         return result;
     }
 
-    
+
     // Multiply stats from two CharacterStats instances using reflection
     public static CharacterStats operator *(CharacterStats stats1, CharacterStats stats2)
     {
@@ -173,7 +174,7 @@ public class CharacterStats
 
         // Create a new instance of the most common base type
         CharacterStats result = stats1.Clone();
-        
+
         // Get all public instance fields of the common base type
         FieldInfo[] fields = commonBaseType.GetFields(BindingFlags.Public | BindingFlags.Instance);
 
@@ -217,7 +218,7 @@ public class CharacterStats
         return typeof(CharacterStats); // Default to CharacterStats if no common base type is found
     }
 
-    
+
     // Multiply stats or by a scalar using reflection
     public static CharacterStats operator *(CharacterStats stats, float scalar)
     {
@@ -258,7 +259,7 @@ public class CharacterStats
     {
         return stats * (float)scalar; // Convert int scalar to float and reuse the float overload
     }
-    
+
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
@@ -298,7 +299,6 @@ public class EnemyStats : CharacterStats
 {
     public float sensingRange;
     public float soulValue;
-    
 }
 
 [Serializable]
@@ -306,8 +306,8 @@ public class TowerStats : CharacterStats
 {
     [Header("Construction Parameter")]
     public int energyCost;
-    public Quaternion rotateAngle;//a fixed amount that determines the rotation type of a tower
-    [HideInInspector] public Quaternion curAngle =  Quaternion.Euler(0, 0, 0);
+    public Quaternion rotateAngle; //a fixed amount that determines the rotation type of a tower
+    [HideInInspector] public Quaternion curAngle = Quaternion.Euler(0, 0, 0);
 }
 
 [Serializable]
@@ -315,4 +315,11 @@ public class RangedTowerStats : TowerStats
 {
     [Header("Ranged Tower Fields")]
     public int projectilesPerShot = 1;
+}
+
+[Serializable]
+public class CoreStats : CharacterStats
+{
+    [Header("Core Fields")]
+    public float constructableDistance;
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
-[CreateAssetMenu(fileName ="tile", menuName = "Objects/Tile Object")]
+[CreateAssetMenu(fileName = "tile", menuName = "Objects/Tile Object")]
 public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGenerationObject, IShadowObject, ICraftableObject
 {
     [Tooltip("0 = walls, 1 = entity blocks like tiles, 2 = accessories, 3 = accessories topmost (3 is ignored calculating light)")]
@@ -25,8 +25,14 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private int _healthPoint;
-    public int getHP() { return _healthPoint; }
 
+    public int getHP()
+    {
+        return _healthPoint;
+    }
+
+    [SerializeField]
+    private bool isBreakable = true;
 
     [SerializeField]
     private Drop[] _drops;
@@ -37,7 +43,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private CraftRecipe[] _recipe;
-    
+
     [SerializeField]
     private bool _isCraftable;
 
@@ -46,26 +52,29 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     [SerializeField]
     private int _craftTime;
-    
+
     [SerializeField]
     private bool _needsBackground; //when break the front tile, check this bool to see if a background wall is needed and sent to Terrain Generation to generate a background
 
     [SerializeField]
     private bool _isLit; // determine if this tile is a source of light
-    
+
     [SerializeField]
     private bool _isDynamic; // determine if this tile is a source of dynamic light
 
-    [Range(0f, 15f)] [SerializeField] private float _lightIntensity = 0;
+    [Range(0f, 15f)] [SerializeField]
+    private float _lightIntensity = 0;
+
 
     public GameObject GetPlacedGameObject(int spriteNumber, Quaternion rotation, bool flipX)
     {
         GameObject worldGameObject = GetGeneratedGameObjects(spriteNumber, rotation, flipX);
-        worldGameObject.GetComponent<BreakableObjectController>().Initialize(this, HealthPoint, true);
-        
+        if (isBreakable)
+            worldGameObject.GetComponent<BreakableObjectController>().Initialize(this, HealthPoint, true);
+
         return worldGameObject;
     }
-    
+
     public GameObject GetShadowGameObject()
     {
         var ghost = Instantiate(prefab);
@@ -79,9 +88,10 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         if (collider != null)
         {
             collider.isTrigger = true;
-            
-            collider.size = new Vector2(collider.size.x*0.5f, collider.size.y*0.5f);
+
+            collider.size = new Vector2(collider.size.x * 0.5f, collider.size.y * 0.5f);
         }
+
         ghost.AddComponent<ShadowObjectController>();
         var controller = ghost.AddComponent<Rigidbody2D>();
         controller.simulated = true;
@@ -92,7 +102,9 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     /**
      * implementation of IInventoryObject
      */
+
     #region
+
     public int MaxStack
     {
         get => _maxStack;
@@ -112,18 +124,22 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             drop.AddComponent<Rigidbody2D>();
         }
+
         drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
-        
+
         return drop;
     }
+
     #endregion
 
     /**
      * implementation of IBreakableObject
      */
+
     #region
+
     public int HealthPoint
     {
         get => _healthPoint;
@@ -149,17 +165,20 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
             {
                 GameObject droppedGameObject = drop.GetDroppedItem(dropPosition);
                 droppedItems.Add(droppedGameObject);
-            }   
+            }
         }
-        return droppedItems;
 
+        return droppedItems;
     }
+
     #endregion
 
     /**
      * implementation of IGenerationObject
      */
+
     #region
+
     public GameObject[] Prefabs
     {
         get => _prefabs;
@@ -178,7 +197,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     {
         get => _lightIntensity;
     }
-    
+
 
     public GameObject GetGeneratedGameObjects(int spriteNumber, Quaternion rotation, bool flipX)
     {
@@ -193,7 +212,8 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         }
 
         worldGameObject.name = itemName;
-        if (itemName != "UnbreakableTile" && itemName != "Block")
+
+        if (isBreakable)
         {
             var controller = worldGameObject.AddComponent<BreakableObjectController>();
             controller.Initialize(this, HealthPoint, false);
@@ -203,8 +223,8 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             var controller = worldGameObject.AddComponent<DynamicLightController>();
         }
-        
-        
+
+
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
         if (HasSpecialFunctionality)
         {
@@ -212,9 +232,11 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
             worldGameObject.transform.rotation = rotation;
             spriteRenderer.flipX = flipX;
         }
+
         spriteRenderer.sortingOrder = TileLayer;
         return worldGameObject;
     }
+
     public GameObject GetGeneratedWallGameObjects(int spriteNumber, Quaternion rotation, bool flipX)
     {
         GameObject worldGameObject;
@@ -226,6 +248,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             worldGameObject = Instantiate(prefab);
         }
+
         worldGameObject.name = itemName;
         worldGameObject.name += "_Wall";
         SpriteRenderer spriteRenderer = worldGameObject.GetComponent<SpriteRenderer>();
@@ -236,22 +259,26 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         {
             Destroy(worldGameObject.GetComponent<Collider2D>());
         }
+
         if (HasSpecialFunctionality && spriteNumber < 6)
         {
             spriteRenderer.sprite = TargetSprite[spriteNumber];
             worldGameObject.transform.rotation = rotation;
             spriteRenderer.flipX = flipX;
         }
+
         return worldGameObject;
     }
-    #endregion
 
+    #endregion
 
 
     /**
      * implementation of ICraftableObject
      */
+
     #region
+
     public CraftRecipe[] Recipe
     {
         get => _recipe;
@@ -260,7 +287,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
 
     public void Craft(Inventory inventory)
     {
-        inventory.CraftItems(this.Recipe,this);
+        inventory.CraftItems(this.Recipe, this);
     }
 
     public CraftRecipe[] getRecipe()
@@ -268,14 +295,14 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         return Recipe;
     }
 
-
     #endregion
 
     #region
+
     public bool IsCraftable
-    { 
-      get => _isCraftable; 
-      set => _isCraftable = value; 
+    {
+        get => _isCraftable;
+        set => _isCraftable = value;
     }
 
     public bool getIsCraftable()
@@ -294,7 +321,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         return _isCoreNeeded;
     }
 
-    
+
     public int CraftTime
     {
         get => _craftTime;
@@ -309,8 +336,8 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
     #endregion
 
 
-   [SerializeField]
-   public TileObject[] SpecifiedTiles;
+    [SerializeField]
+    public TileObject[] SpecifiedTiles;
 
     [SerializeField]
     public TileObject[] AnotherSpecifiedTiles;
