@@ -1,27 +1,40 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIViewStateManager : MonoBehaviour
 {
+    public static UIViewStateManager Instance { get; private set; }
+
     public event EventHandler<UIBeingViewed> UpdateUiBeingViewedEvent;
     private SacrificeStoreRogueManager sacrificeStoreRogueManager;
 
     private static UIBeingViewed currentUI;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         currentUI = UIBeingViewed.Null;
-        
-        sacrificeStoreRogueManager = FindObjectOfType<SacrificeStoreRogueManager>();
+
+        sacrificeStoreRogueManager = FindFirstObjectByType<SacrificeStoreRogueManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (currentUI == UIBeingViewed.LevelUp)
-            return; 
+            return;
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleUI(UIBeingViewed.Inventory);
@@ -30,7 +43,7 @@ public class UIViewStateManager : MonoBehaviour
         {
             ToggleUI(UIBeingViewed.Construction);
         }
-        else if (Input.GetKeyDown(KeyCode.F)) 
+        else if (Input.GetKeyDown(KeyCode.F))
         {
             ToggleUI(UIBeingViewed.Craft);
         }
@@ -57,9 +70,9 @@ public class UIViewStateManager : MonoBehaviour
 
     public static bool IsViewingConstruction()
     {
-        return currentUI==UIBeingViewed.Construction;
+        return currentUI == UIBeingViewed.Construction;
     }
-    
+
     public static UIBeingViewed GetCurrentUI()
     {
         return currentUI;
@@ -79,7 +92,7 @@ public class UIViewStateManager : MonoBehaviour
     {
         ToggleUI(UIBeingViewed.LevelUp);
     }
-    
+
     public void ToggleSacrificeUI()
     {
         ToggleUI(UIBeingViewed.Sacrifice);
@@ -92,10 +105,10 @@ public class UIViewStateManager : MonoBehaviour
         currentUI = currentUI == UIBeingViewed.Craft ? UIBeingViewed.Null : UIBeingViewed.Craft;
         UpdateUiBeingViewedEvent?.Invoke(this, currentUI);
     }
-
 }
 
-public enum UIBeingViewed {
+public enum UIBeingViewed
+{
     Null,
     Construction,
     Inventory,

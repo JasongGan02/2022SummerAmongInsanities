@@ -5,20 +5,19 @@ using UnityEngine;
 // Every tower will have a tower shadow, which will be displayed on Canvas UI
 public class ConstructionShadows : MonoBehaviour
 {
-    private uint CollisionCount = 0;
-    private float PlaceDistance = 0;
-    private SpriteRenderer ShadowSpriteRenderer;
-    
+    private uint collisionCount = 0;
+    private float placeDistance = 0;
+    private SpriteRenderer shadowSpriteRenderer;
+
     private CoreArchitectureController coreArchitecture;
-    private Color OriginalColor;
+    private Color originalColor;
     private bool isPlaceAble = false;
 
     public void Start()
     {
-        ShadowSpriteRenderer = GetComponent<SpriteRenderer>();
-        OriginalColor = ShadowSpriteRenderer.color;
-        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
-
+        shadowSpriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = shadowSpriteRenderer.color;
+        coreArchitecture = FindFirstObjectByType<CoreArchitectureController>();
     }
 
     // Update is called once per frame
@@ -27,34 +26,37 @@ public class ConstructionShadows : MonoBehaviour
         UpdatePlaceStatus();
     }
 
-    public void StartUp(float placeDistance){
-        PlaceDistance = placeDistance;
+    public void StartUp(float placeDistance)
+    {
+        this.placeDistance = placeDistance;
     }
-    
-    public bool GetPlaceStatus(){
+
+    public bool GetPlaceStatus()
+    {
         return isPlaceAble;
     }
 
     // Check whether construction shadow is placeable
-    private void UpdatePlaceStatus(){
-
-        if(GameObject.FindWithTag("Player") == null || FindObjectOfType<CoreArchitectureController>() == null)
+    private void UpdatePlaceStatus()
+    {
+        if (GameObject.FindWithTag("Player") == null || FindFirstObjectByType<CoreArchitectureController>() == null)
         {
             isPlaceAble = false;
         }
         else
         {
             float distance = Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position);
-            if(distance <= PlaceDistance && CollisionCount == 0 && IsConstructionShadowInRange()){
-                ShadowSpriteRenderer.color = new Color(OriginalColor.r/2, OriginalColor.g, OriginalColor.b/2, OriginalColor.a);
+            if (distance <= placeDistance && collisionCount == 0 && IsConstructionShadowInRange())
+            {
+                shadowSpriteRenderer.color = new Color(originalColor.r / 2, originalColor.g, originalColor.b / 2, originalColor.a);
                 isPlaceAble = true;
-            }else{
-                ShadowSpriteRenderer.color = new Color(OriginalColor.r, OriginalColor.g/2, OriginalColor.b/2, OriginalColor.a);
+            }
+            else
+            {
+                shadowSpriteRenderer.color = new Color(originalColor.r, originalColor.g / 2, originalColor.b / 2, originalColor.a);
                 isPlaceAble = false;
-            
             }
         }
-        
     }
 
     // Check whether player mouse is in constructable range
@@ -62,18 +64,19 @@ public class ConstructionShadows : MonoBehaviour
     {
         float Constructable_Distance = coreArchitecture.GetConstructableDistance();
         float Mouse_Distance = CalculateDistanceBetweenCoreAndMouse();
-        if(Constructable_Distance>Mouse_Distance)
+        if (Constructable_Distance > Mouse_Distance)
         {
             return true;
         }
+
         return false;
     }
 
     float CalculateDistanceBetweenCoreAndMouse()
     {
-        Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);    // get mouse world poistion (x,y)
+        Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition); // get mouse world poistion (x,y)
         Vector3 corePosition = coreArchitecture.GetComponent<Transform>().position;
-        float distance = Mathf.Sqrt(Mathf.Pow((rayOrigin.x-corePosition.x) ,2) + Mathf.Pow((rayOrigin.y-corePosition.y) ,2));
+        float distance = Mathf.Sqrt(Mathf.Pow((rayOrigin.x - corePosition.x), 2) + Mathf.Pow((rayOrigin.y - corePosition.y), 2));
 
         return distance;
     }
@@ -81,11 +84,11 @@ public class ConstructionShadows : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log(other.gameObject);
-        ++CollisionCount;
+        ++collisionCount;
     }
 
     public void OnTriggerExit2D(Collider2D other)
     {
-        --CollisionCount;
+        --collisionCount;
     }
 }

@@ -28,6 +28,8 @@ public class ConstructionRangeIndicator : MonoBehaviour
         {
             spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         }
+
+        spriteRenderer.enabled = false;
     }
 
     /// <summary>
@@ -43,6 +45,14 @@ public class ConstructionRangeIndicator : MonoBehaviour
         else
         {
             SetupIndicator();
+        }
+    }
+
+    public void SetVisibility(bool visible)
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = visible;
         }
     }
 
