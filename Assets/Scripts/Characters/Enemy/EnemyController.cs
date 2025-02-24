@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
+using UnityEngine.Rendering;
 
 
 public abstract class EnemyController : CharacterController
@@ -17,7 +18,7 @@ public abstract class EnemyController : CharacterController
     public Transform backCheck;
     protected LayerMask groundLayerMask;
     protected LayerMask targetLayerMask;
-    
+
     protected GameObject target;
     private Vector2? lastKnownPosition = null;
     private float lastSeenTimestamp = 0f;
@@ -26,14 +27,23 @@ public abstract class EnemyController : CharacterController
     //Status variables
     public bool IsGroupAttacking { get; set; }
     public bool IsFrozen { get; set; } // Tracks if the enemy is frozen
-    public GameObject Core;
-    
+
     //Animation Properties
     protected abstract string IdleAnimationState { get; }
     protected abstract string AttackAnimationState { get; }
     protected abstract string MoveAnimationState { get; }
     //protected abstract string DeathAnimationState { get; }
-    
+
+
+    protected bool isApproachingCore;
+    protected Vector3 corePosition;
+
+    public void ApproachCore(Vector3 corePosition)
+    {
+        this.corePosition = corePosition;
+        isApproachingCore = true;
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,9 +55,8 @@ public abstract class EnemyController : CharacterController
     protected virtual void Start()
     {
         FindPlayer();
-        Core = GameObject.Find("CoreArchitecturer");
     }
-    
+
     protected override void Update()
     {
         base.Update();
@@ -56,7 +65,7 @@ public abstract class EnemyController : CharacterController
         if (!IsFrozen)
             UpdateEnemyBehavior();
     }
-    
+
     public void LevelUp()
     {
         Reinitialize();
@@ -66,24 +75,29 @@ public abstract class EnemyController : CharacterController
     {
         Debug.Log(enemyStats.ToString());
     }
-    
+
     public override void TakeDamage(float amount, IDamageSource damageSource)
     {
         base.TakeDamage(amount, damageSource);
         audioEmitter.PlayClipFromCategory("InjureEnemy");
     }
-    
+
     protected override void OnObjectReturned(bool isDestroyedByPlayer)
     {
         base.OnObjectReturned(isDestroyedByPlayer);
         (characterObject as EnemyObject)?.soulObject.GetDroppedSoul(enemyStats.soulValue, transform.position);
     }
-    
+
     protected abstract void UpdateEnemyBehavior();
-    
+
     protected float DistanceToTarget(Transform target)
     {
         return Vector2.Distance(transform.position, target.position);
+    }
+
+    protected float DistanceToTarget(Vector3 target)
+    {
+        return Vector2.Distance(transform.position, target);
     }
 
     protected float HoriDistanceToTarget(Transform target)
@@ -135,12 +149,13 @@ public abstract class EnemyController : CharacterController
         RaycastHit2D hit = Physics2D.Raycast(frontDepthDetector, Vector2.down, 3f, groundLayerMask);
         return hit.collider != null;
     }
+
     protected bool HeadCheck()
     {
         Vector3 direction = transform.TransformDirection(-Vector3.right);
         Vector3 origin = transform.position + new Vector3(0, -0.2f, 0);
         RaycastHit2D headRay = Physics2D.Raycast(origin, direction, 0.34f, groundLayerMask);
-        Debug.DrawRay(origin, direction * 0.34f, Color.red);        // bottom right
+        Debug.DrawRay(origin, direction * 0.34f, Color.red); // bottom right
         if (headRay.collider != null && headRay.collider.gameObject.tag == "ground")
         {
             return false;
@@ -148,10 +163,12 @@ public abstract class EnemyController : CharacterController
 
         return true;
     }
+
     protected void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.0f, currentStats.jumpForce);
     }
+
     protected void Flip()
     {
         if (facingRight)
@@ -182,8 +199,9 @@ public abstract class EnemyController : CharacterController
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
     }
-    
+
     #region Search For Target
+
     protected GameObject SearchForTargetObject()
     {
         if (Hatred == null || Hatred.Count == 0)
@@ -245,6 +263,7 @@ public abstract class EnemyController : CharacterController
             {
                 return a.DistanceSquared.CompareTo(b.DistanceSquared);
             }
+
             return priorityComparison;
         });
 
@@ -258,7 +277,7 @@ public abstract class EnemyController : CharacterController
                 return potentialTarget.GameObject;
             }
         }
-        
+
         // No visible targets; keep last known position if within memory duration
         if (HasLastKnownPosition)
         {
@@ -271,7 +290,7 @@ public abstract class EnemyController : CharacterController
             return null;
         }
     }
-    
+
     private Vector2 GetEyePosition()
     {
         Collider2D collider = GetComponent<Collider2D>();
@@ -281,11 +300,11 @@ public abstract class EnemyController : CharacterController
             float eyeHeight = bounds.max.y - 0.1f; // Adjust 0.1f to place the eye slightly below the top
             return new Vector2(transform.position.x, eyeHeight);
         }
+
         // Fallback if no collider is found
         return transform.position;
-        
     }
-    
+
     private bool HasLineOfSightToTarget(GameObject target)
     {
         Vector2 eyePosition = GetEyePosition();
@@ -301,26 +320,27 @@ public abstract class EnemyController : CharacterController
         {
             // Line of sight is clear
             return true;
-            
         }
+
         // Line of sight is obstructed
         return false;
     }
-    
+
     private class PotentialTarget
     {
         public GameObject GameObject { get; set; }
         public int TypePriority { get; set; }
         public float DistanceSquared { get; set; }
     }
+
     #endregion
 
     protected virtual void Approach(Vector2? targetPosition, bool isRunning)
     {
         if (targetPosition != null)
         {
-            Vector2 direction = (targetPosition.Value - (Vector2) transform.position).normalized;
-            direction = new Vector2(direction.x,  rb.linearVelocity.y).normalized;
+            Vector2 direction = (targetPosition.Value - (Vector2)transform.position).normalized;
+            direction = new Vector2(direction.x, rb.linearVelocity.y).normalized;
             float speed = isRunning ? currentStats.movingSpeed : currentStats.movingSpeed / 2f;
             rb.linearVelocity = direction * speed;
             //Debug.Log(speed);
@@ -332,7 +352,7 @@ public abstract class EnemyController : CharacterController
             Debug.LogError("targetPosition is null");
         }
     }
-    
+
     protected bool isAttacking;
     protected bool isGrounded;
 
@@ -346,23 +366,23 @@ public abstract class EnemyController : CharacterController
             {
                 //TODO: 要不就有空中伤害动画要不就没有这段
             }
-                    
+
             animator.speed = currentStats.attackInterval / characterObject.baseStats.attackInterval;
             ChangeAnimationState(AttackAnimationState);
             var damageable = target.GetComponent<IDamageable>();
             ApplyDamage(damageable);
         }
-                
+
         Invoke(nameof(AttackComplete), currentStats.attackInterval);
     }
-    
+
     private void AttackComplete()
     {
         isAttacking = false;
         animator.speed = 1.0f;
         ChangeAnimationState(IdleAnimationState);
     }
-    
+
     protected virtual void Flip(float moveDirection)
     {
         switch (moveDirection)
@@ -377,7 +397,7 @@ public abstract class EnemyController : CharacterController
                 break;
         }
     }
-    
+
     private void SetEnemyContainer()
     {
         var chunkCoord = WorldGenerator.GetChunkCoordsFromPosition(transform.position);
@@ -392,10 +412,11 @@ public abstract class EnemyController : CharacterController
             Debug.LogError("EnemyContainer not found in chunk.");
         }
     }
+
     private void FindPlayer()
     {
-        if (player == null) 
-        { 
+        if (player == null)
+        {
             player = GameObject.FindWithTag("Player");
         }
     }

@@ -47,7 +47,7 @@ public class VillagerController : EnemyController
     public float defaultChasingRemainder = 5f;
     public float defaultPathTicker = 2f;
     public float defaultTargetTicker = 1f;
-    public float attackAnimationDuration = 0.25f; 
+    public float attackAnimationDuration = 0.25f;
     public float pathFindingRadiusExtra = 3f;
     public float breakObstacleCDReset = 1f;
     public float inAir = 0f;
@@ -99,30 +99,32 @@ public class VillagerController : EnemyController
     protected override void UpdateEnemyBehavior()
     {
         UpdateColliderBasedOnAnimation();
-        if (Core == null){Core = GameObject.Find("CoreArchitecture");}
 
         // Periodically re-check for target
-        if (target == null || _targetTicker < 0) 
-        { 
-            target = SearchForTargetObject(); 
+        if (target == null || _targetTicker < 0)
+        {
+            target = SearchForTargetObject();
             // Debug.Log("trying find target");
-            _targetTicker = defaultTargetTicker; 
+            _targetTicker = defaultTargetTicker;
         }
 
         // If no target in sight or memory
-        if (target == null && TargetRemainder == null) 
+        if (target == null && TargetRemainder == null)
         {
             PathToTarget.Clear();
             RemovePathLine();
-            if (TimeSystemManager.Instance.IsRedMoon){
+            if (isApproachingCore)
+            {
                 Debug.Log("It's a red moon night! The villagers are spooked!");
-                Approach(currentStats.movingSpeed, Core.transform);
-            }else{
+                //Approach(currentStats.movingSpeed, corePosition);
+            }
+            else
+            {
                 Patrol();
             }
         }
         // If no target but we still remember the last known position
-        else if (target == null && TargetRemainder != null) 
+        else if (target == null && TargetRemainder != null)
         {
             FinishExistingPath();
             _chasingRemainder -= Time.deltaTime;
@@ -150,7 +152,7 @@ public class VillagerController : EnemyController
             if (DistanceToTarget(target.transform) < currentStats.attackRange ||
                 target.transform.GetComponent<BreakableObjectController>() != null)
             {
-                AttackHandler(target.transform, enemyStats.attackInterval); 
+                AttackHandler(target.transform, enemyStats.attackInterval);
             }
 
             // Additional behavior: Shake player overhead if they are above or below
@@ -226,7 +228,7 @@ public class VillagerController : EnemyController
 
         // Face the target
         if ((facingRight && targetTransform.position.x < transform.position.x)
-             || (!facingRight && targetTransform.position.x > transform.position.x))
+            || (!facingRight && targetTransform.position.x > transform.position.x))
         {
             Flip();
         }
@@ -286,6 +288,7 @@ public class VillagerController : EnemyController
                         var character = targetTransform.GetComponent<CharacterController>();
                         ApplyDamage(character);
                     }
+
                     EnterAttackCooldown(attackFrequency);
                 }
             }
@@ -367,19 +370,25 @@ public class VillagerController : EnemyController
         }
     }
 
-    private bool AutoLanding(){
+    private bool AutoLanding()
+    {
         RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
-        if (hitCenter.transform == null){
+        if (hitCenter.transform == null)
+        {
             inAir += Time.deltaTime;
-            if (inAir > 0.9f){
+            if (inAir > 0.9f)
+            {
                 float randomDirection = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -1f : 1f;
                 rb.linearVelocity = new Vector2(randomDirection * enemyStats.movingSpeed * 5, -1f * rb.mass);
                 //Debug.Log("auto landing");
                 return true;
             }
-        }else{
+        }
+        else
+        {
             inAir = 0f;
         }
+
         return false;
     }
 
@@ -390,7 +399,6 @@ public class VillagerController : EnemyController
     /// <summary>
     /// Check for obstacles in the forward/back direction, ground checks, etc.
     /// </summary>
-    
 
     #endregion
 
@@ -567,15 +575,21 @@ public class VillagerController : EnemyController
     /// </summary>
     public void PathExecute()
     {
-        if (AutoLanding()) {return;} // Prevent dead stacking
-        if (DistanceToTarget(target.transform) < currentStats.attackRange )
+        if (AutoLanding())
+        {
+            return;
+        } // Prevent dead stacking
+
+        if (DistanceToTarget(target.transform) < currentStats.attackRange)
         {
             Debug.Log("Close to target, clearing path.");
             PathToTarget.Clear();
             RemovePathLine();
             _pathCounter = 0;
             return;
-        }else{
+        }
+        else
+        {
             Debug.Log("Not close enough to target: " + DistanceToTarget(target.transform));
         }
 
@@ -584,10 +598,11 @@ public class VillagerController : EnemyController
         // Follow path
         if (_pathCounter < PathToTarget.Count)
         {
-            
-            if (PathToTarget[_pathCounter].y > transform.position.y){
+            if (PathToTarget[_pathCounter].y > transform.position.y)
+            {
                 Jump(enemyStats.movingSpeed);
             }
+
             BreakObstaclesByAngle(target.transform);
             Approach(2 * currentStats.movingSpeed, target.transform);
 
@@ -611,7 +626,11 @@ public class VillagerController : EnemyController
     /// </summary>
     public void FinishExistingPath()
     {
-        if (AutoLanding()) {return;} // Prevent dead stacking
+        if (AutoLanding())
+        {
+            return;
+        } // Prevent dead stacking
+
         if (_chasingRemainder < 0f)
         {
             TargetRemainder = null;
@@ -683,6 +702,7 @@ public class VillagerController : EnemyController
             {
                 positions[i] = new Vector3(PathToTarget[i].x, PathToTarget[i].y, 0);
             }
+
             lineRenderer.positionCount = positions.Length;
             lineRenderer.SetPositions(positions);
         }
@@ -744,14 +764,15 @@ public class VillagerController : EnemyController
                 RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, directionSide, rayLength, groundLayerMask);
                 if (hitTileDetect2.transform != null)
                 {
-                    var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>();        // ground tile
-                    var breakable11 = hitTileDetect2.transform.GetComponent<TowerController>();                  // wall tile
+                    var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>(); // ground tile
+                    var breakable11 = hitTileDetect2.transform.GetComponent<TowerController>(); // wall tile
                     if (breakable1 != null)
                     {
                         target = breakable1.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;
-                    } else if (breakable11 != null)
+                    }
+                    else if (breakable11 != null)
                     {
                         target = breakable11.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
@@ -767,12 +788,15 @@ public class VillagerController : EnemyController
                         target = breakable2.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;
-                    } else if (breakable22 != null){
+                    }
+                    else if (breakable22 != null)
+                    {
                         target = breakable22.gameObject;
                         _breakObstaclesCD = breakObstacleCDReset;
                         return;
                     }
                 }
+
                 break;
 
             case "top":
@@ -789,6 +813,7 @@ public class VillagerController : EnemyController
                         return;
                     }
                 }
+
                 if (hitTileDetect4.transform != null)
                 {
                     var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
@@ -798,6 +823,7 @@ public class VillagerController : EnemyController
                         _breakObstaclesCD = breakObstacleCDReset;
                     }
                 }
+
                 break;
 
             case "bottom":
@@ -811,6 +837,7 @@ public class VillagerController : EnemyController
                         _breakObstaclesCD = breakObstacleCDReset;
                     }
                 }
+
                 break;
         }
     }
