@@ -290,7 +290,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         inventory.CraftItems(this.Recipe, this);
     }
 
-    public CraftRecipe[] getRecipe()
+    public CraftRecipe[] GetRecipe()
     {
         return Recipe;
     }
@@ -305,7 +305,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _isCraftable = value;
     }
 
-    public bool getIsCraftable()
+    public bool GetIsCraftable()
     {
         return IsCraftable;
     }
@@ -316,7 +316,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _isCoreNeeded = value;
     }
 
-    public bool getIsCoreNeeded()
+    public bool GetIsCoreNeeded()
     {
         return _isCoreNeeded;
     }
@@ -328,7 +328,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _craftTime = value;
     }
 
-    public int getCraftTime()
+    public int GetCraftTime()
     {
         return _craftTime;
     }

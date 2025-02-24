@@ -97,7 +97,7 @@ public class CraftingQueueManager : MonoBehaviour
         while (craftQueue.Count > 0)
         {
             BaseObject itemToCraft = craftQueue.Peek();
-            totalCraftTime = (itemToCraft as ICraftableObject).getCraftTime();
+            totalCraftTime = (itemToCraft as ICraftableObject).GetCraftTime();
             float remainingCraftingTime = totalCraftTime;
 
             // Show the slider when crafting starts

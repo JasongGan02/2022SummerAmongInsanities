@@ -4,13 +4,21 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
-public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject
+public class TowerObject : CharacterObject, IShadowObject
 {
     [Header("TowerObject Fields")]
-    [SerializeField, HideInDerivedInspector]
-    private TowerStats towerStats;
+    [HideInDerivedInspector]
+    public TowerStats towerStats;
+
+    public Sprite towerIcon;
+    [SerializeField] Vector2Int colliderSize;
+    [SerializeField] private bool isUnlocked;
+    public CraftRecipe[] recipe;
+
+    public bool IsUnlocked => isUnlocked;
 
     protected override void OnEnable()
     {
@@ -23,60 +31,10 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         base.OnEnable();
     }
 
-    [Header("Iventory Parameters")]
-    [SerializeField]
-    private int _maxStack;
-
-    [Header("Craft")]
-    [SerializeField]
-    private CraftRecipe[] _recipe;
-    [SerializeField]
-    private bool _isCraftable;
-    [SerializeField]
-    private bool _isCoreNeeded;
-    [SerializeField]
-    private int _craftTime;
-
-
-    /**
-     * implementation of IInventoryObject
-     */
-
-    #region
-
-    public int MaxStack
+    public bool HasEnoughMaterials(Inventory inventory)
     {
-        get => _maxStack;
-        set => _maxStack = value;
+        return isUnlocked && inventory.CheckRecipeHasEnoughMaterials(recipe);
     }
-
-    public Sprite GetSpriteForInventory()
-    {
-        return prefab.GetComponent<SpriteRenderer>().sprite;
-    }
-
-    public GameObject GetDroppedGameObject(int amount, Vector3 dropPosition)
-    {
-        GameObject drop = Instantiate(prefab);
-        drop.layer = Constants.Layer.RESOURCE;
-        if (drop.GetComponent<Rigidbody2D>() == null)
-        {
-            drop.AddComponent<Rigidbody2D>();
-        }
-        else
-        {
-            Rigidbody2D rigidbody = drop.GetComponent<Rigidbody2D>();
-            rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            drop.GetComponent<Collider2D>().isTrigger = false;
-        }
-
-        drop.transform.position = dropPosition;
-        var controller = drop.AddComponent<DroppedObjectController>();
-        controller.Initialize(this, amount);
-        return drop;
-    }
-
-    #endregion
 
     public override GameObject GetPoolGameObject()
     {
@@ -98,25 +56,6 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         worldGameObject.transform.rotation = towerStats.curAngle;
         towerStats.curAngle = Quaternion.Euler(0, 0, 0);
         return worldGameObject;
-    }
-
-    public override List<GameObject> GetDroppedGameObjects(bool isDestroyedByPlayer, Vector3 dropPosition) //need to consider the case if it is placed by User.
-    {
-        List<GameObject> droppedItems = new();
-        if (isDestroyedByPlayer)
-        {
-            droppedItems.Add(GetDroppedGameObject(1, dropPosition)); //drop itself
-        }
-        else
-        {
-            foreach (Drop drop in drops)
-            {
-                GameObject droppedGameObject = drop.GetDroppedItem(dropPosition); //drop some of original materials
-                droppedItems.Add(droppedGameObject);
-            }
-        }
-
-        return droppedItems;
     }
 
 
@@ -166,65 +105,4 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         towerStats.curAngle = Quaternion.Euler(0, 0, 0);
         return worldGameObject;
     }
-
-    /**
- * implementation of ICraftableObject
- */
-
-    #region
-
-    public CraftRecipe[] Recipe
-    {
-        get => _recipe;
-        set => _recipe = value;
-    }
-
-    public void Craft(Inventory inventory)
-    {
-        inventory.CraftItems(this.Recipe, this);
-    }
-
-    public CraftRecipe[] getRecipe()
-    {
-        return Recipe;
-    }
-
-    #endregion
-
-    #region
-
-    public bool IsCraftable
-    {
-        get => _isCraftable;
-        set => _isCraftable = value;
-    }
-
-    public bool getIsCraftable()
-    {
-        return IsCraftable;
-    }
-
-    public bool IsCoreNeeded
-    {
-        get => _isCoreNeeded;
-        set => _isCoreNeeded = value;
-    }
-
-    public bool getIsCoreNeeded()
-    {
-        return _isCoreNeeded;
-    }
-
-    public int CraftTime
-    {
-        get => _craftTime;
-        set => _craftTime = value;
-    }
-
-    public int getCraftTime()
-    {
-        return _craftTime;
-    }
-
-    #endregion
 }

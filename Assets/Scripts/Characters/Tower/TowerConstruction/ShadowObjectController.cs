@@ -9,20 +9,38 @@ public class ShadowObjectController : MonoBehaviour
 {
     private CoreArchitectureController coreArchitecture;
     private uint collisionCount = 0;
-    
-   
+
+
     private void Awake()
     {
         coreArchitecture = CoreArchitectureController.Instance;
     }
-    
+
+    public bool IsValidPlacement(BaseObject objectType)
+    {
+        bool baseValid = IsBasePlacementValid();
+
+        if (!baseValid)
+            return false;
+
+        if (objectType is TowerObject tower)
+        {
+            return IsTowerPlacementValid(tower);
+        }
+        else if (objectType is TileObject tile)
+        {
+            return IsTilePlacementValid(tile);
+        }
+        else if (objectType is ChestObject chest)
+        {
+            return IsChestPlacementValid(chest);
+        }
+
+        return baseValid;
+    }
+
     public TileGhostPlacementResult GetTileGhostPlacementResult(BaseObject objectType)
     {
-        Vector2 mousePosition = GetMousePosition2D();
-        float x = GetSnappedCoordinate(mousePosition.x);
-        float y = GetSnappedCoordinate(mousePosition.y);
-        transform.position = new Vector2(x, y);
-
         if (objectType is TileObject tileObject)
         {
             return HandleTileObjectPlacement(tileObject);
@@ -38,7 +56,7 @@ public class ShadowObjectController : MonoBehaviour
 
         return null;
     }
-    
+
     private TileGhostPlacementResult HandleTileObjectPlacement(TileObject tileObject)
     {
         bool isPlacementValid = IsBasePlacementValid() && IsTilePlacementValid(tileObject);
@@ -51,7 +69,7 @@ public class ShadowObjectController : MonoBehaviour
         {
             RotateObject(((TowerStats)towerObject.baseStats).rotateAngle);
         }
-        
+
         bool isPlacementValid = IsBasePlacementValid() && IsTowerPlacementValid(towerObject);
         return new TileGhostPlacementResult(transform, isPlacementValid);
     }
@@ -96,7 +114,7 @@ public class ShadowObjectController : MonoBehaviour
         ConstructionModeManager constructionModeManager = FindObjectOfType<ConstructionModeManager>();
         return constructionModeManager.CheckEnergyAvailableForConstruction(energyCost);
     }
-    
+
     private bool CheckAdjacentPos(Vector2Int tilePos)
     {
         // Check for adjacent tiles
@@ -105,7 +123,7 @@ public class ShadowObjectController : MonoBehaviour
             for (int j = -1; j <= 1; j++)
             {
                 if (i == 0 && j == 0) continue; // skip the current tile position
-                if (Math.Abs(i)==Math.Abs(j)) continue; 
+                if (Math.Abs(i) == Math.Abs(j)) continue;
                 Vector2Int adjacentPos = tilePos + new Vector2Int(i, j);
                 Vector2Int chunkCoord = new Vector2Int(WorldGenerator.GetChunkCoordsFromPosition(adjacentPos), 0);
                 if (WorldGenerator.WorldData.ContainsKey(chunkCoord))
@@ -117,41 +135,30 @@ public class ShadowObjectController : MonoBehaviour
                 }
             }
         }
+
         return false;
     }
-    
+
     bool IsConstructionShadowInRange(CoreArchitectureController coreArchitecture)
     {
         float Constructable_Distance = coreArchitecture.GetConstructableDistance();
         float Mouse_Distance = CalculateDistanceBetweenCoreAndMouse(coreArchitecture);
-        if(Constructable_Distance>Mouse_Distance)
+        if (Constructable_Distance > Mouse_Distance)
         {
             return true;
         }
+
         return false;
     }
 
     float CalculateDistanceBetweenCoreAndMouse(CoreArchitectureController coreArchitecture)
     {
-        Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);    // get mouse world poistion (x,y)
+        Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition); // get mouse world poistion (x,y)
         Vector3 corePosition = coreArchitecture.GetComponent<Transform>().position;
-        float distance = Mathf.Sqrt(Mathf.Pow((rayOrigin.x-corePosition.x) ,2) + Mathf.Pow((rayOrigin.y-corePosition.y) ,2));
+        float distance = Mathf.Sqrt(Mathf.Pow((rayOrigin.x - corePosition.x), 2) + Mathf.Pow((rayOrigin.y - corePosition.y), 2));
 
         return distance;
     }
-
-    private Vector2 GetMousePosition2D()
-    {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        return new Vector2(mousePos.x, mousePos.y);
-    }
-
-
-    private float GetSnappedCoordinate(float number)
-    {
-        return Mathf.Floor(number) + 0.5f;
-    }
-
 
 
     void OnTriggerEnter2D(Collider2D other)
@@ -163,6 +170,5 @@ public class ShadowObjectController : MonoBehaviour
     {
         //if(curShadow is not TileObject)
         collisionCount--;
-
     }
 }

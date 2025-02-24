@@ -135,7 +135,7 @@ public class WeaponObject : EquipmentObject, ICraftableObject
         set => _recipe = value;
     }
 
-    public CraftRecipe[] getRecipe()
+    public CraftRecipe[] GetRecipe()
     {
         return Recipe;
     }
@@ -155,7 +155,7 @@ public class WeaponObject : EquipmentObject, ICraftableObject
         set => _isCraftable = value;
     }
 
-    public bool getIsCraftable()
+    public bool GetIsCraftable()
     {
         return IsCraftable;
     }
@@ -166,7 +166,7 @@ public class WeaponObject : EquipmentObject, ICraftableObject
         set => _isCoreNeeded = value;
     }
 
-    public bool getIsCoreNeeded()
+    public bool GetIsCoreNeeded()
     {
         return _isCoreNeeded;
     }
@@ -177,7 +177,7 @@ public class WeaponObject : EquipmentObject, ICraftableObject
         set => _craftTime = value;
     }
 
-    public int getCraftTime()
+    public int GetCraftTime()
     {
         return _craftTime;
     }

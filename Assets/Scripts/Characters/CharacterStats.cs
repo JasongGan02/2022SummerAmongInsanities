@@ -306,6 +306,7 @@ public class TowerStats : CharacterStats
 {
     [Header("Construction Parameter")]
     public int energyCost;
+    public float constructionTime = 5f;
     public Quaternion rotateAngle; //a fixed amount that determines the rotation type of a tower
     [HideInInspector] public Quaternion curAngle = Quaternion.Euler(0, 0, 0);
 }

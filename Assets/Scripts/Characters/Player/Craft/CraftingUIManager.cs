@@ -297,8 +297,8 @@ public class CraftingUIManager : MonoBehaviour
         {
             ICraftableObject craftableObject = obj as ICraftableObject;
             if (craftableObject != null && craftableObject.IsCraftable &&
-                craftableObject.getRecipe() != null &&
-                craftableObject.getRecipe().Length > 0)
+                craftableObject.GetRecipe() != null &&
+                craftableObject.GetRecipe().Length > 0)
             {
                 filtered.Add(obj);
             }
@@ -356,11 +356,11 @@ public class CraftingUIManager : MonoBehaviour
             CoreArchitectureController coreArchitecture = FindObjectOfType<CoreArchitectureController>();
             // Dim if not craftable or out of range
             ICraftableObject craftObj = list[i] as ICraftableObject;
-            if (craftObj == null || !craftObj.getIsCraftable())
+            if (craftObj == null || !craftObj.GetIsCraftable())
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
             }
-            else if (craftObj.getIsCoreNeeded() && !coreArchitecture.IsPlayerInConstructionRange())
+            else if (craftObj.GetIsCoreNeeded() && !coreArchitecture.IsPlayerInConstructionRange())
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
             }
@@ -403,7 +403,7 @@ public class CraftingUIManager : MonoBehaviour
         ICraftableObject craftableObject = selectedBaseObject as ICraftableObject;
         if (craftableObject != null && timeText != null)
         {
-            timeText.text = craftableObject.getCraftTime().ToString() + "s";
+            timeText.text = craftableObject.GetCraftTime().ToString() + "s";
             timeText.color = new Color(timeText.color.r, timeText.color.g, timeText.color.b, 1);
         }
 
@@ -448,7 +448,7 @@ public class CraftingUIManager : MonoBehaviour
         }
 
         // Check if craftable at all
-        if (!craftableObject.getIsCraftable())
+        if (!craftableObject.GetIsCraftable())
         {
             craftButton.gameObject.SetActive(false);
             HideAllInputItems();
@@ -456,7 +456,7 @@ public class CraftingUIManager : MonoBehaviour
         }
 
         // If core needed, check range
-        if (craftableObject.getIsCoreNeeded() && !coreArchitecture.IsPlayerInConstructionRange())
+        if (craftableObject.GetIsCoreNeeded() && !coreArchitecture.IsPlayerInConstructionRange())
         {
             craftButton.gameObject.SetActive(false);
             HideAllInputItems();
@@ -464,7 +464,7 @@ public class CraftingUIManager : MonoBehaviour
         }
 
         // Enable everything
-        ShowInputItems(craftableObject.getRecipe());
+        ShowInputItems(craftableObject.GetRecipe());
     }
 
     private void ShowInputItems(CraftRecipe[] inputItems)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -11,7 +12,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 {
     public GameObject extraRow;
     public int maxExtraRow = 4;
-    private GameObject hotbar;
+    private GameObject hotBar;
     private CraftingQueueManager queueManager;
 
 
@@ -30,7 +31,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         );
 
         uiController.SetupUi();
-        hotbar = inventoryGrid.transform.GetChild(0).gameObject;
+        hotBar = inventoryGrid.transform.GetChild(0).gameObject;
 
         eventBus = new InventoryEventBus();
         queueManager = FindFirstObjectByType<CraftingQueueManager>();
@@ -60,23 +61,14 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
 
     public void CraftItems(CraftRecipe[] recipe, BaseObject outputItem)
     {
-        if (queueManager.sizeCraftQueue() >= 4)
+        if (queueManager.sizeCraftQueue() >= 10)
         {
             Debug.Log("CraftItems: Craft queue is full (>=4). Aborting craft.");
             return;
         }
 
         // First, check if all items are available in required quantities
-        for (int i = 0; i < recipe.Length; i++)
-        {
-            // We'll log each recipe check
-
-            if (HasEnoughItem(recipe[i].material as IInventoryObject, recipe[i].quantity) == false)
-            {
-                return;
-            }
-        }
-
+        if (!CheckRecipeHasEnoughMaterials(recipe)) return;
 
         // Since all items are available, consume them
         for (int i = 0; i < recipe.Length; i++)
@@ -88,6 +80,10 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
         queueManager.AddToQueue(outputItem, () => { AddItem(outputItem as IInventoryObject, 1); });
     }
 
+    public bool CheckRecipeHasEnoughMaterials(CraftRecipe[] recipe)
+    {
+        return recipe.All(craftRecipe => HasEnoughItem((IInventoryObject)craftRecipe.material, craftRecipe.quantity));
+    }
 
     private bool HasEnoughItem(IInventoryObject inventoryObject, int requiredQuantity)
     {
@@ -185,7 +181,7 @@ public class Inventory : BaseInventory, Inventory.InventoryButtonClickedCallback
     {
         if (index > 7) return;
 
-        GameObject slot = hotbar.transform.GetChild(0).GetChild(index).gameObject;
+        GameObject slot = hotBar.transform.GetChild(0).GetChild(index).gameObject;
         if (slot.transform.childCount > 0)
         {
             eventBus.OnSlotLeftClicked(index);

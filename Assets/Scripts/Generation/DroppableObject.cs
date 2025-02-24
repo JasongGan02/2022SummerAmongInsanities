@@ -31,18 +31,18 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
     }
     
 
-    public int getCraftTime()
+    public int GetCraftTime()
     {
         return CraftTime;
     }
 
 
-    public bool getIsCraftable()
+    public bool GetIsCraftable()
     {
         return IsCraftable;
     }
     
-    public bool getIsCoreNeeded()
+    public bool GetIsCoreNeeded()
     {
         return IsCoreNeeded;
     }
@@ -91,7 +91,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
         inventory.CraftItems(this.Recipe, this);
     }
  
-    public CraftRecipe[] getRecipe()
+    public CraftRecipe[] GetRecipe()
     {
         return Recipe;
     }

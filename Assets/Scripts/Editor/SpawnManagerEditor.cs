@@ -20,10 +20,6 @@ namespace Editor
                 spawnManager.SpawnEquipment();
             }
 
-            if (GUILayout.Button("Spawn Towers"))
-            {
-                spawnManager.SpawnTowers();
-            }
 
             if (GUILayout.Button("Spawn Ash"))
             {

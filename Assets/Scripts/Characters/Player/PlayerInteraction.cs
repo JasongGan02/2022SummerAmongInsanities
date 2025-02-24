@@ -11,9 +11,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     public LayerMask resourceLayer;
     public LayerMask groundLayer;
     private Animator animator;
-    public bool weaponAnim = true;
     private bool isWeaponInUse = false;
-
 
     [Header("hold to interact setting")]
     public float waitTime = 1.0f;
@@ -26,10 +24,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     private Inventory inventory;
     private RectTransform hotbarFirstRow;
 
-    private ShadowGenerator shadowGenerator;
-
     [Header("tile placement")]
-    TerrainGeneration terrainGeneration;
     public int placeTileRange = 15;
 
     [Header("use item")]
@@ -38,42 +33,20 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     private GameObject gameObjectInUse;
     private WeaponObject currentWeapon;
     private GameObject currentInUseItemIconUI;
-    public GameObject equipmentTemplate;
     private InventorySlot currentSlotInUse = null;
     private int indexInUse = EMPTY;
     private float usableObjectPressTime = 0f; // Tracks the time the button has been held
-
-
-    public float handFarm = 0.5f;
-    public float handFrequency = 1;
-
 
     private AudioEmitter _audioEmitter;
 
     private ChestController currentChest;
 
 
-    private Dictionary<Vector2Int, GameObject> _worldTilesDictionary = null;
-    private Dictionary<Vector2Int, GameObject> worldTilesDictionary
-    {
-        get
-        {
-            if (_worldTilesDictionary == null)
-            {
-                _worldTilesDictionary = TerrainGeneration.worldTilesDictionary;
-            }
-
-            return _worldTilesDictionary;
-        }
-    }
-
     void Awake()
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         inventory = FindObjectOfType<Inventory>();
-        shadowGenerator = FindObjectOfType<ShadowGenerator>();
-        terrainGeneration = FindObjectOfType<TerrainGeneration>();
         currentInUseItemIconUI = GameObject.Find(Constants.Name.CURRENT_ITEM_UI);
         _audioEmitter = GetComponent<AudioEmitter>();
     }

@@ -3954,25 +3954,45 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1490615637}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: categoryConfigs.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: categoryConfigs.Array.data[0].categoryButton
       value: 
       objectReference: {fileID: 119476992}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: categoryConfigs.Array.data[1].addressOrLabel
+      value: UsableObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: categoryConfigs.Array.data[1].categoryButton
       value: 
-      objectReference: {fileID: 119476991}
+      objectReference: {fileID: 119476990}
+    - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: categoryConfigs.Array.data[2].addressOrLabel
+      value: UtilityTowerObject
+      objectReference: {fileID: 0}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: categoryConfigs.Array.data[2].categoryButton
       value: 
-      objectReference: {fileID: 119476990}
+      objectReference: {fileID: 119476989}
+    - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: categoryConfigs.Array.data[3].addressOrLabel
+      value: TileObject
+      objectReference: {fileID: 0}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: categoryConfigs.Array.data[3].categoryButton
       value: 
-      objectReference: {fileID: 119476989}
+      objectReference: {fileID: 119476990}
+    - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: categoryConfigs.Array.data[4].addressOrLabel
+      value: TowerObject
+      objectReference: {fileID: 0}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: categoryConfigs.Array.data[4].categoryButton
       value: 
-      objectReference: {fileID: 119476990}
+      objectReference: {fileID: 119476991}
     - target: {fileID: 5516705307216022969, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: content
       value: 

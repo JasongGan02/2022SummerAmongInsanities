@@ -82,25 +82,7 @@ public class SpawnManager : MonoBehaviour
         GameObject equipmentObj = equipments[index].GetDroppedGameObject(1, coreSpawnPosition);
         Debug.Log($"Spawned equipment: {equipmentObj.name} at {coreSpawnPosition}");
     }
-
-    /// <summary>
-    /// Spawns all tower objects from the towerObjects array at the core spawn position.
-    /// </summary>
-    public void SpawnTowers()
-    {
-        if (towerObjects == null || towerObjects.Length == 0)
-        {
-            Debug.LogWarning("No tower objects assigned to spawn.");
-            return;
-        }
-
-        foreach (TowerObject tower in towerObjects)
-        {
-            GameObject towerObj = tower.GetDroppedGameObject(1, coreSpawnPosition);
-            Debug.Log($"Spawned tower: {towerObj.name} at {coreSpawnPosition}");
-        }
-    }
-
+    
     /// <summary>
     /// Spawns the ash object at the core spawn position.
     /// </summary>
@@ -159,7 +141,6 @@ public class SpawnManager : MonoBehaviour
     public void SpawnRandomWeapon()
     {
         SpawnEquipment();
-        SpawnTowers();
     }
 
     /// <summary>

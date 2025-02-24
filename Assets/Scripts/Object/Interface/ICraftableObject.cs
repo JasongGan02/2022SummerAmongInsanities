@@ -16,12 +16,12 @@ public interface ICraftableObject
     GameObject GetDroppedGameObject(int amount, Vector3 dropPosition);
     public void Craft(Inventory inventory);
 
-    public CraftRecipe[] getRecipe();
+    public CraftRecipe[] GetRecipe();
 
-    public bool getIsCraftable();
+    public bool GetIsCraftable();
 
-    public bool getIsCoreNeeded();
+    public bool GetIsCoreNeeded();
 
-    public int getCraftTime();
+    public int GetCraftTime();
 
 }

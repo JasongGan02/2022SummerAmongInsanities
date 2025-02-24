@@ -17,6 +17,7 @@ public class ConstructionModeManager : MonoBehaviour
     [Header("Energy Settings")]
     [SerializeField] private int maxEnergy = 100;
     [SerializeField] private int currentEnergy = 0;
+    
 
     private CoreArchitectureController coreArchitecture;
     private UIViewStateManager uiViewStateManager;
