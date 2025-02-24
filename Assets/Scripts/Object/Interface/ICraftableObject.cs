@@ -11,6 +11,7 @@ public interface ICraftableObject
 
     bool IsCoreNeeded { get; set; }
 
+    bool IsLocked { get; set; }
     int CraftTime { get; set; }
 
     GameObject GetDroppedGameObject(int amount, Vector3 dropPosition);
@@ -21,6 +22,8 @@ public interface ICraftableObject
     public bool getIsCraftable();
 
     public bool getIsCoreNeeded();
+
+    public bool getIsLocked();
 
     public int getCraftTime();
 
