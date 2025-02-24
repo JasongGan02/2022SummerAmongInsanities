@@ -23,7 +23,7 @@ public class WeaponInventory : BaseInventory
         inventoryGrid = GameObject.Find(Constants.Name.WEAPONINVENTORY_GRID);
         database = new InventoryDatabase(1, 0, 2); 
         uiController = new InventoryUiController(
-            1,
+            defaultNumberOfRow,
             defaultRow, 
             inventoryGrid,
             template,

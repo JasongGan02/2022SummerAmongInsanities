@@ -35,6 +35,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     [SerializeField]
     private bool _isCoreNeeded;
     [SerializeField]
+    private bool _isLocked;
+    [SerializeField]
     private int _craftTime;
 
 
@@ -214,7 +216,15 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         return _isCoreNeeded;
     }
-
+    public bool IsLocked
+    {
+        get => _isLocked;
+        set => _isLocked = value;
+    }
+    public bool getIsLocked()
+    {
+        return _isLocked;
+    }
     public int CraftTime
     {
         get => _craftTime;
