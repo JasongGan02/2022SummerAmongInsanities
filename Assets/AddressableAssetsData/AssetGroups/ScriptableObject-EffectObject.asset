@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: ScriptableObject-EffectObject
   m_EditorClassIdentifier: 
   m_GroupName: ScriptableObject-EffectObject
-  m_Data:
-    m_SerializedData: []
   m_GUID: 52171ea03284d0142ad87e3e0e986db3
   m_SerializeEntries:
-  - m_GUID: e2f76c06e89d9434cb99c513c9f979be
-    m_Address: Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset
+  - m_GUID: 1bf150935ffd93d4a87f4d8894d6977d
+    m_Address: Assets/Scripts/Effects/SO/WeaponEffects/SetChilledEffect.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - EffectObject
@@ -26,17 +24,20 @@ MonoBehaviour:
   - m_GUID: 38e5f4453c253d04e80af48c41720656
     m_Address: Assets/Scripts/Effects/SO/WeaponEffects/DetonateChargeEffect.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1bf150935ffd93d4a87f4d8894d6977d
-    m_Address: Assets/Scripts/Effects/SO/WeaponEffects/SetChilledEffect.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - EffectObject
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5b28613ba1922d2449e54a94d196101b
     m_Address: Assets/Scripts/Effects/SO/WeaponEffects/SetFireEffect.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - EffectObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2f76c06e89d9434cb99c513c9f979be
+    m_Address: Assets/Scripts/Effects/SO/EnemyRedMoonEffectObject.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EffectObject
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b37fec5b2ddb22740bb40f3536c226af, type: 2}

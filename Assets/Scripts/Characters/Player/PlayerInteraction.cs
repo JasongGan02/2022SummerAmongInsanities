@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+
 public class PlayerInteraction : MonoBehaviour, IAudioable
 {
     public float interactRange = 1f;
@@ -21,7 +22,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     private GameObject targetObject;
     private PlayerMovement playerMovement;
     private PlayerController playerController;
-    private ConstructionMode constructionMode;
+    private ConstructionModeManager constructionModeManager;
     private Inventory inventory;
     private RectTransform hotbarFirstRow;
 
@@ -31,7 +32,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     TerrainGeneration terrainGeneration;
     public int placeTileRange = 15;
 
-    [Header("use item")] 
+    [Header("use item")]
     [SerializeField] private WeaponObject hand;
     private GameObject emptyHand;
     private GameObject gameObjectInUse;
@@ -41,13 +42,12 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     private InventorySlot currentSlotInUse = null;
     private int indexInUse = EMPTY;
     private float usableObjectPressTime = 0f; // Tracks the time the button has been held
-    
-    
+
+
     public float handFarm = 0.5f;
     public float handFrequency = 1;
-    
-    
-    
+
+
     private AudioEmitter _audioEmitter;
 
     private ChestController currentChest;
@@ -62,6 +62,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             {
                 _worldTilesDictionary = TerrainGeneration.worldTilesDictionary;
             }
+
             return _worldTilesDictionary;
         }
     }
@@ -76,10 +77,10 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         currentInUseItemIconUI = GameObject.Find(Constants.Name.CURRENT_ITEM_UI);
         _audioEmitter = GetComponent<AudioEmitter>();
     }
-    
+
     void Start()
     {
-        constructionMode = FindObjectOfType<ConstructionMode>();
+        constructionModeManager = FindObjectOfType<ConstructionModeManager>();
         hotbarFirstRow = GameObject.Find("InventoryUI").transform.Find("Hotbar").Find("Row(Clone)").GetComponent<RectTransform>();
         emptyHand = hand.GetSpawnedGameObject(GetComponent<PlayerController>());
     }
@@ -98,18 +99,20 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     void Update()
     {
         if (IsMouseOverInventoryUI()) return;
-        
+
         PickUpItemCheck();
         HandleUsableObjectUsage();
-        
-        if(IsChestOpen())
+
+        if (IsChestOpen())
         {
             currentChest.OpenChest();
         }
+
         if (!PlayerStatusRepository.GetIsViewingUi())
         {
             BreakTileCheck();
         }
+
         PlaceTileCheck();
         PlaceTileCancelCheck();
         playAnim();
@@ -124,28 +127,23 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             if (Input.GetMouseButton(0))
             {
                 animator.SetBool("Hand", true);
-
             }
             else
             {
                 animator.SetBool("Hand", false);
-
-            }   
+            }
         }
         else if (GetCurrentInUseItem().GetItemName() == "Shovel")
         {
             if (Input.GetMouseButton(0))
             {
                 animator.SetBool("Shovel", true);
-
             }
             else
             {
                 animator.SetBool("Shovel", false);
-
             }
         }
-
     }
 
 
@@ -155,10 +153,10 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         bool isOverUI = RectTransformUtility.RectangleContainsScreenPoint(hotbarFirstRow, mousePosition);
         return isOverUI;
     }
-    
+
     private bool IsChestOpen()
     {
-        bool IsChestOpen = (Input.GetKeyDown(KeyCode.E) && currentChest != null && ConstructionMode.isInConstructionMode == false);
+        bool IsChestOpen = (Input.GetKeyDown(KeyCode.E) && currentChest != null && ConstructionModeManager.IsInConstructionMode == false);
         return IsChestOpen;
     }
 
@@ -166,7 +164,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     {
         UseItemInSlot(args.slotIndex);
     }
-    
+
     private void HandleUsableObjectUsage()
     {
         if (currentSlotInUse != null && currentSlotInUse.item is UsableObject usableObject)
@@ -185,7 +183,6 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
                     // Optional: consume the item after use
                     inventory.RemoveItemByOne(indexInUse);
                     if (currentSlotInUse.count <= 0) ClearCurrentItemInUse();
-                    
                 }
             }
             else
@@ -195,10 +192,15 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             }
         }
     }
-  
+
     private void UseItemInSlot(int slotIndex)
     {
-        if (indexInUse == slotIndex) {ClearCurrentItemInUse(); return;} //Double Click To Cancel
+        if (indexInUse == slotIndex)
+        {
+            ClearCurrentItemInUse();
+            return;
+        } //Double Click To Cancel
+
         ClearCurrentItemInUse();
         indexInUse = slotIndex;
         currentSlotInUse = inventory.GetInventorySlotAtIndex(indexInUse);
@@ -223,21 +225,19 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             currentWeapon = currentSlotInUse.item as WeaponObject;
             waitTime = 1 / currentWeapon?.getfrequency() ?? 1;
 
-            isWeaponInUse = true; 
+            isWeaponInUse = true;
         }
         else
         {
-            isWeaponInUse = false; 
+            isWeaponInUse = false;
             waitTime = 1;
         }
-
     }
 
     private void HandleQKeyForWeapon()
     {
         if (isWeaponInUse && (Input.GetKeyDown(KeyCode.Q)))
         {
-           
             var weaponInventory = FindObjectOfType<WeaponInventory>(true);
 
             int targetSlot = -1;
@@ -260,7 +260,6 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             {
                 inventory.SwapItemsBetweenInventory(weaponInventory, indexInUse, targetSlot);
                 ClearCurrentItemInUse();
-                
             }
 
             isWeaponInUse = false;
@@ -288,12 +287,13 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
 
         indexInUse = EMPTY;
         currentSlotInUse = null;
-        currentWeapon= null;
+        currentWeapon = null;
         isWeaponInUse = false;
         currentInUseItemIconUI.SetActive(false);
     }
-    
+
     #region
+
     private void StartTimer()
     {
         timeStamp = Time.time + waitTime;
@@ -311,20 +311,18 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
 
     private void BreakTileCheck()
     {
-        if (Input.GetMouseButton(0) && (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject) && (currentSlotInUse.item.GetItemName() == "Shovel"))))
+        if (Input.GetMouseButton(0) &&
+            (currentSlotInUse == null || (!(currentSlotInUse.item is TowerObject) && !(currentSlotInUse.item is TileObject) && (currentSlotInUse.item.GetItemName() == "Shovel"))))
         {
             Vector2 mouseDownPosition = GetMousePosition2D();
             if (Vector2.Distance(mouseDownPosition, transform.position) <= interactRange)
             {
-               
                 RaycastHit2D clickHit = Physics2D.Raycast(mouseDownPosition, Vector2.zero);
                 if (clickHit.transform != null)
                 {
-                   
                     GameObject tempTargetObject = clickHit.transform.gameObject;
                     if (tempTargetObject.GetComponent<BreakableObjectController>() != null && CanInteractWith(tempTargetObject, mouseDownPosition))
                     {
-                        
                         animator.SetBool(Constants.Animator.MELEE_TOOL, true);
                         if (clickHit.transform.gameObject != targetObject)
                         {
@@ -337,27 +335,22 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
                     }
                     else
                     {
-                        
                         ResetMeleeAnimationAndTimer();
                     }
                 }
                 else
                 {
-                    
                     ResetMeleeAnimationAndTimer();
                 }
-            } 
+            }
             else
             {
-                
                 ResetMeleeAnimationAndTimer();
             }
-
-            
         }
-        
-        
-        if (Input.GetMouseButtonUp(0) )
+
+
+        if (Input.GetMouseButtonUp(0))
         {
             ResetMeleeAnimationAndTimer();
             _audioEmitter.ChangeLoop("TileDuringBreaking", false);
@@ -370,6 +363,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             {
                 ClickOnGameObject(targetObject);
             }
+
             StartTimer();
         }
     }
@@ -378,14 +372,15 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     {
         targetObject = null;
         animator.SetBool(Constants.Animator.MELEE_TOOL, false);
-        playerMovement.excavateCoeff=1f;
+        playerMovement.excavateCoeff = 1f;
 
         ResetTimer();
     }
+
     private void ClickOnGameObject(GameObject target)
     {
         if (target == null) return;
-        
+
         IDamageSource damageSource = null;
         if (gameObjectInUse != null)
             damageSource = gameObjectInUse.GetComponent<IDamageSource>();
@@ -393,18 +388,20 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
         {
             damageSource = emptyHand.GetComponent<IDamageSource>();
         }
+
         if (damageSource == null)
             Debug.LogError("no damage source");
-        
+
         BreakableObjectController breakableTile = target.GetComponent<BreakableObjectController>();
         if (breakableTile != null)
         {
             breakableTile.SetBreaker(gameObject);
             if (damageSource != null) damageSource.ApplyDamage(breakableTile);
         }
-        
     }
+
     #endregion
+
     private void PickUpItemCheck()
     {
         var hit = Physics2D.CircleCast(transform.position, pickUpRange, Vector2.zero, 0, resourceLayer);
@@ -422,7 +419,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
     {
         if (currentSlotInUse == null ||
             currentSlotInUse.count == 0 ||
-            Input.GetMouseButtonDown(1) || 
+            Input.GetMouseButtonDown(1) ||
             Input.GetMouseButtonDown(2) || (!UIViewStateManager.IsViewingConstruction() && UIViewStateManager.IsViewingUI()))
         {
             ClearCurrentItemInUse();
@@ -439,7 +436,7 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             if (CanPlaceTile(result))
             {
                 shadowObjectController.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
-                if (Input.GetMouseButtonDown(0) )
+                if (Input.GetMouseButtonDown(0))
                 {
                     PlaceTile(result.transform);
                 }
@@ -481,17 +478,16 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
             WorldGenerator.PlaceTile((TileObject)currentSlotInUse.item, worldPostion.x, worldPostion.y, chunkCoord, false, true);
             WorldGenerator.Instance.RefreshChunkLight(chunkCoord, true);
             inventory.RemoveItemByOne(indexInUse);
-        } 
-        else if(currentSlotInUse.item is TowerObject)
+        }
+        else if (currentSlotInUse.item is TowerObject)
         {
             GameObject newTower = PoolManager.Instance.Get(currentSlotInUse.item as BaseObject);
             newTower.transform.position = transform.position;
             newTower.transform.rotation = transform.rotation;
-            constructionMode.EnergyConsumption((((TowerStats)(currentSlotInUse.item as TowerObject)?.baseStats)!).energyCost);
+            constructionModeManager.ConsumeEnergy((((TowerStats)(currentSlotInUse.item as TowerObject)?.baseStats)!).energyCost);
             inventory.RemoveItemByOne(indexInUse);
-           
-        } 
-        else if(currentSlotInUse.item is ChestObject)
+        }
+        else if (currentSlotInUse.item is ChestObject)
         {
             GameObject newTower = PoolManager.Instance.Get(currentSlotInUse.item as BaseObject);
             newTower.transform.position = transform.position;
@@ -527,21 +523,19 @@ public class PlayerInteraction : MonoBehaviour, IAudioable
                     return true;
                 }
             }
+
             return false;
         }
         else
         {
             return !tempTargetObject.CompareTag(Constants.Tag.RESOURCE);
         }
-            
     }
-
-
 
 
     private const int EMPTY = -1;
 
-  
+
     public AudioEmitter GetAudioEmitter()
     {
         return _audioEmitter;

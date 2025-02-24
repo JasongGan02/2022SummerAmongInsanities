@@ -13,30 +13,10 @@ MonoBehaviour:
   m_Name: ScriptableObject-TileObject
   m_EditorClassIdentifier: 
   m_GroupName: ScriptableObject-TileObject
-  m_Data:
-    m_SerializedData: []
   m_GUID: 68173740f858e0744a9adebbc7d16583
   m_SerializeEntries:
-  - m_GUID: d045d561017e746468db52a94e386e94
-    m_Address: Assets/ScriptableObjects/TileObjects/Block.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - TileObject
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ca186f7b55da4614eaf1134ae197627e
-    m_Address: Assets/ScriptableObjects/TileObjects/Coal.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - TileObject
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e1b229678f2a5c442b3c45e516dffefe
-    m_Address: Assets/ScriptableObjects/TileObjects/Dirt.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - TileObject
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: be2125ff3e9108f4f87e5a96ce972c8d
-    m_Address: Assets/ScriptableObjects/TileObjects/Gold.asset
+  - m_GUID: 22f638505dcd61b4e8ba673d4ccb8c5a
+    m_Address: Assets/ScriptableObjects/TileObjects/TestLightingSource.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileObject
@@ -47,8 +27,20 @@ MonoBehaviour:
     m_SerializedLabels:
     - TileObject
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f45be79907638584f8a52a36c93eb85a
-    m_Address: Assets/ScriptableObjects/TileObjects/Grass02.asset
+  - m_GUID: 7632adf024062674f8644501144ae956
+    m_Address: Assets/ScriptableObjects/TileObjects/NatureAddons.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TileObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 996c4f5b911bb4a4a9bf2e18d15f8d9c
+    m_Address: Assets/ScriptableObjects/TileObjects/Tree.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TileObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be2125ff3e9108f4f87e5a96ce972c8d
+    m_Address: Assets/ScriptableObjects/TileObjects/Gold.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileObject
@@ -59,8 +51,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - TileObject
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7632adf024062674f8644501144ae956
-    m_Address: Assets/ScriptableObjects/TileObjects/NatureAddons.asset
+  - m_GUID: ca186f7b55da4614eaf1134ae197627e
+    m_Address: Assets/ScriptableObjects/TileObjects/Coal.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileObject
@@ -71,14 +63,20 @@ MonoBehaviour:
     m_SerializedLabels:
     - TileObject
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 22f638505dcd61b4e8ba673d4ccb8c5a
-    m_Address: Assets/ScriptableObjects/TileObjects/TestLightingSource.asset
+  - m_GUID: d045d561017e746468db52a94e386e94
+    m_Address: Assets/ScriptableObjects/TileObjects/Block.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileObject
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 996c4f5b911bb4a4a9bf2e18d15f8d9c
-    m_Address: Assets/ScriptableObjects/TileObjects/Tree.asset
+  - m_GUID: e1b229678f2a5c442b3c45e516dffefe
+    m_Address: Assets/ScriptableObjects/TileObjects/Dirt.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TileObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f45be79907638584f8a52a36c93eb85a
+    m_Address: Assets/ScriptableObjects/TileObjects/Grass02.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileObject

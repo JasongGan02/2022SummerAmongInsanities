@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class CatapultTowerController : RangedTowerController
 {
-    private Animator animator;
-    
-
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start(); // Call the base start to initialize common features
         animator = GetComponent<Animator>();
         startPosition = transform.GetChild(0);
-       
     }
 
     protected override void Attack()
     {
-        
         target = WhatToAttack(); // Method from the base class to determine what to attack
         if (target != null && Math.Abs(target.transform.position.x - startPosition.position.x) > NON_DETECTABLE_RANGE)
         {

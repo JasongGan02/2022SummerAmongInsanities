@@ -93,8 +93,8 @@ public class ShadowObjectController : MonoBehaviour
 
     private bool CheckEnergyAvailable(int energyCost)
     {
-        ConstructionMode constructionMode = FindObjectOfType<ConstructionMode>();
-        return constructionMode.CheckEnergyAvailableForConstruction(energyCost);
+        ConstructionModeManager constructionModeManager = FindObjectOfType<ConstructionModeManager>();
+        return constructionModeManager.CheckEnergyAvailableForConstruction(energyCost);
     }
     
     private bool CheckAdjacentPos(Vector2Int tilePos)

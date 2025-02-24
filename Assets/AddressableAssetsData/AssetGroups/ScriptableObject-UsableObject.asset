@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: ScriptableObject-UsableObject
   m_EditorClassIdentifier: 
   m_GroupName: ScriptableObject-UsableObject
-  m_Data:
-    m_SerializedData: []
   m_GUID: 0a271bc74c8983f418de7ba84796bc32
   m_SerializeEntries:
   - m_GUID: a8e64c81013de9749a8ccb5499ca4963

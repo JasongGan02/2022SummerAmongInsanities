@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Image = UnityEngine.UI.Image;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.UI; // Import for Slider
 
 public class CraftingQueueManager : MonoBehaviour
@@ -11,8 +13,8 @@ public class CraftingQueueManager : MonoBehaviour
     public RectTransform content;
     public GameObject buttonPrefab;
     private float xOffset = -180f;
-    private TextMeshProUGUI ProgressText;
-    public GameObject QueueUI;
+    private TextMeshProUGUI progressText;
+    public GameObject queueUI;
 
     private CoreArchitectureController coreArchitecture;
     private TimeSystemManager timeSystemManager;
@@ -29,8 +31,7 @@ public class CraftingQueueManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaitForCoreArchitectureAndInitialize());
-        coreArchitecture = FindObjectOfType<CoreArchitectureController>();
-        ProgressText = QueueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
+        progressText = queueUI.transform.Find("TimeCount").GetComponent<TextMeshProUGUI>();
         timeSystemManager = TimeSystemManager.Instance;
         GameObject sliderObject = GameObject.Find("CraftingProgressSlider");
         if (sliderObject != null)
@@ -79,19 +80,19 @@ public class CraftingQueueManager : MonoBehaviour
     }
 
     // Add an item to the crafting queue
-    public void AddToQueue(BaseObject outputitem)
+    public void AddToQueue(BaseObject outputItem, Action onQueueComplete = null)
     {
-        craftQueue.Enqueue(outputitem);
+        craftQueue.Enqueue(outputItem);
         UpdateQueueUI(craftQueue);
 
         if (craftQueue.Count == 1)
         {
-            StartCoroutine(CraftItemFromQueue());
+            StartCoroutine(CraftItemFromQueue(onQueueComplete));
         }
     }
 
     // Coroutine to craft the first item in the queue
-    private IEnumerator CraftItemFromQueue()
+    private IEnumerator CraftItemFromQueue(Action onQueueComplete)
     {
         while (craftQueue.Count > 0)
         {
@@ -122,20 +123,15 @@ public class CraftingQueueManager : MonoBehaviour
                     craftingProgressSlider.value = progress;
                 }
 
-                if (ProgressText != null)
+                if (progressText != null)
                 {
-                    ProgressText.text = Mathf.CeilToInt(remainingCraftingTime).ToString() + "s"; // Update text
+                    progressText.text = Mathf.CeilToInt(remainingCraftingTime).ToString() + "s"; // Update text
                 }
-            }
-
-            // Crafting complete
-            if (coreArchitecture != null)
-            {
-                spawn(itemToCraft);
             }
 
             craftQueue.Dequeue();
             UpdateQueueUI(craftQueue);
+            onQueueComplete?.Invoke();
         }
 
         // Hide the slider when crafting is finished
@@ -143,12 +139,6 @@ public class CraftingQueueManager : MonoBehaviour
         {
             craftingProgressSlider.gameObject.SetActive(false);
         }
-    }
-
-
-    private void spawn(BaseObject itemToCraft)
-    {
-        GameObject drop = ((ICraftableObject)itemToCraft).GetDroppedGameObject(1, CoreArchitectureController.Instance.transform.position);
     }
 
     IEnumerator WaitForCoreArchitectureAndInitialize()

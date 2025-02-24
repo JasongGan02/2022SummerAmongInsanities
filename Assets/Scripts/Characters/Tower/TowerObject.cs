@@ -7,13 +7,14 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Character Objects/Tower Object")]
 public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICraftableObject
-{   
+{
     [Header("TowerObject Fields")]
-    [SerializeField, HideInDerivedInspector] private TowerStats towerStats;
-    
+    [SerializeField, HideInDerivedInspector]
+    private TowerStats towerStats;
+
     protected override void OnEnable()
     {
-        baseStats = towerStats;  // Ensure the baseStats is set
+        baseStats = towerStats; // Ensure the baseStats is set
         base.OnEnable();
     }
 
@@ -21,7 +22,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         base.OnEnable();
     }
-    
+
     [Header("Iventory Parameters")]
     [SerializeField]
     private int _maxStack;
@@ -40,7 +41,9 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     /**
      * implementation of IInventoryObject
      */
+
     #region
+
     public int MaxStack
     {
         get => _maxStack;
@@ -65,13 +68,14 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
             Rigidbody2D rigidbody = drop.GetComponent<Rigidbody2D>();
             rigidbody.bodyType = RigidbodyType2D.Dynamic;
             drop.GetComponent<Collider2D>().isTrigger = false;
-        
         }
+
         drop.transform.position = dropPosition;
         var controller = drop.AddComponent<DroppedObjectController>();
         controller.Initialize(this, amount);
         return drop;
     }
+
     #endregion
 
     public override GameObject GetPoolGameObject()
@@ -86,6 +90,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         {
             controllerName = itemName + "Controller";
         }
+
         Type type = Type.GetType(controllerName);
         var controller = worldGameObject.AddComponent(type);
         (controller as CharacterController).Initialize(this);
@@ -108,13 +113,13 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
             {
                 GameObject droppedGameObject = drop.GetDroppedItem(dropPosition); //drop some of original materials
                 droppedItems.Add(droppedGameObject);
-            }   
+            }
         }
-        return droppedItems;
 
+        return droppedItems;
     }
-    
-    
+
+
     /**
      * implementation of ConstructionMode
      */
@@ -129,8 +134,8 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
         spriteRenderer.color = spriteColor; // Assign the new color back to the sprite renderer
         var collider = ghost.GetComponent<BoxCollider2D>();
         collider.isTrigger = true;
-        
-        collider.size = new Vector2(collider.size.x*0.9f, collider.size.y*0.9f);
+
+        collider.size = new Vector2(collider.size.x * 0.9f, collider.size.y * 0.9f);
         ghost.AddComponent<ShadowObjectController>();
         var controller = ghost.GetComponent<Rigidbody2D>();
         controller.simulated = true;
@@ -138,19 +143,20 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
 
         return ghost;
     }
-    
+
     public override GameObject GetSpawnedGameObject() //Use this when you are unsure about what type of controller will be using.
     {
         GameObject worldGameObject = Instantiate(prefab);
         worldGameObject.name = itemName;
-        if(itemName.Contains("Wall"))
+        if (itemName.Contains("Wall"))
         {
             controllerName = "TowerController";
         }
         else
         {
-            controllerName = itemName+"Controller";
+            controllerName = itemName + "Controller";
         }
+
         Type type = Type.GetType(controllerName);
         var controller = worldGameObject.AddComponent(type);
         if (controller is CharacterController)
@@ -164,7 +170,9 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     /**
  * implementation of ICraftableObject
  */
+
     #region
+
     public CraftRecipe[] Recipe
     {
         get => _recipe;
@@ -180,6 +188,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         return Recipe;
     }
+
     #endregion
 
     #region
@@ -188,7 +197,6 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         get => _isCraftable;
         set => _isCraftable = value;
-
     }
 
     public bool getIsCraftable()
@@ -197,7 +205,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     }
 
     public bool IsCoreNeeded
-    { 
+    {
         get => _isCoreNeeded;
         set => _isCoreNeeded = value;
     }
@@ -206,6 +214,7 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         return _isCoreNeeded;
     }
+
     public int CraftTime
     {
         get => _craftTime;
@@ -216,7 +225,6 @@ public class TowerObject : CharacterObject, IInventoryObject, IShadowObject, ICr
     {
         return _craftTime;
     }
+
     #endregion
-
-
 }

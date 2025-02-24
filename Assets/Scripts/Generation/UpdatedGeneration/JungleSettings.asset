@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b88c5d0be68e56849b90eed7d395045d, type: 3}
-  m_Name: TerrainSettings
+  m_Name: JungleSettings
   m_EditorClassIdentifier: 
-  <tileAtlas>k__BackingField: {fileID: 11400000, guid: c6c92fd5ea6040440adbd3e1073220d7, type: 2}
+  <tileAtlas>k__BackingField: {fileID: 11400000, guid: 440086a5652371a41826e7d95ed03135, type: 2}
   <heightMultiplier>k__BackingField: 25
   <heightAddition>k__BackingField: 60
   <dirtLayerHeight>k__BackingField: 5
