@@ -3910,6 +3910,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5022870085592352539}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: lockSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 96cf1303ab7562b4680958ea95b0b8fc, type: 3}
+    - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: outputItem
       value: 
       objectReference: {fileID: 5022870085592352545}

@@ -11,7 +11,7 @@ public class DroppedObjectController : PickupController
     protected override void Start()
     {
         base.Start();
-        inventory = FindObjectOfType<Inventory>();
+        inventory = FindFirstObjectByType<Inventory>();
     }
 
     public void Initialize(IInventoryObject item, int amount)

@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class BatController : EnemyController
 {
-    private float waitTime;
-    private Transform moveTo;
-    private bool planned;
-    private bool prepare_dash;
-    private bool is_dashing;
-    private Vector2 dash_end;
-    private Vector2 stop_point;
+    private float WaitTime;
+    private Transform MoveTo;
+    private bool Planned;
+    private bool PrepareDash;
+    private bool IsDashing;
+    private Vector2 DashEnd;
+    private Vector2 StopPoint;
     private new Animator animator;
 
-    private bool attacked;
+    private bool Attacked;
 
     private TrailRenderer Tr;
     private ParticleSystem Ps;
@@ -22,28 +22,28 @@ public class BatController : EnemyController
 
     private new GameObject target;
 
-    private float startX;
-    private float startY;
+    private float StartHori;
+    private float StartVir;
     private Transform GroupApproachTarget;
 
     // Start is called before the first frame update
     protected override void Start()
     {
-        moveTo = transform.Find("destination").transform;
-        // initial moveTo
+        MoveTo = transform.Find("destination").transform;
+        // initial MoveTo
 
-        waitTime = 3;
+        WaitTime = 3;
         BatTimer = 0;
-        startX = this.transform.position.x;
-        startY = this.transform.position.y;
-        moveTo.position = new Vector2(Random.Range(startX-3, startX+3), Random.Range(startY-3, startY+3));
+        StartHori = this.transform.position.x;
+        StartVir = this.transform.position.y;
+        MoveTo.position = new Vector2(Random.Range(StartHori-3, StartHori+3), Random.Range(StartVir-3, StartVir+3));
 
-        planned = false;
-        prepare_dash = true;
-        is_dashing = false;
-        attacked = false;
+        Planned = false;
+        PrepareDash = true;
+        IsDashing = false;
+        Attacked = false;
 
-        stop_point = new Vector3(0,0,0); //place holder
+        StopPoint = new Vector3(0,0,0); //place holder
 
 
     }
@@ -64,8 +64,8 @@ public class BatController : EnemyController
 
     protected override void UpdateEnemyBehavior()
     {
-        if (!planned) { target = SearchForTargetObject(); } // attacking behavior is uninterruptable
-        else if (target == null) { target = SearchForTargetObject(); } // once target is destroied but an attack is planned
+        if (!Planned) { target = SearchForTargetObject(); } // attacking behavior is uninterruptable
+        else if (target == null) { target = SearchForTargetObject(); } // once target is destroied but an attack is Planned
 
         if (target == null)
         {
@@ -74,35 +74,35 @@ public class BatController : EnemyController
             if(animator.GetBool("is_attacking") == true) { animator.SetBool("is_attacking", false); }
             if(Tr.emitting == true) { Tr.emitting = false; }
             Patrol();
-            if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
+            if (MoveTo.position.x < transform.position.x && facingRight || MoveTo.position.x > transform.position.x && !facingRight)
             {
                 Flip();
             }
         }
         else 
         {
-            if (Vector2.Distance(target.transform.position, transform.position) < enemyStats.sensingRange || planned)
+            if (Vector2.Distance(target.transform.position, transform.position) < enemyStats.sensingRange || Planned)
             {
-                if (Vector2.Distance(target.transform.position, transform.position) < currentStats.attackRange || planned)
+                if (Vector2.Distance(target.transform.position, transform.position) < currentStats.attackRange || Planned)
                 {
-                    // atk player
+                    // atk target
                     DashAttack(target.transform);
                 }
                 else
                 {
-                    // approaching player
-                    ApproachingTarget(target.transform);
+                    // approaching target
+                    Approach(currentStats.movingSpeed, target.transform.position);
                 }
             }
             else
             {
                 //Debug.Log("Bat is patroling 2");
                 if (TimeSystemManager.Instance.IsRedMoon){
-                    Debug.Log("It's a red moon night! The villagers are spooked!");
-                    ApproachingTarget(Core.transform);
+                    // Debug.Log("It's a red moon night! The bats approach core!");
+                    Approach(currentStats.movingSpeed, corePosition);
                 }else{
                     Patrol();
-                    if (moveTo.position.x < transform.position.x && facingRight || moveTo.position.x > transform.position.x && !facingRight)
+                    if (MoveTo.position.x < transform.position.x && facingRight || MoveTo.position.x > transform.position.x && !facingRight)
                     {
                         Flip();
                     }
@@ -119,51 +119,51 @@ public class BatController : EnemyController
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, moveTo.position, 3 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, MoveTo.position, 3 * Time.deltaTime);
         }
 
-        if (Vector2.Distance(transform.position, moveTo.position) < 0.2f || waitTime <= 0)
+        if (Vector2.Distance(transform.position, MoveTo.position) < 0.2f || WaitTime <= 0)
         {
-            if (waitTime <= 0)
+            if (WaitTime <= 0)
             {
-                moveTo.position = new Vector2(Random.Range(startX - 3, startX + 3), Random.Range(startY - 3, startY + 3));  // cause startX I don't know need to change
-                waitTime = 3;
+                MoveTo.position = new Vector2(Random.Range(StartHori - 3, StartHori + 3), Random.Range(StartVir - 3, StartVir + 3));  // cause StartHori I don't know need to change
+                WaitTime = 3;
             }
             else
             {
-                waitTime -= Time.deltaTime;
+                WaitTime -= Time.deltaTime;
             }
         }
 
-        waitTime -= Time.deltaTime;
+        WaitTime -= Time.deltaTime;
     }
 
-    void ApproachingTarget(Transform target_transform)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, target_transform.position, currentStats.movingSpeed * Time.deltaTime);
-        if (target_transform.position.x < transform.position.x && facingRight || target_transform.position.x > transform.position.x && !facingRight)
-        {
-            Flip();
-        }
-    }
+    // private new void Approach(float speed, Vector2 targetTransform)
+    // {
+    //     transform.position = Vector2.MoveTowards(transform.position, targetTransform, speed * Time.deltaTime);
+    //     if (targetTransform.x < transform.position.x && facingRight || targetTransform.x > transform.position.x && !facingRight)
+    //     {
+    //         Flip();
+    //     }
+    // }
 
     void DashAttack(Transform destination)
     {
         //Debug.Log("is attacking");
-        if (prepare_dash)           
+        if (PrepareDash)           
         {
             if (!Ps.isPlaying) Ps.Play();
 
-            if (!planned)
+            if (!Planned)
             {         // set attack route
                 PlanRoute(destination);
-                planned = true;
+                Planned = true;
             }
             
             if (BatTimer > 0.8f) 
             {
-                prepare_dash = false;
-                is_dashing = true;
+                PrepareDash = false;
+                IsDashing = true;
                 PlanRoute(destination);
             }
             else
@@ -172,37 +172,37 @@ public class BatController : EnemyController
             }
 
         }
-        else if (is_dashing)        // dash through the player and attack
+        else if (IsDashing)        // dash through the player and attack
         {
             BatTimer = 0;
             if (Ps.isPlaying) Ps.Stop();
-            transform.position = Vector2.MoveTowards(transform.position, dash_end, currentStats.movingSpeed * 5 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, DashEnd, currentStats.movingSpeed * 5 * Time.deltaTime);
             animator.SetBool("is_attacking", true); 
             Tr.emitting = true;
-            if (Vector2.Distance(transform.position, destination.position) < 0.4f && !attacked)
+            if (Vector2.Distance(transform.position, destination.position) < 0.4f && !Attacked)
             {
                 ApplyDamage(target.GetComponent<CharacterController>());
-                attacked = true;
+                Attacked = true;
             }
-            if (CloseEnough(transform.position, dash_end))
+            if (CloseEnough(transform.position, DashEnd))
             {
                 animator.SetBool("is_attacking", false);    
                 Tr.emitting = false;
-                is_dashing = false;
+                IsDashing = false;
             }
         }
         else                        // return to the higher point and attack again
         {
-            if (CloseEnough(transform.position, stop_point))
+            if (CloseEnough(transform.position, StopPoint))
             {
                 //BatTimer = 0;
-                prepare_dash = true;
-                attacked = false;
-                planned = false;
+                PrepareDash = true;
+                Attacked = false;
+                Planned = false;
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, stop_point, currentStats.movingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, StopPoint, currentStats.movingSpeed * Time.deltaTime);
             }
             if (destination.position.x < transform.position.x && facingRight || destination.position.x > transform.position.x && !facingRight)
             {
@@ -211,24 +211,24 @@ public class BatController : EnemyController
         }
 
     }
-    // make attack plan (dash_start -> dash_End -> stop_point -> dash_start...)
+    // make attack plan (dash_start -> dash_End -> StopPoint -> dash_start...)
     void PlanRoute(Transform destination)
     {
-        dash_end = destination.position;
-        stop_point = destination.position;
+        DashEnd = destination.position;
+        StopPoint = destination.position;
         if (destination.position.x > transform.position.x)           // player is on the right side
         {
-            dash_end.x += destination.position.x - transform.position.x;
-            dash_end.y -= transform.position.y - destination.position.y;
-            stop_point.x += 1;
-            stop_point.y += 3;
+            DashEnd.x += destination.position.x - transform.position.x;
+            DashEnd.y -= transform.position.y - destination.position.y;
+            StopPoint.x += 1;
+            StopPoint.y += 3;
         }
         else                                                    // player is on the left side
         {
-            dash_end.x -= (transform.position.x - destination.position.x);
-            dash_end.y -= (transform.position.y - destination.position.y);
-            stop_point.x -= 1;
-            stop_point.y += 3;
+            DashEnd.x -= (transform.position.x - destination.position.x);
+            DashEnd.y -= (transform.position.y - destination.position.y);
+            StopPoint.x -= 1;
+            StopPoint.y += 3;
         }
     }
 

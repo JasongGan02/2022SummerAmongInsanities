@@ -35,4 +35,5 @@ MonoBehaviour:
     quantity: 2
   _isCraftable: 1
   _isCoreNeeded: 1
+  _isLocked: 1
   _craftTime: 3

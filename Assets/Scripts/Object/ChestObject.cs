@@ -20,6 +20,8 @@ public class ChestObject : BaseObject, IInventoryObject, ICraftableObject, IShad
     [SerializeField]
     private bool _isCoreNeeded;
     [SerializeField]
+    private bool _isLocked;
+    [SerializeField]
     private int _craftTime;
 
 
@@ -106,6 +108,15 @@ public class ChestObject : BaseObject, IInventoryObject, ICraftableObject, IShad
     public bool GetIsCoreNeeded()
     {
         return _isCoreNeeded;
+    }
+    public bool IsLocked
+    {
+        get => _isLocked;
+        set => _isLocked = value;
+    }
+    public bool getIsLocked()
+    {
+        return _isLocked;
     }
     public int CraftTime
     {

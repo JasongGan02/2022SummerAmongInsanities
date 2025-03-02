@@ -81,10 +81,6 @@ public class LadyController : EnemyController, IRangedAttacker
 
     protected override void UpdateEnemyBehavior() 
     {
-        // Escape from the tower
-        //
-        if (Core == null){Core = GameObject.Find("CoreArchitecture");}
-        // Approaches and escapes from the player
 
         target = SearchForTargetObject();
 
@@ -92,8 +88,8 @@ public class LadyController : EnemyController, IRangedAttacker
         if (target == null)
         {
             if (TimeSystemManager.Instance.IsRedMoon){
-                Debug.Log("It's a red moon night! The villagers are spooked!");
-                approach(currentStats.movingSpeed, Core.transform, currentStats.attackRange - 0.2f);
+                Debug.Log("It's a red moon night! The ladys approach core");
+                Approach(currentStats.movingSpeed, corePosition, currentStats.attackRange - 0.2f);
             }else{
                 patrol();
             }
@@ -111,7 +107,7 @@ public class LadyController : EnemyController, IRangedAttacker
                 transform.right = Vector2.right;
             }
 
-            approach(currentStats.movingSpeed, target.transform, currentStats.attackRange - 0.4f);   // debug
+            Approach(currentStats.movingSpeed, target.transform.position, currentStats.attackRange - 0.4f);   // debug
             
             // Target Taken Damage
             if (arrow != null)
@@ -198,15 +194,15 @@ public class LadyController : EnemyController, IRangedAttacker
     }
 
     
-    void approach(float speed, Transform target, float distance)
+    void Approach(float speed, Vector2 target, float distance)
     {
-        float currentDistance = Mathf.Abs(transform.position.x - target.position.x);
+        float currentDistance = Mathf.Abs(transform.position.x - target.x);
         //Debug.Log("currentDistance" + currentDistance);
         if (currentDistance < distance)
         {
             if (RetreatDepthCheck() == true) // check if there isn't abyss on the back
             {
-                if (target.position.x > transform.position.x)
+                if (target.x > transform.position.x)
                 {
                     rb.linearVelocity = new Vector2(-1f * speed, rb.linearVelocity.y); animator.SetFloat("movingSpeed", 1f);
                     //Debug.Log("going Left");
