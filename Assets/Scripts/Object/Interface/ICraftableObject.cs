@@ -6,7 +6,7 @@ using UnityEngine;
 public interface ICraftableObject
 {
     CraftRecipe[] Recipe { get; set; }
-    
+
     bool IsCraftable { get; set; }
 
     bool IsCoreNeeded { get; set; }
@@ -25,4 +25,5 @@ public interface ICraftableObject
 
     public int GetCraftTime();
 
+    public bool GetIsLocked();
 }

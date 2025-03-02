@@ -139,7 +139,7 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
         get => _isLocked;
         set => _isLocked = value;
     }
-    public bool getIsLocked()
+    public bool GetIsLocked()
     {
         return _isLocked;
     }

@@ -114,7 +114,7 @@ public class ChestObject : BaseObject, IInventoryObject, ICraftableObject, IShad
         get => _isLocked;
         set => _isLocked = value;
     }
-    public bool getIsLocked()
+    public bool GetIsLocked()
     {
         return _isLocked;
     }

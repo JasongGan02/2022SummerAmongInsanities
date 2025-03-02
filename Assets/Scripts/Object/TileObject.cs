@@ -330,7 +330,7 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         set => _isLocked = value;
     }
 
-    public bool getIsLocked()
+    public bool GetIsLocked()
     {
         return _isLocked;
     }

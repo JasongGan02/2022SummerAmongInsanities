@@ -326,8 +326,8 @@ public class CraftingUIManager : MonoBehaviour
         {
             ICraftableObject craftA = a as ICraftableObject;
             ICraftableObject craftB = b as ICraftableObject;
-            bool aLocked = craftA != null && craftA.getIsLocked();
-            bool bLocked = craftB != null && craftB.getIsLocked();
+            bool aLocked = craftA != null && craftA.GetIsLocked();
+            bool bLocked = craftB != null && craftB.GetIsLocked();
             if (aLocked == bLocked)
                 return 0; 
             return aLocked ? 1 : -1;
@@ -381,7 +381,7 @@ public class CraftingUIManager : MonoBehaviour
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
             }
-            if (craftObj != null && craftObj.getIsLocked())
+            if (craftObj != null && craftObj.GetIsLocked())
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, 0.5f);
                 GameObject lockOverlay = new GameObject("LockOverlay");
@@ -479,7 +479,7 @@ public class CraftingUIManager : MonoBehaviour
             return;
         }
 
-        if (craftableObject.getIsLocked())
+        if (craftableObject.GetIsLocked())
         {
             craftButton.gameObject.SetActive(false);
             HideAllInputItems();
@@ -491,7 +491,7 @@ public class CraftingUIManager : MonoBehaviour
         if (craftableObject.GetIsCoreNeeded() && !coreArchitecture.IsPlayerInConstructionRange())
         {
             craftButton.gameObject.SetActive(false);
-            ShowInputItems(craftableObject.getRecipe());
+            ShowInputItems(craftableObject.GetRecipe());
             return;
         }
 
