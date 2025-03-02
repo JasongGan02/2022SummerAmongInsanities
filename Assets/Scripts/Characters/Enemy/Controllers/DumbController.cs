@@ -4,14 +4,14 @@ using UnityEngine;
 public class DumbController : EnemyController
 {
     private new Rigidbody2D rb;
-    private float patrolTime = 0f;
-    private bool patrolDirection = false;
-    private float fleeTime = 5f;
+    private float PatrolTime = 0f;
+    private bool PatrolDirection = false;
+    private float FleeTime = 5f;
     private float CurrentHP;
     private float PrevHP;
-    private bool isFleeing = false;
-    private float patrolRest = 2f;
-    private float hittingback = 0.3f;
+    private bool IsFleeing = false;
+    private float PatrolRest = 2f;
+    private float HittingBack = 0.3f;
 
     private new Animator animator;
 
@@ -44,11 +44,11 @@ public class DumbController : EnemyController
         if (PrevHP > CurrentHP)
         {
             animator.Play("dumb_knockback");
-            hittingback = 0.3f;
-            isFleeing = true;
+            HittingBack = 0.3f;
+            IsFleeing = true;
             PrevHP = CurrentHP;
         }
-        else if (isFleeing)
+        else if (IsFleeing)
         {
             flee();
         }
@@ -73,32 +73,32 @@ public class DumbController : EnemyController
 
     void idle(){
 
-        if (patrolTime <= 0f)
+        if (PatrolTime <= 0f)
         {
             animator.Play("dumb_idle");
-            patrolRest = 2f;
-            patrolTime = UnityEngine.Random.Range(1f, 3f);
+            PatrolRest = 2f;
+            PatrolTime = UnityEngine.Random.Range(1f, 3f);
             if (UnityEngine.Random.Range(0f,1f) > 0.5f)
             {
-                patrolDirection = true;
+                PatrolDirection = true;
             }
-            else { patrolDirection = false; }
+            else { PatrolDirection = false; }
         }
-        else if (patrolRest > 0)
+        else if (PatrolRest > 0)
         {
-            patrolRest -= Time.deltaTime;
+            PatrolRest -= Time.deltaTime;
         }
         else
         {
             animator.Play("dumb_walk");
-            patrolTime -= Time.deltaTime;
+            PatrolTime -= Time.deltaTime;
             
-            if (patrolDirection)    // walk to right side
+            if (PatrolDirection)    // walk to right side
             {
                 if (MoveForwardDepthCheck())
                 {
                     rb.linearVelocity = new Vector2(enemyStats.movingSpeed, rb.linearVelocity.y);
-                    if (!facingRight) { Flip(); Debug.Log("dumb idle walk Turn right");}
+                    if (!facingRight) { Flip(); }
                 }
             }
             else                    // walk to left side
@@ -106,18 +106,18 @@ public class DumbController : EnemyController
                 if (MoveForwardDepthCheck())
                 {
                     rb.linearVelocity = new Vector2(-enemyStats.movingSpeed, rb.linearVelocity.y);
-                    if (facingRight) { Flip(); Debug.Log("dumb idle walk Turn left");}
+                    if (facingRight) { Flip();}
                 }
             }
         }
     }
     void flee()
     {
-        if (hittingback > 0f) { hittingback -= Time.deltaTime; }
-        else if (fleeTime > 0f)
+        if (HittingBack > 0f) { HittingBack -= Time.deltaTime; }
+        else if (FleeTime > 0f)
         {
             animator.Play("dumb_flee");
-            fleeTime -= Time.deltaTime;
+            FleeTime -= Time.deltaTime;
             if (player.transform.position.x > transform.position.x)
             {
                 if (MoveForwardDepthCheck())
@@ -137,9 +137,9 @@ public class DumbController : EnemyController
         }
         else {
             animator.Play("dumb_walk");
-            hittingback = 0.3f;
-            fleeTime = 5f;
-            isFleeing = false;
+            HittingBack = 0.3f;
+            FleeTime = 5f;
+            IsFleeing = false;
         }
     }
 }
