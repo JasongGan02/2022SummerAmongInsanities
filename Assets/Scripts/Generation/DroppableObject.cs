@@ -9,6 +9,7 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
     [SerializeField] private CraftRecipe[] recipe;
     [SerializeField] private bool isCraftable;
     [SerializeField] private bool isCoreNeeded;
+    [SerializeField] private bool _isLocked;
     [SerializeField] private int craftTime;
 
 
@@ -23,7 +24,15 @@ public class DroppableObject : BaseObject, IInventoryObject, ICraftableObject
         get => isCoreNeeded;
         set => isCoreNeeded = value;
     }
-
+    public bool IsLocked
+    {
+        get => _isLocked;
+        set => _isLocked = value;
+    }
+    public bool getIsLocked()
+    {
+        return _isLocked;
+    }
     public int CraftTime
     {
         get => craftTime;

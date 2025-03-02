@@ -21,6 +21,7 @@ public class MobSpawner : MonoBehaviour
     public static List<GameObject> enemyList = new(); // TODO: get a dic for all lists;
     private GameObject player;
     private EnemyRedMoonEffectObject enemyRedMoonEffectObject;
+    private static CoreArchitectureController coreArchitectureController;
 
     #endregion
 
@@ -281,6 +282,12 @@ public class MobSpawner : MonoBehaviour
 
         // Optionally, if you want to retain critical warnings or errors,
         // you can leave these warnings in place.
+        if (debugSource.Contains("Wave"))
+        {
+            if (coreArchitectureController == null)
+                coreArchitectureController = CoreArchitectureController.Instance;
+            enemy.GetComponent<EnemyController>().ApproachCore(coreArchitectureController.transform.position);
+        }
     }
 
     #endregion

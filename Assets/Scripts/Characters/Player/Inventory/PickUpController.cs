@@ -35,6 +35,10 @@ public abstract class PickupController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sortingLayerID = SortingLayer.NameToID("DroppedObject");
         initialPosition = transform.position;
+
+        var hitBox = GetComponent<Collider2D>();
+        if (hitBox)
+            hitBox.isTrigger = false;
     }
 
     protected virtual void FixedUpdate()
