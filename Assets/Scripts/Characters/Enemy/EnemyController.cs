@@ -19,6 +19,19 @@ public abstract class EnemyController : CharacterController
     protected LayerMask groundLayerMask;
     protected LayerMask targetLayerMask;
 
+    public List<Vector2> PathToTarget = new List<Vector2>();
+    public int PathCounter;
+    public float ChasingRemainder = 5f;
+    public Transform TargetRemainder;
+    public float inAir = 0f;
+    public LineRenderer lineRenderer;
+    public GameObject _lineObj; // For creating a line renderer in runtime
+    public float _breakObstaclesCD = 1f;
+    public float breakObstacleCDReset = 1f;
+    public Transform tileDetect1;
+    public Transform tileDetect2;
+    public Transform tileDetect3;
+    public Transform tileDetect4;
     protected GameObject target;
     private Vector2? lastKnownPosition = null;
     private float lastSeenTimestamp = 0f;
@@ -33,7 +46,6 @@ public abstract class EnemyController : CharacterController
     protected abstract string AttackAnimationState { get; }
     protected abstract string MoveAnimationState { get; }
     //protected abstract string DeathAnimationState { get; }
-
 
     protected bool isApproachingCore;
     protected Vector3 corePosition;
@@ -50,6 +62,10 @@ public abstract class EnemyController : CharacterController
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("ground");
         targetLayerMask = LayerMask.GetMask("player", "tower");
+        tileDetect1 = tileDetect1 ?? transform.Find("tileDetect1");
+        tileDetect2 = tileDetect2 ?? transform.Find("tileDetect2");
+        tileDetect3 = tileDetect3 ?? transform.Find("tileDetect3");
+        tileDetect4 = tileDetect4 ?? transform.Find("tileDetect4");
     }
 
     protected virtual void Start()
@@ -335,24 +351,44 @@ public abstract class EnemyController : CharacterController
 
     #endregion
 
-    protected virtual void Approach(Vector2? targetPosition, bool isRunning)
+    protected void Approach(float speed, Vector2 targetTransform)
     {
-        if (targetPosition != null)
-        {
-            Vector2 direction = (targetPosition.Value - (Vector2)transform.position).normalized;
-            direction = new Vector2(direction.x, rb.linearVelocity.y).normalized;
-            float speed = isRunning ? currentStats.movingSpeed : currentStats.movingSpeed / 2f;
-            rb.linearVelocity = direction * speed;
-            //Debug.Log(speed);
-            Flip(direction.x);
-            ChangeAnimationState(MoveAnimationState);
-        }
-        else
-        {
-            Debug.LogError("targetPosition is null");
+        if (targetTransform != null){
+            // Face the target
+            if ((facingRight && targetTransform.x < transform.position.x)
+                || (!facingRight && targetTransform.x > transform.position.x))
+            {
+                Flip();
+            }
+
+            // Move left or right
+            if (targetTransform.x > transform.position.x)
+            {
+                rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(-speed, rb.linearVelocity.y);
+            }
         }
     }
 
+    public void Jump(float horizontal)
+    {
+        // If you want horizontal velocity to carry into jump, uncomment
+        // rb.velocity = new Vector2(horizontal, currentStats.jumpForce);
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+        if (hitCenter.transform != null)
+        {
+            rb.linearVelocity = new Vector2(horizontal, enemyStats.jumpForce);
+        }
+    }
+
+    public bool VillagerCloseToLocation(Vector2 location)
+    {
+        Vector2 currentLoc = new Vector2(transform.position.x, transform.position.y - 0.25f);
+        return Vector2.Distance(currentLoc, location) < 1.2f;
+    }
     protected bool isAttacking;
     protected bool isGrounded;
 
@@ -420,4 +456,421 @@ public abstract class EnemyController : CharacterController
             player = GameObject.FindWithTag("Player");
         }
     }
+
+    #region PathFinding
+
+    public void PathFind()
+    {
+        // Ensure there is a valid target, and we are outside attack range
+        if (target == null || DistanceToTarget(target.transform) < currentStats.attackRange)
+        {
+            PathToTarget.Clear();
+            PathCounter = 0;
+            return;
+        }
+
+        // Get start and end positions
+        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y - 0.25f); // Adjust for collider height
+        Vector2 targetPosition = target.transform.position;
+
+        // Compute bounds with sensing range margins
+        int minX = Mathf.FloorToInt(Mathf.Min(currentPosition.x, targetPosition.x) - enemyStats.sensingRange);
+        int maxX = Mathf.FloorToInt(Mathf.Max(currentPosition.x, targetPosition.x) + enemyStats.sensingRange);
+        int minY = Mathf.FloorToInt(Mathf.Min(currentPosition.y, targetPosition.y) - enemyStats.sensingRange);
+        int maxY = Mathf.FloorToInt(Mathf.Max(currentPosition.y, targetPosition.y) + enemyStats.sensingRange);
+
+        // Grid dimensions
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+
+        // Initialize health grid
+        int[,] healthGrid = InitializeHealthGrid(minX, maxX, minY, maxY, width, height, currentPosition.y);
+
+        // Convert world coordinates to grid indices
+        Vector2Int start = WorldToGridCoords(currentPosition, minX, minY);
+        Vector2Int end = WorldToGridCoords(targetPosition, minX, minY);
+
+        // Debug: log the health grid
+        Pathfinding.LogHealthGrid(healthGrid);
+
+        // Compute the A* path
+        List<Vector2Int> path = Pathfinding.AstarPath(start, end, healthGrid, width, height, minX, minY);
+
+        if (path.Count > 0)
+        {
+            int totalPathCost = Pathfinding.CalculatePathCost(path, healthGrid, minX, minY);
+            if (totalPathCost >= 99)
+            {
+                // Debug.Log("Path cost too high, clearing path.");
+                PathToTarget.Clear();
+                return;
+            }
+
+            // Convert path to world coordinates (centered)
+            PathToTarget = Pathfinding.PathPointToCenter(path);
+            PathCounter = 0;
+        }
+        else
+        {
+            // Debug.Log("No path found.");
+        }
+    }
+
+    /// <summary>
+    /// Initializes the health grid with costs for each cell based on terrain and conditions.
+    /// </summary>
+    private int[,] InitializeHealthGrid(int minX, int maxX, int minY, int maxY, int width, int height, float currentY)
+    {
+        int[,] healthGrid = new int[width, height];
+
+        for (int y = minY; y <= maxY; y++)
+        {
+            for (int x = minX; x <= maxX; x++)
+            {
+                Vector2Int gridCoords = new Vector2Int(x - minX, y - minY);
+
+                // Determine grid cost based on terrain
+                int distanceToGround = Pathfinding.DistanceToGround(x, y);
+                if (distanceToGround > 0)
+                {
+                    // Assign costs based on proximity to the ground
+                    healthGrid[gridCoords.x, gridCoords.y] = distanceToGround <= enemyStats.jumpForce - 1 ? distanceToGround : 99;
+                }
+                else
+                {
+                    // Check for specific tile properties
+                    TileObject tile = WorldGenerator.GetDataFromWorldPos(new Vector2Int(x, y));
+                    if (tile == null)
+                    {
+                        // check if there is a wall 
+                        healthGrid[gridCoords.x, gridCoords.y] = 99; // Impassable
+                    }
+                    else if (Pathfinding.IsLadder(x, y))
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 1;
+                    }
+                    else if (Pathfinding.IsNeighborTileReachable(x, y))
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 1 + tile.getHP();
+                    }
+                    else if (y < currentY)
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 1 + tile.getHP();
+                    }
+                    else
+                    {
+                        healthGrid[gridCoords.x, gridCoords.y] = 99; // Impassable
+                    }
+                }
+            }
+        }
+
+        return healthGrid;
+    }
+
+    /// <summary>
+    /// Converts a world position to grid coordinates.
+    /// </summary>
+    private Vector2Int WorldToGridCoords(Vector2 position, int minX, int minY)
+    {
+        return new Vector2Int(
+            Mathf.FloorToInt(position.x) - minX,
+            Mathf.FloorToInt(position.y) - minY
+        );
+    }
+
+
+    /// <summary>
+    /// Execute path movement if needed.
+    /// </summary>
+    public void PathExecute()
+    {
+        if (AutoLanding())
+        {
+            return;
+        } // Prevent dead stacking
+
+        if (DistanceToTarget(target.transform) < currentStats.attackRange)
+        {
+            // Debug.Log("Close to target, clearing path.");
+            PathToTarget.Clear();
+            RemovePathLine();
+            PathCounter = 0;
+            return;
+        }
+        else
+        {
+            // Debug.Log("Not close enough to target: " + DistanceToTarget(target.transform));
+        }
+
+        // DrawPath();
+
+        // Follow path
+        if (PathCounter < PathToTarget.Count)
+        {
+            if (PathToTarget[PathCounter].y > transform.position.y)
+            {
+                Jump(enemyStats.movingSpeed);
+            }
+
+            BreakObstaclesByAngle(target.transform);
+            Approach(2 * enemyStats.movingSpeed, target.transform.position);
+
+            // Move to next waypoint
+            if (VillagerCloseToLocation(PathToTarget[PathCounter]))
+            {
+                PathCounter++;
+            }
+        }
+        else
+        {
+            // No more waypoints, just approach directly
+            Approach(2 * enemyStats.movingSpeed, target.transform.position);
+            PathToTarget.Clear();
+            PathCounter = 0;
+        }
+    }
+
+    /// <summary>
+    /// Continue chasing the last known target position for a while.
+    /// </summary>
+    public void FinishExistingPath()
+    {
+        if (AutoLanding())
+        {
+            return;
+        } // Prevent dead stacking
+
+        if (ChasingRemainder < 0f)
+        {
+            TargetRemainder = null;
+            return;
+        }
+
+        if (DistanceToTarget(TargetRemainder) < currentStats.attackRange)
+        {
+            PathToTarget.Clear();
+            RemovePathLine();
+            PathCounter = 0;
+            return;
+        }
+
+        // DrawPath();
+
+        if (PathCounter < PathToTarget.Count)
+        {
+            Approach(2 * enemyStats.movingSpeed, TargetRemainder.position);
+            // SenseFrontBlock();
+            BreakObstaclesByAngle(TargetRemainder);
+
+            if (VillagerCloseToLocation(PathToTarget[PathCounter]))
+            {
+                PathCounter++;
+            }
+        }
+        else
+        {
+            Approach(2 * enemyStats.movingSpeed, TargetRemainder.position);
+            PathToTarget.Clear();
+            PathCounter = 0;
+        }
+    }
+
+    public bool AutoLanding()
+    {
+        RaycastHit2D hitCenter = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, 0.05f, groundLayerMask);
+        if (hitCenter.transform == null)
+        {
+            inAir += Time.deltaTime;
+            if (inAir > 0.9f)
+            {
+                float randomDirection = (UnityEngine.Random.Range(0f, 1f) <= 0.5f) ? -1f : 1f;
+                rb.linearVelocity = new Vector2(randomDirection * enemyStats.movingSpeed * 5, -1f * rb.mass);
+                //Debug.Log("auto landing");
+                return true;
+            }
+        }
+        else
+        {
+            inAir = 0f;
+        }
+
+        return false;
+    }
+    #endregion
+
+    #region Path Drawing
+
+    public void DrawPath()
+    {
+        if (lineRenderer == null)
+        {
+            // If no line renderer, create one
+            _lineObj = new GameObject("PathLine");
+            lineRenderer = _lineObj.AddComponent<LineRenderer>();
+
+            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            lineRenderer.startColor = new Color(0.5f, 0f, 0.5f, 1f);
+            lineRenderer.endColor = new Color(0.5f, 0f, 0.5f, 1f);
+            lineRenderer.startWidth = 0.3f;
+            lineRenderer.endWidth = 0.3f;
+
+            // Setup sorting
+            _lineObj.layer = 11;
+            lineRenderer.sortingOrder = 11;
+        }
+
+        if (lineRenderer == null)
+        {
+            // Debug.LogError("LineRenderer is not initialized!");
+            return;
+        }
+
+        if (PathToTarget != null)
+        {
+            Vector3[] positions = new Vector3[PathToTarget.Count];
+            for (int i = 0; i < PathToTarget.Count; i++)
+            {
+                positions[i] = new Vector3(PathToTarget[i].x, PathToTarget[i].y, 0);
+            }
+
+            lineRenderer.positionCount = positions.Length;
+            lineRenderer.SetPositions(positions);
+        }
+    }
+
+    public void RemovePathLine()
+    {
+        if (_lineObj != null)
+        {
+            Destroy(_lineObj);
+            lineRenderer = null;
+        }
+    }
+
+    #endregion
+
+    #region Obstacle Breaking
+
+    /// <summary>
+    /// Pick whether we break top/bottom/horizontal obstacles by analyzing the angle to the target.
+    /// </summary>
+    private void BreakObstaclesByAngle(Transform t)
+    {
+        Vector2 direction = t.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if (angle >= 75 && angle <= 105)
+        {
+            BreakObstacles("top");
+        }
+        else if (angle >= -105 && angle <= -75)
+        {
+            BreakObstacles("bottom");
+        }
+        else
+        {
+            BreakObstacles("horizontal");
+        }
+    }
+
+    /// <summary>
+    /// Attempt to detect breakable objects and set them as target.
+    /// </summary>
+    public void BreakObstacles(string command)
+    {
+        _breakObstaclesCD -= Time.deltaTime;
+        if (_breakObstaclesCD > 0f) return;
+
+        Vector2 directionSide = facingRight ? Vector2.right : Vector2.left;
+        Vector2 directionUpSide = (facingRight ? Vector2.right : Vector2.left) + Vector2.up;
+        directionUpSide.Normalize();
+
+        float rayLength = 0.05f;
+
+        switch (command)
+        {
+            case "horizontal":
+                RaycastHit2D hitTileDetect2 = Physics2D.Raycast(tileDetect2.position, directionSide, rayLength, groundLayerMask);
+                RaycastHit2D hitTileDetect1 = Physics2D.Raycast(tileDetect1.position, directionSide, rayLength, groundLayerMask);
+                if (hitTileDetect2.transform != null)
+                {
+                    var breakable1 = hitTileDetect2.transform.GetComponent<BreakableObjectController>(); // ground tile
+                    var breakable11 = hitTileDetect2.transform.GetComponent<TowerController>(); // wall tile
+                    if (breakable1 != null)
+                    {
+                        target = breakable1.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
+                    }
+                    else if (breakable11 != null)
+                    {
+                        target = breakable11.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
+                    }
+                }
+                else if (hitTileDetect1.transform != null)
+                {
+                    var breakable2 = hitTileDetect1.transform.GetComponent<BreakableObjectController>();
+                    var breakable22 = hitTileDetect1.transform.GetComponent<TowerController>();
+                    if (breakable2 != null)
+                    {
+                        target = breakable2.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
+                    }
+                    else if (breakable22 != null)
+                    {
+                        target = breakable22.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
+                    }
+                }
+
+                break;
+
+            case "top":
+                RaycastHit2D hitTileDetect3 = Physics2D.Raycast(tileDetect3.position, directionUpSide, rayLength, groundLayerMask);
+                RaycastHit2D hitTileDetect4 = Physics2D.Raycast(tileDetect4.position, Vector2.up, rayLength, groundLayerMask);
+
+                if (hitTileDetect3.transform != null)
+                {
+                    var breakable3 = hitTileDetect3.transform.GetComponent<BreakableObjectController>();
+                    if (breakable3 != null)
+                    {
+                        target = breakable3.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                        return;
+                    }
+                }
+
+                if (hitTileDetect4.transform != null)
+                {
+                    var breakable4 = hitTileDetect4.transform.GetComponent<BreakableObjectController>();
+                    if (breakable4 != null)
+                    {
+                        target = breakable4.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                    }
+                }
+
+                break;
+
+            case "bottom":
+                RaycastHit2D hitTileDetect5 = Physics2D.Raycast(groundCheckCenter.position, Vector2.down, rayLength, groundLayerMask);
+                if (hitTileDetect5.transform != null)
+                {
+                    var breakable5 = hitTileDetect5.transform.GetComponent<BreakableObjectController>();
+                    if (breakable5 != null)
+                    {
+                        target = breakable5.gameObject;
+                        _breakObstaclesCD = breakObstacleCDReset;
+                    }
+                }
+
+                break;
+        }
+    }
+    #endregion
 }
