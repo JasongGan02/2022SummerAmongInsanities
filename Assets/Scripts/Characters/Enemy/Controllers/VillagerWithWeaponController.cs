@@ -33,7 +33,7 @@ public class VillagerWithWeaponController : EnemyController
     public float defaultChasingRemainder = 5f;
     public float defaultPathTicker = 2f;
     public float defaultTargetTicker = 1f;
-    public float attackAnimationDuration = 0.25f; 
+    public float attackAnimationDuration = 0.25f;
 
     #endregion
 
@@ -72,30 +72,32 @@ public class VillagerWithWeaponController : EnemyController
     /// Called from EnemyController - runs every frame or on fixed intervals if you want (depending on the architecture).
     /// </summary>
     protected override void UpdateEnemyBehavior()
-    {   
-
+    {
         // Periodically re-check for target
-        if (target == null || TargetTicker < 0) 
-        { 
-            target = SearchForTargetObject(); 
+        if (target == null || TargetTicker < 0)
+        {
+            target = SearchForTargetObject();
             // Debug.Log("trying find target");
-            TargetTicker = defaultTargetTicker; 
+            TargetTicker = defaultTargetTicker;
         }
 
         // If no target in sight or memory
-        if (target == null && TargetRemainder == null) 
+        if (target == null && TargetRemainder == null)
         {
             PathToTarget.Clear();
             RemovePathLine();
-            if (TimeSystemManager.Instance.IsRedMoon){
+            if (TimeSystemManager.Instance.IsRedMoon)
+            {
                 Debug.Log("It's a red moon night! The weapon villagers approach core");
                 Approach(currentStats.movingSpeed, corePosition);
-            }else{
+            }
+            else
+            {
                 Patrol();
             }
         }
         // If no target but we still remember the last known position
-        else if (target == null && TargetRemainder != null) 
+        else if (target == null && TargetRemainder != null)
         {
             FinishExistingPath();
             ChasingRemainder -= Time.deltaTime;
@@ -123,7 +125,7 @@ public class VillagerWithWeaponController : EnemyController
             if (DistanceToTarget(target.transform) < currentStats.attackRange ||
                 target.transform.GetComponent<BreakableObjectController>() != null)
             {
-                AttackHandler(target.transform, enemyStats.attackInterval); 
+                AttackHandler(target.transform, enemyStats.attackInterval);
             }
 
             // Additional behavior: Shake player overhead if they are above or below
@@ -199,7 +201,7 @@ public class VillagerWithWeaponController : EnemyController
 
         // Face the target
         if ((facingRight && targetTransform.x < transform.position.x)
-             || (!facingRight && targetTransform.x > transform.position.x))
+            || (!facingRight && targetTransform.x > transform.position.x))
         {
             Flip();
         }
@@ -259,6 +261,7 @@ public class VillagerWithWeaponController : EnemyController
                         var character = targetTransform.GetComponent<CharacterController>();
                         ApplyDamage(character);
                     }
+
                     EnterAttackCooldown(attackFrequency);
                 }
             }
@@ -332,5 +335,6 @@ public class VillagerWithWeaponController : EnemyController
             }
         }
     }
+
     #endregion
 }

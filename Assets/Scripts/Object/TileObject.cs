@@ -329,10 +329,12 @@ public class TileObject : BaseObject, IInventoryObject, IBreakableObject, IGener
         get => _isLocked;
         set => _isLocked = value;
     }
+
     public bool getIsLocked()
     {
         return _isLocked;
     }
+
     public int CraftTime
     {
         get => _craftTime;
