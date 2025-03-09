@@ -83,6 +83,8 @@ public class WeaponObject : EquipmentObject, ICraftableObject
     [SerializeField]
     private bool _isCoreNeeded;
     [SerializeField]
+    private bool _isLocked;
+    [SerializeField]
     private int _craftTime;
 
 
@@ -170,7 +172,15 @@ public class WeaponObject : EquipmentObject, ICraftableObject
     {
         return _isCoreNeeded;
     }
-
+    public bool IsLocked
+    {
+        get => _isLocked;
+        set => _isLocked = value;
+    }
+    public bool getIsLocked()
+    {
+        return _isLocked;
+    }
     public int CraftTime
     {
         get => _craftTime;

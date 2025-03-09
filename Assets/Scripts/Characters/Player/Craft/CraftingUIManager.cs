@@ -76,6 +76,9 @@ public class CraftingUIManager : MonoBehaviour
     [SerializeField] private TMP_Text num5;
     [SerializeField] private TMP_Text timeText;
 
+    [Header("Lock Sprite")]
+    [SerializeField] private Sprite lockSprite;
+
     // -----------------------------------------------------
     //  Monobehaviour: Load asset references, init listeners
     // -----------------------------------------------------
@@ -317,6 +320,20 @@ public class CraftingUIManager : MonoBehaviour
             Debug.LogError("No objects to display in the Crafting UI.");
             return;
         }
+
+
+        Array.Sort(list, (a, b) =>
+        {
+            ICraftableObject craftA = a as ICraftableObject;
+            ICraftableObject craftB = b as ICraftableObject;
+            bool aLocked = craftA != null && craftA.getIsLocked();
+            bool bLocked = craftB != null && craftB.getIsLocked();
+            if (aLocked == bLocked)
+                return 0; 
+            return aLocked ? 1 : -1;
+        });
+
+
         //Debug.Log($"Setting up UI for {list.Length} objects.");
 
         if (craftUI == null) return;
@@ -364,8 +381,15 @@ public class CraftingUIManager : MonoBehaviour
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, 0.3f);
             }
-
-            // Wire up the click
+            if (craftObj != null && craftObj.getIsLocked())
+            {
+                image.color = new Color(image.color.r, image.color.g, image.color.b, 0.5f);
+                GameObject lockOverlay = new GameObject("LockOverlay");
+                lockOverlay.transform.SetParent(buttonObj.transform, false); 
+                Image lockImage = lockOverlay.AddComponent<Image>();
+                lockImage.sprite = lockSprite;
+            }
+ 
             buttonComponent.onClick.AddListener(() => OnItemButtonClicked(image.sprite, buttonComponent));
         }
 
@@ -455,11 +479,19 @@ public class CraftingUIManager : MonoBehaviour
             return;
         }
 
+        if (craftableObject.getIsLocked())
+        {
+            craftButton.gameObject.SetActive(false);
+            HideAllInputItems();
+            HideInputItem(outputItem, timeText);
+            return;
+        }
+
         // If core needed, check range
         if (craftableObject.getIsCoreNeeded() && !coreArchitecture.IsPlayerInConstructionRange())
         {
             craftButton.gameObject.SetActive(false);
-            HideAllInputItems();
+            ShowInputItems(craftableObject.getRecipe());
             return;
         }
 
@@ -489,6 +521,8 @@ public class CraftingUIManager : MonoBehaviour
         HideInputItem(inputItem5, num5);
     }
 
+    
+
     private void HideInputItem(Image image, TMP_Text text)
     {
         if (image != null) image.color = new Color(1, 1, 1, 0);
@@ -507,6 +541,7 @@ public class CraftingUIManager : MonoBehaviour
         if (image != null)
         {
             image.sprite = recipe.material.getPrefabSprite();
+            image.rectTransform.localScale = new Vector3(0.9f, 0.9f, 1f);
             image.color = new Color(1, 1, 1, 1);
         }
 

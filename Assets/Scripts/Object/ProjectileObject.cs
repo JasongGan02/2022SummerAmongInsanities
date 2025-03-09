@@ -65,7 +65,9 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
     private bool _isCoreNeeded;
     [SerializeField]
     private int _craftTime;
-    
+    [SerializeField]
+    private bool _isLocked;
+
     // Dictionary to store effect-specific data (e.g., stacks per hit)
     public Dictionary<EffectObject, int> effectStacksPerHit = new Dictionary<EffectObject, int>();
 
@@ -131,6 +133,17 @@ public class ProjectileObject : BaseObject, IInventoryObject, ICraftableObject, 
     {
         return _isCoreNeeded;
     }
+
+    public bool IsLocked
+    {
+        get => _isLocked;
+        set => _isLocked = value;
+    }
+    public bool getIsLocked()
+    {
+        return _isLocked;
+    }
+
 
     public int CraftTime
     {
