@@ -33,7 +33,7 @@ public abstract class RangedTowerController : AttackTowerController, IRangedAtta
     {
         int projectilesPerShot = rangedTowerStats.projectilesPerShot;
         float delayBetweenProjectiles = 0.1f; // Adjust the delay duration as needed
-        Debug.Log(projectilesPerShot);
+        // Debug.Log(projectilesPerShot);
         for (int i = 0; i < projectilesPerShot; i++)
         {
             GameObject projectileGameObject = PoolManager.Instance.Get(ProjectileObject);
