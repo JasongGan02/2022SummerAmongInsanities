@@ -222,7 +222,7 @@ public abstract class EnemyController : CharacterController
     {
         if (Hatred == null || Hatred.Count == 0)
         {
-            // Debug.LogError("Hatred list is empty.");
+            Debug.LogError("Hatred list is empty.");
             return null;
         }
 
@@ -255,6 +255,7 @@ public abstract class EnemyController : CharacterController
 
                 if (typePriority != -1)
                 {
+                    Debug.Log("get potential target");
                     float distanceSquared = ((Vector2)(collider.transform.position - transform.position)).sqrMagnitude;
                     potentialTargets.Add(new PotentialTarget
                     {
@@ -268,6 +269,7 @@ public abstract class EnemyController : CharacterController
 
         if (potentialTargets.Count == 0)
         {
+            Debug.Log("No potential target");
             return null;
         }
 
@@ -290,6 +292,7 @@ public abstract class EnemyController : CharacterController
             {
                 // Target is visible
                 lastSeenTimestamp = Time.time;
+                Debug.Log("return visible target");
                 return potentialTarget.GameObject;
             }
         }
@@ -297,6 +300,7 @@ public abstract class EnemyController : CharacterController
         // No visible targets; keep last known position if within memory duration
         if (HasLastKnownPosition)
         {
+            Debug.Log("keep last known position");
             return null; // No current target, but we have a last known position
         }
         else
