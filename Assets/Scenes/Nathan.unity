@@ -3853,6 +3853,10 @@ PrefabInstance:
       propertyPath: constructionUI
       value: 
       objectReference: {fileID: 701233755}
+    - target: {fileID: 3739645760679070204, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3971385000899060374, guid: 8cf508c3c9395064c9ceb08897f69b66, type: 3}
       propertyPath: num0
       value: 

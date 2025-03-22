@@ -255,7 +255,6 @@ public abstract class EnemyController : CharacterController
 
                 if (typePriority != -1)
                 {
-                    Debug.Log("get potential target");
                     float distanceSquared = ((Vector2)(collider.transform.position - transform.position)).sqrMagnitude;
                     potentialTargets.Add(new PotentialTarget
                     {
@@ -269,7 +268,7 @@ public abstract class EnemyController : CharacterController
 
         if (potentialTargets.Count == 0)
         {
-            Debug.Log("No potential target");
+            // Debug.Log("No potential target");
             return null;
         }
 

@@ -17,6 +17,8 @@ public class CreeperController : EnemyController
     private float Wait = 0.3f;
     private bool IsAttacking = false;
     private bool Booming = false;
+    private float BoomTime = 0.4f;
+    private float PosBoom = 0.4f; // time before self destroy after boom
 
     protected override string IdleAnimationState { get; }
     protected override string AttackAnimationState { get; }
@@ -41,6 +43,7 @@ public class CreeperController : EnemyController
 
             if (target == null || TargetTicker < 0)  
             { 
+                Debug.Log("searching target");
                 target = SearchForTargetObject();
                 TargetTicker = DefaultTargetTicker; 
             }
@@ -50,16 +53,16 @@ public class CreeperController : EnemyController
                     Debug.Log("It's a red moon night! The creepers approach core!");
                     Approach(enemyStats.movingSpeed, corePosition);
                 }else{
-                    // Debug.Log("Creeper is patroling.");
+                    Debug.Log("Creeper is patroling.");
                     patrol();
                 }
             }
             else
             {
-                // Debug.Log("attack");
+                Debug.Log("attack stage");
                 if (HoriDistanceToTarget(target.transform) <= enemyStats.attackRange && !IsAttacking)
                 {
-                    Attack(target.transform, enemyStats.attackInterval); // default:1;  lower -> faster
+                    Attack(target.transform); 
                 }
                 else
                 {
@@ -72,26 +75,60 @@ public class CreeperController : EnemyController
         TargetTicker -= Time.deltaTime;
     }
 
-    void Attack(Transform target, float waitingTime)
+    void Attack(Transform target)
     {
-        if (Rest)
-        {
-            if (Wait > 0)
-            {
-                Wait -= Time.deltaTime;
-            }
-            else
-            {
-                Rest = false;
-            }
-        }
+        // if (Rest)
+        // {
+        //     if (Wait > 0)
+        //     {
+        //         Wait -= Time.deltaTime;
+        //     }
+        //     else
+        //     {
+        //         Rest = false;
+        //     }
+        // }
 
-        else if (!IsAttacking)
-        {
-            IsAttacking = true;
+        // else if (!IsAttacking)
+        // {
+        //     IsAttacking = true;
+        //     animator.Play("creeper_preBoom");
+        //     //ChangeCollider("creeper_preBoom");
+        //     StartCoroutine(WaitAndContinue(waitingTime));
+
+        // }
+
+        if (Wait > 0){
+            Wait -= Time.deltaTime;
             animator.Play("creeper_preBoom");
-            //ChangeCollider("creeper_preBoom");
-            StartCoroutine(WaitAndContinue(waitingTime));
+        }
+        else if (BoomTime > 0){
+            animator.Play("creeper_boom");
+            BoomTime -= Time.deltaTime;
+        }
+        else if (Wait <= 0 && BoomTime <= 0){
+            float checkD = Vector2.Distance(transform.position, player.transform.position);
+            // // prevent over attacking
+            if (!Rest){       
+                if (checkD <= enemyStats.attackRange){
+                    ApplyDamage(target.GetComponent<CharacterController>());
+                    Vector2 direction = player.transform.position - transform.position;
+                    direction.Normalize();
+                    player.transform.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(2f * direction.x * enemyStats.jumpForce, 2f * direction.y * enemyStats.jumpForce); // effect on player
+                    Rest = true;
+                }
+                Rest = true;
+            }
+            BreakSurrounding(enemyStats.attackRange);
+        }
+        else{
+            animator.Play("creeper_posBoom");
+            if (PosBoom > 0){
+                PosBoom -= Time.deltaTime;
+            }
+            else{
+                Die();
+            }
         }
 
         Flip(target);
@@ -119,14 +156,14 @@ public class CreeperController : EnemyController
             Rest = true;
             Wait = 1.0f * enemyStats.attackInterval;
         }
-        BreakSurrounding(enemyStats.attackRange, enemyStats.attackDamage);
+        // BreakSurrounding(enemyStats.attackRange, enemyStats.attackDamage);
         animator.Play("creeper_posBoom");
         //ChangeCollider("creeper_posBoom");
         yield return new WaitForSeconds(0.8f);
         Die();
     }
 
-    void BreakSurrounding(float range, float Damage)
+    void BreakSurrounding(float range)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, combinedMask);
     
